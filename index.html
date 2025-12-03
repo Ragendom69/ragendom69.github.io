@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ragendom | Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      color: #e4e4e7;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    .header {
+      margin-bottom: 60px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 0 40px rgba(255, 100, 50, 0.3);
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: #a1a1aa;
+      margin-bottom: 24px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e4e4e7;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .social-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(99, 102, 241, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .social-links a.unity {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .social-links a.unity:hover {
+      border-color: #fff;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #6366f1;
+      margin-bottom: 20px;
+    }
+
+    .about-text {
+      font-size: 1.1rem;
+      color: #d4d4d8;
+      max-width: 600px;
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .project-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .project-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .project-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .project-icon.orange {
+      background: linear-gradient(135deg, #f97316, #ef4444);
+    }
+
+    .project-icon.green {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .project-icon.blue {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+    }
+
+    .project-icon.pink {
+      background: linear-gradient(135deg, #ec4899, #a855f7);
+    }
+
+    .project-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .project-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      background: rgba(99, 102, 241, 0.3);
+      border-radius: 4px;
+      color: #a5b4fc;
+      margin-left: 8px;
+    }
+
+    .project-desc {
+      color: #a1a1aa;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      background: rgba(99, 102, 241, 0.15);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #a5b4fc;
+    }
+
+    .contact-card {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .contact-card p {
+      color: #d4d4d8;
+      margin-bottom: 16px;
+    }
+
+    .email-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .email-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+    }
+
+    .footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+      color: #52525b;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        padding: 40px 20px;
+      }
+
+      .social-links {
+        gap: 8px;
+      }
+
+      .social-links a {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <img src="ragendom_200x200.jpg" alt="Ragendom" class="avatar">
+      <h1>Ragendom</h1>
+      <p class="tagline">Unity Game Developer · Experimenting with React Native & AI-powered apps</p>
+      <div class="social-links">
+        <a href="https://github.com/Ragendom69" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://assetstore.unity.com/publishers/39886" target="_blank" class="unity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10.4 17.8l-4.2-7.4L10.4 3h5.6l-2.2 3.9H9.7l4.3 7.5-4.3 7.5h4.1l2.2 3.9h-5.6zM17.1 7l2.3 4.1L17.1 7zm.7 10.4l-2.3-4.1 2.3 4.1zM20.9 12l-2.3 4.1L20.9 12zM3.1 12l2.3-4.1L3.1 12z"/></svg>
+          Unity Asset Store
+        </a>
+        <a href="mailto:ragendom@gmail.com">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          Email
+        </a>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title">About</h2>
+      <p class="about-text">
+        I'm a Unity game developer creating mobile games and game templates for the Asset Store. 
+        Currently experimenting with React Native & Expo for cross-platform apps, 
+        and exploring AI-powered app development.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Apps</h2>
+      <div class="projects-grid">
+        
+        <a href="https://apps.apple.com/ma/app/guesswave-rhythm-music-game/id6755641143" class="project-card" target="_blank">
+          <div class="project-header">
+            <div class="project-icon green">🎵</div>
+            <span class="project-name">GuessWave</span>
+            <span class="project-badge">App Store</span>
+          </div>
+          <p class="project-desc">
+            A rhythm music game where players test their music knowledge. Built with Unity.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">iOS</span>
+            <span class="tag">Music Game</span>
+          </div>
+        </a>
+
+        <a href="https://apps.apple.com/ma/app/ball-clash-video-creator/id6744844060" class="project-card" target="_blank">
+          <div class="project-header">
+            <div class="project-icon pink">🎬</div>
+            <span class="project-name">Ball Clash: Video Creator</span>
+            <span class="project-badge">App Store</span>
+          </div>
+          <p class="project-desc">
+            Create stunning video content with this ball clash simulation tool.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">iOS</span>
+            <span class="tag">Video Creator</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Unity Asset Store</h2>
+      <div class="projects-grid">
+        
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-puzzle-game-engine-255383" class="project-card" target="_blank">
+          <div class="project-header">
+            <div class="project-icon orange">🧩</div>
+            <span class="project-name">HyperCasual Puzzle Game Engine</span>
+          </div>
+          <p class="project-desc">
+            A complete game template for creating hypercasual puzzle games. Ready to publish with customizable mechanics.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">Template</span>
+            <span class="tag">HyperCasual</span>
+            <span class="tag">Puzzle</span>
+          </div>
+        </a>
+
+        <a href="https://assetstore.unity.com/publishers/39886" class="project-card" target="_blank">
+          <div class="project-header">
+            <div class="project-icon blue">📦</div>
+            <span class="project-name">View All Assets</span>
+          </div>
+          <p class="project-desc">
+            Browse all my game templates and tools on the Unity Asset Store.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">Asset Store</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Get in Touch</h2>
+      <div class="contact-card">
+        <p>Interested in working together or have a question? Feel free to reach out!</p>
+        <a href="mailto:ragendom@gmail.com" class="email-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          ragendom@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2025 Ragendom. Built with ☕ and code.</p>
+    </footer>
+  </div>
+</body>
+</html>
