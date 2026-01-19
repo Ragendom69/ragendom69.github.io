@@ -1,0 +1,598 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypercasual Game Engine - Technical Documentation</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --sidebar-width: 280px;
+            --success-color: #27ae60;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-color);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--secondary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            padding: 0 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li a {
+            display: block;
+            padding: 12px 25px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar li a:hover, .sidebar li a.active {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .sidebar .sub-link {
+            padding-left: 45px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px 80px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        section {
+            margin-bottom: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 40px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 24px;
+            background: var(--primary-color);
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+            border-left: 3px solid #ddd;
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .badge-toolkit { background-color: #e67e22; color: white; }
+        .badge-editor { background-color: #9b59b6; color: white; }
+        .badge-core { background-color: #2ecc71; color: white; }
+        .badge-script { background-color: #34495e; color: white; }
+
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #c7254e;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .note {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
+        .editor-box {
+            background-color: #f9f0ff;
+            border: 1px solid #d1b3e0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .editor-box h4 {
+            margin-top: 0;
+            color: #6c3483;
+            display: flex;
+            align-items: center;
+        }
+
+        .editor-box h4::before {
+            content: '🛠️';
+            margin-right: 10px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .script-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .script-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .script-item strong {
+            display: block;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .script-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>Hypercasual Engine</h2>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#structure">Project Structure</a></li>
+            <li><a href="#game1">#1 Arrow Escape</a></li>
+            <li><a href="#game2">#2 Block Associations</a></li>
+            <li><a href="#game3">#3 Color Block Jam</a></li>
+            <li><a href="#game4">#4 Jigsaw Puzzle</a></li>
+            <li><a href="#game5">#5 Drop the Dog Jam</a></li>
+            <li><a href="#core">Core Systems</a></li>
+            <li><a href="#development">Development Guide</a></li>
+            <li><a href="#support">Support</a></li>
+            <li><a href="#version-history">Version History</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <section id="overview">
+            <h1>Technical Overview</h1>
+            <p><span class="badge badge-toolkit">Toolkit</span> The <strong>Hypercasual Game Engine</strong> is a modular framework designed for rapid development of puzzle and arcade mechanics. It provides a standardized architecture where game-specific logic is decoupled from core engine systems.</p>
+            
+            <div class="note">
+                <strong>Architecture Philosophy:</strong> Every game is treated as a "Module". The <code>Core</code> provides the services (Audio, UI, Camera, Persistence), and the <code>Games</code> folder contains the implementation of specific mechanics.
+            </div>
+
+            <h3>Core Design Patterns:</h3>
+            <ul>
+                <li><strong>Singleton Managers</strong>: Centralized control for game states and audio.</li>
+                <li><strong>Data-Driven Levels</strong>: Separation of level design (JSON/Assets) from game logic.</li>
+                <li><strong>Namespace Isolation</strong>: All scripts reside within <code>HypercasualGameEngine</code> to prevent conflicts.</li>
+            </ul>
+        </section>
+
+        <section id="structure">
+            <h1>Project Structure</h1>
+            <p>Understanding the directory layout is crucial for extending the engine.</p>
+            
+            <h3>Global Core (<code>/Core</code>)</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SoundManager.cs</strong>
+                    Handles global SFX and Music. Supports muting and volume scaling.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Base class for all game managers. Handles Win/Loss logic and UI triggers.
+                </div>
+                <div class="script-item">
+                    <strong>ColorManager.cs</strong>
+                    Centralized color palette management for blocks and UI.
+                </div>
+                <div class="script-item">
+                    <strong>AnimationPlayer.cs</strong>
+                    A helper to trigger common animations (Scale, Rotate, Move) via code.
+                </div>
+            </div>
+
+            <h3>Game Modules (<code>/Games</code>)</h3>
+            <p>Each game folder is self-contained, including its own <code>Scripts</code>, <code>Editor</code>, <code>Prefabs</code>, and <code>Levels</code>.</p>
+        </section>
+
+        <section id="game1">
+            <h1>#1 Arrow Escape</h1>
+            <p>A logic puzzle where players must clear a grid of arrows. Arrows can only move in their pointed direction and are blocked by others.</p>
+            
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>ArrowsGameManager.cs</strong>
+                    Orchestrates the game loop, move counting, and level loading.
+                </div>
+                <div class="script-item">
+                    <strong>ArrowController.cs</strong>
+                    Handles the movement logic, collision detection, and "exit" animations.
+                </div>
+                <div class="script-item">
+                    <strong>ArrowSegment.cs</strong>
+                    Defines the visual and physical body of an arrow.
+                </div>
+                <div class="script-item">
+                    <strong>ArrowsLevelManager.cs</strong>
+                    Manages the specific level state and win conditions.
+                </div>
+            </div>
+
+            <div class="editor-box">
+                <h4>Arrow Escape Level Editor</h4>
+                <p><strong>Script:</strong> <code>ArrowsLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Window > Hypercasual > Arrows Level Editor</code>.</li>
+                    <li>Set the <strong>Grid Size</strong> (e.g., 9x11).</li>
+                    <li>Click on grid cells to place arrow segments.</li>
+                    <li>Use the <strong>Direction Toggle</strong> to set where the arrow will fly.</li>
+                    <li>Click <strong>Export Level</strong> to save as a <code>.json</code> file in the <code>Levels</code> folder.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game2">
+            <h1>#2 Block Associations</h1>
+            <p>A drag-and-drop matching game. Players must organize items into sets to clear the board.</p>
+            
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Manages the logical grid and item placement.
+                </div>
+                <div class="script-item">
+                    <strong>DragController.cs</strong>
+                    Handles the input logic for picking up and moving items.
+                </div>
+                <div class="script-item">
+                    <strong>HintManager.cs</strong>
+                    Calculates possible moves and provides visual cues to the player.
+                </div>
+                <div class="script-item">
+                    <strong>ItemView.cs</strong>
+                    Controls the visual state of individual items (icons, animations).
+                </div>
+            </div>
+
+            <div class="editor-box">
+                <h4>Block Associations Editor Tools</h4>
+                <ul>
+                    <li><strong>ApplyGraphics.cs</strong>: Select multiple item prefabs and use this tool to batch-assign sprites from a folder.
+                        <br><em>Usage:</em> Select prefabs in Project window, right-click -> <code>Hypercasual > Apply Graphics</code>.
+                    </li>
+                    <li><strong>LevelPreview.cs</strong>: Allows you to select a <code>Level.json</code> and see a ghost-preview of the layout in the Scene view.
+                        <br><em>Usage:</em> Select a Level JSON, the preview will appear in the Scene view if the <code>GridManager</code> is active.
+                    </li>
+                    <li><strong>SetupDragSprites.cs</strong>: Automatically adds <code>BoxCollider2D</code> and <code>Draggable</code> components to a selection of sprites.
+                        <br><em>Usage:</em> Select sprites, right-click -> <code>Hypercasual > Setup Drag Sprites</code>.
+                    </li>
+                    <li><strong>FixMatchedRowBg.cs</strong>: A utility to align the background graphics with the generated grid size.
+                    </li>
+                    <li><strong>ImportSprites.cs / ImportClearedSprite.cs</strong>: Automates the import settings for new icons to ensure they are correctly formatted for the UI.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game3">
+            <h1>#3 Color Block Jam</h1>
+            <p>A spatial puzzle where players move groups of blocks to clear paths. Blocks are constrained by their color-coded groups.</p>
+            
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>ColorBlockJamLevelManager.cs</strong>
+                    Tracks the number of blocks remaining and handles the "Jam" logic.
+                </div>
+                <div class="script-item">
+                    <strong>DraggableBlockGroup.cs</strong>
+                    The core interaction script. It calculates if a whole group of blocks can move in a specific direction.
+                </div>
+                <div class="script-item">
+                    <strong>ColorBlock.cs</strong>
+                    Individual block component that registers with the group and handles color-specific visuals.
+                </div>
+                <div class="script-item">
+                    <strong>ColorWall.cs</strong>
+                    Defines "Goal" areas or "Blocked" areas that only interact with specific colors.
+                </div>
+            </div>
+
+            <h3>Setup Guide:</h3>
+            <p>Levels are built using <strong>Prefabs</strong>. To create a new level:</p>
+            <ol>
+                <li>Place <code>GroundTile</code> prefabs to form your floor.</li>
+                <li>Add <code>ColorBlock</code> prefabs and group them under an empty GameObject with <code>DraggableBlockGroup</code>.</li>
+                <li>Assign a <code>Color</code> to the group; all children will automatically inherit it.</li>
+            </ol>
+        </section>
+
+        <section id="game4">
+            <h1>#4 Jigsaw Puzzle</h1>
+            <p>A classic jigsaw mechanic. It uses a custom masking system to allow any image to be turned into a puzzle piece.</p>
+            
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>PuzzleLayoutManager.cs</strong>
+                    Manages the "Snap" logic and tracks completed pieces.
+                </div>
+                <div class="script-item">
+                    <strong>PuzzlePiece.cs</strong>
+                    Handles the individual piece state (Correct Position, Current Position, IsSnapped).
+                </div>
+                <div class="script-item">
+                    <strong>PuzzlePieceMover.cs</strong>
+                    Specialized drag logic that includes "Snap-to-Target" functionality.
+                </div>
+                <div class="script-item">
+                    <strong>PuzzleLayout.cs</strong>
+                    A ScriptableObject that stores the correct coordinates for every piece in a level.
+                </div>
+            </div>
+
+            <div class="editor-box">
+                <h4>Jigsaw Editor Tools</h4>
+                <ul>
+                    <li><strong>JigsawLevelCreator.cs</strong>: 
+                        <br><em>Usage:</em> Select a Texture, open <code>Window > Hypercasual > Jigsaw Creator</code>. Set Rows/Cols and click <strong>Generate</strong>.
+                    </li>
+                    <li><strong>PuzzleLayoutEditor.cs</strong>: 
+                        <br><em>Usage:</em> Custom inspector for <code>PuzzleLayout</code> assets. Allows manual adjustment of piece targets.
+                    </li>
+                    <li><strong>PuzzleDebugInspector.cs</strong>: 
+                        <br><em>Usage:</em> Provides a debug overlay in the Scene view to see piece IDs and snap zones.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game5">
+            <h1>#5 Drop the Dog Jam</h1>
+            <p>A physics-and-timing game. Players must navigate dogs into holes by removing blocks in the correct order.</p>
+            
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>DogJamLevelManager.cs</strong>
+                    Manages the "Collection" count and level progression.
+                </div>
+                <div class="script-item">
+                    <strong>HoleGenerator.cs</strong>
+                    The technical core. It uses <strong>SDF (Signed Distance Fields)</strong> to render a hole that looks like it's actually "in" the ground.
+                </div>
+                <div class="script-item">
+                    <strong>HoleCollector.cs</strong>
+                    A trigger-based script that detects when a dog has successfully entered a hole.
+                </div>
+                <div class="script-item">
+                    <strong>DogHolderCube.cs</strong>
+                    Handles the "Falling" animation and logic when a dog loses its ground support.
+                </div>
+            </div>
+
+            <div class="editor-box">
+                <h4>Drop the Dog Jam Editor Tools</h4>
+                <ul>
+                    <li><strong>HoleEditor.cs</strong>: 
+                        <br><em>Usage:</em> Select a <code>DogHolePrefab</code>. Adjust <strong>Radius</strong> and <strong>Depth</strong> in the inspector. Click <strong>Regenerate</strong> to bake the SDF texture.
+                    </li>
+                    <li><strong>HoleLevelEditor.cs</strong>: 
+                        <br><em>Usage:</em> A grid-painting tool. Open <code>Window > Hypercasual > Hole Level Editor</code>. Select a block type and click on the grid to paint your level.
+                    </li>
+                    <li><strong>HoleMenu.cs</strong>: 
+                        <br><em>Usage:</em> Adds right-click menu items to the Hierarchy for quickly creating Hole-related objects.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="core">
+            <h1>Core Systems & Utilities</h1>
+
+            <div class="editor-box">
+                <h4>Core Editor Tools</h4>
+                <p>These tools are available globally to assist with general project development:</p>
+                <ul>
+                    <li><strong>DragSnapWithoutPlaymodeEditor.cs</strong>: 
+                        <br><em>Usage:</em> Attach the <code>DragSnapWithoutPlaymode</code> component to any GameObject. In the Scene view, a custom handle will appear. Moving this handle will snap the object to the grid defined in the inspector. It also draws a visual grid around the object for reference.
+                    </li>
+                    <li><strong>ImportAudioIcon.cs</strong>: 
+                        <br><em>Usage:</em> Automatically assigns a custom icon to audio files in the Project window, making them easier to distinguish from other assets.
+                    </li>
+                </ul>
+            </div>
+            
+            <h3>LoseWinPanelManager</h3>
+            <p>A global UI controller. It listens for events from any <code>LevelManager</code> and triggers the appropriate overlay. It is designed to be "Plug and Play" — just drop the prefab into your scene's Canvas.</p>
+
+            <h3>Animation System</h3>
+            <p>The engine includes a lightweight animation system (<code>PositionAnimation.cs</code>, <code>ScaleAnimation.cs</code>, <code>RotationAnimation.cs</code>) that allows for tween-like behavior without external dependencies.</p>
+        </section>
+
+        <section id="development">
+            <h1>Development Guide</h1>
+            
+            <h3>Creating a New Game Module:</h3>
+            <ol>
+                <li><strong>Folder Setup</strong>: Create <code>Games/#X_Name</code>.</li>
+                <li><strong>Manager</strong>: Create a script inheriting from <code>LevelManager</code>.
+                    <pre>public class MyGameManager : LevelManager { ... }</pre>
+                </li>
+                <li><strong>UI Integration</strong>: Ensure your scene has an <code>EventSystem</code> and a <code>Canvas</code> with the <code>LoseWinPanel</code> prefab.</li>
+                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine { ... }</code>.</li>
+            </ol>
+
+            <div class="important">
+                <strong>Important:</strong> When moving assets, always use the <code>AssetDatabase</code> API or the Unity Project window to preserve <code>.meta</code> files and references.
+            </div>
+        </section>
+
+        <section id="support">
+            <h1>Support</h1>
+            <p>Need help with the engine? Have questions about a specific mechanic or want to report a bug?</p>
+            <div class="note">
+                <strong>Contact Email:</strong> <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>
+            </div>
+            <p>We aim to respond to all support inquiries within 24-48 hours. Please include your order number and a detailed description of your issue for faster assistance.</p>
+        </section>
+
+        <section id="version-history">
+            <h1>Version History</h1>
+            
+            <h3>v1.0 - Initial Release (Current)</h3>
+            <p>The first release of the Hypercasual Game Engine includes 5 fully functional game modules:</p>
+            <ul>
+                <li><strong>#1 Arrow Escape</strong>: Grid-based logic puzzle.</li>
+                <li><strong>#2 Block Associations</strong>: Drag-and-drop matching mechanic.</li>
+                <li><strong>#3 Color Block Jam</strong>: Spatial group-movement puzzle.</li>
+                <li><strong>#4 Jigsaw Puzzle</strong>: Dynamic texture-slicing puzzle.</li>
+                <li><strong>#5 Drop the Dog Jam</strong>: Physics-based SDF hole mechanic.</li>
+            </ul>
+            <p><strong>Current Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$29.99</span></p>
+
+            <div class="note">
+                <strong>Coming Soon:</strong> The next major update (v2.0) will introduce <strong>5 brand new game modules</strong>. Upon release of v2.0, the toolkit price will increase to <strong>$34.99</strong>. Get it now to lock in the current price and receive all future updates for free!
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Hypercasual Game Engine Toolkit. Built for rapid prototyping.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Scroll spy and smooth scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            const navLi = document.querySelectorAll('.sidebar ul li a');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
