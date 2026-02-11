@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,6 +145,34 @@
         .badge-editor { background-color: #9b59b6; color: white; }
         .badge-core { background-color: #2ecc71; color: white; }
         .badge-script { background-color: #34495e; color: white; }
+        .standalone-box {
+            background: linear-gradient(135deg, #f0f7ff, #e0ecf8);
+            border: 2px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .standalone-box h4 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .standalone-box h4::before {
+            content: '\1F4E6';
+            margin-right: 10px;
+        }
+
+        .standalone-box a {
+            color: #2980b9;
+            font-weight: 600;
+        }
+
+        .standalone-box a:hover {
+            color: #3498db;
+        }
 
         code {
             background-color: #f0f0f0;
@@ -251,6 +278,11 @@
             <li><a href="#game3">#3 Color Block Jam</a></li>
             <li><a href="#game4">#4 Jigsaw Puzzle</a></li>
             <li><a href="#game5">#5 Drop the Dog Jam</a></li>
+            <li><a href="#game6">#6 Pixel Shooter 3D</a></li>
+            <li><a href="#game7">#7 Topic Stack</a></li>
+            <li><a href="#game8">#8 Solitaire Associations</a></li>
+            <li><a href="#game9">#9 Coffee Go</a></li>
+            <li><a href="#game10">#10 Bricky Bounce</a></li>
             <li><a href="#core">Core Systems</a></li>
             <li><a href="#development">Development Guide</a></li>
             <li><a href="#support">Support</a></li>
@@ -344,6 +376,12 @@
         <section id="game2">
             <h1>#2 Block Associations</h1>
             <p>A drag-and-drop matching game. Players must organize items into sets to clear the board.</p>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with <strong>5 fully designed levels</strong>, extended level editors, and additional customization options for deeper development.</p>
+                <p><a href="https://assetstore.unity.com/packages/templates/packs/block-associations-puzzle-template-editor-351872" target="_blank">View Block Associations on the Unity Asset Store</a></p>
+            </div>
             
             <h3>Main Scripts:</h3>
             <div class="script-list">
@@ -498,6 +536,266 @@
             </div>
         </section>
 
+        <section id="game6">
+            <h1>#6 Pixel Shooter 3D</h1>
+            <p>A color-matching puzzle-shooter. Players manage a conveyor belt of "pigs" that automatically shoot colored bullets at same-colored blocks on a grid. The challenge lies in strategic pig selection and resource management.</p>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with <strong>5 fully designed levels</strong>, extended level editors, and additional customization options for deeper development.</p>
+                <p><a href="https://assetstore.unity.com/packages/templates/packs/pixel-shooter-3d-jam-template-editor-154253" target="_blank">View Pixel Shooter 3D on the Unity Asset Store</a></p>
+            </div>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameManager.cs</strong>
+                    Orchestrates the game loop: level loading from JSON, tray/trace management, pig activation, win/lose conditions, and ability usage.
+                </div>
+                <div class="script-item">
+                    <strong>PigController.cs</strong>
+                    State machine for pigs (Deck, Jumping, OnBelt, Returning, Holding). Handles belt path movement, auto-targeting of same-color blocks, and shooting logic.
+                </div>
+                <div class="script-item">
+                    <strong>BlockController.cs</strong>
+                    Individual block entity with a color code. Plays a pop-and-shrink destruction animation when hit by a matching bullet.
+                </div>
+                <div class="script-item">
+                    <strong>BulletController.cs</strong>
+                    Projectile that travels toward a target block at constant speed. Triggers block destruction on impact.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Tray/Trace System</strong>: Limited number of trays control how many pigs can be launched onto the belt. Trays animate from a stack to an equip position.</li>
+                <li><strong>Belt Path</strong>: Pigs move along a smooth curved path defined by 4 corner transforms with Bezier-blended corners.</li>
+                <li><strong>Holding Slots</strong>: After completing a belt run, pigs are stored in holding slots. If all slots fill up, the game is lost.</li>
+                <li><strong>Abilities</strong>:
+                    <ul>
+                        <li><em>Hand Picker</em> — Select any pig from the deck, not just the front of the line.</li>
+                        <li><em>Shuffle</em> — Randomize the pig deck column order.</li>
+                        <li><em>Super Shoot</em> — Spawns a special pig with 25 ammo that shoots any block.</li>
+                        <li><em>Extra Tray</em> — Adds one additional tray/trace to the supply.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Pixel Shooter 3D Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorManager.cs</strong>:
+                        <br><em>Usage:</em> A complete level editor with a 12x12 grid UI. Provides tools for color picking, pig placement, and save/load of JSON level files with unique filename generation.
+                    </li>
+                    <li><strong>BlockContainerEdit.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector sliders for rows (1-10), columns (1-10), and block scale (0.5-2.0). Dynamically spawns/destroys blocks in the editor.
+                    </li>
+                    <li><strong>DeckContainerEdit.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector for pig deck columns (1-5) and per-column pig count (1-9). Positions pig visual prefabs automatically.
+                    </li>
+                    <li><strong>HoldingContainerEdit.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector for holding slot count (1-5) and spacing (2.0-3.0). Shows/hides holding cube visuals.
+                    </li>
+                    <li><strong>PlayerSetupManager.cs</strong>:
+                        <br><em>Usage:</em> Analyzes blocks to determine available colors, then randomly assigns colors and distributes ammo to pigs. Validates minimum blocks (5) and colors (2).
+                    </li>
+                    <li><strong>BlockColorizer.cs</strong>:
+                        <br><em>Usage:</em> Samples colors from a source image using K-Means clustering to quantize to N colors, then maps them to grid positions for image-based level creation.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game7">
+            <h1>#7 Topic Stack</h1>
+            <p>A sorting puzzle where players move themed items between conveyor columns. Items must be grouped by category to lock in columns and clear the board.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>InputController.cs</strong>
+                    Handles column selection via raycasting, manages the select-move-deselect flow, validates moves, triggers lock-in checks, and evaluates the win condition.
+                </div>
+                <div class="script-item">
+                    <strong>ConveyorColumn.cs</strong>
+                    Stack-based column manager. Tracks items bottom-to-top, handles capacity, slot positioning, and item parenting.
+                </div>
+                <div class="script-item">
+                    <strong>SortItem.cs</strong>
+                    Individual item with rich animations: levitation with bobbing, Perlin-noise wobble rotation, color pulsing when selected, and arc-trajectory movement to targets.
+                </div>
+                <div class="script-item">
+                    <strong>ColumnLockInController.cs</strong>
+                    Triggers when a column is full with a single category. Plays a squash animation, darkens colors, and spawns a color-coded highlight with a category label.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Selection</strong>: Clicking a column selects all consecutive top items of the same category. They levitate with a bobbing animation.</li>
+                <li><strong>Movement</strong>: Clicking a different column moves selected items if space is available. Items fly in a smooth arc to their new slots.</li>
+                <li><strong>Lock-In</strong>: When a column is full with matching items, it locks with a visual squash effect and becomes unselectable.</li>
+                <li><strong>Win Condition</strong>: All non-empty columns must be locked.</li>
+                <li><strong>Categories</strong>: Kitchen (orange), Ice Cream (light blue), Winter (blue), School (green).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Topic Stack Level Editor</h4>
+                <p><strong>Script:</strong> <code>TopicStackLevelEditor.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #7 Topic Stack Level Editor</code>.</li>
+                    <li>Set the <strong>Grid Layout</strong> (e.g., 4x1 for 4 columns), <strong>Empty Columns</strong>, and <strong>Items Per Column</strong>.</li>
+                    <li>Toggle desired <strong>Themes</strong> (Kitchen, Ice-Cream, Winter, School).</li>
+                    <li>Adjust <strong>Advanced Settings</strong>: global scale factor, center-based spawning, column spacing, and material references.</li>
+                    <li>Click <strong>Create Level</strong> to generate the level hierarchy with randomized item distribution.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game8">
+            <h1>#8 Solitaire Associations</h1>
+            <p>A card-based puzzle combining solitaire mechanics with category matching. Players drag cards from the tableau and draw pile onto foundation slots to complete category sets within a limited number of moves.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameManager.cs</strong>
+                    Manages level loading from JSON, card creation, move tracking, undo stack, hint system (3 hints per level), and win/lose evaluation.
+                </div>
+                <div class="script-item">
+                    <strong>Card.cs</strong>
+                    Card entity with drag-and-drop support. Handles face-up/face-down states, category card visuals (crown icon, count text), multi-card drag in tableau, and highlight/shake feedback.
+                </div>
+                <div class="script-item">
+                    <strong>DropZone.cs</strong>
+                    Drop target validation. Foundation zones accept only matching-category cards up to a capacity limit. Tableau zones accept any card on empty columns or same-category cards on occupied ones.
+                </div>
+                <div class="script-item">
+                    <strong>DrawPileLayout.cs</strong>
+                    Displays up to 3 cards in an overlapping fan. Only the newest card is draggable; older visible cards are locked.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Foundations</strong>: Each slot starts empty. Place a category card first, then fill it with matching item cards. Cards are locked once placed in a foundation.</li>
+                <li><strong>Hints</strong>: Prioritized system — first checks foundation moves, then productive tableau moves (ones that reveal face-down cards), then suggests drawing from the deck.</li>
+                <li><strong>Undo</strong>: Full move reversal including card state restoration, face-down re-hiding, and move refund.</li>
+                <li><strong>Win Condition</strong>: All foundation slots completed. Each completed category plays a scale-up/shrink animation and disappears.</li>
+                <li><strong>Lose Condition</strong>: Running out of moves (when <code>maxMoves > 0</code>).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Solitaire Associations Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Usage:</em> Open via <code>Tools > #8 Solitaire Associations Level Editor</code>. A full-featured editor with a level browser, category manager, foundation/tableau/deck editors, visual preview, and validation checks (duplicate cards, capacity mismatches).
+                    </li>
+                    <li><strong>UpdateCardPrefabVisualsFinal.cs</strong>:
+                        <br><em>Usage:</em> Editor utility that updates the CardPrefab with all required visual elements (border, count text, crown icon, category header) at correct positions.
+                    </li>
+                    <li><strong>UpdateTableauPrefab.cs</strong>:
+                        <br><em>Usage:</em> Sets up tableau column prefabs with Image, DropZone, VerticalLayoutGroup (overlapping card spacing), and LayoutElement components.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game9">
+            <h1>#9 Coffee Go</h1>
+            <p>A conveyor-based sorting puzzle. Players tap trays to eject mismatched coffee cups onto a conveyor belt, which automatically routes them to the correct color-matched tray.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Main conveyor manager. Handles path-based movement, coffee stacking, tray-completion tracking, win condition (all trays full), and lose condition (conveyor at max capacity for too long).
+                </div>
+                <div class="script-item">
+                    <strong>Tray.cs</strong>
+                    Tray interaction controller. On click, ejects all mismatched coffees onto the conveyor with arc trajectories. Receives incoming coffees, checks for completion, and plays a shrink-and-particle effect when full.
+                </div>
+                <div class="script-item">
+                    <strong>Coffee.cs</strong>
+                    Coffee cup entity with a color enum (Red, Green, Blue, Yellow). Uses dual sprite renderers for normal and masked display modes.
+                </div>
+                <div class="script-item">
+                    <strong>ConvenyorSlot.cs</strong>
+                    Individual conveyor position that moves along the path. Detects coffee pickups via triggers and auto-delivers to the closest matching-color tray when within range.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Sorting Flow</strong>: Tap a tray to send wrong-colored coffees to the conveyor. The conveyor auto-delivers them to matching trays.</li>
+                <li><strong>Parabolic Paths</strong>: Coffees travel in smooth arc trajectories (5-point parabolic curves) between trays and the conveyor.</li>
+                <li><strong>Win Condition</strong>: All trays are filled with their matching color.</li>
+                <li><strong>Lose Condition</strong>: The conveyor stays at max capacity for a configurable countdown duration.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable conveyor settings (max slots, speed, countdown) and per-tray definitions (color, slot count, initial coffees).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Coffee Go Level Editor</h4>
+                <p><strong>Script:</strong> <code>CoffeeGoLevelEditor.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via the Editor window. Browse, load, or create levels from the <strong>Level Browser</strong> panel.</li>
+                    <li>Configure <strong>Conveyor Settings</strong>: max slots, height per coffee, move speed, and lose countdown timer.</li>
+                    <li>Add trays and set their <strong>Color</strong>, <strong>Slot Count</strong>, and <strong>Initial Coffees</strong> using color swatches. Use <strong>Fill</strong> to auto-populate or <strong>Randomize All Coffees</strong> for quick setup.</li>
+                    <li>Use <strong>Capture From Scene</strong> to read current scene data, or <strong>Apply To Scene</strong> to write editor data back.</li>
+                    <li>A visual preview shows tray layouts with mismatched coffees marked. Validation prevents saving impossible levels.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game10">
+            <h1>#10 Bricky Bounce</h1>
+            <p>A 3D brick-breaking puzzle. Players select colored boxes from a board to launch balls through a conveyor system at a multi-layered brick grid. Balls seek out same-colored bricks and destroy them with physics-based break effects.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Level coordinator that integrates BoardManager and GridGame. Subscribes to win/lose events and triggers the LoseWinPanelManager.
+                </div>
+                <div class="script-item">
+                    <strong>GridGame.cs</strong>
+                    Manages a 3D layered brick grid (<code>List&lt;List&lt;List&lt;Brick&gt;&gt;&gt;</code>). Handles brick instantiation, layer spacing, collision plane generation, and win-condition tracking.
+                </div>
+                <div class="script-item">
+                    <strong>Brick.cs</strong>
+                    Individual brick with physics-based destruction: hides mesh, spawns break pieces with randomized explosion forces, applies torque, and scales down debris over 2.5 seconds.
+                </div>
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Conveyor box logic. Validates exit paths using BFS, moves to dock slots, launches balls through the conveyor, and routes them to matching bricks via grid pathfinding.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Board & Dock</strong>: Click a box on the board to move it to a dock slot. Boxes must have a valid exit path (validated via BFS through neighboring <code>canExit</code> boxes).</li>
+                <li><strong>Ball Routing</strong>: Balls travel through a conveyor path, then navigate the brick grid using A*-style pathfinding to reach the furthest matching-color brick.</li>
+                <li><strong>Brick Destruction</strong>: On impact, bricks play an elastic squash animation followed by a physics explosion with randomized radial force, torque, and gradual debris fade.</li>
+                <li><strong>Win Condition</strong>: All bricks destroyed (<code>countBricks &lt;= 0</code>).</li>
+                <li><strong>Lose Condition</strong>: All dock slots are full and no matching-color bricks remain in the grid for any occupied dock color.</li>
+                <li><strong>Data-Driven</strong>: Levels use ScriptableObjects (<code>GameData</code>) with board rows, grid layers, color assignments, and per-box properties (ball count, hidden state, exit permissions).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Bricky Bounce Level Editor</h4>
+                <p><strong>Script:</strong> <code>BrickyBounceLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open the editor window. Use <strong>Save/Load</strong> to manage levels as JSON files or ScriptableObjects.</li>
+                    <li>Edit the <strong>Board</strong>: left-click to toggle empty/filled boxes, right-click for a context menu to set color, ball count, hidden state, and exit permissions. Adjust rows and columns dynamically.</li>
+                    <li>Edit the <strong>Grid</strong>: left-click to toggle bricks on/off. Configure layer count, row count, and column count. Use a color selector per layer and <strong>Fill/Clear Layer</strong> buttons for quick editing.</li>
+                    <li>A color legend and real-time grid rendering provide visual feedback during editing.</li>
+                </ol>
+            </div>
+        </section>
+
         <section id="core">
             <h1>Core Systems & Utilities</h1>
 
@@ -551,7 +849,18 @@
         <section id="version-history">
             <h1>Version History</h1>
             
-            <h3>v1.0 - Initial Release (Current)</h3>
+            <h3>v2.0 - Major Update (Current)</h3>
+            <p>The second major release adds <strong>5 brand new game modules</strong>, bringing the total to 10:</p>
+            <ul>
+                <li><strong>#6 Pixel Shooter 3D</strong>: Color-matching puzzle-shooter with conveyor belt and abilities.</li>
+                <li><strong>#7 Topic Stack</strong>: Category-based item sorting with lock-in mechanics.</li>
+                <li><strong>#8 Solitaire Associations</strong>: Card-based solitaire with category matching, hints, and undo.</li>
+                <li><strong>#9 Coffee Go</strong>: Conveyor-based coffee cup color-sorting puzzle.</li>
+                <li><strong>#10 Bricky Bounce</strong>: 3D layered brick-breaking with ball routing and physics destruction.</li>
+            </ul>
+            <p><strong>Current Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$34.99</span></p>
+
+            <h3>v1.0 - Initial Release</h3>
             <p>The first release of the Hypercasual Game Engine includes 5 fully functional game modules:</p>
             <ul>
                 <li><strong>#1 Arrow Escape</strong>: Grid-based logic puzzle.</li>
@@ -560,10 +869,10 @@
                 <li><strong>#4 Jigsaw Puzzle</strong>: Dynamic texture-slicing puzzle.</li>
                 <li><strong>#5 Drop the Dog Jam</strong>: Physics-based SDF hole mechanic.</li>
             </ul>
-            <p><strong>Current Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$29.99</span></p>
+            <p><strong>Launch Price:</strong> <strong>$29.99</strong></p>
 
-            <div class="note">
-                <strong>Coming Soon:</strong> The next major update (v2.0) will introduce <strong>5 brand new game modules</strong>. Upon release of v2.0, the toolkit price will increase to <strong>$34.99</strong>. Get it now to lock in the current price and receive all future updates for free!
+            <div class="note" style="background-color: #fef9e7; border-left-color: #f39c12;">
+                <strong>Coming Soon — v3.0:</strong> The next major update will expand the toolkit to <strong>15 game modules</strong> with 5 entirely new game templates.
             </div>
         </section>
 
