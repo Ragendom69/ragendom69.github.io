@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragendom Ad Mediation - Documentation</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface2: #1c2333;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --green: #3fb950;
+            --yellow: #d29922;
+            --red: #f85149;
+            --orange: #db6d28;
+            --purple: #bc8cff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 24px 0;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 18px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-logo span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 6px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.15s;
+        }
+
+        .sidebar nav a:hover {
+            color: var(--accent);
+            background: rgba(88, 166, 255, 0.05);
+        }
+
+        .sidebar nav a.section-title {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 16px;
+            padding-top: 12px;
+            cursor: default;
+        }
+
+        .sidebar nav a.section-title:hover {
+            background: none;
+            color: var(--text);
+        }
+
+        .sidebar nav a.indent {
+            padding-left: 40px;
+            font-size: 13px;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 300px;
+            max-width: 900px;
+            padding: 48px 60px 120px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 600;
+            margin-top: 56px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 36px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: var(--accent-hover);
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: var(--surface2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--accent-hover);
+        }
+
+        pre {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text);
+        }
+
+        .keyword { color: var(--purple); }
+        .type { color: var(--green); }
+        .string { color: #a5d6ff; }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .method { color: #d2a8ff; }
+        .param { color: var(--orange); }
+
+        /* Info boxes */
+        .box {
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .box-info {
+            background: rgba(88, 166, 255, 0.08);
+            border-color: var(--accent);
+        }
+
+        .box-warning {
+            background: rgba(210, 153, 34, 0.08);
+            border-color: var(--yellow);
+        }
+
+        .box-danger {
+            background: rgba(248, 81, 73, 0.08);
+            border-color: var(--red);
+        }
+
+        .box-success {
+            background: rgba(63, 185, 80, 0.08);
+            border-color: var(--green);
+        }
+
+        .box-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .box-info .box-title { color: var(--accent); }
+        .box-warning .box-title { color: var(--yellow); }
+        .box-danger .box-title { color: var(--red); }
+        .box-success .box-title { color: var(--green); }
+
+        .box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--surface);
+            font-weight: 600;
+            color: var(--text);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            color: var(--text);
+        }
+
+        td code {
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) td {
+            background: rgba(22, 27, 34, 0.5);
+        }
+
+        /* Steps */
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            margin-top: 4px;
+            color: var(--text);
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .file-tree .folder { color: var(--accent); }
+        .file-tree .file { color: var(--text); }
+        .file-tree .asmdef { color: var(--green); }
+        .file-tree .desc { color: var(--text-muted); font-style: italic; }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-required {
+            background: rgba(248, 81, 73, 0.15);
+            color: var(--red);
+        }
+
+        .badge-optional {
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--green);
+        }
+
+        .badge-auto {
+            background: rgba(188, 140, 255, 0.15);
+            color: var(--purple);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 32px 24px 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <h2>Ragendom Ad Mediation</h2>
+        <span>Documentation v1.0</span>
+    </div>
+    <nav>
+        <a href="#overview" class="section-title">Getting Started</a>
+        <a href="#overview">Overview</a>
+        <a href="#requirements">Requirements</a>
+        <a href="#project-structure">Project Structure</a>
+        <a href="#quick-start">Quick Start (5 Minutes)</a>
+
+        <a href="#testing" class="section-title">Testing</a>
+        <a href="#testing-dummy">Testing with Dummy Ads</a>
+        <a href="#testing-admob">Testing with Real AdMob</a>
+        <a href="#testing-checklist">Testing Checklist</a>
+
+        <a href="#integration" class="section-title">Integration Guide</a>
+        <a href="#integration-setup">Setting Up in Your Project</a>
+        <a href="#integration-banner">Banner Ads</a>
+        <a href="#integration-interstitial">Interstitial Ads</a>
+        <a href="#integration-rewarded">Rewarded Video Ads</a>
+        <a href="#integration-noads">No-Ads / Remove Ads</a>
+        <a href="#integration-conditions">Interstitial Conditions</a>
+
+        <a href="#settings" class="section-title">Settings Reference</a>
+        <a href="#settings-monetization">MonetizationSettings</a>
+        <a href="#settings-ads">AdsSettings</a>
+        <a href="#settings-admob">AdMob Configuration</a>
+
+        <a href="#api" class="section-title">API Reference</a>
+        <a href="#api-adsmanager">AdsManager (Static)</a>
+        <a href="#api-events">Events</a>
+        <a href="#api-consent">UMP / GDPR Consent</a>
+        <a href="#api-idfa">IDFA Tracking (iOS)</a>
+
+        <a href="#advanced" class="section-title">Advanced Topics</a>
+        <a href="#advanced-define">Auto-Detection System</a>
+        <a href="#advanced-threading">Thread Safety</a>
+        <a href="#advanced-retry">Retry &amp; Backoff</a>
+        <a href="#advanced-appopenad">App Open Ads</a>
+        <a href="#advanced-custom-provider">Custom Providers</a>
+
+        <a href="#troubleshooting" class="section-title">Troubleshooting</a>
+        <a href="#troubleshooting">Common Issues</a>
+
+        <a href="#appendix" class="section-title">Appendix</a>
+        <a href="#appendix-enums">Enums</a>
+        <a href="#appendix-playerprefs">PlayerPrefs Keys</a>
+        <a href="#appendix-assemblies">Assembly Definitions</a>
+    </nav>
+</div>
+
+<div class="main">
+
+<!-- ============================================================ -->
+<!-- OVERVIEW -->
+<!-- ============================================================ -->
+
+<h1>Ragendom Ad Mediation</h1>
+<p class="subtitle">A lightweight, modular AdMob ad mediation system for Unity.</p>
+
+<h2 id="overview">Overview</h2>
+<p>
+    Ragendom Ad Mediation provides a clean, production-ready abstraction layer for Google AdMob advertisements in Unity.
+    It supports <strong>Banner</strong>, <strong>Interstitial</strong>, <strong>Rewarded Video</strong>, and <strong>App Open Ad</strong> formats,
+    with built-in UMP/GDPR consent handling, iOS IDFA tracking, a no-ads purchase system, interstitial timing controls,
+    and a fully functional Dummy provider for editor testing &mdash; all without requiring any external SDK to compile.
+</p>
+
+<h3>Key Features</h3>
+<ul>
+    <li><strong>Zero dependencies at compile time</strong> &mdash; the project compiles and runs with the built-in Dummy provider. The Google Mobile Ads SDK is only required when building for a real device.</li>
+    <li><strong>Automatic SDK detection</strong> &mdash; when you import the Google Mobile Ads Unity Plugin, the <code>MODULE_ADMOB</code> scripting define is added automatically. No manual setup required.</li>
+    <li><strong>All ad formats</strong> &mdash; Banner, Interstitial, Rewarded Video, and App Open Ads.</li>
+    <li><strong>UMP/GDPR consent flow</strong> &mdash; built-in Google User Messaging Platform support with configurable debug geography.</li>
+    <li><strong>iOS IDFA tracking</strong> &mdash; App Tracking Transparency (ATT) dialog support.</li>
+    <li><strong>No-ads purchase support</strong> &mdash; a single method call disables banners and interstitials while keeping rewarded videos available.</li>
+    <li><strong>Interstitial timing system</strong> &mdash; configurable first-launch delay, per-session delay, and minimum cooldown between ads.</li>
+    <li><strong>Thread-safe callbacks</strong> &mdash; all ad SDK callbacks are marshalled to the Unity main thread automatically.</li>
+    <li><strong>Exponential retry</strong> &mdash; failed ad loads are retried with exponential backoff (up to 5 attempts).</li>
+    <li><strong>Assembly Definitions</strong> &mdash; proper .asmdef structure for fast compilation and Asset Store compliance.</li>
+</ul>
+
+<h2 id="requirements">Requirements</h2>
+
+<table>
+    <tr><th>Requirement</th><th>Details</th></tr>
+    <tr><td>Unity Version</td><td>2021.3 LTS or newer (supports Unity 6000+)</td></tr>
+    <tr><td>Platforms</td><td>Android, iOS (Dummy provider works on all platforms including Editor)</td></tr>
+    <tr><td>TextMeshPro</td><td>Required (included with Unity by default)</td></tr>
+    <tr>
+        <td>Google Mobile Ads Unity Plugin</td>
+        <td><span class="badge badge-optional">Optional</span> Required only for real AdMob ads. v9.0.0 or newer recommended.
+            <br>Download: <a href="https://github.com/googleads/googleads-mobile-unity/releases" target="_blank">github.com/googleads/googleads-mobile-unity</a></td>
+    </tr>
+    <tr>
+        <td>Unity iOS Support Package</td>
+        <td><span class="badge badge-optional">Optional</span> Required only for IDFA/ATT tracking on iOS.</td>
+    </tr>
+</table>
+
+<h2 id="project-structure">Project Structure</h2>
+
+<div class="file-tree">
+<span class="folder">Assets/Ragendom/</span>
+<br>&nbsp;&nbsp;<span class="folder">Core/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SimpleCallback.cs</span> <span class="desc">&mdash; Core delegate type</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">ISaveObject.cs</span> <span class="desc">&mdash; Save interface</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Core.asmdef</span>
+<br>&nbsp;&nbsp;<span class="folder">Modules/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Defines/Scripts/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">DefineAttribute.cs</span> <span class="desc">&mdash; Auto-detection attribute</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Defines.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">DefineManager.cs</span> <span class="desc">&mdash; Auto-detect SDKs, manage defines</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">DefineManagerWindow.cs</span> <span class="desc">&mdash; Editor window UI</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Defines.Editor.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Monetization/Scripts/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Monetization.cs</span> <span class="desc">&mdash; Static utility class</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettings.cs</span> <span class="desc">&mdash; Root ScriptableObject settings</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationInitModule.cs</span> <span class="desc">&mdash; Initialization component</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Advertisement/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsManager.cs</span> <span class="desc">&mdash; Main static API</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsSettings.cs</span> <span class="desc">&mdash; Ad-specific settings</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdProviderHandler.cs</span> <span class="desc">&mdash; Abstract provider base</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">LoadingTask.cs</span> <span class="desc">&mdash; Pre-init task system</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">UMPLoadingTask.cs</span> <span class="desc">&mdash; GDPR consent task</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">IDFALoadingTask.cs</span> <span class="desc">&mdash; iOS ATT task</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsRewardsHolder.cs</span> <span class="desc">&mdash; Ready-made reward button</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">NoAdsReward.cs</span> <span class="desc">&mdash; No-ads purchase handler</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdSave.cs</span> <span class="desc">&mdash; Persistent ad state</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Providers/AdMob/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdMobHandler.cs</span> <span class="desc">&mdash; AdMob implementation</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdMobContainer.cs</span> <span class="desc">&mdash; AdMob config data</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Providers/Dummy/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyHandler.cs</span> <span class="desc">&mdash; Dummy provider</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyContainer.cs</span> <span class="desc">&mdash; Dummy config data</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyController.cs</span> <span class="desc">&mdash; Dummy UI renderer</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsSettingsEditor.cs</span> <span class="desc">&mdash; Custom inspector</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorAdsContainer.cs</span> <span class="desc">&mdash; Editor base class</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorAdMobContainer.cs</span> <span class="desc">&mdash; AdMob inspector</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorDummyContainer.cs</span> <span class="desc">&mdash; Dummy inspector</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdmobBuildHandler.cs</span> <span class="desc">&mdash; Pre-build App ID sync</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.Ads.Editor.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettingsEditor.cs</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationInitModuleEditor.cs</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationPlatformDetector.cs</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.Editor.asmdef</span>
+<br>&nbsp;&nbsp;<span class="folder">Examples/Ads Example/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Scripts/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsManagerExampleScript.cs</span> <span class="desc">&mdash; Full API demo</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Examples.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsExampleSceneSetup.cs</span> <span class="desc">&mdash; Scene setup tool</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Examples.Editor.asmdef</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- QUICK START -->
+<!-- ============================================================ -->
+
+<h2 id="quick-start">Quick Start (5 Minutes)</h2>
+
+<p>Get up and running with Dummy ads in the Unity Editor in 5 minutes.</p>
+
+<div class="step">
+    <div class="step-number">1</div>
+    <div class="step-content">
+        <h4>Create the MonetizationSettings Asset</h4>
+        <p>Right-click in the Project window and select <code>Create &gt; Data &gt; Core &gt; Monetization Settings</code>. This creates a <code>MonetizationSettings.asset</code> ScriptableObject. Place it anywhere you like (e.g. <code>Assets/Settings/</code>).</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+        <h4>Add MonetizationInitModule to Your Scene</h4>
+        <p>Create an empty GameObject in your first scene and name it <code>Monetization</code>. Add the <code>MonetizationInitModule</code> component to it. Drag your <code>MonetizationSettings</code> asset into the <strong>Settings</strong> field.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">3</div>
+    <div class="step-content">
+        <h4>Configure Providers</h4>
+        <p>Select the <code>MonetizationSettings</code> asset. In the Inspector, you will see the <strong>Ads Settings</strong> section. Set each ad type (Banner, Interstitial, Rewarded Video) to <code>Dummy</code> for editor testing. Enable <strong>Verbose Logging</strong> to see detailed logs in the Console.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">4</div>
+    <div class="step-content">
+        <h4>Press Play</h4>
+        <p>Hit Play. The system initializes automatically via <code>MonetizationInitModule.Awake()</code>. You can now call any <code>AdsManager</code> method from your scripts. The Dummy provider renders simulated ad overlays directly in the Game view.</p>
+    </div>
+</div>
+
+<div class="box box-info">
+    <div class="box-title">Tip</div>
+    <p>You can use the menu item <code>Tools &gt; Ragendom &gt; Setup Ads Example Scene</code> to automatically set up a complete test scene with all buttons wired to every AdsManager method. This is great for verifying the system works before integrating into your own project.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- TESTING -->
+<!-- ============================================================ -->
+
+<h2 id="testing">Testing</h2>
+
+<h3 id="testing-dummy">Testing with Dummy Ads (Editor)</h3>
+
+<p>The Dummy provider lets you test the entire ad lifecycle without any external SDK. It works in the Unity Editor on any platform.</p>
+
+<ol>
+    <li>In your <code>MonetizationSettings</code> asset, set all three provider slots (Banner, Interstitial, Rewarded Video) to <strong>Dummy</strong>.</li>
+    <li>Press Play in the Unity Editor.</li>
+    <li>The console should show:
+        <pre><code>[UMP]: AdMob module not available, skipping UMP.
+[Monetization]: Loading task 'UMP Consent' completed with status: Skipped
+[AdsManager]: Dummy ad provider initialized.
+[AdsManager]: Dummy provider initialized successfully.
+[AdsManager]: First ads loaded.
+[AdsManager]: Module initialized.
+[AdsManager]: Provider initialized: Dummy</code></pre>
+    </li>
+    <li>Call <code>AdsManager.ShowBanner()</code> to see a simulated banner overlay at the bottom (or top) of the screen.</li>
+    <li>Call <code>AdsManager.RequestInterstitial()</code> followed by <code>AdsManager.ShowInterstitial(callback)</code> to see a fullscreen simulated interstitial with a Close button.</li>
+    <li>Call <code>AdsManager.RequestRewardBasedVideo()</code> followed by <code>AdsManager.ShowRewardBasedVideo(callback)</code> to see a simulated rewarded video with "Watch" and "Close" buttons.</li>
+</ol>
+
+<div class="box box-success">
+    <div class="box-title">What to Verify</div>
+    <p>
+        <strong>Banner:</strong> Show/Hide/Destroy all work. Banner appears as a colored bar.<br>
+        <strong>Interstitial:</strong> Check Loaded returns False before request, True after. Show displays overlay, callback returns <code>true</code>.<br>
+        <strong>Rewarded Video:</strong> Same pattern. Clicking "Watch" grants the reward (<code>callback(true)</code>). Clicking "Close" does not (<code>callback(false)</code>).<br>
+        <strong>After showing:</strong> The ad is consumed. Calling Show again without a new Request will correctly warn "not loaded yet".
+    </p>
+</div>
+
+<h3 id="testing-admob">Testing with Real AdMob Ads (On Device)</h3>
+
+<p>Follow these steps to test with actual Google AdMob test ads on a physical Android or iOS device.</p>
+
+<div class="step">
+    <div class="step-number">1</div>
+    <div class="step-content">
+        <h4>Import Google Mobile Ads Unity Plugin</h4>
+        <p>Download the latest <code>.unitypackage</code> from the
+        <a href="https://github.com/googleads/googleads-mobile-unity/releases" target="_blank">Google Mobile Ads Unity Plugin releases page</a>.
+        In Unity, go to <code>Assets &gt; Import Package &gt; Custom Package</code> and select the downloaded file. Import all files.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+        <h4>Verify Automatic SDK Detection</h4>
+        <p>After Unity finishes recompiling, open the Define Manager window at <code>Window &gt; Ragendom Core &gt; Define Manager</code>.
+        You should see <code>MODULE_ADMOB</code> listed and <strong>enabled</strong> (checked). This was detected automatically because the
+        type <code>GoogleMobileAds.Api.MobileAds</code> now exists in the project.</p>
+        <p>If it does not appear automatically, click the toggle to enable it manually. This adds the <code>MODULE_ADMOB</code> scripting define symbol to your Player Settings.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">3</div>
+    <div class="step-content">
+        <h4>Configure Google Mobile Ads Settings</h4>
+        <p>The Google plugin creates its own settings asset. Open it via <code>Assets &gt; Google Mobile Ads &gt; Settings</code>.
+        Enter your <strong>AdMob App ID</strong> for Android and/or iOS. The App ID format is <code>ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX</code>.
+        You can find or create this in the <a href="https://admob.google.com" target="_blank">AdMob Console</a> under Apps.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">4</div>
+    <div class="step-content">
+        <h4>Switch Providers to AdMob</h4>
+        <p>Select your <code>MonetizationSettings</code> asset. In the Inspector, change each provider from <strong>Dummy</strong> to <strong>AdMob</strong>:</p>
+        <ul>
+            <li>Banner Provider &rarr; <strong>AdMob</strong></li>
+            <li>Interstitial Provider &rarr; <strong>AdMob</strong></li>
+            <li>Rewarded Video Provider &rarr; <strong>AdMob</strong></li>
+        </ul>
+        <p>The ad unit IDs are already pre-filled with <strong>Google's official test ad unit IDs</strong>. Leave them as-is for testing.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">5</div>
+    <div class="step-content">
+        <h4>Register Your Test Device</h4>
+        <p>In the <code>MonetizationSettings</code> Inspector, find the <strong>Test Devices</strong> list and add your physical device's hashed ID.
+        To find your device ID:</p>
+        <ol>
+            <li>Build and run the app once on your device.</li>
+            <li>Check the device logcat (Android) or Xcode console (iOS) for a line like:<br>
+            <code>Use new ConsentDebugSettings.Builder().addTestDeviceHashedId("XXXXXXXX")</code></li>
+            <li>Copy that hash string and add it to the Test Devices list.</li>
+        </ol>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">6</div>
+    <div class="step-content">
+        <h4>Build and Run on Device</h4>
+        <p>Go to <code>File &gt; Build Settings</code>. Switch to <strong>Android</strong> or <strong>iOS</strong>.
+        For Android, ensure the minimum API level is 21 or higher.
+        For iOS, you need Xcode and a valid Bundle Identifier.
+        Click <strong>Build and Run</strong>.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">7</div>
+    <div class="step-content">
+        <h4>Test on Device</h4>
+        <p>The app will show the same UI. Now the buttons trigger <strong>real AdMob test ads</strong>:
+        banners, fullscreen interstitials, and rewarded videos will display with a "Test Ad" watermark.
+        This confirms the SDK is working correctly with test ad unit IDs.</p>
+    </div>
+</div>
+
+<div class="box box-danger">
+    <div class="box-title">Important</div>
+    <p><strong>Never click your own real ads.</strong> Google will flag your account for invalid traffic and may permanently ban it.
+    Always use test ad unit IDs during development. Only switch to production ad unit IDs when publishing.</p>
+</div>
+
+<h3 id="testing-checklist">Testing Checklist</h3>
+
+<table>
+    <tr><th>Test</th><th>Expected Result</th></tr>
+    <tr><td>Show Banner</td><td>Banner appears at configured position (top/bottom)</td></tr>
+    <tr><td>Hide Banner</td><td>Banner disappears but can be re-shown</td></tr>
+    <tr><td>Destroy Banner</td><td>Banner is fully removed, needs new load to show again</td></tr>
+    <tr><td>Check Interstitial (before request)</td><td>Returns <code>false</code></td></tr>
+    <tr><td>Request Interstitial</td><td>Console shows "loaded" message</td></tr>
+    <tr><td>Check Interstitial (after request)</td><td>Returns <code>true</code></td></tr>
+    <tr><td>Show Interstitial</td><td>Fullscreen ad appears, callback returns <code>true</code> on close</td></tr>
+    <tr><td>Check Rewarded (before request)</td><td>Returns <code>false</code></td></tr>
+    <tr><td>Request Rewarded Video</td><td>Console shows "loaded" message</td></tr>
+    <tr><td>Check Rewarded (after request)</td><td>Returns <code>true</code></td></tr>
+    <tr><td>Show Rewarded Video (watch fully)</td><td>Callback returns <code>true</code> (reward granted)</td></tr>
+    <tr><td>Show Rewarded Video (close early / not loaded)</td><td>Callback returns <code>false</code> (no reward)</td></tr>
+    <tr><td>Show again without re-requesting</td><td>Warning: "not loaded yet", callback <code>false</code></td></tr>
+    <tr><td>DisableForcedAd()</td><td>Banner destroyed, interstitials blocked, rewarded still works</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- INTEGRATION GUIDE -->
+<!-- ============================================================ -->
+
+<h2 id="integration">Integration Guide</h2>
+
+<h3 id="integration-setup">Setting Up in Your Project</h3>
+
+<div class="step">
+    <div class="step-number">1</div>
+    <div class="step-content">
+        <h4>Create MonetizationSettings Asset</h4>
+        <p>Right-click in the Project window: <code>Create &gt; Data &gt; Core &gt; Monetization Settings</code>. This creates a ScriptableObject with an embedded <code>AdsSettings</code> sub-asset.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+        <h4>Add MonetizationInitModule to Your First Scene</h4>
+        <p>Create a GameObject in your startup scene. Add the <code>MonetizationInitModule</code> component. Assign your <code>MonetizationSettings</code> asset. The system initializes automatically in <code>Awake()</code>.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">3</div>
+    <div class="step-content">
+        <h4>Add Your Assembly Reference</h4>
+        <p>If your scripts use Assembly Definitions, add <code>Ragendom.Monetization</code> to your .asmdef's references list. If you don't use Assembly Definitions, no action needed &mdash; the assemblies are set to <code>autoReferenced: true</code>.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">4</div>
+    <div class="step-content">
+        <h4>Add the Namespace</h4>
+        <p>Add <code>using Ragendom;</code> at the top of any script that calls <code>AdsManager</code> methods.</p>
+    </div>
+</div>
+
+<h3 id="integration-banner">Banner Ads</h3>
+
+<pre><code><span class="keyword">using</span> <span class="type">Ragendom</span>;
+
+<span class="comment">// Show a banner ad</span>
+<span class="type">AdsManager</span>.<span class="method">ShowBanner</span>();
+
+<span class="comment">// Hide the banner (keeps it in memory for fast re-show)</span>
+<span class="type">AdsManager</span>.<span class="method">HideBanner</span>();
+
+<span class="comment">// Fully destroy the banner (frees memory, will reload on next ShowBanner)</span>
+<span class="type">AdsManager</span>.<span class="method">DestroyBanner</span>();</code></pre>
+
+<div class="box box-info">
+    <div class="box-title">Note</div>
+    <p>Banners are automatically hidden when the user purchases no-ads (<code>DisableForcedAd()</code>). You do not need to manually check for no-ads status before showing a banner &mdash; the system handles it.</p>
+</div>
+
+<h3 id="integration-interstitial">Interstitial Ads</h3>
+
+<pre><code><span class="keyword">using</span> <span class="type">Ragendom</span>;
+
+<span class="comment">// Pre-load an interstitial (called automatically on init if loadAdsOnStart is true)</span>
+<span class="type">AdsManager</span>.<span class="method">RequestInterstitial</span>();
+
+<span class="comment">// Check if an interstitial is ready</span>
+<span class="keyword">bool</span> ready = <span class="type">AdsManager</span>.<span class="method">IsInterstitialLoaded</span>();
+
+<span class="comment">// Show an interstitial with a result callback</span>
+<span class="type">AdsManager</span>.<span class="method">ShowInterstitial</span>((<span class="keyword">bool</span> <span class="param">success</span>) =>
+{
+    <span class="keyword">if</span> (<span class="param">success</span>)
+    {
+        <span class="comment">// Ad was shown and closed</span>
+        Debug.Log(<span class="string">"Interstitial completed"</span>);
+    }
+    <span class="keyword">else</span>
+    {
+        <span class="comment">// Ad could not be shown (not loaded, on cooldown, no-ads purchased, etc.)</span>
+        Debug.Log(<span class="string">"Interstitial not shown"</span>);
+    }
+});
+
+<span class="comment">// Show interstitial ignoring cooldown timer and custom conditions</span>
+<span class="type">AdsManager</span>.<span class="method">ShowInterstitial</span>(callback, <span class="param">ignoreConditions</span>: <span class="keyword">true</span>);</code></pre>
+
+<p>Interstitials are automatically re-requested after being shown. The system enforces:</p>
+<ul>
+    <li><strong>First launch delay</strong> (<code>interstitialFirstStartDelay</code>) &mdash; seconds before the first interstitial on first-ever app launch</li>
+    <li><strong>Session delay</strong> (<code>interstitialStartDelay</code>) &mdash; seconds before the first interstitial on subsequent launches</li>
+    <li><strong>Cooldown</strong> (<code>interstitialShowingDelay</code>) &mdash; minimum seconds between consecutive interstitials</li>
+</ul>
+
+<h3 id="integration-rewarded">Rewarded Video Ads</h3>
+
+<pre><code><span class="keyword">using</span> <span class="type">Ragendom</span>;
+
+<span class="comment">// Pre-load a rewarded video</span>
+<span class="type">AdsManager</span>.<span class="method">RequestRewardBasedVideo</span>();
+
+<span class="comment">// Check if a rewarded video is ready</span>
+<span class="keyword">bool</span> ready = <span class="type">AdsManager</span>.<span class="method">IsRewardBasedVideoLoaded</span>();
+
+<span class="comment">// Show a rewarded video</span>
+<span class="type">AdsManager</span>.<span class="method">ShowRewardBasedVideo</span>((<span class="keyword">bool</span> <span class="param">rewarded</span>) =>
+{
+    <span class="keyword">if</span> (<span class="param">rewarded</span>)
+    {
+        <span class="comment">// User watched the full video - grant the reward!</span>
+        GiveCoins(<span class="string">100</span>);
+    }
+    <span class="keyword">else</span>
+    {
+        <span class="comment">// User closed early or ad failed to show</span>
+        ShowMessage(<span class="string">"Watch the full video to earn your reward."</span>);
+    }
+});</code></pre>
+
+<div class="box box-success">
+    <div class="box-title">Rewarded Videos &amp; No-Ads</div>
+    <p>Rewarded videos are <strong>always available</strong>, even if the user has purchased no-ads.
+    This is intentional &mdash; rewarded videos are opt-in and provide value to the user.
+    Only banners and interstitials are disabled by the no-ads purchase.</p>
+</div>
+
+<h4>Using the AdsRewardsHolder Component</h4>
+
+<p>For simple cases, you can use the pre-built <code>AdsRewardsHolder</code> component instead of writing code:</p>
+<ol>
+    <li>Add <code>AdsRewardsHolder</code> to any GameObject.</li>
+    <li>Assign a UI Button to the <code>rewardButton</code> field.</li>
+    <li>Create a subclass overriding <code>ApplyReward()</code> with your reward logic:</li>
+</ol>
+
+<pre><code><span class="keyword">public class</span> <span class="type">CoinRewardHolder</span> : <span class="type">AdsRewardsHolder</span>
+{
+    <span class="keyword">protected override void</span> <span class="method">ApplyReward</span>()
+    {
+        <span class="comment">// This is called only when the user earns the reward</span>
+        PlayerData.AddCoins(<span class="string">100</span>);
+    }
+}</code></pre>
+
+<h3 id="integration-noads">No-Ads / Remove Ads Purchase</h3>
+
+<pre><code><span class="comment">// Call this when the user successfully purchases "Remove Ads" via IAP</span>
+<span class="type">AdsManager</span>.<span class="method">DisableForcedAd</span>();
+
+<span class="comment">// Check if the user has already purchased no-ads</span>
+<span class="keyword">bool</span> hasPurchased = !<span class="type">AdsManager</span>.<span class="method">IsForcedAdEnabled</span>();
+
+<span class="comment">// Listen for the no-ads event</span>
+<span class="type">AdsManager</span>.ForcedAdDisabled += () =>
+{
+    <span class="comment">// Hide the "Remove Ads" button</span>
+    removeAdsButton.SetActive(<span class="keyword">false</span>);
+};</code></pre>
+
+<p>When <code>DisableForcedAd()</code> is called:</p>
+<ul>
+    <li>The state is saved to <code>PlayerPrefs</code> (persists across sessions)</li>
+    <li>Banners are immediately destroyed</li>
+    <li>Interstitials will no longer show</li>
+    <li>Rewarded videos remain available</li>
+    <li>The <code>ForcedAdDisabled</code> event fires</li>
+</ul>
+
+<h4>Using the NoAdsReward Component</h4>
+
+<p>The pre-built <code>NoAdsReward</code> component simplifies the UI:</p>
+<ol>
+    <li>Add <code>NoAdsReward</code> to any GameObject.</li>
+    <li>Assign your "Remove Ads" UI panel/button to the <code>noAdsOfferObject</code> field.</li>
+    <li>Call <code>noAdsReward.ApplyReward()</code> from your IAP purchase success callback.</li>
+    <li>The component automatically hides the offer UI when ads are disabled.</li>
+</ol>
+
+<h3 id="integration-conditions">Custom Interstitial Conditions</h3>
+
+<p>You can add custom conditions that must be met before an interstitial will show:</p>
+
+<pre><code><span class="comment">// Add a condition: don't show interstitials during gameplay</span>
+<span class="type">AdsManager</span>.InterstitialConditions += () => !GameManager.IsInGameplay;
+
+<span class="comment">// Add another condition: require at least 3 levels completed</span>
+<span class="type">AdsManager</span>.InterstitialConditions += () => PlayerData.LevelsCompleted >= <span class="string">3</span>;
+
+<span class="comment">// All conditions must return true for the interstitial to show.</span>
+<span class="comment">// Any single condition returning false blocks the ad.</span>
+<span class="comment">// These conditions are skipped when ignoreConditions: true is passed.</span></code></pre>
+
+<!-- ============================================================ -->
+<!-- SETTINGS REFERENCE -->
+<!-- ============================================================ -->
+
+<h2 id="settings">Settings Reference</h2>
+
+<h3 id="settings-monetization">MonetizationSettings</h3>
+
+<p>The root settings asset. Created via <code>Create &gt; Data &gt; Core &gt; Monetization Settings</code>.</p>
+
+<table>
+    <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>isModuleActive</code></td><td>bool</td><td>true</td><td>Global kill-switch. When false, all ad calls silently fail.</td></tr>
+    <tr><td><code>verboseLogging</code></td><td>bool</td><td>false</td><td>Enables detailed <code>[AdsManager]</code> log messages in the Console.</td></tr>
+    <tr><td><code>debugMode</code></td><td>bool</td><td>false</td><td>Exposes extra debug info in the custom inspector.</td></tr>
+    <tr><td><code>testDevices</code></td><td>List&lt;string&gt;</td><td>empty</td><td>Hashed device IDs for AdMob test ads and UMP debug.</td></tr>
+    <tr><td><code>privacyLink</code></td><td>string</td><td>""</td><td>Your privacy policy URL (for use in consent UI).</td></tr>
+    <tr><td><code>termsOfUseLink</code></td><td>string</td><td>""</td><td>Your terms of use URL.</td></tr>
+</table>
+
+<h3 id="settings-ads">AdsSettings</h3>
+
+<p>Embedded sub-asset inside MonetizationSettings. Contains all ad-specific configuration.</p>
+
+<h4>Provider Selection</h4>
+
+<table>
+    <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>bannerType</code></td><td>AdProvider</td><td>Dummy</td><td>Which provider serves banner ads.</td></tr>
+    <tr><td><code>interstitialType</code></td><td>AdProvider</td><td>Dummy</td><td>Which provider serves interstitial ads.</td></tr>
+    <tr><td><code>rewardedVideoType</code></td><td>AdProvider</td><td>Dummy</td><td>Which provider serves rewarded video ads.</td></tr>
+    <tr><td><code>loadAdsOnStart</code></td><td>bool</td><td>true</td><td>Automatically request all ads after initialization completes.</td></tr>
+</table>
+
+<h4>Interstitial Timing</h4>
+
+<table>
+    <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>interstitialFirstStartDelay</code></td><td>float</td><td>40</td><td>Seconds before the first interstitial can show on the very first app launch.</td></tr>
+    <tr><td><code>interstitialStartDelay</code></td><td>float</td><td>40</td><td>Seconds before the first interstitial can show on subsequent launches.</td></tr>
+    <tr><td><code>interstitialShowingDelay</code></td><td>float</td><td>30</td><td>Minimum seconds between consecutive interstitials.</td></tr>
+    <tr><td><code>autoShowInterstitial</code></td><td>bool</td><td>false</td><td>When true, automatically shows interstitials whenever the cooldown expires.</td></tr>
+</table>
+
+<h4>UMP / GDPR Consent</h4>
+
+<table>
+    <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>isUMPEnabled</code></td><td>bool</td><td>true</td><td>Run the UMP consent flow before initializing ads.</td></tr>
+    <tr><td><code>umpTagForUnderAgeOfConsent</code></td><td>bool</td><td>false</td><td>Tag the request for users under the age of consent.</td></tr>
+    <tr><td><code>umpDebugMode</code></td><td>bool</td><td>false</td><td>Enable UMP debug geography simulation.</td></tr>
+    <tr><td><code>umpDebugGeography</code></td><td>DebugGeography</td><td>Disabled</td><td>Simulated geography: Disabled, EEA, or NotEEA.</td></tr>
+</table>
+
+<h4>IDFA / iOS Tracking</h4>
+
+<table>
+    <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>isIDFAEnabled</code></td><td>bool</td><td>false</td><td>Show the iOS App Tracking Transparency dialog before ads init.</td></tr>
+    <tr><td><code>trackingDescription</code></td><td>string</td><td>"Your data will be used..."</td><td>The description shown in the iOS ATT permission dialog.</td></tr>
+</table>
+
+<h3 id="settings-admob">AdMob Configuration</h3>
+
+<p>These fields appear in the Inspector when you select the MonetizationSettings asset and have at least one provider set to AdMob.</p>
+
+<h4>App IDs</h4>
+
+<table>
+    <tr><th>Field</th><th>Platform</th><th>Default</th></tr>
+    <tr><td><code>androidAppId</code></td><td>Android</td><td>Google test app ID</td></tr>
+    <tr><td><code>iosAppId</code></td><td>iOS</td><td>Google test app ID</td></tr>
+</table>
+
+<h4>Ad Unit IDs</h4>
+
+<table>
+    <tr><th>Ad Format</th><th>Android Default (Test)</th><th>iOS Default (Test)</th></tr>
+    <tr><td>Banner</td><td><code>ca-app-pub-3940256099942544/6300978111</code></td><td><code>ca-app-pub-3940256099942544/2934735716</code></td></tr>
+    <tr><td>Interstitial</td><td><code>ca-app-pub-3940256099942544/1033173712</code></td><td><code>ca-app-pub-3940256099942544/4411468910</code></td></tr>
+    <tr><td>Rewarded Video</td><td><code>ca-app-pub-3940256099942544/5224354917</code></td><td><code>ca-app-pub-3940256099942544/1712485313</code></td></tr>
+    <tr><td>App Open Ad</td><td><code>ca-app-pub-3940256099942544/9257395921</code></td><td><code>ca-app-pub-3940256099942544/5575463023</code></td></tr>
+</table>
+
+<div class="box box-warning">
+    <div class="box-title">Warning</div>
+    <p>The default IDs are Google's official <strong>test ad unit IDs</strong>. They are safe for development and will display ads with a "Test Ad" watermark. Replace them with your real ad unit IDs only when you are ready to publish. The inspector will show a warning if you are still using test IDs.</p>
+</div>
+
+<h4>Banner Settings</h4>
+
+<table>
+    <tr><th>Field</th><th>Options</th><th>Description</th></tr>
+    <tr><td><code>bannerType</code></td><td>Banner (320x50), MediumRectangle (300x250), IABBanner (468x60), Leaderboard (728x90)</td><td>Physical size of the banner.</td></tr>
+    <tr><td><code>bannerPosition</code></td><td>Bottom, Top</td><td>Screen edge where the banner is anchored.</td></tr>
+</table>
+
+<h4>App Open Ad Settings</h4>
+
+<table>
+    <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>useAppOpenAd</code></td><td>bool</td><td>false</td><td>Enable App Open Ads (shown when the app returns from background).</td></tr>
+    <tr><td><code>appOpenAdExpirationHoursTime</code></td><td>int</td><td>4</td><td>Hours after which a loaded App Open Ad expires and will not be shown.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- API REFERENCE -->
+<!-- ============================================================ -->
+
+<h2 id="api">API Reference</h2>
+
+<h3 id="api-adsmanager">AdsManager (Static Class)</h3>
+
+<p>All ad operations go through this single static class. Add <code>using Ragendom;</code> to your script.</p>
+
+<h4>Initialization</h4>
+<table>
+    <tr><th>Method</th><th>Description</th></tr>
+    <tr><td><code>Init(MonetizationSettings)</code></td><td>Called automatically by <code>MonetizationInitModule.Awake()</code>. Do not call manually unless you have a custom init flow. Calling more than once logs a warning.</td></tr>
+</table>
+
+<h4>Banner</h4>
+<table>
+    <tr><th>Method</th><th>Description</th></tr>
+    <tr><td><code>ShowBanner()</code></td><td>Shows the banner at the configured position. Respects no-ads state.</td></tr>
+    <tr><td><code>HideBanner()</code></td><td>Hides the banner without destroying it. Fast to re-show.</td></tr>
+    <tr><td><code>DestroyBanner()</code></td><td>Destroys the banner completely. Next <code>ShowBanner()</code> will reload it.</td></tr>
+    <tr><td><code>EnableBanner()</code></td><td>Re-enables the banner flag and calls <code>ShowBanner()</code>. Used internally by App Open Ads.</td></tr>
+    <tr><td><code>DisableBanner()</code></td><td>Disables the banner flag and calls <code>HideBanner()</code>. Used internally by App Open Ads.</td></tr>
+</table>
+
+<h4>Interstitial</h4>
+<table>
+    <tr><th>Method</th><th>Description</th></tr>
+    <tr><td><code>IsInterstitialLoaded()</code></td><td>Returns <code>true</code> if an interstitial is loaded and ready to show.</td></tr>
+    <tr><td><code>RequestInterstitial()</code></td><td>Loads a new interstitial. Called automatically after showing one.</td></tr>
+    <tr><td><code>ShowInterstitial(callback, ignoreConditions)</code></td><td>Shows the interstitial. <code>callback(true)</code> if shown, <code>callback(false)</code> if any guard fails. Pass <code>ignoreConditions: true</code> to skip timing and custom condition checks.</td></tr>
+    <tr><td><code>CheckInterstitialTime()</code></td><td>Returns <code>true</code> if the cooldown timer has elapsed.</td></tr>
+    <tr><td><code>ResetInterstitialDelayTime()</code></td><td>Resets the cooldown timer. Called automatically after showing ads.</td></tr>
+    <tr><td><code>SetInterstitialDelayTime(float)</code></td><td>Manually sets the cooldown to a custom duration (seconds from now).</td></tr>
+</table>
+
+<h4>Rewarded Video</h4>
+<table>
+    <tr><th>Method</th><th>Description</th></tr>
+    <tr><td><code>IsRewardBasedVideoLoaded()</code></td><td>Returns <code>true</code> if a rewarded video is loaded and ready. Not affected by no-ads state.</td></tr>
+    <tr><td><code>RequestRewardBasedVideo()</code></td><td>Loads a new rewarded video. Called automatically after showing one.</td></tr>
+    <tr><td><code>ShowRewardBasedVideo(callback)</code></td><td>Shows the rewarded video. <code>callback(true)</code> if the user watched fully and earned the reward. <code>callback(false)</code> if the user closed early or the ad failed.</td></tr>
+</table>
+
+<h4>No-Ads / Forced Ad Control</h4>
+<table>
+    <tr><th>Method</th><th>Description</th></tr>
+    <tr><td><code>IsForcedAdEnabled()</code></td><td>Returns <code>true</code> if the user has NOT purchased no-ads. Banners and interstitials only show when this is <code>true</code>.</td></tr>
+    <tr><td><code>DisableForcedAd()</code></td><td>Permanently disables banners and interstitials. Call this from your IAP success callback. Saves to PlayerPrefs.</td></tr>
+</table>
+
+<h3 id="api-events">Events</h3>
+
+<p>Subscribe to these events to react to ad lifecycle changes:</p>
+
+<pre><code><span class="comment">// Fired when a provider finishes async initialization</span>
+<span class="type">AdsManager</span>.AdProviderInitialized += (<span class="type">AdProvider</span> <span class="param">provider</span>) =>
+{
+    Debug.Log($<span class="string">"Provider ready: {provider}"</span>);
+};
+
+<span class="comment">// Fired when any ad finishes loading</span>
+<span class="type">AdsManager</span>.AdLoaded += (<span class="type">AdProvider</span> <span class="param">provider</span>, <span class="type">AdType</span> <span class="param">adType</span>) =>
+{
+    Debug.Log($<span class="string">"{adType} loaded from {provider}"</span>);
+};
+
+<span class="comment">// Fired when any ad is displayed on screen</span>
+<span class="type">AdsManager</span>.AdDisplayed += (<span class="type">AdProvider</span> <span class="param">provider</span>, <span class="type">AdType</span> <span class="param">adType</span>) =>
+{
+    <span class="comment">// Pause game audio, timers, etc.</span>
+};
+
+<span class="comment">// Fired when any ad is closed/dismissed</span>
+<span class="type">AdsManager</span>.AdClosed += (<span class="type">AdProvider</span> <span class="param">provider</span>, <span class="type">AdType</span> <span class="param">adType</span>) =>
+{
+    <span class="comment">// Resume game audio, timers, etc.</span>
+};
+
+<span class="comment">// Fired when no-ads is purchased</span>
+<span class="type">AdsManager</span>.ForcedAdDisabled += () =>
+{
+    <span class="comment">// Update UI: hide "Remove Ads" button</span>
+};</code></pre>
+
+<h3 id="api-consent">UMP / GDPR Consent</h3>
+
+<p>These methods wrap the Google User Messaging Platform (UMP) SDK for GDPR compliance. They only function when the AdMob SDK is present (<code>MODULE_ADMOB</code> defined). Without the SDK, they return safe defaults.</p>
+
+<table>
+    <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+    <tr><td><code>CanRequestAds()</code></td><td>bool</td><td>Whether UMP consent allows ad requests. Returns <code>true</code> without AdMob SDK.</td></tr>
+    <tr><td><code>GetConsentStatus()</code></td><td>ConsentRequirementStatus</td><td>Current consent requirement: <code>Unknown</code>, <code>Required</code>, or <code>NotRequired</code>. Returns <code>Unknown</code> without SDK.</td></tr>
+    <tr><td><code>ResetConsentState()</code></td><td>void</td><td>Clears all stored consent data. Useful for re-testing the UMP flow. No-op without SDK.</td></tr>
+</table>
+
+<h3 id="api-idfa">IDFA Tracking (iOS)</h3>
+
+<p>These methods are only available when both conditions are met: the build target is iOS (<code>UNITY_IOS</code>) and the Unity iOS Support package is installed (<code>MODULE_IDFA</code>).</p>
+
+<table>
+    <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+    <tr><td><code>GetIDFAStatus()</code></td><td>AuthorizationTrackingStatus</td><td><code>NOT_DETERMINED</code>, <code>RESTRICTED</code>, <code>DENIED</code>, or <code>AUTHORIZED</code></td></tr>
+    <tr><td><code>IsIDFADetermined()</code></td><td>bool</td><td>Returns <code>true</code> if the ATT dialog has been shown and the user responded.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- ADVANCED TOPICS -->
+<!-- ============================================================ -->
+
+<h2 id="advanced">Advanced Topics</h2>
+
+<h3 id="advanced-define">Automatic SDK Detection (Define System)</h3>
+
+<p>The system uses a custom <code>[Define]</code> attribute and an editor-time <code>DefineManager</code> to automatically detect installed SDKs and add the corresponding scripting define symbols.</p>
+
+<p>The <code>AdsManager</code> class is decorated with:</p>
+<pre><code>[<span class="type">Define</span>(<span class="string">"MODULE_ADMOB"</span>, <span class="string">"GoogleMobileAds.Api.MobileAds"</span>)]</code></pre>
+
+<p>On every Unity domain reload (script compile, entering Play mode, etc.), the <code>DefineManager</code>:</p>
+<ol>
+    <li>Scans all loaded assemblies for classes with <code>[Define]</code> attributes.</li>
+    <li>For each attribute, checks if the target type (e.g. <code>GoogleMobileAds.Api.MobileAds</code>) exists in any assembly.</li>
+    <li>If found: adds the define symbol (<code>MODULE_ADMOB</code>) to Player Settings.</li>
+    <li>If not found: removes the define symbol.</li>
+</ol>
+
+<p>This means:</p>
+<ul>
+    <li><strong>Importing</strong> the Google Mobile Ads Unity Plugin automatically enables <code>MODULE_ADMOB</code>.</li>
+    <li><strong>Removing</strong> the plugin automatically disables <code>MODULE_ADMOB</code>.</li>
+    <li>You can view and manually toggle defines via <code>Window &gt; Ragendom Core &gt; Define Manager</code>.</li>
+</ul>
+
+<h3 id="advanced-threading">Thread Safety</h3>
+
+<p>Ad SDKs (especially AdMob) fire their callbacks on background threads, but Unity APIs can only be called from the main thread. The system handles this transparently:</p>
+
+<ul>
+    <li>All ad callbacks in <code>AdMobHandler</code> use <code>AdsManager.CallEventInMainThread()</code> to enqueue actions.</li>
+    <li>The internal <code>AdEventExecutor</code> MonoBehaviour flushes this queue every <code>Update()</code>.</li>
+    <li>Your callbacks (e.g. <code>ShowInterstitial(callback)</code>) are always called on the main thread &mdash; you can safely call Unity APIs from them.</li>
+</ul>
+
+<h3 id="advanced-retry">Retry &amp; Exponential Backoff</h3>
+
+<p>When an ad fails to load (network error, no fill, etc.), the system retries automatically:</p>
+
+<table>
+    <tr><th>Attempt</th><th>Delay</th></tr>
+    <tr><td>1st retry</td><td>2 seconds</td></tr>
+    <tr><td>2nd retry</td><td>4 seconds</td></tr>
+    <tr><td>3rd retry</td><td>8 seconds</td></tr>
+    <tr><td>4th retry</td><td>16 seconds</td></tr>
+    <tr><td>5th retry</td><td>32 seconds</td></tr>
+    <tr><td>After 5th</td><td>Stops retrying. Next explicit <code>Request*()</code> call restarts the cycle.</td></tr>
+</table>
+
+<h3 id="advanced-appopenad">App Open Ads</h3>
+
+<p>App Open Ads are fullscreen ads shown when the user returns to your app from the background. To enable:</p>
+
+<ol>
+    <li>In your <code>MonetizationSettings</code> &rarr; AdMob settings, check <strong>Use App Open Ad</strong>.</li>
+    <li>Set the Android and iOS App Open Ad unit IDs (or keep the defaults for testing).</li>
+    <li>Set the <strong>Expiration Hours</strong> (default: 4). A loaded ad older than this will not be shown.</li>
+</ol>
+
+<p>Behavior:</p>
+<ul>
+    <li>An App Open Ad is loaded at initialization and re-loaded after each display.</li>
+    <li>When the app returns to the foreground, if an ad is loaded and not expired, it displays automatically.</li>
+    <li>The banner is automatically hidden while the App Open Ad is visible and restored when it closes.</li>
+    <li>App Open Ads are suppressed while an interstitial or rewarded video is being shown.</li>
+</ul>
+
+<h3 id="advanced-custom-provider">Creating a Custom Ad Provider</h3>
+
+<p>To add support for a different ad network, create a new class extending <code>AdProviderHandler</code>:</p>
+
+<pre><code><span class="keyword">public class</span> <span class="type">MyCustomHandler</span> : <span class="type">AdProviderHandler</span>
+{
+    <span class="keyword">public</span> <span class="type">MyCustomHandler</span>()
+    {
+        providerType = AdProvider.AdMob; <span class="comment">// or add a new enum value</span>
+    }
+
+    <span class="keyword">protected override async</span> Task&lt;<span class="keyword">bool</span>&gt; <span class="method">InitProviderAsync</span>()
+    {
+        <span class="comment">// Initialize your SDK here</span>
+        <span class="keyword">return true</span>;
+    }
+
+    <span class="keyword">public override void</span> <span class="method">ShowBanner</span>() { <span class="comment">/* ... */</span> }
+    <span class="keyword">public override void</span> <span class="method">HideBanner</span>() { <span class="comment">/* ... */</span> }
+    <span class="keyword">public override void</span> <span class="method">DestroyBanner</span>() { <span class="comment">/* ... */</span> }
+
+    <span class="keyword">public override void</span> <span class="method">RequestInterstitial</span>() { <span class="comment">/* ... */</span> }
+    <span class="keyword">public override void</span> <span class="method">ShowInterstitial</span>(<span class="type">AdvertisementCallback</span> <span class="param">callback</span>) { <span class="comment">/* ... */</span> }
+    <span class="keyword">public override bool</span> <span class="method">IsInterstitialLoaded</span>() { <span class="comment">/* ... */</span> }
+
+    <span class="keyword">public override void</span> <span class="method">RequestRewardedVideo</span>() { <span class="comment">/* ... */</span> }
+    <span class="keyword">public override void</span> <span class="method">ShowRewardedVideo</span>(<span class="type">AdvertisementCallback</span> <span class="param">callback</span>) { <span class="comment">/* ... */</span> }
+    <span class="keyword">public override bool</span> <span class="method">IsRewardedVideoLoaded</span>() { <span class="comment">/* ... */</span> }
+}</code></pre>
+
+<p>Use the protected helpers for callbacks:</p>
+<ul>
+    <li><code>OnProviderAdLoaded(AdType)</code> &mdash; call when an ad finishes loading</li>
+    <li><code>OnProviderAdDisplayed(AdType)</code> &mdash; call when an ad appears on screen</li>
+    <li><code>OnProviderAdClosed(AdType)</code> &mdash; call when an ad is dismissed</li>
+    <li><code>HandleAdLoadFailure(adType, errorMessage, ref retryAttempt, retryAction)</code> &mdash; call on load failure for automatic exponential retry</li>
+    <li><code>AdsManager.CallEventInMainThread(callback)</code> &mdash; use to marshal SDK callbacks to the main thread</li>
+</ul>
+
+<!-- ============================================================ -->
+<!-- TROUBLESHOOTING -->
+<!-- ============================================================ -->
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>Common Issues</h3>
+
+<div class="box box-warning">
+    <div class="box-title">"AdMob module not available, skipping UMP"</div>
+    <p>This is normal when the Google Mobile Ads Unity Plugin is not imported. The UMP consent flow requires the AdMob SDK. The system gracefully skips it and proceeds to initialization with whatever provider is configured.</p>
+</div>
+
+<div class="box box-warning">
+    <div class="box-title">MODULE_ADMOB not detected after importing AdMob SDK</div>
+    <p>Try these steps:</p>
+    <ul>
+        <li>Force a recompile: right-click any .cs file and select <strong>Reimport</strong>.</li>
+        <li>Open <code>Window &gt; Ragendom Core &gt; Define Manager</code> and verify the detection status.</li>
+        <li>If needed, manually enable the <code>MODULE_ADMOB</code> toggle.</li>
+    </ul>
+</div>
+
+<div class="box box-warning">
+    <div class="box-title">"Rewarded video is not loaded yet" warning</div>
+    <p>This is expected behavior. After showing a rewarded video, the ad is consumed and a new one must be loaded. The system automatically calls <code>RequestRewardBasedVideo()</code> after showing, but loading takes time. You can check <code>IsRewardBasedVideoLoaded()</code> before showing, and disable your reward button when it returns <code>false</code>.</p>
+</div>
+
+<div class="box box-warning">
+    <div class="box-title">Ads not showing on device</div>
+    <p>Check the following:</p>
+    <ul>
+        <li>Providers are set to <strong>AdMob</strong> (not Dummy) in MonetizationSettings.</li>
+        <li>Your <strong>AdMob App ID</strong> is correctly entered in the Google Mobile Ads Settings.</li>
+        <li>Your device's hashed ID is in the <strong>Test Devices</strong> list for test ads.</li>
+        <li>Enable <strong>Verbose Logging</strong> in MonetizationSettings and check the device logcat for error messages.</li>
+        <li>Ensure your device has an internet connection.</li>
+    </ul>
+</div>
+
+<div class="box box-warning">
+    <div class="box-title">Interstitial not showing despite being loaded</div>
+    <p>Interstitials have multiple guards. Check:</p>
+    <ul>
+        <li><strong>Timing:</strong> The cooldown timer may not have elapsed. Use <code>ignoreConditions: true</code> for testing.</li>
+        <li><strong>No-ads:</strong> If <code>DisableForcedAd()</code> was called, interstitials are permanently blocked.</li>
+        <li><strong>Custom conditions:</strong> If you assigned delegates to <code>AdsManager.InterstitialConditions</code>, any returning <code>false</code> blocks the ad.</li>
+        <li><strong>Module active:</strong> Ensure <code>isModuleActive</code> is <code>true</code> in MonetizationSettings.</li>
+    </ul>
+</div>
+
+<div class="box box-warning">
+    <div class="box-title">Build errors related to GoogleMobileAds namespace</div>
+    <p>All AdMob code is wrapped in <code>#if MODULE_ADMOB</code> preprocessor guards. If you see build errors mentioning <code>GoogleMobileAds</code>, it means the define is active but the SDK is not properly installed. Either:</p>
+    <ul>
+        <li>Re-import the Google Mobile Ads Unity Plugin, or</li>
+        <li>Disable <code>MODULE_ADMOB</code> in <code>Window &gt; Ragendom Core &gt; Define Manager</code>.</li>
+    </ul>
+</div>
+
+<div class="box box-warning">
+    <div class="box-title">PlayerPrefs data from a previous version</div>
+    <p>The system uses these PlayerPrefs keys: <code>"ADS_SAVE"</code> (no-ads state) and <code>"FIRST_LAUNCH"</code> (first-launch interstitial delay). If you need to reset the ad state during testing, delete these keys via <code>PlayerPrefs.DeleteKey("ADS_SAVE")</code> or clear all PlayerPrefs.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- PRODUCTION CHECKLIST -->
+<!-- ============================================================ -->
+
+<h2 id="production">Going to Production</h2>
+
+<p>Before publishing your app with real ads, complete this checklist:</p>
+
+<div class="step">
+    <div class="step-number">1</div>
+    <div class="step-content">
+        <h4>Create Real Ad Units</h4>
+        <p>Log in to <a href="https://admob.google.com" target="_blank">Google AdMob</a>. Create ad units for each format (Banner, Interstitial, Rewarded Video, and optionally App Open Ad) for each platform (Android, iOS).</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+        <h4>Replace Test Ad Unit IDs</h4>
+        <p>In your <code>MonetizationSettings</code> asset, replace all test ad unit IDs with your real production IDs. The inspector will stop showing the "test ID" warning once you do.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">3</div>
+    <div class="step-content">
+        <h4>Configure UMP Consent</h4>
+        <p>If your app targets users in the EEA (European Economic Area), ensure <code>isUMPEnabled</code> is <code>true</code>. Set up your GDPR consent message in the AdMob console under <strong>Privacy &amp; messaging</strong>.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">4</div>
+    <div class="step-content">
+        <h4>Configure IDFA (iOS Only)</h4>
+        <p>If targeting iOS, enable <code>isIDFAEnabled</code> and customize the <code>trackingDescription</code> string. This shows the App Tracking Transparency dialog before initializing ads.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">5</div>
+    <div class="step-content">
+        <h4>Remove Test Device IDs</h4>
+        <p>Clear the <strong>Test Devices</strong> list in MonetizationSettings. Leaving test device IDs in production won't cause harm, but is unnecessary.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">6</div>
+    <div class="step-content">
+        <h4>Disable Debug Settings</h4>
+        <p>Set <code>verboseLogging</code> to <code>false</code>, <code>debugMode</code> to <code>false</code>, and <code>umpDebugMode</code> to <code>false</code>.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">7</div>
+    <div class="step-content">
+        <h4>Tune Interstitial Timing</h4>
+        <p>Adjust the interstitial timing values for your game's pacing. Aggressive interstitial frequency hurts user retention. Recommended starting values:</p>
+        <ul>
+            <li>First start delay: 60&ndash;120 seconds</li>
+            <li>Session start delay: 30&ndash;60 seconds</li>
+            <li>Between interstitials: 30&ndash;60 seconds</li>
+        </ul>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">8</div>
+    <div class="step-content">
+        <h4>Build a Release Version</h4>
+        <p>Build for your target platform with the development build option <strong>unchecked</strong>. Test thoroughly on a real device with a real internet connection.</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- APPENDIX -->
+<!-- ============================================================ -->
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="appendix-enums">Enums Reference</h3>
+
+<h4>AdProvider</h4>
+<table>
+    <tr><th>Value</th><th>Int</th><th>Description</th></tr>
+    <tr><td><code>Disable</code></td><td>0</td><td>Ad format is completely turned off.</td></tr>
+    <tr><td><code>Dummy</code></td><td>1</td><td>Built-in test provider. Works everywhere, no SDK needed.</td></tr>
+    <tr><td><code>AdMob</code></td><td>2</td><td>Google AdMob. Requires SDK on device.</td></tr>
+</table>
+
+<h4>AdType</h4>
+<table>
+    <tr><th>Value</th><th>Int</th></tr>
+    <tr><td><code>Banner</code></td><td>0</td></tr>
+    <tr><td><code>Interstitial</code></td><td>1</td></tr>
+    <tr><td><code>RewardedVideo</code></td><td>2</td></tr>
+</table>
+
+<h4>BannerPosition</h4>
+<table>
+    <tr><th>Value</th><th>Int</th></tr>
+    <tr><td><code>Bottom</code></td><td>0</td></tr>
+    <tr><td><code>Top</code></td><td>1</td></tr>
+</table>
+
+<h4>ConsentRequirementStatus</h4>
+<table>
+    <tr><th>Value</th><th>Description</th></tr>
+    <tr><td><code>Unknown</code></td><td>Status has not been determined yet.</td></tr>
+    <tr><td><code>NotRequired</code></td><td>User is outside the EEA; no consent needed.</td></tr>
+    <tr><td><code>Required</code></td><td>User is in the EEA; GDPR consent is required.</td></tr>
+</table>
+
+<h4>AuthorizationTrackingStatus (iOS only)</h4>
+<table>
+    <tr><th>Value</th><th>Description</th></tr>
+    <tr><td><code>NOT_DETERMINED</code></td><td>ATT dialog not yet shown.</td></tr>
+    <tr><td><code>RESTRICTED</code></td><td>Parental/MDM restriction prevents the request.</td></tr>
+    <tr><td><code>DENIED</code></td><td>User denied tracking.</td></tr>
+    <tr><td><code>AUTHORIZED</code></td><td>User granted tracking.</td></tr>
+</table>
+
+<h4>DebugGeography</h4>
+<table>
+    <tr><th>Value</th><th>Description</th></tr>
+    <tr><td><code>Disabled</code></td><td>Use real geography.</td></tr>
+    <tr><td><code>EEA</code></td><td>Simulate European Economic Area (triggers consent flow).</td></tr>
+    <tr><td><code>NotEEA</code></td><td>Simulate non-EEA region.</td></tr>
+</table>
+
+<h3 id="appendix-playerprefs">PlayerPrefs Keys</h3>
+
+<table>
+    <tr><th>Key</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>"ADS_SAVE"</code></td><td>string (JSON)</td><td>Stores <code>AdSave</code> object. Contains <code>isForcedAdEnabled</code> (no-ads purchase state).</td></tr>
+    <tr><td><code>"FIRST_LAUNCH"</code></td><td>int</td><td>Set to <code>1</code> after first launch. Used to determine which interstitial start delay to use.</td></tr>
+</table>
+
+<h3 id="appendix-assemblies">Assembly Definitions</h3>
+
+<p>The asset uses Assembly Definitions (.asmdef) for proper compilation isolation. If your project uses asmdef files and you need to reference the ad system, add <code>Ragendom.Monetization</code> to your assembly's references.</p>
+
+<table>
+    <tr><th>Assembly</th><th>Type</th><th>References</th></tr>
+    <tr><td><code>Ragendom.Core</code></td><td>Runtime</td><td>&mdash;</td></tr>
+    <tr><td><code>Ragendom.Defines</code></td><td>Runtime</td><td>&mdash;</td></tr>
+    <tr><td><code>Ragendom.Defines.Editor</code></td><td>Editor</td><td>Ragendom.Defines</td></tr>
+    <tr><td><code>Ragendom.Monetization</code></td><td>Runtime</td><td>Ragendom.Core, Ragendom.Defines, Unity.TextMeshPro, UnityEngine.UI</td></tr>
+    <tr><td><code>Ragendom.Monetization.Editor</code></td><td>Editor</td><td>Ragendom.Core, Ragendom.Defines, Ragendom.Monetization</td></tr>
+    <tr><td><code>Ragendom.Monetization.Ads.Editor</code></td><td>Editor</td><td>Ragendom.Core, Ragendom.Defines, Ragendom.Monetization</td></tr>
+    <tr><td><code>Ragendom.Examples</code></td><td>Runtime</td><td>Ragendom.Core, Ragendom.Defines, Ragendom.Monetization, Unity.TextMeshPro, UnityEngine.UI</td></tr>
+    <tr><td><code>Ragendom.Examples.Editor</code></td><td>Editor</td><td>Ragendom.Core, Ragendom.Defines, Ragendom.Monetization, Ragendom.Examples, Unity.TextMeshPro, UnityEngine.UI</td></tr>
+</table>
+
+<hr>
+
+<p style="text-align: center; color: var(--text-muted); margin-top: 48px; font-size: 14px;">
+    Ragendom Ad Mediation &mdash; Built by Ragendom
+</p>
+
+</div>
+
+</body>
+</html>
