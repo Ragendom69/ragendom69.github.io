@@ -383,11 +383,14 @@
         <span>Documentation v1.0</span>
     </div>
     <nav>
+        <a href="https://youtu.be/nWmyWacoFAc" target="_blank" style="color: var(--red); font-weight: 600;">&#9654; Video Tutorial</a>
+
         <a href="#overview" class="section-title">Getting Started</a>
         <a href="#overview">Overview</a>
         <a href="#requirements">Requirements</a>
         <a href="#project-structure">Project Structure</a>
         <a href="#quick-start">Quick Start (5 Minutes)</a>
+        <a href="#quick-start" class="indent">Prerequisites</a>
 
         <a href="#testing" class="section-title">Testing</a>
         <a href="#testing-dummy">Testing with Dummy Ads</a>
@@ -439,6 +442,19 @@
 <h1>Ragendom Ad Mediation</h1>
 <p class="subtitle">A lightweight, modular AdMob ad mediation system for Unity.</p>
 
+<a href="https://youtu.be/nWmyWacoFAc" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+    <div style="background: linear-gradient(135deg, rgba(248,81,73,0.15), rgba(219,109,40,0.15)); border: 2px solid var(--red); border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s, transform 0.15s;" onmouseover="this.style.borderColor='var(--orange)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='var(--red)'; this.style.transform='none';">
+        <div style="font-size: 40px; margin-bottom: 8px;">&#9654;</div>
+        <p style="font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 6px;">Prefer a Video Tutorial?</p>
+        <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 0;">Skip the docs &mdash; follow along with our step-by-step YouTube video tutorial instead.</p>
+    </div>
+</a>
+
+<div style="background: linear-gradient(135deg, rgba(88,166,255,0.12), rgba(188,140,255,0.12)); border: 1px solid var(--accent); border-radius: 10px; padding: 20px 24px; margin-bottom: 48px; text-align: center;">
+    <p style="font-size: 17px; margin-bottom: 10px; color: var(--text);">Enjoying this asset? <strong>Check out Ragendom's other assets</strong> on the Unity Asset Store!</p>
+    <a href="https://assetstore.unity.com/publishers/39886" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: var(--accent); color: var(--bg); padding: 10px 28px; border-radius: 6px; font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s;">Browse More Assets &rarr;</a>
+</div>
+
 <h2 id="overview">Overview</h2>
 <p>
     Ragendom Ad Mediation provides a clean, production-ready abstraction layer for Google AdMob advertisements in Unity.
@@ -467,7 +483,8 @@
     <tr><th>Requirement</th><th>Details</th></tr>
     <tr><td>Unity Version</td><td>2021.3 LTS or newer (supports Unity 6000+)</td></tr>
     <tr><td>Platforms</td><td>Android, iOS (Dummy provider works on all platforms including Editor)</td></tr>
-    <tr><td>TextMeshPro</td><td>Required (included with Unity by default)</td></tr>
+    <tr><td>TextMeshPro</td><td><span class="badge badge-required">Required</span> Must be imported via the Package Manager or the TMP import prompt. See <a href="#quick-start">Quick Start</a> step 1.</td></tr>
+    <tr><td>Active Input Handling</td><td><span class="badge badge-required">Required</span> Must be set to <strong>"Both"</strong> in <code>Edit &gt; Project Settings &gt; Player &gt; Configuration &gt; Active Input Handling</code>. Required for UI button clicks to work.</td></tr>
     <tr>
         <td>Google Mobile Ads Unity Plugin</td>
         <td><span class="badge badge-optional">Optional</span> Required only for real AdMob ads. v9.0.0 or newer recommended.
@@ -483,6 +500,8 @@
 
 <div class="file-tree">
 <span class="folder">Assets/Ragendom/</span>
+<br>&nbsp;&nbsp;<span class="folder">Documentation/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Documentation.html</span> <span class="desc">&mdash; This documentation</span>
 <br>&nbsp;&nbsp;<span class="folder">Core/</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SimpleCallback.cs</span> <span class="desc">&mdash; Core delegate type</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">ISaveObject.cs</span> <span class="desc">&mdash; Save interface</span>
@@ -495,41 +514,46 @@
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">DefineManager.cs</span> <span class="desc">&mdash; Auto-detect SDKs, manage defines</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">DefineManagerWindow.cs</span> <span class="desc">&mdash; Editor window UI</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Defines.Editor.asmdef</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Monetization/Scripts/</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Monetization.cs</span> <span class="desc">&mdash; Static utility class</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettings.cs</span> <span class="desc">&mdash; Root ScriptableObject settings</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationInitModule.cs</span> <span class="desc">&mdash; Initialization component</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.asmdef</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Advertisement/</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsManager.cs</span> <span class="desc">&mdash; Main static API</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsSettings.cs</span> <span class="desc">&mdash; Ad-specific settings</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdProviderHandler.cs</span> <span class="desc">&mdash; Abstract provider base</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">LoadingTask.cs</span> <span class="desc">&mdash; Pre-init task system</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">UMPLoadingTask.cs</span> <span class="desc">&mdash; GDPR consent task</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">IDFALoadingTask.cs</span> <span class="desc">&mdash; iOS ATT task</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsRewardsHolder.cs</span> <span class="desc">&mdash; Ready-made reward button</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">NoAdsReward.cs</span> <span class="desc">&mdash; No-ads purchase handler</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdSave.cs</span> <span class="desc">&mdash; Persistent ad state</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Providers/AdMob/</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdMobHandler.cs</span> <span class="desc">&mdash; AdMob implementation</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdMobContainer.cs</span> <span class="desc">&mdash; AdMob config data</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Providers/Dummy/</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyHandler.cs</span> <span class="desc">&mdash; Dummy provider</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyContainer.cs</span> <span class="desc">&mdash; Dummy config data</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyController.cs</span> <span class="desc">&mdash; Dummy UI renderer</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Monetization/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettings.asset</span> <span class="desc">&mdash; Default settings asset</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Scripts/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Monetization.cs</span> <span class="desc">&mdash; Static utility class</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettings.cs</span> <span class="desc">&mdash; Root ScriptableObject settings</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationInitModule.cs</span> <span class="desc">&mdash; Initialization component</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Advertisement/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsManager.cs</span> <span class="desc">&mdash; Main static API</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsSettings.cs</span> <span class="desc">&mdash; Ad-specific settings</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdProviderHandler.cs</span> <span class="desc">&mdash; Abstract provider base</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">LoadingTask.cs</span> <span class="desc">&mdash; Pre-init task system</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">UMPLoadingTask.cs</span> <span class="desc">&mdash; GDPR consent task</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">IDFALoadingTask.cs</span> <span class="desc">&mdash; iOS ATT task</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsRewardsHolder.cs</span> <span class="desc">&mdash; Ready-made reward button</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">NoAdsReward.cs</span> <span class="desc">&mdash; No-ads purchase handler</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdSave.cs</span> <span class="desc">&mdash; Persistent ad state</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Providers/AdMob/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdMobHandler.cs</span> <span class="desc">&mdash; AdMob implementation</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdMobContainer.cs</span> <span class="desc">&mdash; AdMob config data</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Providers/Dummy/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyHandler.cs</span> <span class="desc">&mdash; Dummy provider</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyContainer.cs</span> <span class="desc">&mdash; Dummy config data</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdDummyController.cs</span> <span class="desc">&mdash; Dummy UI renderer</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsSettingsEditor.cs</span> <span class="desc">&mdash; Custom inspector</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorAdsContainer.cs</span> <span class="desc">&mdash; Editor base class</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorAdMobContainer.cs</span> <span class="desc">&mdash; AdMob inspector</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorDummyContainer.cs</span> <span class="desc">&mdash; Dummy inspector</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdmobBuildHandler.cs</span> <span class="desc">&mdash; Pre-build App ID sync</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.Ads.Editor.asmdef</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsSettingsEditor.cs</span> <span class="desc">&mdash; Custom inspector</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorAdsContainer.cs</span> <span class="desc">&mdash; Editor base class</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorAdMobContainer.cs</span> <span class="desc">&mdash; AdMob inspector</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">EditorDummyContainer.cs</span> <span class="desc">&mdash; Dummy inspector</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdmobBuildHandler.cs</span> <span class="desc">&mdash; Pre-build App ID sync</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.Ads.Editor.asmdef</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettingsEditor.cs</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationInitModuleEditor.cs</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationPlatformDetector.cs</span>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.Editor.asmdef</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationSettingsEditor.cs</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationInitModuleEditor.cs</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">MonetizationPlatformDetector.cs</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">WelcomePopup.cs</span> <span class="desc">&mdash; Welcome popup window</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Monetization.Editor.asmdef</span>
 <br>&nbsp;&nbsp;<span class="folder">Examples/Ads Example/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Scenes/</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Admob-Example.unity</span> <span class="desc">&mdash; Pre-built example scene</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Scripts/</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AdsManagerExampleScript.cs</span> <span class="desc">&mdash; Full API demo</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="asmdef">Ragendom.Examples.asmdef</span>
@@ -546,8 +570,33 @@
 
 <p>Get up and running with Dummy ads in the Unity Editor in 5 minutes.</p>
 
+<div class="box box-danger">
+    <div class="box-title">Prerequisites &mdash; Do These First</div>
+    <p>Before using this asset, make sure the following two setup steps are completed:</p>
+</div>
+
 <div class="step">
     <div class="step-number">1</div>
+    <div class="step-content">
+        <h4>Import TextMeshPro</h4>
+        <p>This asset requires the <strong>TextMeshPro</strong> package. If you haven't imported it yet, go to <code>Window &gt; Package Manager</code>, search for <strong>TextMeshPro</strong>, and click <strong>Install</strong>. Alternatively, Unity may prompt you to import TMP Essentials the first time a TMP component is used &mdash; accept that prompt.</p>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+        <h4>Set Active Input Handling to "Both"</h4>
+        <p>The UI buttons in the example scene (and any scene using this asset's UI components) require the legacy Input Manager to be active. Go to <code>Edit &gt; Project Settings &gt; Player &gt; Configuration &gt; Active Input Handling</code> and set it to <strong>"Both"</strong>. This allows both the legacy Input Manager and the new Input System to work side by side, ensuring that button clicks in the scene are properly detected.</p>
+        <div class="box box-warning" style="margin-top: 10px;">
+            <div class="box-title">Note</div>
+            <p>Changing this setting will cause Unity to restart the editor. Save your work before applying the change.</p>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-number">3</div>
     <div class="step-content">
         <h4>Create the MonetizationSettings Asset</h4>
         <p>Right-click in the Project window and select <code>Create &gt; Data &gt; Core &gt; Monetization Settings</code>. This creates a <code>MonetizationSettings.asset</code> ScriptableObject. Place it anywhere you like (e.g. <code>Assets/Settings/</code>).</p>
@@ -555,7 +604,7 @@
 </div>
 
 <div class="step">
-    <div class="step-number">2</div>
+    <div class="step-number">4</div>
     <div class="step-content">
         <h4>Add MonetizationInitModule to Your Scene</h4>
         <p>Create an empty GameObject in your first scene and name it <code>Monetization</code>. Add the <code>MonetizationInitModule</code> component to it. Drag your <code>MonetizationSettings</code> asset into the <strong>Settings</strong> field.</p>
@@ -563,7 +612,7 @@
 </div>
 
 <div class="step">
-    <div class="step-number">3</div>
+    <div class="step-number">5</div>
     <div class="step-content">
         <h4>Configure Providers</h4>
         <p>Select the <code>MonetizationSettings</code> asset. In the Inspector, you will see the <strong>Ads Settings</strong> section. Set each ad type (Banner, Interstitial, Rewarded Video) to <code>Dummy</code> for editor testing. Enable <strong>Verbose Logging</strong> to see detailed logs in the Console.</p>
@@ -571,7 +620,7 @@
 </div>
 
 <div class="step">
-    <div class="step-number">4</div>
+    <div class="step-number">6</div>
     <div class="step-content">
         <h4>Press Play</h4>
         <p>Hit Play. The system initializes automatically via <code>MonetizationInitModule.Awake()</code>. You can now call any <code>AdsManager</code> method from your scripts. The Dummy provider renders simulated ad overlays directly in the Game view.</p>
@@ -580,7 +629,7 @@
 
 <div class="box box-info">
     <div class="box-title">Tip</div>
-    <p>You can use the menu item <code>Tools &gt; Ragendom &gt; Setup Ads Example Scene</code> to automatically set up a complete test scene with all buttons wired to every AdsManager method. This is great for verifying the system works before integrating into your own project.</p>
+    <p>You can open the included <code>Admob-Example</code> scene (located in <code>Ragendom/Examples/Ads Example/Scenes/</code>) for a ready-made test environment. Alternatively, use the menu item <code>Tools &gt; Ragendom &gt; Setup Ads Example Scene</code> to automatically set up a complete test scene with all buttons wired to every AdsManager method. This is great for verifying the system works before integrating into your own project.</p>
 </div>
 
 <!-- ============================================================ -->
