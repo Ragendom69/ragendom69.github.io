@@ -145,6 +145,12 @@
         .badge-editor { background-color: #9b59b6; color: white; }
         .badge-core { background-color: #2ecc71; color: white; }
         .badge-script { background-color: #34495e; color: white; }
+        .sidebar li a .standalone-icon::before {
+            content: '\1F4E6';
+            margin-left: 6px;
+            font-size: 0.8rem;
+        }
+
         .standalone-box {
             background: linear-gradient(135deg, #f0f7ff, #e0ecf8);
             border: 2px solid var(--primary-color);
@@ -274,15 +280,20 @@
             <li><a href="#overview">Overview</a></li>
             <li><a href="#structure">Project Structure</a></li>
             <li><a href="#game1">#1 Arrow Escape</a></li>
-            <li><a href="#game2">#2 Block Associations</a></li>
+            <li><a href="#game2">#2 Block Associations<span class="standalone-icon"></span></a></li>
             <li><a href="#game3">#3 Color Block Jam</a></li>
             <li><a href="#game4">#4 Jigsaw Puzzle</a></li>
             <li><a href="#game5">#5 Drop the Dog Jam</a></li>
-            <li><a href="#game6">#6 Pixel Shooter 3D</a></li>
+            <li><a href="#game6">#6 Pixel Shooter 3D<span class="standalone-icon"></span></a></li>
             <li><a href="#game7">#7 Topic Stack</a></li>
             <li><a href="#game8">#8 Solitaire Associations</a></li>
             <li><a href="#game9">#9 Coffee Go</a></li>
             <li><a href="#game10">#10 Bricky Bounce</a></li>
+            <li><a href="#game11">#11 Hole Loop Jam</a></li>
+            <li><a href="#game12">#12 Coffee Color Block</a></li>
+            <li><a href="#game13">#13 Color Brick Loop</a></li>
+            <li><a href="#game14">#14 Good Swipe</a></li>
+            <li><a href="#game15">#15 Drop Marbles</a></li>
             <li><a href="#core">Core Systems</a></li>
             <li><a href="#development">Development Guide</a></li>
             <li><a href="#support">Support</a></li>
@@ -303,7 +314,7 @@
             <ul>
                 <li><strong>Singleton Managers</strong>: Centralized control for game states and audio.</li>
                 <li><strong>Data-Driven Levels</strong>: Separation of level design (JSON/Assets) from game logic.</li>
-                <li><strong>Namespace Isolation</strong>: All scripts reside within <code>HypercasualGameEngine</code> to prevent conflicts.</li>
+                <li><strong>Namespace Isolation</strong>: All scripts reside within <code>HypercasualGameEngine</code> or <code>HypercasualGameEngine.{GameName}</code> to prevent conflicts.</li>
             </ul>
         </section>
 
@@ -796,6 +807,316 @@
             </div>
         </section>
 
+        <section id="game11">
+            <h1>#11 Hole Loop Jam</h1>
+            <p>A conveyor-loop puzzle where players tap colored pots from a spawn queue to send them onto a grid-based loop system. Matching-colored blocks on the grid automatically pathfind and jump into passing pots. Once a pot is fully filled, it's destroyed with a particle effect. Win by filling and destroying all pots before the loop runs out of dock space.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game logic controller. Handles grid initialization, BFS-based block pathfinding, pot movement along the loop, block-to-pot delivery animations, and win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Singleton level manager that loads levels from JSON at runtime via <code>LevelManager</code>. Manages material/color mappings and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>TapOutManager.cs</strong>
+                    Input handler for touch/mouse input. Manages the pot spawn queue and handles tapping pots to send them into the conveyor loop.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Represents individual grid blocks with color, position, obstacle/hidden properties, and visual state management.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the grid layout: block positions with <code>TypeColor</code>, <code>IsHidden</code>, <code>IsObstacle</code> flags, and pot data lines (color + amount sequences).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/HoleLoopJam/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Grid-Based Pathfinding</strong>: Uses BFS (Breadth-First Search) to find the shortest path from any block to the pot location on the grid.</li>
+                <li><strong>Conveyor Loop</strong>: Pots move through a series of ApplyState positions in a continuous loop around the grid, collecting matching blocks as they pass.</li>
+                <li><strong>Color Matching</strong>: Only blocks matching a pot's color will pathfind and jump into that pot with a parabolic arc animation.</li>
+                <li><strong>Pot Destruction</strong>: When a pot reaches its target fill count, it shrinks and explodes with particle effects.</li>
+                <li><strong>Blocking Mechanics</strong>: Obstacle blocks can block paths; hidden blocks are revealed when obstacles are removed.</li>
+                <li><strong>Win Condition</strong>: All pots have been filled and destroyed.</li>
+                <li><strong>Lose Condition</strong>: A pot completes its loop and there's no available dock to return it to.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, per-cell block definitions (color, hidden, obstacle), and ordered pot data lines.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Hole Loop Jam Level Editor</h4>
+                <p><strong>Script:</strong> <code>HoleLoopJamLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #11 HoleLoopJam Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels. Click <strong>+ New Level</strong> to start a new level with auto-incrementing name.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
+                    <li>Edit the <strong>Block Grid</strong>: click cells to cycle through <code>TypeColor</code> values (None, Red, Blue, Green, Yellow, Purple). Hold <strong>Shift+click</strong> to toggle the <em>Hidden</em> flag, or <strong>Ctrl+click</strong> for the <em>Obstacle</em> flag. Cells are color-coded with overlay markers for hidden (H) and obstacle (X) states.</li>
+                    <li>Edit <strong>Pot Data Lines</strong>: add/remove lines, and within each line add pots with a <code>TypeColor</code> and fill <code>Amount</code>. Reorder lines as needed.</li>
+                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/HoleLoopJam/</code>. Use <strong>Save As</strong> to save under a new name.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game12">
+            <h1>#12 Coffee Color Block</h1>
+            <p>A color-matching puzzle where players drag shaped blocks onto a grid to position them near conveyors. Conveyors spawn colored coffee cups that automatically transfer into matching-colored blocks when they overlap. Each block has multiple slots (holes) that must be filled with cups. When all slots on a block are filled, the block clears with a slide-out animation. Complete all blocks before time runs out to win.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game controller handling grid generation, block placement, occupancy tracking, snap-to-grid logic, countdown timer, and win/lose conditions. Includes <code>InitializeFromLevelData()</code> for runtime level loading.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Mouse input handler for block interaction. Manages block clicking, physics-based dragging with collision sliding, and releasing blocks back onto the grid.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Represents a colored block with multiple cup slots. Handles coffee-to-slot arc animations, sprite sorting, block clear detection, and slide-out clear animation.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages coffee cup spawning and color sequencing. Detects overlap with matching-colored blocks via trigger collisions. Includes <code>InitializeFromLevelData()</code> to populate from JSON data.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data classes defining the level structure: grid dimensions, spacing, timer duration, block definitions (<code>BlockData</code> with color, rotation, grid position, shape offsets, cup slot count), and conveyor queue (<code>ConveyorData</code> with color and coffee count).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/CoffeeColorBlock/</code> at runtime, and provides save/delete for editor use.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevelManager.cs</strong>
+                    Runtime level loader MonoBehaviour. References <code>GridManager</code> and <code>Convenyor</code>, loads levels via <code>LevelManager</code>, and provides Next/Previous navigation with arrow keys.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Block Dragging</strong>: Players click and drag blocks with physics-based movement. Blocks slide along obstacles and snap to the nearest grid position on release.</li>
+                <li><strong>Coffee Conveyors</strong>: Multiple conveyors spawn sequences of colored coffee cups. Each conveyor can have multi-color sequences that advance as cups are consumed.</li>
+                <li><strong>Color Matching</strong>: Coffee cups only transfer from a conveyor to a block when their colors match. The conveyor's active color changes as each color sequence completes.</li>
+                <li><strong>Block Filling</strong>: Each block has multiple cup slots. Cups arc-animate into slots one at a time. When all slots are filled, the block clears automatically.</li>
+                <li><strong>Block Clear Animation</strong>: Filled blocks pull back slightly, then slide off-screen with a rotation effect.</li>
+                <li><strong>Grid Occupancy</strong>: Blocks use shape definitions to occupy multiple grid cells, preventing overlap with other blocks.</li>
+                <li><strong>Win Condition</strong>: All blocks have been filled and cleared.</li>
+                <li><strong>Lose Condition</strong>: The countdown timer expires before all blocks are cleared.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, spacing, timer, block definitions (color, rotation, position, shape offsets, cup slots), and ordered conveyor queue.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Coffee Color Block Level Editor</h4>
+                <p><strong>Script:</strong> <code>CoffeeColorBlockLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #12 CoffeeColorBlock Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Configure <strong>Grid Settings</strong>: grid width, grid height, cell spacing, and level timer duration.</li>
+                    <li>Edit <strong>Blocks</strong>: add/remove block entries. Each block has a color (<code>EColor</code>), rotation (0/90/180/270), grid position, shape offsets (list of <code>Vector2Int</code> defining the block shape), and cup slot count.</li>
+                    <li>Edit the <strong>Conveyor Queue</strong>: add/remove conveyor entries, each with a color and coffee count.</li>
+                    <li>Use <strong>Capture from Scene</strong> to read current scene Block and Convenyor data into the editor, bridging the existing inspector-based workflow with the JSON system.</li>
+                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/CoffeeColorBlock/</code>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game13">
+            <h1>#13 Color Brick Loop</h1>
+            <p>A casual puzzle game where players click on colored boxes to push bricks onto a circular conveyor belt path. Bricks move around the conveyor, and a cannon at the end fires at matching-colored goal bricks on the top board. Players must clear all goal colors in sequence to win the level.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Represents colored box containers holding multiple bricks. Handles clicking, slide animation, lid opening, and spawning bricks onto the conveyor.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages the circular conveyor belt path. Moves bricks step-by-step between path nodes, handles color matching with the tunnel, and checks lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>TopBoard.cs</strong>
+                    Manages the goal grid at the top of the screen. Creates goal bricks that must be eliminated and tracks the goal color sequence.
+                </div>
+                <div class="script-item">
+                    <strong>Tunnel.cs</strong>
+                    Cannon system at the conveyor's end. Fires bullets at matching goal-color bricks on the top board, rotating to aim at targets.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Singleton level coordinator. Loads levels from JSON via <code>LevelManager</code>, initializes the grid and top board, and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the color grid layout as rows of <code>EColor</code> values (Yellow, Green, Emerald, Orange) and an ordered list of goal colors.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/ColorBrickLoop/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Box Clicking</strong>: Clicking a box slides it forward onto the conveyor path. The lid flies open with animation and bricks spawn at predefined positions inside.</li>
+                <li><strong>Conveyor Circulation</strong>: Bricks move step-by-step around a circular path. Movement is blocked if the next node is occupied or if bricks are still spawning.</li>
+                <li><strong>Cannon & Color Matching</strong>: When a brick of the current goal color reaches the tunnel node, a bullet is fired at the corresponding goal brick on the top board, which pops with a scale animation.</li>
+                <li><strong>Goal Sequence</strong>: Players must eliminate all bricks of the first goal color, then the second, and so on until all goals are cleared.</li>
+                <li><strong>Win Condition</strong>: All goal colors have been eliminated successfully.</li>
+                <li><strong>Lose Condition</strong>: The conveyor becomes completely full and none of the bricks match the current goal color.</li>
+                <li><strong>Level Data</strong>: JSON-based with a color grid (rows x columns of <code>EColor</code> values) and an ordered goal color sequence.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Color Brick Loop Level Editor</h4>
+                <p><strong>Script:</strong> <code>ColorBrickLoopLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #13 ColorBrickLoop Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Edit the <strong>Color Grid</strong>: a visual rows x columns grid of <code>EColor</code> dropdown popups (Yellow, Green, Emerald, Orange). Add or remove rows and columns to resize the grid.</li>
+                    <li>Edit <strong>Goal Colors</strong>: an ordered list of <code>EColor</code> values that define the sequence of colors players must eliminate. Use add/remove buttons and reorder as needed.</li>
+                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/ColorBrickLoop/</code>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game14">
+            <h1>#14 Good Swipe</h1>
+            <p>A swipe-based sorting puzzle where players swipe the grid in four directions to move boxes and arrange items. The goal is to group matching items (Can, Ice, Duck) within the same box. When all 4 items in a box match, the box clears and fills collection targets. Complete all targets to win.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game logic handler. Manages grid state, box movement, item swapping between adjacent boxes, scoring, win/lose evaluation, and grid refactoring after swipes.
+                </div>
+                <div class="script-item">
+                    <strong>GameManager.cs</strong>
+                    Singleton game coordinator. Loads levels from JSON via <code>LevelManager</code>, initializes the grid, and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>MouseSwipe.cs</strong>
+                    Input handler detecting and interpreting player mouse swipes (left, right, up, down) with a minimum distance threshold.
+                </div>
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Represents a grid cell containing up to 4 items. Handles destruction animations and item position tracking.
+                </div>
+                <div class="script-item">
+                    <strong>Fill.cs</strong>
+                    UI element displaying collection goals for each item type with a numeric counter that decrements as items are cleared.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the level: grid dimensions, fill targets (<code>FillData</code> with <code>TypeObject</code> and count), and box definitions (<code>BoxData</code> with grid position and item list).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/GoodSwipe/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Swipe System</strong>: Detects mouse swipes (50-pixel minimum) and moves all boxes in that direction to fill gaps in the grid.</li>
+                <li><strong>Item Swapping</strong>: After movement, the system attempts optimal swaps between adjacent boxes to match item types together.</li>
+                <li><strong>Box Clearing</strong>: When all 4 items in a box match the same type, the box vanishes with animation and collection counters decrement.</li>
+                <li><strong>Grid Refactoring</strong>: After each swipe, boxes move, items swap, boxes clear, and new boxes spawn randomly in empty slots with a bounce effect.</li>
+                <li><strong>Point System</strong>: Awards points for item arrangements (1 item = 1pt, 2 = 5pts, 3 = 20pts, 4 = 100pts) with combo bonuses.</li>
+                <li><strong>Win Condition</strong>: All collection targets reach zero.</li>
+                <li><strong>Lose Condition</strong>: Grid fills completely with no valid adjacent swaps possible.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, fill targets (item type + required count), and box definitions (grid position + item list).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Good Swipe Level Editor</h4>
+                <p><strong>Script:</strong> <code>GoodSwipeLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #14 GoodSwipe Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
+                    <li>Edit <strong>Fill Data</strong> (collection goals): add/remove target entries, each with a <code>TypeObject</code> (Can, Ice, Duck) and required count.</li>
+                    <li>Edit <strong>Boxes</strong>: add/remove box definitions. Each box has a grid position and a list of up to 4 item types (<code>TypeObject</code> enum popups). Boxes are shown as a visual grid layout.</li>
+                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/GoodSwipe/</code>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="game15">
+            <h1>#15 Drop Marbles</h1>
+            <p>A marble-sorting puzzle where players click on colored boxes to release marbles that scatter in all directions. The released marbles roll onto a conveyor belt that routes them toward color-matched target slots (FillBoxes). Fill all target slots to win before the conveyor becomes overloaded.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridTapOut.cs</strong>
+                    Manages the grid of clickable boxes. Initializes box placement from level data and handles box release logic.
+                </div>
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Represents clickable boxes containing marbles. Releases marbles in a circular spread pattern when clicked, with a lid-open animation.
+                </div>
+                <div class="script-item">
+                    <strong>Conveyor.cs</strong>
+                    Core conveyor system managing marble movement along the belt path. Handles marble rotation, fill detection, and collision management.
+                </div>
+                <div class="script-item">
+                    <strong>GridFill.cs</strong>
+                    Manages target FillBox slots. Initializes fill columns from level data, removes completed boxes with slide-up animations, and checks win conditions.
+                </div>
+                <div class="script-item">
+                    <strong>GameManager.cs</strong>
+                    Singleton game coordinator. Loads levels from JSON via <code>LevelManager</code>, initializes the grid and fill targets, and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the level: grid dimensions, box items (<code>BoxItem</code> with <code>TypeColor</code> lists), and fill columns (<code>GridFillColumn</code> with ordered <code>TypeColor</code> entries).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/DropMarbles/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Marble Release</strong>: Clicking a box releases all marbles inside in a circular spread pattern using physics impulse forces. Marbles scale up as they scatter.</li>
+                <li><strong>Conveyor Belt</strong>: An active conveyor rotates marbles along a fixed path. Marbles move to the next position each cycle with smooth interpolation.</li>
+                <li><strong>Color Matching</strong>: Marbles must match the exact color of their target FillBox to be accepted. Mismatched colors pass through.</li>
+                <li><strong>FillBox Completion</strong>: When a FillBox receives 3 matching-colored marbles, it's marked full and removed. Remaining boxes animate upward to fill the gap.</li>
+                <li><strong>Win Condition</strong>: All FillBoxes have been filled and removed.</li>
+                <li><strong>Lose Condition</strong>: All conveyor slots are filled and no active marbles can reach available matching targets.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, box item definitions (color per marble), and fill column definitions (ordered target colors).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Drop Marbles Level Editor</h4>
+                <p><strong>Script:</strong> <code>DropMarblesLevelEditorWindow.cs</code></p>
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #15 DropMarbles Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
+                    <li>Edit <strong>Box Items</strong>: add/remove box definitions. Each box has a list of <code>TypeColor</code> values (Red, Blue, Green, Yellow) representing the marbles inside.</li>
+                    <li>Edit <strong>Fill Columns</strong>: add/remove fill column definitions. Each column has an ordered list of <code>TypeColor</code> entries defining the target colors that must be matched from bottom to top.</li>
+                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/DropMarbles/</code>.</li>
+                </ol>
+            </div>
+        </section>
+
         <section id="core">
             <h1>Core Systems & Utilities</h1>
 
@@ -829,7 +1150,7 @@
                     <pre>public class MyGameManager : LevelManager { ... }</pre>
                 </li>
                 <li><strong>UI Integration</strong>: Ensure your scene has an <code>EventSystem</code> and a <code>Canvas</code> with the <code>LoseWinPanel</code> prefab.</li>
-                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine { ... }</code>.</li>
+                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code>. Games #1-5 use the shared <code>HypercasualGameEngine</code> namespace; games #6+ use the <code>HypercasualGameEngine.{GameName}</code> convention.</li>
             </ol>
 
             <div class="important">
@@ -849,7 +1170,24 @@
         <section id="version-history">
             <h1>Version History</h1>
             
-            <h3>v2.0 - Major Update (Current)</h3>
+            <h3>v4.0 - Next Update (Coming Soon)</h3>
+            <p>The next major release will add <strong>5 brand new game modules</strong>. Have a game idea you'd like to see included? Reach out — your suggestion might make it into the next update!</p>
+            <div class="note">
+                <strong>Submit your game ideas:</strong> <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>
+            </div>
+
+            <h3>v3.0 - Major Update (Current)</h3>
+            <p>The third major release adds <strong>5 brand new game modules</strong>, bringing the total to 15. All new games include <strong>custom level editors</strong> with JSON-based level management and a unified two-panel editor layout:</p>
+            <ul>
+                <li><strong>#11 Hole Loop Jam</strong>: Conveyor-loop puzzle with BFS pathfinding and pot-filling mechanics. <em>Level editor with visual grid painter and pot data line builder.</em></li>
+                <li><strong>#12 Coffee Color Block</strong>: Color-matching conveyor puzzle where coffee cups fill shaped blocks on a grid. <em>Level editor with block shape editor, conveyor queue builder, and Capture from Scene support.</em></li>
+                <li><strong>#13 Color Brick Loop</strong>: Circular conveyor belt puzzle with cannon-based goal elimination. <em>Level editor with color grid editor and goal color sequence builder.</em></li>
+                <li><strong>#14 Good Swipe</strong>: Swipe-based item sorting puzzle with combo scoring and collection targets. <em>Level editor with fill target and box placement editors.</em></li>
+                <li><strong>#15 Drop Marbles</strong>: Physics-based marble release and conveyor routing puzzle with color-matched fill targets. <em>Level editor with box item and fill column editors.</em></li>
+            </ul>
+            <p><strong>Current Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$39.99</span></p>
+
+            <h3>v2.0 - Major Update</h3>
             <p>The second major release adds <strong>5 brand new game modules</strong>, bringing the total to 10:</p>
             <ul>
                 <li><strong>#6 Pixel Shooter 3D</strong>: Color-matching puzzle-shooter with conveyor belt and abilities.</li>
@@ -858,7 +1196,7 @@
                 <li><strong>#9 Coffee Go</strong>: Conveyor-based coffee cup color-sorting puzzle.</li>
                 <li><strong>#10 Bricky Bounce</strong>: 3D layered brick-breaking with ball routing and physics destruction.</li>
             </ul>
-            <p><strong>Current Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$34.99</span></p>
+            <p><strong>Price:</strong> <strong>$34.99</strong></p>
 
             <h3>v1.0 - Initial Release</h3>
             <p>The first release of the Hypercasual Game Engine includes 5 fully functional game modules:</p>
@@ -870,10 +1208,6 @@
                 <li><strong>#5 Drop the Dog Jam</strong>: Physics-based SDF hole mechanic.</li>
             </ul>
             <p><strong>Launch Price:</strong> <strong>$29.99</strong></p>
-
-            <div class="note" style="background-color: #fef9e7; border-left-color: #f39c12;">
-                <strong>Coming Soon — v3.0:</strong> The next major update will expand the toolkit to <strong>15 game modules</strong> with 5 entirely new game templates.
-            </div>
         </section>
 
         <footer>
