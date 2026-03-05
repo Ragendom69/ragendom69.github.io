@@ -208,6 +208,14 @@
             border-radius: 4px;
         }
 
+        .warning-box {
+            background-color: #fff8e1;
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
         .editor-box {
             background-color: #f9f0ff;
             border: 1px solid #d1b3e0;
@@ -224,7 +232,7 @@
         }
 
         .editor-box h4::before {
-            content: '🛠️';
+            content: '\1F6E0\FE0F';
             margin-right: 10px;
         }
 
@@ -278,6 +286,7 @@
         <h2>Hypercasual Engine</h2>
         <ul>
             <li><a href="#overview">Overview</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
             <li><a href="#structure">Project Structure</a></li>
             <li><a href="#game1">#1 Arrow Escape</a></li>
             <li><a href="#game2">#2 Block Associations<span class="standalone-icon"></span></a></li>
@@ -305,7 +314,7 @@
         <section id="overview">
             <h1>Technical Overview</h1>
             <p><span class="badge badge-toolkit">Toolkit</span> The <strong>Hypercasual Game Engine</strong> is a modular framework designed for rapid development of puzzle and arcade mechanics. It provides a standardized architecture where game-specific logic is decoupled from core engine systems.</p>
-            
+
             <div class="note">
                 <strong>Architecture Philosophy:</strong> Every game is treated as a "Module". The <code>Core</code> provides the services (Audio, UI, Camera, Persistence), and the <code>Games</code> folder contains the implementation of specific mechanics.
             </div>
@@ -318,11 +327,29 @@
             </ul>
         </section>
 
+        <section id="getting-started">
+            <h1>Getting Started</h1>
+
+            <h3>Opening the Main Scene</h3>
+            <p>The primary game scene is located at:</p>
+            <p><code>Assets/Hypercasual Game Engine/Core/Scenes/Games-v3.0.unity</code></p>
+            <p>Open this scene to access all 15 game modules. Previous version scenes (<code>Games.unity</code>, <code>Games-v2.0.unity</code>) are also available in the same folder for reference.</p>
+
+            <h3>Where to Find Level Editors</h3>
+            <p>All level editor tools are located under the Unity <strong>Tools</strong> menu in the top menu bar. There is no separate "Hypercasual" tab. To open any level editor, go to:</p>
+            <p><code>Tools > #{number} {Game Name} Level Editor</code></p>
+            <p>For example: <code>Tools > #1 Arrows Level Editor</code>, <code>Tools > #11 HoleLoopJam Level Editor</code>, etc.</p>
+
+            <div class="warning-box">
+                <strong>Important - Resizing Level Editor Windows:</strong> When you first open any level editor tool, the popup window may appear very small by default. You will need to <strong>manually resize the window by dragging its right edge and bottom edge</strong> to expand it until you can see the full tool layout (typically a left-side control panel and a right-side grid/preview area). This applies to all level editors in the toolkit.
+            </div>
+        </section>
+
         <section id="structure">
             <h1>Project Structure</h1>
             <p>Understanding the directory layout is crucial for extending the engine.</p>
-            
-            <h3>Global Core (<code>/Core</code>)</h3>
+
+            <h3>Global Core (<code>Assets/Hypercasual Game Engine/Core</code>)</h3>
             <div class="script-list">
                 <div class="script-item">
                     <strong>SoundManager.cs</strong>
@@ -342,14 +369,17 @@
                 </div>
             </div>
 
-            <h3>Game Modules (<code>/Games</code>)</h3>
-            <p>Each game folder is self-contained, including its own <code>Scripts</code>, <code>Editor</code>, <code>Prefabs</code>, and <code>Levels</code>.</p>
+            <h3>Game Modules (<code>Assets/Hypercasual Game Engine/Games</code>)</h3>
+            <p>Each game folder is self-contained, including its own <code>Scripts</code>, <code>Editor</code>, <code>Prefabs</code>, and <code>Levels</code>. The folder naming convention is <code>#{number}_{GameName}</code>, for example: <code>#1_Arrows</code>, <code>#7_ConveyorSort</code>, <code>#11_HoleLoopJam</code>.</p>
+
+            <h3>Scenes (<code>Assets/Hypercasual Game Engine/Core/Scenes</code>)</h3>
+            <p>The current main scene is <strong>Games-v3.0</strong>. This is the scene you should open to play or test any of the 15 game modules.</p>
         </section>
 
         <section id="game1">
             <h1>#1 Arrow Escape</h1>
             <p>A logic puzzle where players must clear a grid of arrows. Arrows can only move in their pointed direction and are blocked by others.</p>
-            
+
             <h3>Main Scripts:</h3>
             <div class="script-list">
                 <div class="script-item">
@@ -373,14 +403,55 @@
             <div class="editor-box">
                 <h4>Arrow Escape Level Editor</h4>
                 <p><strong>Script:</strong> <code>ArrowsLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #1 Arrows Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it so you can see both the left control panel and the right grid panel side by side.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
-                    <li>Open via <code>Window > Hypercasual > Arrows Level Editor</code>.</li>
-                    <li>Set the <strong>Grid Size</strong> (e.g., 9x11).</li>
-                    <li>Click on grid cells to place arrow segments.</li>
-                    <li>Use the <strong>Direction Toggle</strong> to set where the arrow will fly.</li>
-                    <li>Click <strong>Export Level</strong> to save as a <code>.json</code> file in the <code>Levels</code> folder.</li>
+                    <li>Open the editor via <code>Tools > #1 Arrows Level Editor</code>.</li>
+                    <li>Set the <strong>Grid Size</strong> (e.g., 9x11) under "Grid Settings".</li>
+                    <li>Set <strong>Max Moves</strong> to define how many moves the player gets.</li>
+                    <li>Click <strong>Add Arrow</strong> in the left panel to create a new arrow. This creates an arrow with a single segment at position (0,0).</li>
+                    <li>With the arrow selected, set its <strong>Color</strong> and <strong>Direction</strong> (Up, Down, Left, Right) — this is where the arrow will fly when tapped.</li>
+                    <li>Click <strong>Edit Segments</strong> to enter segment editing mode (button turns green).</li>
+                    <li><strong>Left-click</strong> on grid cells to add segments. <strong>Right-click</strong> to remove the last segment (undo).</li>
+                    <li>When done placing segments, click <strong>Stop Editing Segments</strong>.</li>
+                    <li>Repeat steps 4-8 for each additional arrow.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">How Arrow Placement Works (Important!)</h4>
+                <p>Each arrow is a <strong>separate entity</strong> made up of connected segments on the grid. Here's how to properly place multiple arrows so they each occupy different grid cells:</p>
+                <ol>
+                    <li><strong>Click "Add Arrow"</strong> to create Arrow 1. Select it, click "Edit Segments", and left-click on grid cells to place its body segments. Each new segment must be <strong>adjacent</strong> (directly up/down/left/right) to the current head. Segments are placed <strong>tail-first</strong> — the first cell you click becomes the tail (circle), and subsequent cells extend toward the head (arrowhead).</li>
+                    <li><strong>Click "Stop Editing Segments"</strong> when Arrow 1 is done.</li>
+                    <li><strong>Click "Add Arrow" again</strong> to create Arrow 2. This is a completely new, separate arrow.</li>
+                    <li><strong>Select Arrow 2</strong>, set its color/direction, click "Edit Segments", and click on <strong>different grid cells</strong> that are not occupied by Arrow 1. The editor prevents you from placing segments on cells already used by another arrow.</li>
+                    <li>Repeat for Arrow 3 and beyond. Each arrow must occupy its own unique cells on the grid.</li>
+                </ol>
+                <p><strong>Common mistake:</strong> If you add 3 arrows but never deselect the first arrow and switch to editing the others, all segments will be added to the same arrow. Make sure to <strong>stop editing</strong> the current arrow, <strong>add a new arrow</strong>, <strong>select the new arrow</strong>, and <strong>then start editing segments</strong> for it.</p>
+
+                <div class="note">
+                    <strong>Valid Arrow Pattern Rules:</strong>
+                    <ul>
+                        <li>Each arrow is a <strong>chain of adjacent grid cells</strong> (connected horizontally or vertically, no diagonals).</li>
+                        <li>An arrow needs at least <strong>1 segment</strong>, but typically has 2-5+ segments to form a snake-like body.</li>
+                        <li>The <strong>Direction</strong> setting determines which way the arrow flies when the player taps it — it does NOT need to match the shape of the arrow body.</li>
+                        <li>Arrows <strong>cannot overlap</strong> — each grid cell can only belong to one arrow.</li>
+                        <li>For a solvable puzzle, make sure arrows can reach the grid edge in their facing direction. An arrow blocked by others requires the player to clear a path first.</li>
+                        <li>The <strong>Legend</strong> in the editor shows you: the arrowhead triangle = Head (the front/tip), the circle = Tail (the back end).</li>
+                    </ul>
+                </div>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>"Save JSON"</strong>. A file dialog opens. The default save location is <code>Assets/Games/Arrows/Resources/Levels/</code>. Enter a filename and click Save. The level is saved as a <code>.json</code> file.</li>
+                    <li><strong>Load:</strong> Click <strong>"Load JSON"</strong>. A file dialog opens to the same default folder. Select a <code>.json</code> level file to load it into the editor for viewing or editing.</li>
+                    <li><strong>New:</strong> Click <strong>"New"</strong> to reset the editor to a blank state.</li>
+                    <li>The <strong>Level Name</strong> field at the top of the left panel sets the default filename when saving.</li>
+                </ul>
             </div>
         </section>
 
@@ -393,7 +464,7 @@
                 <p>This game is also available as a <strong>dedicated standalone package</strong> with <strong>5 fully designed levels</strong>, extended level editors, and additional customization options for deeper development.</p>
                 <p><a href="https://assetstore.unity.com/packages/templates/packs/block-associations-puzzle-template-editor-351872" target="_blank">View Block Associations on the Unity Asset Store</a></p>
             </div>
-            
+
             <h3>Main Scripts:</h3>
             <div class="script-list">
                 <div class="script-item">
@@ -416,19 +487,22 @@
 
             <div class="editor-box">
                 <h4>Block Associations Editor Tools</h4>
+                <p>These tools are all accessible from the <strong>Tools</strong> menu in the Unity menu bar:</p>
                 <ul>
                     <li><strong>ApplyGraphics.cs</strong>: Select multiple item prefabs and use this tool to batch-assign sprites from a folder.
-                        <br><em>Usage:</em> Select prefabs in Project window, right-click -> <code>Hypercasual > Apply Graphics</code>.
+                        <br><em>Access:</em> <code>Tools > #2 ColorBlockJam Apply Graphics</code>.
                     </li>
                     <li><strong>LevelPreview.cs</strong>: Allows you to select a <code>Level.json</code> and see a ghost-preview of the layout in the Scene view.
-                        <br><em>Usage:</em> Select a Level JSON, the preview will appear in the Scene view if the <code>GridManager</code> is active.
+                        <br><em>Access:</em> <code>Tools > #2 ColorBlockJam Preview Level</code>. Select a Level JSON, the preview will appear in the Scene view if the <code>GridManager</code> is active.
                     </li>
                     <li><strong>SetupDragSprites.cs</strong>: Automatically adds <code>BoxCollider2D</code> and <code>Draggable</code> components to a selection of sprites.
-                        <br><em>Usage:</em> Select sprites, right-click -> <code>Hypercasual > Setup Drag Sprites</code>.
+                        <br><em>Access:</em> <code>Tools > #2 ColorBlockJam Setup Drag Sprites</code>.
                     </li>
                     <li><strong>FixMatchedRowBg.cs</strong>: A utility to align the background graphics with the generated grid size.
+                        <br><em>Access:</em> <code>Tools > #2 ColorBlockJam Fix Matched Row Bg</code>.
                     </li>
                     <li><strong>ImportSprites.cs / ImportClearedSprite.cs</strong>: Automates the import settings for new icons to ensure they are correctly formatted for the UI.
+                        <br><em>Access:</em> <code>Tools > #2 ColorBlockJam Import Sprites</code> and <code>Tools > #2 ColorBlockJam Import Cleared Sprite</code>.
                     </li>
                 </ul>
             </div>
@@ -437,7 +511,7 @@
         <section id="game3">
             <h1>#3 Color Block Jam</h1>
             <p>A spatial puzzle where players move groups of blocks to clear paths. Blocks are constrained by their color-coded groups.</p>
-            
+
             <h3>Main Scripts:</h3>
             <div class="script-list">
                 <div class="script-item">
@@ -470,7 +544,7 @@
         <section id="game4">
             <h1>#4 Jigsaw Puzzle</h1>
             <p>A classic jigsaw mechanic. It uses a custom masking system to allow any image to be turned into a puzzle piece.</p>
-            
+
             <h3>Main Scripts:</h3>
             <div class="script-list">
                 <div class="script-item">
@@ -494,14 +568,18 @@
             <div class="editor-box">
                 <h4>Jigsaw Editor Tools</h4>
                 <ul>
-                    <li><strong>JigsawLevelCreator.cs</strong>: 
-                        <br><em>Usage:</em> Select a Texture, open <code>Window > Hypercasual > Jigsaw Creator</code>. Set Rows/Cols and click <strong>Generate</strong>.
+                    <li><strong>JigsawLevelCreator.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #4 Jigsaw Level Creator</code>. Select a Texture, set Rows/Cols and click <strong>Generate</strong>.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full interface.
+                        </div>
                     </li>
-                    <li><strong>PuzzleLayoutEditor.cs</strong>: 
+                    <li><strong>PuzzleLayoutEditor.cs</strong>:
                         <br><em>Usage:</em> Custom inspector for <code>PuzzleLayout</code> assets. Allows manual adjustment of piece targets.
                     </li>
-                    <li><strong>PuzzleDebugInspector.cs</strong>: 
-                        <br><em>Usage:</em> Provides a debug overlay in the Scene view to see piece IDs and snap zones.
+                    <li><strong>PuzzleDebugInspector.cs</strong>:
+                        <br><em>Usage:</em> Provides a debug overlay in the Scene view to see piece IDs and snap zones. Also available via <code>Window > #4 Jigsaw Puzzle Grid Debug</code>.
                     </li>
                 </ul>
             </div>
@@ -510,7 +588,7 @@
         <section id="game5">
             <h1>#5 Drop the Dog Jam</h1>
             <p>A physics-and-timing game. Players must navigate dogs into holes by removing blocks in the correct order.</p>
-            
+
             <h3>Main Scripts:</h3>
             <div class="script-list">
                 <div class="script-item">
@@ -534,13 +612,17 @@
             <div class="editor-box">
                 <h4>Drop the Dog Jam Editor Tools</h4>
                 <ul>
-                    <li><strong>HoleEditor.cs</strong>: 
+                    <li><strong>HoleEditor.cs</strong>:
                         <br><em>Usage:</em> Select a <code>DogHolePrefab</code>. Adjust <strong>Radius</strong> and <strong>Depth</strong> in the inspector. Click <strong>Regenerate</strong> to bake the SDF texture.
                     </li>
-                    <li><strong>HoleLevelEditor.cs</strong>: 
-                        <br><em>Usage:</em> A grid-painting tool. Open <code>Window > Hypercasual > Hole Level Editor</code>. Select a block type and click on the grid to paint your level.
+                    <li><strong>HoleLevelEditor.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #5 Hole Level Editor</code>. A grid-painting tool. Select a block type and click on the grid to paint your level.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full grid painting area.
+                        </div>
                     </li>
-                    <li><strong>HoleMenu.cs</strong>: 
+                    <li><strong>HoleMenu.cs</strong>:
                         <br><em>Usage:</em> Adds right-click menu items to the Hierarchy for quickly creating Hole-related objects.
                     </li>
                 </ul>
@@ -594,9 +676,16 @@
 
             <div class="editor-box">
                 <h4>Pixel Shooter 3D Editor Tools</h4>
+                <p>Additional debug tools are available via <code>Tools > Pixel Shooter 3D > Reset Level Progress</code> and <code>Tools > Pixel Shooter 3D > Show Current Level</code>.</p>
                 <ul>
                     <li><strong>LevelEditorManager.cs</strong>:
                         <br><em>Usage:</em> A complete level editor with a 12x12 grid UI. Provides tools for color picking, pig placement, and save/load of JSON level files with unique filename generation.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full 12x12 grid.
+                        </div>
+
+                        <br><strong>Save/Load:</strong> Levels are saved as <code>.json</code> files to <code>Assets/Pixel Shooter 3D/Resources/Levels/</code>. At runtime, levels are loaded from this same <code>Resources/Levels</code> folder using <code>Resources.LoadAll</code>.
                     </li>
                     <li><strong>BlockContainerEdit.cs</strong>:
                         <br><em>Usage:</em> Custom inspector sliders for rows (1-10), columns (1-10), and block scale (0.5-2.0). Dynamically spawns/destroys blocks in the editor.
@@ -653,6 +742,12 @@
             <div class="editor-box">
                 <h4>Topic Stack Level Editor</h4>
                 <p><strong>Script:</strong> <code>TopicStackLevelEditor.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #7 Topic Stack Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full tool layout.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
                     <li>Open via <code>Tools > #7 Topic Stack Level Editor</code>.</li>
@@ -661,6 +756,7 @@
                     <li>Adjust <strong>Advanced Settings</strong>: global scale factor, center-based spawning, column spacing, and material references.</li>
                     <li>Click <strong>Create Level</strong> to generate the level hierarchy with randomized item distribution.</li>
                 </ol>
+                <p><strong>Note:</strong> This editor generates the level directly as scene objects (GameObjects with components) rather than saving to JSON. The generated hierarchy appears under the active scene and can be saved as part of the scene or converted to a prefab.</p>
             </div>
         </section>
 
@@ -701,7 +797,13 @@
                 <h4>Solitaire Associations Editor Tools</h4>
                 <ul>
                     <li><strong>LevelEditorWindow.cs</strong>:
-                        <br><em>Usage:</em> Open via <code>Tools > #8 Solitaire Associations Level Editor</code>. A full-featured editor with a level browser, category manager, foundation/tableau/deck editors, visual preview, and validation checks (duplicate cards, capacity mismatches).
+                        <br><em>Open via:</em> <code>Tools > #8 Solitaire Associations Level Editor</code>. A full-featured editor with a level browser, category manager, foundation/tableau/deck editors, visual preview, and validation checks (duplicate cards, capacity mismatches).
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full editor layout with the level browser on the left and the editor panels on the right.
+                        </div>
+
+                        <br><strong>Save/Load:</strong> Levels are saved as <code>.json</code> files to <code>Assets/Hypercasual Game Engine/Games/#8_SolitaireAssociations/Resources/Levels/SolitaireAssociations/</code>. The editor includes a level browser panel that lists all existing levels. Use <strong>Save</strong> to overwrite the current level, or <strong>Save As</strong> to create a new file. Level files must be inside the <code>Resources/Levels/SolitaireAssociations/</code> folder to be loaded at runtime.
                     </li>
                     <li><strong>UpdateCardPrefabVisualsFinal.cs</strong>:
                         <br><em>Usage:</em> Editor utility that updates the CardPrefab with all required visual elements (border, count text, crown icon, category header) at correct positions.
@@ -749,14 +851,27 @@
             <div class="editor-box">
                 <h4>Coffee Go Level Editor</h4>
                 <p><strong>Script:</strong> <code>CoffeeGoLevelEditor.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #9 CoffeeGo Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full tool layout with the level browser and preview panels.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
-                    <li>Open via the Editor window. Browse, load, or create levels from the <strong>Level Browser</strong> panel.</li>
+                    <li>Open via <code>Tools > #9 CoffeeGo Level Editor</code>. Browse, load, or create levels from the <strong>Level Browser</strong> panel.</li>
                     <li>Configure <strong>Conveyor Settings</strong>: max slots, height per coffee, move speed, and lose countdown timer.</li>
                     <li>Add trays and set their <strong>Color</strong>, <strong>Slot Count</strong>, and <strong>Initial Coffees</strong> using color swatches. Use <strong>Fill</strong> to auto-populate or <strong>Randomize All Coffees</strong> for quick setup.</li>
                     <li>Use <strong>Capture From Scene</strong> to read current scene data, or <strong>Apply To Scene</strong> to write editor data back.</li>
                     <li>A visual preview shows tray layouts with mismatched coffees marked. Validation prevents saving impossible levels.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> in the editor. Levels are saved as <code>.json</code> files to <code>Assets/Hypercasual Game Engine/Games/#9_CoffeeGo/Levels/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> panel to see all existing levels and click one to load it. You can also use the <strong>Load</strong> button for a file dialog.</li>
+                    <li>At runtime, the game loads level files from this same Levels folder.</li>
+                </ul>
             </div>
         </section>
 
@@ -797,13 +912,26 @@
             <div class="editor-box">
                 <h4>Bricky Bounce Level Editor</h4>
                 <p><strong>Script:</strong> <code>BrickyBounceLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #10 Bricky Bounce Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full board and grid editing panels.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
-                    <li>Open the editor window. Use <strong>Save/Load</strong> to manage levels as JSON files or ScriptableObjects.</li>
+                    <li>Open the editor via <code>Tools > #10 Bricky Bounce Level Editor</code>.</li>
                     <li>Edit the <strong>Board</strong>: left-click to toggle empty/filled boxes, right-click for a context menu to set color, ball count, hidden state, and exit permissions. Adjust rows and columns dynamically.</li>
                     <li>Edit the <strong>Grid</strong>: left-click to toggle bricks on/off. Configure layer count, row count, and column count. Use a color selector per layer and <strong>Fill/Clear Layer</strong> buttons for quick editing.</li>
                     <li>A color legend and real-time grid rendering provide visual feedback during editing.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save as JSON:</strong> Click <strong>Save</strong>. A file dialog opens with the default location <code>Assets/Hypercasual Game Engine/Games/#10_BrickyBounce/Levels/</code>. The level is saved as a <code>.json</code> file.</li>
+                    <li><strong>Save as ScriptableObject:</strong> You can also save the level as a <code>GameData</code> ScriptableObject to <code>Assets/Hypercasual Game Engine/Games/#10_BrickyBounce/Datas/</code>.</li>
+                    <li><strong>Load:</strong> Click <strong>Load</strong> to browse and open an existing <code>.json</code> level file from the same folder.</li>
+                </ul>
             </div>
         </section>
 
@@ -854,6 +982,12 @@
             <div class="editor-box">
                 <h4>Hole Loop Jam Level Editor</h4>
                 <p><strong>Script:</strong> <code>HoleLoopJamLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #11 HoleLoopJam Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser on the left and the grid editor on the right.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
                     <li>Open via <code>Tools > #11 HoleLoopJam Level Editor</code>.</li>
@@ -861,8 +995,16 @@
                     <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
                     <li>Edit the <strong>Block Grid</strong>: click cells to cycle through <code>TypeColor</code> values (None, Red, Blue, Green, Yellow, Purple). Hold <strong>Shift+click</strong> to toggle the <em>Hidden</em> flag, or <strong>Ctrl+click</strong> for the <em>Obstacle</em> flag. Cells are color-coded with overlay markers for hidden (H) and obstacle (X) states.</li>
                     <li>Edit <strong>Pot Data Lines</strong>: add/remove lines, and within each line add pots with a <code>TypeColor</code> and fill <code>Amount</code>. Reorder lines as needed.</li>
-                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/HoleLoopJam/</code>. Use <strong>Save As</strong> to save under a new name.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/HoleLoopJam/</code>. Use <strong>Save As</strong> to save under a new name.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel — it lists all <code>.json</code> files in the levels folder. Click any level name to load it.</li>
+                    <li><strong>Delete:</strong> Select a level in the browser and click the delete button to remove it.</li>
+                    <li><strong>New Level:</strong> Click <strong>+ New Level</strong> to create a blank level with an auto-generated name.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/HoleLoopJam/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
             </div>
         </section>
 
@@ -918,6 +1060,12 @@
             <div class="editor-box">
                 <h4>Coffee Color Block Level Editor</h4>
                 <p><strong>Script:</strong> <code>CoffeeColorBlockLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #12 CoffeeColorBlock Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and editor panels.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
                     <li>Open via <code>Tools > #12 CoffeeColorBlock Level Editor</code>.</li>
@@ -926,8 +1074,15 @@
                     <li>Edit <strong>Blocks</strong>: add/remove block entries. Each block has a color (<code>EColor</code>), rotation (0/90/180/270), grid position, shape offsets (list of <code>Vector2Int</code> defining the block shape), and cup slot count.</li>
                     <li>Edit the <strong>Conveyor Queue</strong>: add/remove conveyor entries, each with a color and coffee count.</li>
                     <li>Use <strong>Capture from Scene</strong> to read current scene Block and Convenyor data into the editor, bridging the existing inspector-based workflow with the JSON system.</li>
-                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/CoffeeColorBlock/</code>.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/CoffeeColorBlock/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li><strong>Capture from Scene:</strong> Use this button to import the current scene's block and conveyor configuration into the editor (useful if you've been building levels using the inspector).</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/CoffeeColorBlock/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
             </div>
         </section>
 
@@ -981,14 +1136,26 @@
             <div class="editor-box">
                 <h4>Color Brick Loop Level Editor</h4>
                 <p><strong>Script:</strong> <code>ColorBrickLoopLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #13 ColorBrickLoop Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and color grid editor.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
                     <li>Open via <code>Tools > #13 ColorBrickLoop Level Editor</code>.</li>
                     <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
                     <li>Edit the <strong>Color Grid</strong>: a visual rows x columns grid of <code>EColor</code> dropdown popups (Yellow, Green, Emerald, Orange). Add or remove rows and columns to resize the grid.</li>
                     <li>Edit <strong>Goal Colors</strong>: an ordered list of <code>EColor</code> values that define the sequence of colors players must eliminate. Use add/remove buttons and reorder as needed.</li>
-                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/ColorBrickLoop/</code>.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/ColorBrickLoop/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/ColorBrickLoop/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
             </div>
         </section>
 
@@ -1043,6 +1210,12 @@
             <div class="editor-box">
                 <h4>Good Swipe Level Editor</h4>
                 <p><strong>Script:</strong> <code>GoodSwipeLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #14 GoodSwipe Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and box editor panels.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
                     <li>Open via <code>Tools > #14 GoodSwipe Level Editor</code>.</li>
@@ -1050,8 +1223,14 @@
                     <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
                     <li>Edit <strong>Fill Data</strong> (collection goals): add/remove target entries, each with a <code>TypeObject</code> (Can, Ice, Duck) and required count.</li>
                     <li>Edit <strong>Boxes</strong>: add/remove box definitions. Each box has a grid position and a list of up to 4 item types (<code>TypeObject</code> enum popups). Boxes are shown as a visual grid layout.</li>
-                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/GoodSwipe/</code>.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/GoodSwipe/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/GoodSwipe/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
             </div>
         </section>
 
@@ -1105,6 +1284,12 @@
             <div class="editor-box">
                 <h4>Drop Marbles Level Editor</h4>
                 <p><strong>Script:</strong> <code>DropMarblesLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #15 DropMarbles Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and editor panels.
+                </div>
+
                 <p><strong>How to use:</strong></p>
                 <ol>
                     <li>Open via <code>Tools > #15 DropMarbles Level Editor</code>.</li>
@@ -1112,8 +1297,14 @@
                     <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
                     <li>Edit <strong>Box Items</strong>: add/remove box definitions. Each box has a list of <code>TypeColor</code> values (Red, Blue, Green, Yellow) representing the marbles inside.</li>
                     <li>Edit <strong>Fill Columns</strong>: add/remove fill column definitions. Each column has an ordered list of <code>TypeColor</code> entries defining the target colors that must be matched from bottom to top.</li>
-                    <li>Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/DropMarbles/</code>.</li>
                 </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/DropMarbles/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/DropMarbles/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
             </div>
         </section>
 
@@ -1124,15 +1315,15 @@
                 <h4>Core Editor Tools</h4>
                 <p>These tools are available globally to assist with general project development:</p>
                 <ul>
-                    <li><strong>DragSnapWithoutPlaymodeEditor.cs</strong>: 
+                    <li><strong>DragSnapWithoutPlaymodeEditor.cs</strong>:
                         <br><em>Usage:</em> Attach the <code>DragSnapWithoutPlaymode</code> component to any GameObject. In the Scene view, a custom handle will appear. Moving this handle will snap the object to the grid defined in the inspector. It also draws a visual grid around the object for reference.
                     </li>
-                    <li><strong>ImportAudioIcon.cs</strong>: 
+                    <li><strong>ImportAudioIcon.cs</strong>:
                         <br><em>Usage:</em> Automatically assigns a custom icon to audio files in the Project window, making them easier to distinguish from other assets.
                     </li>
                 </ul>
             </div>
-            
+
             <h3>LoseWinPanelManager</h3>
             <p>A global UI controller. It listens for events from any <code>LevelManager</code> and triggers the appropriate overlay. It is designed to be "Plug and Play" — just drop the prefab into your scene's Canvas.</p>
 
@@ -1142,10 +1333,10 @@
 
         <section id="development">
             <h1>Development Guide</h1>
-            
+
             <h3>Creating a New Game Module:</h3>
             <ol>
-                <li><strong>Folder Setup</strong>: Create <code>Games/#X_Name</code>.</li>
+                <li><strong>Folder Setup</strong>: Create <code>Assets/Hypercasual Game Engine/Games/#X_Name</code>.</li>
                 <li><strong>Manager</strong>: Create a script inheriting from <code>LevelManager</code>.
                     <pre>public class MyGameManager : LevelManager { ... }</pre>
                 </li>
@@ -1169,7 +1360,7 @@
 
         <section id="version-history">
             <h1>Version History</h1>
-            
+
             <h3>v4.0 - Next Update (Coming Soon)</h3>
             <p>The next major release will add <strong>5 brand new game modules</strong>. Have a game idea you'd like to see included? Reach out — your suggestion might make it into the next update!</p>
             <div class="note">
