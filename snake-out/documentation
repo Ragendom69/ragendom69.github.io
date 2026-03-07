@@ -1,1 +1,895 @@
-raw
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Out - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #43b692 0%, #0b8457 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #0b8457;
+            border-bottom: 2px solid #43b692;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #0b8457;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #43b692;
+        }
+
+        .feature-card h4 {
+            color: #0b8457;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #0b8457;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #43b692;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Snake Out</h1>
+        <p class="subtitle">A Snake Puzzle Game &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-136631" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#admob-ads">AdMob Ads</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a snake puzzle game. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Snake Out is a grid-based puzzle game where players drag color-coded snakes into their matching holes before time runs out. The game features procedurally rendered visuals, a built-in level editor, an automatic level generator, a booster system, and full AdMob ad integration.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Drag-to-Solve Puzzles</h4>
+                    <p>Intuitive touch/mouse controls &mdash; drag snake heads or tails to navigate them across the grid and into matching colored holes.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>Full Unity Editor window for designing levels with visual grid painting &mdash; place walls, holes, and snake segments with color-coded tools.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate hundreds of solvable levels with configurable difficulty curves, grid sizes, snake counts, and obstacle densities.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Booster System</h4>
+                    <p>Three in-game boosters &mdash; Freeze Time, Break Wall, and Auto-Solve &mdash; with tutorial popups and usage tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>AdMob Integration</h4>
+                    <p>Ragendom Monetization module with banner, interstitial, and rewarded video ads. Includes a Dummy provider for editor testing.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>500 Levels Included</h4>
+                    <p>Ships with 500 pre-generated levels with a progressive difficulty curve, ready to play out of the box.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>TextMesh Pro (included with Unity)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the Snake Out package into your Unity project</li>
+                <li>Open the game scene at <code>Assets/Snake Out/Scenes/GameNew.unity</code></li>
+                <li>Press Play to test the first level</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, drag any snake by its head (or tail, if unlocked) toward the hole that matches its color. When all snakes are in their holes, the level is cleared and the next level loads automatically.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <div class="folder-structure">
+<span class="folder">Snake Out/</span>
+│
+├── <span class="folder">Art/</span>
+│   ├── <span class="folder">Materials/</span> <span class="comment">— Shared materials (e.g. SnakeWallAndGround)</span>
+│   └── <span class="folder">Textures/</span> <span class="comment">— UI textures (booster icons, panel backgrounds, etc.)</span>
+│
+├── <span class="folder">Audio/</span> <span class="comment">— All sound effects (.wav)</span>
+│
+├── <span class="folder">Documentation/</span> <span class="comment">— This documentation file</span>
+│
+├── <span class="folder">Editor/</span> <span class="comment">— Editor-only scripts (excluded from builds)</span>
+│   ├── <span class="file">LevelEditorWindow.cs</span> <span class="comment">— Visual level designer</span>
+│   └── <span class="file">LevelGenerator.cs</span> <span class="comment">— Automatic batch level generator</span>
+│
+├── <span class="folder">Prefabs/</span> <span class="comment">— All prefabs (UI panels, HUD, developer tools)</span>
+│   ├── <span class="file">GameHUD_Panel.prefab</span>
+│   ├── <span class="file">GameOverPanel.prefab</span>
+│   ├── <span class="file">LevelClearedPanel.prefab</span>
+│   ├── <span class="file">LoseWinPanel.prefab</span>
+│   ├── <span class="file">Popup_Powerup_Picker.prefab</span>
+│   └── <span class="file">DeveloperModeButton.prefab</span>
+│
+├── <span class="folder">Scenes/</span>
+│   └── <span class="file">GameNew.unity</span> <span class="comment">— Main game scene</span>
+│
+└── <span class="folder">Scripts/</span> <span class="comment">— All runtime scripts</span>
+    ├── <span class="file">SlitherRushGame.cs</span> <span class="comment">— Main game controller</span>
+    ├── <span class="file">SlitherSnake.cs</span> <span class="comment">— Snake entity (visuals, movement, particles)</span>
+    ├── <span class="file">LevelData.cs</span> <span class="comment">— Data structures (LevelData, LevelHole, LevelSnake, etc.)</span>
+    ├── <span class="file">LevelManager.cs</span> <span class="comment">— Level loading, progression, and persistence</span>
+    ├── <span class="file">SoundManager.cs</span> <span class="comment">— Audio system (singleton)</span>
+    ├── <span class="file">LoseWinPanelManager.cs</span> <span class="comment">— Win/Lose UI panel controller</span>
+    ├── <span class="file">CameraSwitcher.cs</span> <span class="comment">— Multi-game camera switching</span>
+    ├── <span class="file">InfiniteRotator.cs</span> <span class="comment">— UI rotation effect</span>
+    ├── <span class="file">DeveloperModeButton.cs</span> <span class="comment">— Dev panel toggle button</span>
+    └── <span class="file">DeveloperSettingsController.cs</span> <span class="comment">— Dev panel controls (level nav, ads)</span>
+
+<span class="folder">Resources/</span> <span class="comment">— Unity Resources folder (loaded at runtime via Resources.Load)</span>
+├── <span class="folder">Levels/</span> <span class="comment">— 500 level JSON files (Level_1.json ... Level_500.json)</span>
+└── <span class="file">SnakeWallAndGround.mat</span> <span class="comment">— Runtime-loaded wall material</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level is a grid containing color-coded <strong>snakes</strong>, <strong>holes</strong>, and <strong>walls</strong>. The goal is to guide every snake into the hole that matches its color before the countdown timer reaches zero.</p>
+
+            <ul>
+                <li><strong>Drag to move</strong> &mdash; Tap and drag a snake's head (or tail) to slide it along the grid, one cell at a time</li>
+                <li><strong>Color matching</strong> &mdash; Each snake must enter the hole that shares its color</li>
+                <li><strong>Walls</strong> &mdash; Impassable obstacles that block snake movement</li>
+                <li><strong>Tail lock</strong> &mdash; Some snakes can only be moved by their head (tail movement is locked)</li>
+                <li><strong>Timer</strong> &mdash; Each level has a time limit; running out triggers a Game Over</li>
+            </ul>
+
+            <h3>Snake Colors</h3>
+            <p>The game supports seven predefined snake/hole colors:</p>
+            <table>
+                <tr>
+                    <th>Color Key</th>
+                    <th>Color</th>
+                    <th>Hex Value</th>
+                </tr>
+                <tr>
+                    <td><code>orange</code></td>
+                    <td><span class="color-swatch" style="background:#FFA502;"></span> Orange</td>
+                    <td>#FFA502</td>
+                </tr>
+                <tr>
+                    <td><code>pink</code></td>
+                    <td><span class="color-swatch" style="background:#FF6B81;"></span> Pink</td>
+                    <td>#FF6B81</td>
+                </tr>
+                <tr>
+                    <td><code>darkblue</code></td>
+                    <td><span class="color-swatch" style="background:#1E90FF;"></span> Dark Blue</td>
+                    <td>#1E90FF</td>
+                </tr>
+                <tr>
+                    <td><code>blue</code></td>
+                    <td><span class="color-swatch" style="background:#48DBFB;"></span> Light Blue</td>
+                    <td>#48DBFB</td>
+                </tr>
+                <tr>
+                    <td><code>red</code></td>
+                    <td><span class="color-swatch" style="background:#FF4757;"></span> Red</td>
+                    <td>#FF4757</td>
+                </tr>
+                <tr>
+                    <td><code>yellow</code></td>
+                    <td><span class="color-swatch" style="background:#ECCC68;"></span> Yellow</td>
+                    <td>#ECCC68</td>
+                </tr>
+                <tr>
+                    <td><code>green</code></td>
+                    <td><span class="color-swatch" style="background:#7BED9F;"></span> Green</td>
+                    <td>#7BED9F</td>
+                </tr>
+            </table>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; All snakes are inside their matching holes. The level index advances and the next level loads automatically.</li>
+                <li><strong>Lose</strong> &mdash; The timer reaches zero. The Game Over panel appears with a Retry button that reloads the current level.</li>
+            </ul>
+
+            <h3>Hole Animation</h3>
+            <p>When a snake reaches its matching hole, it enters a segment-by-segment sucking animation. Each segment is removed on a timer while the visuals smoothly slide toward the hole. Colored particle bursts spawn at the hole entrance as segments are consumed.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Runtime scripts use the <code>HypercasualGameEngine</code> namespace. Developer/UI scripts use the <code>PixelShooter3D</code> namespace.</p>
+
+            <h3>Core Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>SlitherRushGame</code></td>
+                    <td>Main game controller. Spawns the grid, walls, holes, and snakes procedurally. Handles input (drag-to-move), game timer, hole entrance detection, win/lose conditions, and all booster logic. Attached to the root game object in the scene.</td>
+                </tr>
+                <tr>
+                    <td><code>SlitherSnake</code></td>
+                    <td>Individual snake entity. Manages segment data, line renderer visuals (with shadow), eye animation, tongue animation, tail indicator, drag preview, hole slide animation, hole burst particles, and auto-solve flight arc.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelData</code></td>
+                    <td>Data structures for levels: <code>GridPos</code>, <code>LevelHole</code>, <code>LevelSnake</code>, <code>LevelData</code>, and the <code>SlitherColors</code> color palette. Serializable to/from JSON.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelManager</code></td>
+                    <td>Static class that loads level JSONs from <code>Resources/Levels/</code>, tracks the current level index via PlayerPrefs, and provides methods to advance, go back, or jump to any level.</td>
+                </tr>
+                <tr>
+                    <td><code>SoundManager</code></td>
+                    <td>Singleton audio system. Exposes named methods for each sound effect: <code>PlaySnakeMove()</code>, <code>PlaySnakeFlyToHole()</code>, <code>PlaySegmentSucked()</code>, <code>PlayFreezeTime()</code>, <code>PlayBreakWall()</code>, <code>PlayGameWin()</code>, <code>PlayGameOver()</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>LoseWinPanelManager</code></td>
+                    <td>Manages the Win and Lose UI panels. Auto-finds child panels by name. Supports auto-loading the next level after a configurable delay on win.</td>
+                </tr>
+            </table>
+
+            <h3>Utility Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>CameraSwitcher</code></td>
+                    <td>Switches the camera between multiple parent transforms (for multi-game setups). Persists the selected index via PlayerPrefs.</td>
+                </tr>
+                <tr>
+                    <td><code>InfiniteRotator</code></td>
+                    <td>Simple component that continuously rotates its transform around the local Z axis. Used for UI effects like radial shine animations.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperModeButton</code></td>
+                    <td>Toggles a developer settings panel on click. Auto-finds a child named <code>DeveloperSettingsPanel</code> if no reference is assigned.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperSettingsController</code></td>
+                    <td>Developer panel with buttons for level navigation (next, previous, reload, trigger win/lose) and ad testing (show/hide banner, show/request interstitial, show/request rewarded).</td>
+                </tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>LevelEditorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Snake Out Level Editor</code>) for visually designing levels with a grid painter.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelGenerator</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Snake Out Auto Level Generator</code>) for batch-generating levels with configurable parameters.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+
+            <h3>Opening the Level Editor</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Snake Out Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder, and delete levels in the left panel</li>
+                <li><strong>Grid Painter</strong> &mdash; Click cells on the grid to paint walls, holes, snake segments, or erase</li>
+                <li><strong>Paint Modes</strong> &mdash; Select a mode from the toolbar: None, Wall, Hole, Snake, Erase</li>
+                <li><strong>Color Selection</strong> &mdash; Choose a snake/hole color when in Hole or Snake paint mode</li>
+                <li><strong>Snake Management</strong> &mdash; Add/remove snakes per level, clear segments, toggle tail-lock</li>
+                <li><strong>Grid Settings</strong> &mdash; Adjust columns, rows, and time limit per level</li>
+                <li><strong>Save / Reload</strong> &mdash; Save all levels to disk as JSON, or reload from disk</li>
+            </ul>
+
+            <h3>Paint Modes</h3>
+            <table>
+                <tr>
+                    <th>Mode</th>
+                    <th>Left Click</th>
+                </tr>
+                <tr>
+                    <td><strong>None</strong></td>
+                    <td>No painting &mdash; click cells to inspect</td>
+                </tr>
+                <tr>
+                    <td><strong>Wall</strong></td>
+                    <td>Place a wall obstacle at the clicked cell</td>
+                </tr>
+                <tr>
+                    <td><strong>Hole</strong></td>
+                    <td>Place a hole with the selected color at the clicked cell</td>
+                </tr>
+                <tr>
+                    <td><strong>Snake</strong></td>
+                    <td>Append a segment to the selected snake at the clicked cell</td>
+                </tr>
+                <tr>
+                    <td><strong>Erase</strong></td>
+                    <td>Remove whatever is at the clicked cell (wall, hole, or snake segment)</td>
+                </tr>
+            </table>
+
+            <h3>Level Storage</h3>
+            <p>All levels are stored as individual JSON files in <code>Assets/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. They are loaded at runtime via <code>Resources.LoadAll</code>.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Automatic Level Generator</h2>
+
+            <p>The Automatic Level Generator is an Editor tool that batch-generates solvable puzzle levels procedurally. It uses constraint-based random placement with configurable difficulty curves.</p>
+
+            <h3>Opening the Tool</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Snake Out Auto Level Generator</code>. This opens a settings window where you can configure all parameters before generating.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Levels to Generate</strong></td>
+                    <td>How many new level files to create. New levels are appended after existing ones (never overwrites).</td>
+                </tr>
+                <tr>
+                    <td><strong>Cols / Rows (Min &amp; Max)</strong></td>
+                    <td>Range for randomizing the grid dimensions of each level.</td>
+                </tr>
+                <tr>
+                    <td><strong>Snake Count (Min &amp; Max)</strong></td>
+                    <td>Range for the number of snakes placed per level.</td>
+                </tr>
+                <tr>
+                    <td><strong>Snake Length (Min &amp; Max)</strong></td>
+                    <td>Range for the segment count of each snake.</td>
+                </tr>
+                <tr>
+                    <td><strong>Empty Tiles % (easy &rarr; hard)</strong></td>
+                    <td>How much of the grid remains open. Higher values = easier (more room). Interpolates from easy to hard across the batch.</td>
+                </tr>
+                <tr>
+                    <td><strong>Time Limit (easy &rarr; hard)</strong></td>
+                    <td>Countdown timer in seconds. Interpolates across the batch.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tail-Lock Chance (easy &rarr; hard)</strong></td>
+                    <td>Probability that a snake's tail is locked (can only move by head). Higher values = harder.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hole Distance Factor (easy &rarr; hard)</strong></td>
+                    <td>Controls how far holes are placed from their matching snakes. Higher values = harder.</td>
+                </tr>
+                <tr>
+                    <td><strong>Max Floating Wall Islands</strong></td>
+                    <td>Maximum number of disconnected wall clusters per level (0&ndash;5).</td>
+                </tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Configure settings</strong> &mdash; adjust all parameters in the Editor window</li>
+                <li><strong>Click "Generate Levels"</strong> &mdash; the tool detects existing levels and appends new ones</li>
+                <li><strong>For each level</strong>, the generator:
+                    <ul>
+                        <li>Randomizes grid size, snake count, and snake lengths within your ranges</li>
+                        <li>Interpolates difficulty settings (empty %, time, tail-lock chance, hole distance) based on position in the batch</li>
+                        <li>Places snakes with connected segments using random walk</li>
+                        <li>Places matching holes at appropriate distances</li>
+                        <li>Fills remaining cells with walls based on the empty-tile percentage</li>
+                        <li>Optionally adds floating wall islands</li>
+                        <li>Exports a JSON level file to <code>Resources/Levels/</code></li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="important-notice">
+                <h3>Non-Destructive</h3>
+                <p>The generator <strong>never overwrites</strong> existing level files. It always starts numbering from the next available index (e.g., if Level_500 exists, new levels start from Level_501).</p>
+            </div>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+
+            <p>The game includes three booster abilities that players can activate during gameplay. Each booster has a limited number of uses per level and an optional tutorial popup that appears on first use.</p>
+
+            <table>
+                <tr>
+                    <th>Booster</th>
+                    <th>Effect</th>
+                    <th>Activation</th>
+                </tr>
+                <tr>
+                    <td><strong>Freeze Time</strong></td>
+                    <td>Pauses the countdown timer for a set duration, giving extra time to solve the puzzle.</td>
+                    <td>Tap the freeze button. The timer bar changes color to indicate the freeze is active.</td>
+                </tr>
+                <tr>
+                    <td><strong>Break Wall</strong></td>
+                    <td>Destroys a single wall obstacle, opening up a new path. Spawns a debris particle explosion.</td>
+                    <td>Tap the wall-destroy button, then tap any wall on the grid to break it.</td>
+                </tr>
+                <tr>
+                    <td><strong>Auto-Solve (Wing)</strong></td>
+                    <td>Automatically flies a selected snake into its matching hole with an arc animation.</td>
+                    <td>Tap the wing button, then tap any snake on the grid to auto-solve it.</td>
+                </tr>
+            </table>
+
+            <h3>Booster Buttons</h3>
+            <p>Booster buttons are found in the scene UI. Each button has:</p>
+            <ul>
+                <li>A <strong>lock overlay</strong> that appears when the booster is unavailable (locked behind ads/unlocks)</li>
+                <li>A <strong>use count badge</strong> showing remaining uses</li>
+                <li>An <strong>active-mode tint</strong> (light blue) when a targeting booster (Break Wall, Auto-Solve) is waiting for a target click</li>
+            </ul>
+
+            <h3>Cheat Mode</h3>
+            <p>Press the <strong>U</strong> key during gameplay to unlock all boosters (removes lock state). This is useful for testing.</p>
+        </section>
+
+        <!-- ==================== ADMOB ADS ==================== -->
+        <section id="admob-ads" class="section">
+            <h2>AdMob Ads</h2>
+
+            <p>This project includes a Ragendom Monetization module for integrating AdMob ads (banners, interstitials, and rewarded videos). The ad system supports both real AdMob ads on device and a built-in <strong>Dummy ad provider</strong> for testing in the Unity Editor.</p>
+
+            <h3>Documentation</h3>
+            <p>Full setup and configuration instructions for the ad system are provided in a separate documentation file located at:</p>
+            <div class="code-block">Assets/Snake Out/RagendomAds/Documentation/Documentation.html</div>
+            <p>That documentation covers AdMob app IDs, ad unit IDs, UMP/GDPR consent, test devices, and all monetization settings.</p>
+
+            <h3>Video Tutorial</h3>
+            <p>If you prefer a video walkthrough over reading documentation, watch the full ads setup tutorial here:</p>
+            <p style="margin: 15px 0;">
+                <a href="https://www.youtube.com/watch?v=nWmyWacoFAc" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #FF0000; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 1rem;">
+                    &#9654; Watch Ads Setup Tutorial on YouTube
+                </a>
+            </p>
+
+            <h3>Quick Overview</h3>
+            <p>The ad system consists of the following key components in the scene:</p>
+            <ul>
+                <li><strong>[Monetization Init]</strong> &mdash; A GameObject with the <code>MonetizationInitModule</code> component. It initializes the ad system on Awake using the assigned <code>MonetizationSettings</code> asset.</li>
+                <li><strong>MonetizationSettings</strong> &mdash; A ScriptableObject asset at <code>Assets/Snake Out/RagendomAds/Modules/Monetization/MonetizationSettings.asset</code>. Contains all ad provider configuration, timing, and consent settings.</li>
+                <li><strong>AdsSettings</strong> &mdash; A sub-asset inside MonetizationSettings that controls which ad provider is used for each ad type (Banner, Interstitial, Rewarded Video). Defaults to the <code>Dummy</code> provider for editor testing.</li>
+            </ul>
+
+            <h3>Ad Types</h3>
+            <table>
+                <tr>
+                    <th>Ad Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Banner</strong></td>
+                    <td>A small ad strip displayed at the top or bottom of the screen. Show and hide at any time.</td>
+                </tr>
+                <tr>
+                    <td><strong>Interstitial</strong></td>
+                    <td>A full-screen ad. Must be <em>requested</em> (loaded) first, then <em>shown</em> when ready. Supports cooldown timers and conditions.</td>
+                </tr>
+                <tr>
+                    <td><strong>Rewarded Video</strong></td>
+                    <td>A full-screen video ad that grants a reward on completion. Must be <em>requested</em> first, then <em>shown</em>. Always available regardless of no-ads purchases.</td>
+                </tr>
+            </table>
+
+            <h3>Testing in the Editor</h3>
+            <p>By default, the ad system uses the <strong>Dummy</strong> provider, which displays test UI overlays in the Editor (a green "TEST BANNER" bar, dark "TEST INTERSTITIAL" overlay, and blue "TEST REWARDED VIDEO" overlay). This lets you verify the ad flow without needing a real device or AdMob account.</p>
+            <p>The <strong>Developer Settings Panel</strong> (accessible via the gear icon in-game) includes ad control buttons for testing: Show/Hide Banner, Show/Request Interstitial, and Show/Request Rewarded Video.</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization Guide</h2>
+
+            <h3>Adding New Snake Colors</h3>
+            <p>Open <code>LevelData.cs</code> and add entries to the <code>SlitherColors</code> dictionary:</p>
+            <div class="code-block">
+<span class="keyword">private static readonly</span> Dictionary&lt;<span class="class">string</span>, <span class="class">Color</span>&gt; colors = <span class="keyword">new</span> Dictionary&lt;<span class="class">string</span>, <span class="class">Color</span>&gt;
+{
+    { <span class="string">"orange"</span>,   <span class="keyword">new</span> <span class="class">Color32</span>(255, 165, 2, 255) },
+    { <span class="string">"pink"</span>,     <span class="keyword">new</span> <span class="class">Color32</span>(255, 107, 129, 255) },
+    <span class="comment">// Add your custom colors here:</span>
+    { <span class="string">"purple"</span>,   <span class="keyword">new</span> <span class="class">Color32</span>(155, 89, 182, 255) },
+};
+            </div>
+            <p>New colors are automatically available in the Level Editor and Auto Level Generator.</p>
+
+            <h3>Adjusting Grid Visuals</h3>
+            <p>The grid, walls, holes, and snakes are all rendered procedurally in <code>SlitherRushGame.cs</code>. Key constants:</p>
+            <ul>
+                <li><code>CELL_SIZE</code> &mdash; Size of each grid cell in world units (default: 0.3375)</li>
+                <li>Grid background color and line color are defined in <code>SpawnGrid()</code></li>
+                <li>Wall material is loaded from <code>Resources/SnakeWallAndGround</code></li>
+            </ul>
+
+            <h3>Modifying Snake Visuals</h3>
+            <p>Snake rendering is handled in <code>SlitherSnake.cs</code> using Unity <code>LineRenderer</code> components. You can customize:</p>
+            <ul>
+                <li><strong>Width</strong> &mdash; Modify <code>widthMultiplier</code> on the line renderer</li>
+                <li><strong>Eyes</strong> &mdash; Eye sprites are procedurally generated; adjust sizes in <code>CreateEyes()</code></li>
+                <li><strong>Tongue</strong> &mdash; Tongue prongs are line renderers; adjust in <code>CreateTongue()</code></li>
+                <li><strong>Shadow</strong> &mdash; A separate dark line renderer follows the snake; adjust opacity/offset in <code>CreateShadow()</code></li>
+            </ul>
+
+            <h3>Adding New Boosters</h3>
+            <p>New boosters can be added by following the existing pattern in <code>SlitherRushGame.cs</code>:</p>
+            <ol>
+                <li>Add booster state fields (uses count, active flag, button reference)</li>
+                <li>Find the button in <code>CreateBoosterButtons()</code></li>
+                <li>Handle the booster logic in <code>Update()</code> or a dedicated method</li>
+                <li>Add a click handler in <code>HandleInput()</code> if the booster requires a target selection</li>
+            </ol>
+
+            <h3>JSON Level Format</h3>
+            <p>Each level is a JSON file with the following structure:</p>
+            <div class="code-block">
+{
+    <span class="string">"cols"</span>: 6,
+    <span class="string">"rows"</span>: 8,
+    <span class="string">"timeLimit"</span>: 120.0,
+    <span class="string">"holes"</span>: [
+        {
+            <span class="string">"colorKey"</span>: <span class="string">"darkblue"</span>,
+            <span class="string">"position"</span>: { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 4 }
+        }
+    ],
+    <span class="string">"snakes"</span>: [
+        {
+            <span class="string">"colorKey"</span>: <span class="string">"darkblue"</span>,
+            <span class="string">"canMoveByTail"</span>: true,
+            <span class="string">"segments"</span>: [
+                { <span class="string">"x"</span>: 4, <span class="string">"y"</span>: 3 },
+                { <span class="string">"x"</span>: 4, <span class="string">"y"</span>: 2 },
+                { <span class="string">"x"</span>: 4, <span class="string">"y"</span>: 1 }
+            ]
+        }
+    ],
+    <span class="string">"obstacles"</span>: [
+        { <span class="string">"x"</span>: 4, <span class="string">"y"</span>: 0 },
+        { <span class="string">"x"</span>: 1, <span class="string">"y"</span>: 3 }
+    ]
+}
+            </div>
+            <p>The first segment in a snake's <code>segments</code> array is the <strong>head</strong>; the last is the <strong>tail</strong>. Grid coordinates are zero-indexed, with <code>(0,0)</code> at the top-left corner.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>No levels load / "No level data found" error</td>
+                    <td>Ensure JSON level files exist in <code>Assets/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc.</td>
+                </tr>
+                <tr>
+                    <td>Purple/missing materials on WebGL</td>
+                    <td>The game uses <code>Sprites/Default</code> shader for runtime-created transparent materials. If you add custom shaders, ensure they are referenced by a material asset in the project so they are included in WebGL builds.</td>
+                </tr>
+                <tr>
+                    <td>Snakes won't enter holes on WebGL</td>
+                    <td>This is caused by shader stripping (see above). The fix ensures <code>CheckHoleEntrance</code> is called before <code>FlashTile</code> so a shader error cannot block game logic.</td>
+                </tr>
+                <tr>
+                    <td>Dev panel buttons don't respond</td>
+                    <td>If you added a <code>Canvas</code> component to the panel (e.g., for sorting order), you must also add a <code>GraphicRaycaster</code> component to the same object.</td>
+                </tr>
+                <tr>
+                    <td>Level Editor shows empty grid</td>
+                    <td>Click "Reload from Disk" in the Level Editor, or ensure the <code>Resources/Levels/</code> folder exists.</td>
+                </tr>
+            </table>
+
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the <strong>Developer Settings Panel</strong> (gear icon) in Play mode to quickly navigate levels, trigger win/lose, and test ads</li>
+                <li>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next/previous level</li>
+                <li>Press <strong>U</strong> to unlock all boosters for testing</li>
+                <li>The <strong>Auto Level Generator</strong> is the fastest way to populate your game with content &mdash; generate 100+ levels in seconds</li>
+                <li>Back up your <code>Resources/Levels/</code> folder regularly</li>
+            </ul>
+
+            <h3>Contact Us</h3>
+            <p>If you get stuck or have any issues, feel free to reach out to us at <a href="mailto:ragendom@gmail.com" style="color: #0b8457; font-weight: bold;">ragendom@gmail.com</a>. We are happy to help!</p>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Snake Out &mdash; A Snake Puzzle Game Template for Unity</p>
+        <p>&copy; 2024 &mdash; Built with the HyperCasual Game Engine</p>
+    </div>
+</body>
+</html>
