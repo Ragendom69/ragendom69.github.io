@@ -303,7 +303,13 @@
             <li><a href="#game13">#13 Color Brick Loop</a></li>
             <li><a href="#game14">#14 Good Swipe</a></li>
             <li><a href="#game15">#15 Drop Marbles</a></li>
+            <li><a href="#game16">#16 Sand Flow Puzzle<span class="standalone-icon"></span></a></li>
+            <li><a href="#game17">#17 Snake Out<span class="standalone-icon"></span></a></li>
+            <li><a href="#game18">#18 Donut Master</a></li>
+            <li><a href="#game19">#19 StackFill</a></li>
+            <li><a href="#game20">#20 Crowd To Bus</a></li>
             <li><a href="#core">Core Systems</a></li>
+            <li><a href="#ads">Ads Monetization</a></li>
             <li><a href="#development">Development Guide</a></li>
             <li><a href="#support">Support</a></li>
             <li><a href="#version-history">Version History</a></li>
@@ -332,8 +338,8 @@
 
             <h3>Opening the Main Scene</h3>
             <p>The primary game scene is located at:</p>
-            <p><code>Assets/Hypercasual Game Engine/Core/Scenes/Games-v3.0.unity</code></p>
-            <p>Open this scene to access all 15 game modules. Previous version scenes (<code>Games.unity</code>, <code>Games-v2.0.unity</code>) are also available in the same folder for reference.</p>
+            <p><code>Assets/Hypercasual Game Engine/Core/Scenes/Games-v4.0.unity</code></p>
+            <p>Open this scene to access all 20 game modules. Previous version scenes (<code>Games.unity</code>, <code>Games-v2.0.unity</code>) are also available in the same folder for reference.</p>
 
             <h3>Where to Find Level Editors</h3>
             <p>All level editor tools are located under the Unity <strong>Tools</strong> menu in the top menu bar. There is no separate "Hypercasual" tab. To open any level editor, go to:</p>
@@ -373,7 +379,7 @@
             <p>Each game folder is self-contained, including its own <code>Scripts</code>, <code>Editor</code>, <code>Prefabs</code>, and <code>Levels</code>. The folder naming convention is <code>#{number}_{GameName}</code>, for example: <code>#1_Arrows</code>, <code>#7_ConveyorSort</code>, <code>#11_HoleLoopJam</code>.</p>
 
             <h3>Scenes (<code>Assets/Hypercasual Game Engine/Core/Scenes</code>)</h3>
-            <p>The current main scene is <strong>Games-v3.0</strong>. This is the scene you should open to play or test any of the 15 game modules.</p>
+            <p>The current main scene is <strong>Games-v4.0</strong>. This is the scene you should open to play or test any of the 20 game modules.</p>
         </section>
 
         <section id="game1">
@@ -1308,6 +1314,281 @@
             </div>
         </section>
 
+        <section id="game16">
+            <h1>#16 Sand Flow Puzzle</h1>
+            <p>A color-matching puzzle where players manage sand flow through buckets and a conveyor belt. Click colored buckets on a grid to send them onto a moving belt, where they automatically absorb matching-color sand from an 80x80 pixel art display. Fill each bucket to clear it, and empty all the sand to win.</p>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
+                <p><a href="https://u3d.as/1Dai" target="_blank">View Sand Flow Puzzle on the Unity Asset Store</a></p>
+            </div>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SandFlowPuzzleGameManager.cs</strong>
+                    Orchestrates the game loop: level loading, UI construction, booster system (Slot, Shuffle, Magic Wand), bucket-to-belt fly animations, win/lose evaluation, and conveyor belt texture scrolling.
+                </div>
+                <div class="script-item">
+                    <strong>SandSimulator.cs</strong>
+                    80x80 pixel-based sand physics engine. Simulates gravity with sub-steps, renders to a texture via RawImage, tracks color counts, and supports pixel extraction for bucket suction.
+                </div>
+                <div class="script-item">
+                    <strong>BucketManager.cs</strong>
+                    Manages the grid of colored 3D buckets. Handles clickability logic based on neighbor rules, magic wand hover highlighting, shuffle animations, and 3D bucket creation with colliders.
+                </div>
+                <div class="script-item">
+                    <strong>ConveyorManager.cs</strong>
+                    Belt system that moves buckets along a path. Handles suction (extracting sand pixels when a bucket passes over the display), flying block particle effects, fill block visualization, and bucket completion explosions.
+                </div>
+                <div class="script-item">
+                    <strong>ImageQuantizer.cs</strong>
+                    K-means clustering algorithm that quantizes any source image into N dominant colors for level generation. Used by the Level Editor for image-based palette creation.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: 80x80 sand grid with palette color indices, bucket grid layout (rows, columns, enabled cells), bucket color/mystery assignments, belt slot count, and booster counts.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Sand Gravity</strong>: Sand pixels fall and spread using cellular automaton rules with randomized sub-steps for natural behavior.</li>
+                <li><strong>Bucket Suction</strong>: Belt buckets extract matching-color pixels from the bottom of the sand display as they pass over it, with flying block particle effects.</li>
+                <li><strong>Boosters</strong>: Slot (+1 belt capacity), Shuffle (randomize grid bucket positions), Magic Wand (click any bucket regardless of neighbor rules).</li>
+                <li><strong>Win Condition</strong>: All sand pixels cleared from the display and no particles remaining.</li>
+                <li><strong>Lose Condition</strong>: All belt slots full and every bucket has completed a full loop without extracting any sand.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Sand Flow Puzzle Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #16 Sand Flow Puzzle > Level Editor</code>. A two-panel editor with a level browser on the left and level properties on the right. Supports image quantization, palette editing, visual bucket grid editing (select/edit cells modes), auto-distribution of bucket colors, and belt/booster configuration.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full interface.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game17">
+            <h1>#17 Snake Out</h1>
+            <p>A grid-based puzzle where players drag colored snakes to guide them into matching-color holes. Snakes can be moved from either their head or tail, and must navigate around obstacles and other snakes to reach their exit.</p>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
+                <p><a href="https://u3d.as/1CKy" target="_blank">View Snake Out on the Unity Asset Store</a></p>
+            </div>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SlitherRushGame.cs</strong>
+                    Main game controller. Manages snake instantiation, input handling for dragging, grid-based movement validation, hole entry animations, win/lose checking, and level progression.
+                </div>
+                <div class="script-item">
+                    <strong>SlitherSnake.cs</strong>
+                    Snake entity with 7 color variants. Handles segment tracking with head/tail history, dragging from either end, blinking and tongue-flick animations, hole entry with particle effects, and auto-solve highlighting.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions, time limit, hole definitions (color, position), snake definitions (color, segments, can-move-by-tail flag), and obstacle positions.
+                </div>
+                <div class="script-item">
+                    <strong>InfiniteRotator.cs</strong>
+                    Utility component that continuously rotates a GameObject at a configurable speed, used for visual decoration elements.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Bidirectional Movement</strong>: Snakes can be dragged from either their head or tail, allowing strategic repositioning.</li>
+                <li><strong>Grid Pathfinding</strong>: Movement is validated against grid boundaries, obstacles, and other snake segments.</li>
+                <li><strong>Color Matching</strong>: Each snake must enter a hole of the same color. Mismatched holes are blocked.</li>
+                <li><strong>Time Limit</strong>: Configurable per level (default 120 seconds).</li>
+                <li><strong>Win Condition</strong>: All snakes have entered their matching holes.</li>
+                <li><strong>Lose Condition</strong>: Time runs out before all snakes are matched.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Snake Out Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #17 Snake Out Level Editor</code>. Grid-based level painter with paint modes for obstacles, holes, and snake segments. Visual grid at 38x38 cell size with color-coded elements.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full grid.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game18">
+            <h1>#18 Donut Master</h1>
+            <p>A matching and assembly puzzle where players arrange colored donuts on a top-down board to match target shapes. Donuts arrive in boxes via conveyor lines and must be dragged onto the board to fill designated patterns.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Initializes the conveyor system and top board from level data, coordinates gameplay flow.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages multiple conveyor lines delivering donut boxes. Handles box queuing (3 visible + pending), progression, and completion callbacks.
+                </div>
+                <div class="script-item">
+                    <strong>TopBoard.cs</strong>
+                    Grid-based target shape board. Validates donut placement against target positions and tracks completion status.
+                </div>
+                <div class="script-item">
+                    <strong>DonutBox.cs</strong>
+                    Container holding multiple donuts in defined shapes (2x2, 1x1, 1x2, L-shaped variants). Tracks fill state and manages colliders.
+                </div>
+                <div class="script-item">
+                    <strong>Donut.cs</strong>
+                    Individual color-coded donut piece (Purple, Cyan, Pink, Yellow). Supports drag-and-drop placement with validation.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: top map dimensions, box data (color, shape, position), and column data (ordered box sequences per conveyor line).
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Shape Matching</strong>: Donut boxes come in various shapes (2x2, 1x1, 1x2, L-shapes) that must fit target patterns on the board.</li>
+                <li><strong>Conveyor Lines</strong>: Multiple lines deliver boxes sequentially. Completing a box advances the line.</li>
+                <li><strong>Color System</strong>: 4 donut colors (Purple, Cyan, Pink, Yellow) that must match target positions.</li>
+                <li><strong>Win Condition</strong>: All target positions on the top board are filled with correctly colored donuts.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Donut Master Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #18 Donut Master Level Editor</code>. Visual level editor for designing donut puzzles with conveyor line configuration, box shape placement, and target board layout.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game19">
+            <h1>#19 StackFill</h1>
+            <p>A 3D block-stacking puzzle where players fill a three-dimensional grid with colored blocks according to wall constraints. Tap to place blocks from a dock into valid positions defined by colored walls on XY and YZ planes.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Singleton game manager. Initializes the tap and fill systems, provides color-to-material lookup for block rendering.
+                </div>
+                <div class="script-item">
+                    <strong>FillManager.cs</strong>
+                    Core 3D grid manager. Creates planes and constraint walls from level data, tracks block placement in a 3D array, validates placements against wall rules, and checks win conditions.
+                </div>
+                <div class="script-item">
+                    <strong>TapOutManager.cs</strong>
+                    Input handler for block selection and placement. Manages the dock of available blocks and turn-based placement flow.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: 3D grid dimensions (X, Y, Z), plane data (floor layers), wall constraints for XY and YZ axes, and block column data.
+                </div>
+                <div class="script-item">
+                    <strong>ColorMappingData.cs</strong>
+                    Maps TypeColor enum values to Unity Materials for block rendering. Supports an extensible number of color types.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>3D Grid</strong>: Fully three-dimensional playfield with configurable X, Y, Z dimensions.</li>
+                <li><strong>Wall Constraints</strong>: Colored walls on XY (horizontal) and YZ (vertical) planes define which colors can be placed in each position.</li>
+                <li><strong>Tap-to-Place</strong>: Select a block from the dock and tap a valid grid position to place it.</li>
+                <li><strong>Win Condition</strong>: All grid positions filled according to wall constraints.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>StackFill Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #19 StackFill Level Editor</code>. Two-panel level editor with a level browser on the left and level properties on the right. Supports creating, duplicating, reordering, and deleting levels with JSON-based save/load.
+                    </li>
+                    <li><strong>Editor.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector for <code>LevelData</code> ScriptableObjects. Provides visual grid editors with XY Top View and YZ Side View perspectives, color assignment tools, and invalid item cleanup utilities.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game20">
+            <h1>#20 Crowd To Bus</h1>
+            <p>A color-sorting puzzle where players move groups of colored people on a grid to match them with bus compartments. Drag people groups to valid grid positions and guide them onto buses with matching-color slots.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Initializes grid and input managers, handles level setup and game flow.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core grid and placement system. Manages the 2D grid of people, creates buses and dock areas, validates drop zones, tracks pedestals (visual placement markers), and evaluates win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>People.cs</strong>
+                    Individual color-coded person unit (Yellow, Red, Green, Orange, Purple, Blue). Tracks grid position and pedestal reference.
+                </div>
+                <div class="script-item">
+                    <strong>Car.cs</strong>
+                    Bus vehicle with colored compartments. Stores compartment data, position, and capacity for people matching.
+                </div>
+                <div class="script-item">
+                    <strong>TapOutManager.cs</strong>
+                    Input handler for tap/drag interactions. Validates people placements and manages turn flow.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions, people group data (positions, colors), and car column data (bus configurations with color slots).
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Color Matching</strong>: 6 people colors (Yellow, Red, Green, Orange, Purple, Blue) that must match bus compartment colors.</li>
+                <li><strong>Grid Movement</strong>: Drag people groups to valid positions on the grid, respecting placement constraints.</li>
+                <li><strong>Pedestal System</strong>: Visual markers indicate valid placement positions on the grid.</li>
+                <li><strong>Win Condition</strong>: All people groups matched to their corresponding bus compartments.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Crowd To Bus Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #20 Crowd To Bus Level Editor</code>. Two-panel level editor with a level browser on the left (add, delete, duplicate, reorder levels) and level properties on the right. Features a visual grid painter for assigning colored people groups to grid positions, box management with color selection and cell painting, and car column configuration with per-car color and capacity settings. Levels are saved as individual JSON files to <code>Assets/Resources/Levels/CrowdToBus/</code>.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Importing Existing Levels:</strong> If you have levels stored as <code>LevelData</code> ScriptableObjects (e.g. in <code>Datas/Levels/</code>), use the <strong>Import from ScriptableObject</strong> button at the bottom of the left panel to convert them into the JSON format. After importing, click <strong>Save All Levels</strong> to write the JSON files.
+                        </div>
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full interface.
+                        </div>
+                    </li>
+                    <li><strong>LevelEditor.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector for <code>LevelData</code> ScriptableObjects. Provides box management, grid visualization, and car column configuration tools.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
         <section id="core">
             <h1>Core Systems & Utilities</h1>
 
@@ -1331,6 +1612,34 @@
             <p>The engine includes a lightweight animation system (<code>PositionAnimation.cs</code>, <code>ScaleAnimation.cs</code>, <code>RotationAnimation.cs</code>) that allows for tween-like behavior without external dependencies.</p>
         </section>
 
+        <section id="ads">
+            <h1>Ads Monetization</h1>
+            <p>The Hypercasual Game Engine ships with a complete ad monetization system powered by <strong>RagendomAds</strong>. It supports Banner, Interstitial, Rewarded Video, and App Open Ad formats out of the box, with Google AdMob integration ready to go.</p>
+
+            <h3>Documentation</h3>
+            <p>Full setup instructions, API reference, and configuration guides are available in the dedicated RagendomAds documentation:</p>
+            <p><code>Assets/RagendomAds/Documentation/Documentation.html</code></p>
+
+            <div class="note">
+                <strong>Quick Start:</strong> Open the RagendomAds documentation for step-by-step instructions on configuring ad providers, setting up AdMob IDs, testing with dummy ads in the editor, and integrating ad calls into your game scripts.
+            </div>
+
+            <h3>Video Tutorial</h3>
+            <p>Watch our setup walkthrough to get ads running in your project:</p>
+            <p>
+                <a href="https://www.youtube.com/watch?v=nWmyWacoFAc" target="_blank" style="display: inline-block; background-color: #e74c3c; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 1rem;">Watch on YouTube</a>
+            </p>
+
+            <h3>Key Features:</h3>
+            <ul>
+                <li><strong>All ad formats</strong>: Banner, Interstitial, Rewarded Video, and App Open Ads.</li>
+                <li><strong>Provider-agnostic</strong>: Swap between AdMob and Dummy providers via a ScriptableObject — no code changes needed.</li>
+                <li><strong>Frequency capping</strong>: Built-in cooldown and level-interval settings for interstitials.</li>
+                <li><strong>No-ads purchase support</strong>: A single method call disables banners and interstitials while keeping rewarded videos available.</li>
+                <li><strong>Editor testing</strong>: Dummy ad provider shows simulated ad UIs directly in the Unity Editor.</li>
+            </ul>
+        </section>
+
         <section id="development">
             <h1>Development Guide</h1>
 
@@ -1341,7 +1650,7 @@
                     <pre>public class MyGameManager : LevelManager { ... }</pre>
                 </li>
                 <li><strong>UI Integration</strong>: Ensure your scene has an <code>EventSystem</code> and a <code>Canvas</code> with the <code>LoseWinPanel</code> prefab.</li>
-                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code>. Games #1-5 use the shared <code>HypercasualGameEngine</code> namespace; games #6+ use the <code>HypercasualGameEngine.{GameName}</code> convention.</li>
+                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code> or a dedicated namespace like <code>namespace YourGameName { ... }</code>. Games #1-5 use the shared <code>HypercasualGameEngine</code> namespace; games #6-15 use the <code>HypercasualGameEngine.{GameName}</code> sub-namespace convention; standalone games (#16-20) use their own top-level namespaces (e.g. <code>SandFlowPuzzle</code>, <code>SnakeOut</code>).</li>
             </ol>
 
             <div class="important">
@@ -1361,13 +1670,18 @@
         <section id="version-history">
             <h1>Version History</h1>
 
-            <h3>v4.0 - Next Update (Coming Soon)</h3>
-            <p>The next major release will add <strong>5 brand new game modules</strong>. Have a game idea you'd like to see included? Reach out — your suggestion might make it into the next update!</p>
-            <div class="note">
-                <strong>Submit your game ideas:</strong> <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>
-            </div>
+            <h3>v4.0 - Major Update (Current)</h3>
+            <p>The fourth major release adds <strong>5 brand new game modules</strong>, bringing the total to <strong>20</strong>. This update introduces 3D gameplay mechanics, image-based level generation, and two new standalone Asset Store titles:</p>
+            <ul>
+                <li><strong>#16 Sand Flow Puzzle</strong>: Sand physics puzzle with conveyor belt suction, 80x80 pixel art displays, and 3 booster types. <em>Visual level editor with image quantization and bucket grid painting.</em> Also available as a standalone asset.</li>
+                <li><strong>#17 Snake Out</strong>: Grid-based snake pathfinding puzzle with bidirectional drag movement, color-matched holes, and animated snake characters. <em>Level editor with grid painter.</em> Also available as a standalone asset.</li>
+                <li><strong>#18 Donut Master</strong>: Shape-matching assembly puzzle with multi-line conveyors delivering donut boxes in various shapes (2x2, L-shaped, etc.) onto a target board. <em>Visual level editor for conveyor and board layout.</em></li>
+                <li><strong>#19 StackFill</strong>: 3D block-stacking puzzle with wall constraints on XY and YZ planes. Tap-to-place mechanics in a fully three-dimensional grid. <em>Level editor window with JSON save/load and custom inspector with XY/YZ grid editors.</em></li>
+                <li><strong>#20 Crowd To Bus</strong>: Color-sorting puzzle where players move 6-color people groups on a grid to match them with bus compartments. <em>Two-panel level editor with grid painter, box management, and car column configuration.</em></li>
+            </ul>
+            <p><strong>Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$99</span></p>
 
-            <h3>v3.0 - Major Update (Current)</h3>
+            <h3>v3.0 - Major Update</h3>
             <p>The third major release adds <strong>5 brand new game modules</strong>, bringing the total to 15. All new games include <strong>custom level editors</strong> with JSON-based level management and a unified two-panel editor layout:</p>
             <ul>
                 <li><strong>#11 Hole Loop Jam</strong>: Conveyor-loop puzzle with BFS pathfinding and pot-filling mechanics. <em>Level editor with visual grid painter and pot data line builder.</em></li>
@@ -1376,7 +1690,7 @@
                 <li><strong>#14 Good Swipe</strong>: Swipe-based item sorting puzzle with combo scoring and collection targets. <em>Level editor with fill target and box placement editors.</em></li>
                 <li><strong>#15 Drop Marbles</strong>: Physics-based marble release and conveyor routing puzzle with color-matched fill targets. <em>Level editor with box item and fill column editors.</em></li>
             </ul>
-            <p><strong>Current Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$39.99</span></p>
+            <p><strong>Price:</strong> <strong>$39.99</strong></p>
 
             <h3>v2.0 - Major Update</h3>
             <p>The second major release adds <strong>5 brand new game modules</strong>, bringing the total to 10:</p>
