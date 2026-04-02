@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyboxLab Unity Plugin — Documentation</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface2: #1c2128;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-dim: #1f6feb;
+            --green: #3fb950;
+            --orange: #d29922;
+            --red: #f85149;
+            --purple: #bc8cff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ── Layout ─────────────────────────────────── */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            z-index: 10;
+        }
+
+        nav .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        nav .version {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        nav ul { list-style: none; }
+
+        nav ul li { margin-bottom: 2px; }
+
+        nav ul li a {
+            display: block;
+            padding: 6px 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        nav ul li a:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        nav ul li.section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            padding: 16px 10px 4px;
+        }
+
+        main {
+            margin-left: 260px;
+            max-width: 820px;
+            padding: 48px 48px 96px;
+        }
+
+        /* ── Typography ─────────────────────────────── */
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        h1 .emoji { font-size: 28px; margin-right: 8px; }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 17px;
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 56px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        p { margin-bottom: 14px; }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        strong { color: var(--text); font-weight: 600; }
+
+        /* ── Callout boxes ──────────────────────────── */
+        .callout {
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-left: 4px solid;
+            font-size: 14px;
+        }
+
+        .callout.important {
+            background: rgba(248, 81, 73, 0.08);
+            border-color: var(--red);
+        }
+
+        .callout.important .callout-title { color: var(--red); }
+
+        .callout.info {
+            background: rgba(88, 166, 255, 0.08);
+            border-color: var(--accent);
+        }
+
+        .callout.info .callout-title { color: var(--accent); }
+
+        .callout.tip {
+            background: rgba(63, 185, 80, 0.08);
+            border-color: var(--green);
+        }
+
+        .callout.tip .callout-title { color: var(--green); }
+
+        .callout.warning {
+            background: rgba(210, 153, 34, 0.08);
+            border-color: var(--orange);
+        }
+
+        .callout.warning .callout-title { color: var(--orange); }
+
+        .callout-title {
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+        }
+
+        /* ── Code ───────────────────────────────────── */
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 13px;
+            background: var(--surface2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--purple);
+        }
+
+        pre {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            margin: 16px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text);
+        }
+
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .comment { color: #8b949e; }
+        .type { color: #d2a8ff; }
+
+        /* ── Tables ─────────────────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--surface);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text-muted);
+        }
+
+        td { background: var(--surface2); }
+
+        td code { font-size: 12px; }
+
+        /* ── Lists ──────────────────────────────────── */
+        ul, ol {
+            margin: 10px 0 14px 24px;
+        }
+
+        li { margin-bottom: 6px; }
+
+        /* ── Steps ──────────────────────────────────── */
+        .steps {
+            counter-reset: step;
+            list-style: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        .steps li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 20px;
+        }
+
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── Flow diagram ───────────────────────────── */
+        .flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+        }
+
+        .flow-step .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 2px 0;
+            padding-left: 12px;
+        }
+
+        /* ── Style chip grid ────────────────────────── */
+        .chip-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        /* ── File tree ──────────────────────────────── */
+        .file-tree {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 16px 0;
+            color: var(--text-muted);
+        }
+
+        .file-tree .folder { color: var(--accent); font-weight: 600; }
+        .file-tree .file { color: var(--text); }
+        .file-tree .desc { color: var(--text-muted); font-style: italic; }
+
+        /* ── Badge ──────────────────────────────────── */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge.free { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+        .badge.required { background: rgba(248, 81, 73, 0.12); color: var(--red); }
+
+        /* ── Support banner ─────────────────────────── */
+        .support-banner {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 28px 32px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .support-banner h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .support-banner .email {
+            display: inline-block;
+            padding: 10px 24px;
+            background: var(--accent-dim);
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: 12px;
+            text-decoration: none;
+        }
+
+        .support-banner .email:hover {
+            background: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ── Responsive ─────────────────────────────── */
+        @media (max-width: 900px) {
+            nav { display: none; }
+            main { margin-left: 0; padding: 24px 20px 64px; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- SIDEBAR NAV                                                            -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<nav>
+    <div class="logo">SkyboxLab</div>
+    <div class="version">Unity Plugin v1.0</div>
+    <ul>
+        <li class="section-title">Getting Started</li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#pricing">Pricing &amp; API Key</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#quick-start">Quick Start</a></li>
+
+        <li class="section-title">Using the Plugin</li>
+        <li><a href="#editor-window">Editor Window</a></li>
+        <li><a href="#connection">Connection Setup</a></li>
+        <li><a href="#prompt-guide">Prompt Guide</a></li>
+        <li><a href="#style-presets">Style Presets</a></li>
+        <li><a href="#generation-options">Generation Options</a></li>
+        <li><a href="#credits">Credits &amp; Balance</a></li>
+        <li><a href="#import-settings">Import Settings</a></li>
+        <li><a href="#gallery">Skybox Gallery</a></li>
+
+        <li class="section-title">Technical Reference</li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#file-structure">File Structure</a></li>
+        <li><a href="#api-reference">API Reference</a></li>
+        <li><a href="#texture-settings">Texture Settings</a></li>
+        <li><a href="#material-config">Material Config</a></li>
+        <li><a href="#editor-prefs">EditorPrefs Keys</a></li>
+
+        <li class="section-title">Advanced</li>
+        <li><a href="#hdrp">HDRP Projects</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#support">Support</a></li>
+    </ul>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- MAIN CONTENT                                                           -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<main>
+
+<!-- ── Overview ─────────────────────────────────────────────────────────── -->
+<h1><span class="emoji">&#127760;</span> SkyboxLab Documentation</h1>
+<p class="subtitle">
+    Generate AI-powered 360&deg; skyboxes from text prompts, directly inside the Unity Editor.
+</p>
+
+<h2 id="overview">Overview</h2>
+<p>
+    <strong>SkyboxLab</strong> is a Unity Editor plugin that connects to the SkyboxLab cloud backend to generate
+    high-quality, AI-generated 360&deg; panoramic skyboxes from simple text descriptions. Type a prompt, click generate,
+    and a production-ready equirectangular skybox is downloaded, imported with correct texture settings, turned into a
+    <code>Skybox/Panoramic</code> material, and optionally applied to your scene &mdash; all without ever leaving Unity.
+</p>
+
+<div class="flow">
+    <div class="flow-step"><div class="icon">&#9997;&#65039;</div><div>You type a text prompt in the Editor window</div></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step"><div class="icon">&#128640;</div><div>Plugin sends the job to the SkyboxLab cloud API</div></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step"><div class="icon">&#9203;</div><div>Polls for progress every 3 seconds until the image is ready</div></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step"><div class="icon">&#128230;</div><div>Downloads the 1440&times;720 equirectangular PNG</div></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step"><div class="icon">&#128260;</div><div>Applies circular-shift seam fix + AI inpainting for seamless wrapping</div></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step"><div class="icon">&#127912;</div><div>Optionally upscales to 8192&times;4096, configures texture import &amp; creates a Skybox/Panoramic material</div></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step"><div class="icon">&#127758;</div><div>Applies the skybox to your scene and updates ambient lighting</div></div>
+</div>
+
+<!-- ── Pricing ──────────────────────────────────────────────────────────── -->
+<h2 id="pricing">Pricing &amp; API Key</h2>
+
+<div class="callout important">
+    <div class="callout-title">Account &amp; API Key Required</div>
+    <p>
+        <strong>This Unity asset is completely free to download and install.</strong> However, generating skyboxes requires
+        a SkyboxLab account and a valid API key. The generation runs on SkyboxLab's cloud GPU infrastructure,
+        which is why an account is needed.
+    </p>
+</div>
+
+<h3>How to get your API key</h3>
+<ol class="steps">
+    <li>
+        <strong>Create a free account</strong> at the SkyboxLab dashboard. You can reach it by clicking the
+        <strong>"Get API Key"</strong> button next to the API Key field inside the Unity plugin, or by navigating
+        to your server URL + <code>/dashboard</code> in a web browser.
+    </li>
+    <li>
+        <strong>Verify your email.</strong> After registering, you will receive a verification email. Click the
+        confirmation link before proceeding &mdash; you will not be able to access the dashboard until your
+        email is verified. Check your spam folder if you don't see it within a few minutes.
+    </li>
+    <li>
+        <strong>Start with your free welcome generations.</strong> Every new account receives <strong>5 free skybox generations</strong>
+        so you can test the plugin and see the quality before purchasing credits.
+    </li>
+    <li>
+        <strong>Copy your API key</strong> from the dashboard Settings page. Keys start with the prefix <code>skb_</code>.
+    </li>
+    <li>
+        <strong>Paste it</strong> into the <em>API Key</em> field in the SkyboxLab Editor window and click <strong>Test Connection</strong>.
+    </li>
+</ol>
+
+<div class="callout warning">
+    <div class="callout-title">After the 5 Free Generations</div>
+    <p>
+        Once your 5 free welcome generations are used up, you will need to purchase credits to continue
+        generating skyboxes. You can top up credits directly from the SkyboxLab dashboard. The plugin displays your
+        remaining free generations and credit balance in the connection section so you always know where you stand.
+    </p>
+</div>
+
+<!-- ── Requirements ─────────────────────────────────────────────────────── -->
+<h2 id="requirements">Requirements</h2>
+<table>
+    <tr><th>Requirement</th><th>Details</th></tr>
+    <tr><td>Unity Version</td><td>2020.3 LTS or newer (tested up to Unity 6)</td></tr>
+    <tr><td>Render Pipeline</td><td>Built-in RP, URP, or HDRP (see <a href="#hdrp">HDRP notes</a>)</td></tr>
+    <tr><td>Internet Connection</td><td>Required during generation (the AI runs on cloud GPUs)</td></tr>
+    <tr><td>SkyboxLab Account</td><td><span class="badge required">Required</span> &mdash; free to create, includes 5 free welcome generations</td></tr>
+    <tr><td>API Key</td><td><span class="badge required">Required</span> &mdash; obtain from the SkyboxLab dashboard</td></tr>
+</table>
+
+<!-- ── Installation ─────────────────────────────────────────────────────── -->
+<h2 id="installation">Installation</h2>
+<ol class="steps">
+    <li>
+        <strong>Import the asset</strong> into your Unity project via the Asset Store or by dragging the <code>.unitypackage</code>
+        file into your Project window. All files live under <code>Assets/SkyboxLab/</code>
+        and will not modify any existing project files.
+    </li>
+    <li>
+        <strong>Wait for compilation.</strong> Unity will automatically compile the editor scripts. If you see no errors
+        in the Console, you are ready to go.
+    </li>
+    <li>
+        <strong>Open the plugin</strong> via the menu: <code>Window &rarr; SkyboxLab &rarr; Skybox Generator</code>.
+    </li>
+</ol>
+
+<div class="callout tip">
+    <div class="callout-title">No Dependencies</div>
+    <p>
+        SkyboxLab has zero external dependencies. It uses only built-in Unity APIs (<code>UnityWebRequest</code>,
+        <code>EditorWindow</code>, <code>TextureImporter</code>, <code>AssetDatabase</code>) and the built-in
+        <code>Skybox/Panoramic</code> shader. No packages to install, no assembly definitions to configure.
+    </p>
+</div>
+
+<!-- ── Quick Start ──────────────────────────────────────────────────────── -->
+<h2 id="quick-start">Quick Start</h2>
+<ol class="steps">
+    <li>Open <strong>Window &rarr; SkyboxLab &rarr; Skybox Generator</strong>.</li>
+    <li>The <strong>Server URL</strong> is pre-filled. Paste your <strong>API Key</strong> (starts with <code>skb_</code>).</li>
+    <li>Click <strong>Test Connection</strong> &mdash; you should see a green <em>&#10003; Connected</em>, your usage quota, and your credit balance.</li>
+    <li>Type a prompt, for example: <em>"Vast savanna at golden hour, acacia trees, dramatic orange sky"</em></li>
+    <li>Optionally pick a <strong>Style</strong> preset (e.g. Photoreal, Anime, Fantasy).</li>
+    <li>Click <strong>&#9889; GENERATE SKYBOX</strong> and wait ~30&ndash;60 seconds (or ~60&ndash;90 seconds with seam fix + upscale).</li>
+    <li>Done! The skybox is saved to <code>Assets/SkyboxLab/Generated/</code> and (if enabled) automatically applied to your scene.</li>
+</ol>
+
+<!-- ── Editor Window ────────────────────────────────────────────────────── -->
+<h2 id="editor-window">Editor Window</h2>
+<p>
+    The SkyboxLab Editor window is your single control panel for everything. Open it via
+    <code>Window &rarr; SkyboxLab &rarr; Skybox Generator</code>. The window is resizable and is divided
+    into the following sections from top to bottom:
+</p>
+<ul>
+    <li><strong>Connection</strong> &mdash; Server URL, API Key, connection test, usage quota, credit balance, and Top Up button</li>
+    <li><strong>Prompt</strong> &mdash; Main text prompt input area</li>
+    <li><strong>Style</strong> &mdash; Collapsible style preset picker (12 presets)</li>
+    <li><strong>Negative Prompt</strong> &mdash; Collapsible field for things to avoid in the generation</li>
+    <li><strong>Options</strong> &mdash; Quality (with optional 4&times; upscale), diffusion steps, and CFG guidance controls</li>
+    <li><strong>Import Settings</strong> &mdash; Auto-apply skybox and ambient lighting update toggles</li>
+    <li><strong>Generate</strong> &mdash; The generate button (with live cost estimate), progress bar, and cancel button</li>
+    <li><strong>Recent Skyboxes</strong> &mdash; Thumbnail gallery of all previously generated skyboxes</li>
+</ul>
+<p>All settings are persisted between Unity sessions via <code>EditorPrefs</code>.</p>
+
+<!-- ── Connection ───────────────────────────────────────────────────────── -->
+<h2 id="connection">Connection Setup</h2>
+<table>
+    <tr><th>Field</th><th>Description</th></tr>
+    <tr>
+        <td><strong>Server URL</strong></td>
+        <td>
+            The URL of the SkyboxLab backend. Pre-filled with the production server:
+            <code>https://skyboxlab-production.up.railway.app</code>.
+            Change this only if you are running a local or custom backend.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>API Key</strong></td>
+        <td>
+            Your personal API key, starting with <code>skb_</code>. Obtain one from the dashboard by clicking the
+            <strong>"Get API Key"</strong> button or navigating to <code>{Server URL}/dashboard</code>.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Test Connection</strong></td>
+        <td>
+            Sends a request to the <code>/health</code> endpoint. Shows <span style="color:var(--green);">&#10003; Connected</span>
+            on success or <span style="color:var(--red);">&#10007; Error message</span> on failure. Also fetches your usage quota and credit balance on success.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Quota display</strong></td>
+        <td>
+            After a successful connection, shows your current usage:
+            <code>Quota: X / Y (Z remaining &mdash; tier)</code> or <code>Quota: X used (unlimited)</code>.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Credit balance</strong></td>
+        <td>
+            Shows your prepaid credit balance (e.g. <code>Credits: $4.73</code>).
+            Displayed in <span style="color:var(--green);">green</span> when healthy,
+            <span style="color:var(--red);">red</span> when below $0.14.
+            The balance updates after each generation and on every connection test.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Free generations</strong></td>
+        <td>
+            If you have free welcome generations remaining, they are displayed in green (e.g. <em>"3 free gens left"</em>).
+            Free generations are used before credits are deducted.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>+ Top Up</strong></td>
+        <td>
+            Opens the SkyboxLab dashboard in your browser where you can add credits to your account.
+        </td>
+    </tr>
+</table>
+
+<div class="callout important">
+    <div class="callout-title">API Key Locks After First Connection</div>
+    <p>
+        When you click <strong>Test Connection</strong> and the server responds with <em>&#10003; Connected</em>,
+        your API key is <strong>locked</strong> to this Unity installation. The editable password field
+        is replaced with a read-only masked display (<code>&#128274; skb_XXXX&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</code>)
+        and cannot be changed through the plugin UI.
+    </p>
+    <p>
+        This is by design &mdash; it prevents accidental key changes and unauthorized key swapping.
+    </p>
+    <p>
+        <strong>If you need to reset your API key</strong> (e.g. you entered the wrong key, or you are migrating to a
+        new account), you must perform both of these steps:
+    </p>
+    <ol>
+        <li>Delete the file <code>{YourProject}/Library/SkyboxLab.lock</code></li>
+        <li>In Unity, open <code>Edit &rarr; Preferences</code> and remove the EditorPrefs key <code>SLB_lk_v1</code>
+            (you can use a script or the <em>EditorPrefs</em> section of a prefs editor asset)</li>
+    </ol>
+    <p>
+        After both steps, reopen the SkyboxLab window &mdash; the API Key field will be editable again.
+        The <code>Library/</code> folder is excluded from version control by default, so the lock does not travel
+        with your project if you share it via Git.
+    </p>
+</div>
+
+<!-- ── Prompt Guide ─────────────────────────────────────────────────────── -->
+<h2 id="prompt-guide">Prompt Guide</h2>
+<p>The prompt is the most important factor in the quality of your skybox. Here are some tips:</p>
+
+<h3>What works well</h3>
+<ul>
+    <li>Open outdoor landscapes with visible sky and horizon</li>
+    <li>Descriptive lighting conditions (golden hour, overcast, night, etc.)</li>
+    <li>Atmospheric details (fog, clouds, aurora, stars)</li>
+    <li>Specifying a mood or time of day</li>
+</ul>
+
+<h3>Example prompts</h3>
+<table>
+    <tr><th>Prompt</th><th>Good for</th></tr>
+    <tr><td><em>"Vast savanna at golden hour, acacia trees, dramatic orange sky"</em></td><td>Warm outdoor scene</td></tr>
+    <tr><td><em>"Arctic tundra at night, blazing aurora borealis, frozen lake"</em></td><td>Night / sci-fi scene</td></tr>
+    <tr><td><em>"Ancient temple ruins in jungle clearing, shafts of golden light"</em></td><td>Adventure / RPG scene</td></tr>
+    <tr><td><em>"Volcanic island at dusk, lava flows, fiery red sky"</em></td><td>Dramatic action scene</td></tr>
+    <tr><td><em>"Calm ocean at sunrise, pastel pink and blue sky, gentle waves"</em></td><td>Relaxing / casual game</td></tr>
+    <tr><td><em>"Deep space nebula, swirling purple and blue gas clouds, distant stars"</em></td><td>Sci-fi / space game</td></tr>
+</table>
+
+<h3>What to avoid</h3>
+<ul>
+    <li>Fully enclosed spaces (caves, room interiors) &mdash; skyboxes are meant to be open environments</li>
+    <li>Very specific complex objects (a particular car model, a named character)</li>
+    <li>Extremely long prompts &mdash; keep it focused on the scene description</li>
+</ul>
+
+<h3>Negative prompt</h3>
+<p>
+    The negative prompt tells the AI what to <em>avoid</em>. A sensible default is pre-filled:
+</p>
+<pre><code>blurry, distorted, watermark, text, logo, seam, people, faces, hands,
+low quality, jpeg artifacts, overexposed, underexposed, ugly, deformed</code></pre>
+<p>You can expand the negative prompt section to customise it for each generation.</p>
+
+<!-- ── Style Presets ────────────────────────────────────────────────────── -->
+<h2 id="style-presets">Style Presets</h2>
+<p>
+    Style presets add extra keywords to your prompt automatically, guiding the AI toward a specific visual style.
+    Select one from the collapsible style picker below the prompt field. Only one style can be active at a time;
+    clicking the active style again deselects it. Your typed prompt is never modified &mdash; the style keywords
+    are appended only when the generation request is sent.
+</p>
+
+<table>
+    <tr><th>Style</th><th>Keywords appended to your prompt</th></tr>
+    <tr><td><strong>Photoreal</strong></td><td>photorealistic, hyperdetailed, dramatic lighting, sharp focus, 8k</td></tr>
+    <tr><td><strong>Anime</strong></td><td>anime style, cel shaded, vibrant colors, Studio Ghibli inspired</td></tr>
+    <tr><td><strong>Digital Art</strong></td><td>digital painting, concept art, matte painting, artstation trending</td></tr>
+    <tr><td><strong>Cyberpunk</strong></td><td>cyberpunk, neon lights, rain-soaked streets, futuristic city</td></tr>
+    <tr><td><strong>Fantasy</strong></td><td>epic fantasy, volumetric god rays, dramatic storm clouds, magical</td></tr>
+    <tr><td><strong>Sci-Fi</strong></td><td>hard sci-fi, space station, deep space nebula, stars</td></tr>
+    <tr><td><strong>Painterly</strong></td><td>impressionist oil painting, painterly brushstrokes, soft light</td></tr>
+    <tr><td><strong>Watercolor</strong></td><td>watercolor illustration, soft washes, delicate details, paper texture</td></tr>
+    <tr><td><strong>Horror</strong></td><td>dark horror atmosphere, ominous fog, eerie lighting, desolate</td></tr>
+    <tr><td><strong>Cartoon</strong></td><td>cartoon style, bold outlines, flat colors, stylized</td></tr>
+    <tr><td><strong>Retro</strong></td><td>retro 1970s aesthetic, warm film grain, faded colors, nostalgic</td></tr>
+    <tr><td><strong>Sky Only</strong></td><td>sky dome only, no ground objects, spectacular cloudscape, open sky</td></tr>
+</table>
+
+<div class="callout tip">
+    <div class="callout-title">Combining Styles with Prompts</div>
+    <p>
+        Styles work best when your prompt complements them. For example, pairing <strong>Cyberpunk</strong> with
+        <em>"Rain-soaked neon cityscape at midnight"</em> reinforces the style, while pairing it with
+        <em>"Peaceful countryside meadow"</em> creates a conflicting mix. Match your prompt to the style for best results.
+    </p>
+</div>
+
+<!-- ── Generation Options ───────────────────────────────────────────────── -->
+<h2 id="generation-options">Generation Options</h2>
+
+<table>
+    <tr><th>Option</th><th>Values</th><th>Description</th></tr>
+    <tr>
+        <td><strong>8K Texture (+$0.02)</strong></td>
+        <td>
+            On <span class="badge free">Default</span> / Off
+        </td>
+        <td>
+            When enabled, runs a 4&times; AI upscale pass after generation, producing an 8192&times;4096 output.
+            When off, the native 1440&times;720 output is used as-is.
+            Adds <strong>$0.02</strong> to the generation cost.
+            Takes longer but produces significantly sharper results. Recommended for production use and VR.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Steps</strong></td>
+        <td>
+            <code>20</code> (fast)<br>
+            <code>28</code> (default)<br>
+            <code>40</code> (quality)
+        </td>
+        <td>
+            Number of diffusion sampling steps. More steps produce more detail and coherence but take longer.
+            <strong>28</strong> is a good balance of quality and speed for most prompts. Use 40 for complex scenes
+            where fine detail matters.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Guidance</strong></td>
+        <td><code>1.0</code> &ndash; <code>15.0</code> (default <code>7.5</code>)</td>
+        <td>
+            CFG (Classifier-Free Guidance) scale &mdash; controls how closely the AI follows your prompt.
+            Higher values = more literal interpretation but can look oversaturated.
+            Lower values = more creative freedom but may drift from your description.
+            <strong>7.5</strong> works well for most prompts. Does not affect cost.
+        </td>
+    </tr>
+</table>
+
+<h3>Pricing</h3>
+<p>
+    The estimated cost per generation is displayed live on the Generate button and updates as you toggle settings.
+</p>
+
+<table>
+    <tr><th>Configuration</th><th>Cost per Generation</th></tr>
+    <tr><td>Standard (no upscale)</td><td><strong>$0.14</strong></td></tr>
+    <tr><td>With 8K Texture <span class="badge free">Default</span></td><td><strong>$0.16</strong></td></tr>
+</table>
+
+<p>
+    If you have free welcome generations remaining, the button shows <strong>&#9889; GENERATE SKYBOX &mdash; FREE</strong> instead.
+</p>
+
+<div class="callout info">
+    <div class="callout-title">Live Cost Display</div>
+    <p>
+        The generate button always shows the current estimated cost:
+        <strong>&#9889; GENERATE SKYBOX &mdash; $0.16</strong>. If your credit balance is lower than the estimated cost
+        (and you have no free generations left), the button is replaced with a
+        <strong>+ Top Up Credits</strong> button that links directly to the dashboard.
+    </p>
+</div>
+
+<!-- ── Credits ─────────────────────────────────────────────────────────── -->
+<h2 id="credits">Credits &amp; Balance</h2>
+<p>
+    SkyboxLab uses a prepaid credit system. Your current balance is displayed in the Connection section
+    of the editor window:
+</p>
+<ul>
+    <li><strong style="color:var(--green);">Green</strong> balance &mdash; healthy, you have enough credits to generate</li>
+    <li><strong style="color:var(--red);">Red</strong> balance &mdash; low (below $0.14), you may not have enough for the next generation</li>
+</ul>
+<p>
+    After each successful generation, the estimated cost is deducted from your displayed balance immediately.
+    The balance is then refreshed from the server to show the authoritative amount.
+</p>
+<p>
+    You can click the <strong>+ Top Up</strong> button at any time to open the dashboard and add credits to your account.
+</p>
+
+<!-- ── Import Settings ──────────────────────────────────────────────────── -->
+<h2 id="import-settings">Import Settings</h2>
+
+<table>
+    <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+    <tr>
+        <td><strong>Auto-apply to scene skybox</strong></td>
+        <td>On</td>
+        <td>
+            When enabled, the generated skybox material is automatically assigned to
+            <code>RenderSettings.skybox</code> after import. All scene views are repainted immediately.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Update ambient lighting (GI)</strong></td>
+        <td>On</td>
+        <td>
+            When enabled, calls <code>DynamicGI.UpdateEnvironment()</code> after applying the skybox so that
+            ambient lighting and reflections update to match the new sky.
+        </td>
+    </tr>
+</table>
+
+<p>All generated files are saved to <code>Assets/SkyboxLab/Generated/</code>.</p>
+
+<!-- ── Gallery ──────────────────────────────────────────────────────────── -->
+<h2 id="gallery">Skybox Gallery</h2>
+<p>
+    The <strong>Recent Skyboxes</strong> section at the bottom of the window shows a thumbnail gallery of every skybox
+    you have generated. It automatically scans the <code>Assets/SkyboxLab/Generated/</code> folder when the window opens.
+</p>
+
+<table>
+    <tr><th>Feature</th><th>Details</th></tr>
+    <tr><td>Layout</td><td>3-column grid of thumbnail tiles, scrollable</td></tr>
+    <tr><td>Sorting</td><td>Newest first (by file creation time)</td></tr>
+    <tr><td>Single click</td><td>Applies that skybox to <code>RenderSettings.skybox</code> and updates lighting</td></tr>
+    <tr><td>Double click</td><td>Pings and selects the PNG texture asset in the Project window</td></tr>
+    <tr><td>Hover</td><td>White border highlight + <em>Apply</em> and <em>Ping</em> overlay buttons</td></tr>
+    <tr><td>Tooltip</td><td>Shows the full original prompt text on hover</td></tr>
+    <tr><td>Empty state</td><td>Shows <em>"No skyboxes yet &mdash; generate your first one above"</em></td></tr>
+</table>
+
+<div class="callout tip">
+    <div class="callout-title">Quick Skybox Switching</div>
+    <p>
+        Use the gallery to quickly A/B compare different skyboxes in your scene. Click any thumbnail to instantly
+        apply it as the scene skybox. This is a great way to test which sky works best for your project's mood and lighting.
+    </p>
+</div>
+
+<!-- ── Architecture ─────────────────────────────────────────────────────── -->
+<h2 id="architecture">Architecture</h2>
+<p>The plugin is composed of three editor-only C# scripts:</p>
+
+<table>
+    <tr><th>Script</th><th>Type</th><th>Responsibility</th></tr>
+    <tr>
+        <td><code>SkyboxLabWindow.cs</code></td>
+        <td><code>EditorWindow</code></td>
+        <td>
+            The main UI. Draws all controls, manages state, persists settings via <code>EditorPrefs</code>,
+            orchestrates the generate &rarr; poll &rarr; import flow, and displays the gallery.
+        </td>
+    </tr>
+    <tr>
+        <td><code>SkyboxLabAPI.cs</code></td>
+        <td><code>static class</code></td>
+        <td>
+            HTTP client. Handles <code>POST /api/generate</code>, polling <code>GET /api/generate/status/{id}</code>,
+            connection testing, and usage fetching. Uses <code>EditorApplication.update</code> for async polling
+            (no coroutines, no threads).
+        </td>
+    </tr>
+    <tr>
+        <td><code>SkyboxLabImporter.cs</code></td>
+        <td><code>static class</code></td>
+        <td>
+            Downloads the PNG via <code>UnityWebRequestTexture</code>, saves it to disk, configures
+            <code>TextureImporter</code> settings, creates a <code>Skybox/Panoramic</code> material,
+            and optionally applies it to the scene.
+        </td>
+    </tr>
+</table>
+
+<div class="callout info">
+    <div class="callout-title">Editor-Only &mdash; Zero Runtime Overhead</div>
+    <p>
+        All scripts are inside an <code>Editor/</code> folder, which means they are <strong>never included in your
+        game build</strong>. The plugin has zero runtime overhead and zero impact on your shipped game's size or performance.
+    </p>
+</div>
+
+<!-- ── File Structure ───────────────────────────────────────────────────── -->
+<h2 id="file-structure">File Structure</h2>
+<div class="file-tree">
+    <span class="folder">Assets/</span><br>
+    &nbsp;&nbsp;<span class="folder">SkyboxLab/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabWindow.cs</span> <span class="desc">&mdash; Editor window UI &amp; generation flow</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabAPI.cs</span> <span class="desc">&mdash; HTTP client (async polling, no coroutines)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabImporter.cs</span> <span class="desc">&mdash; Download, texture import, material creation</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabIcon.png</span> <span class="desc">&mdash; Plugin branding icon</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Documentation/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Documentation.html</span> <span class="desc">&mdash; This file</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Generated/</span> <span class="desc">&mdash; Output folder for skybox PNGs and materials</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">skybox_20260326_143022_vast_savanna_at_golden_hour.png</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">skybox_20260326_143022_vast_savanna_at_golden_hour_Mat.mat</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">README.md</span> <span class="desc">&mdash; Quick-start instructions</span><br>
+</div>
+
+<h3>Generated file naming convention</h3>
+<pre><code>skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}.png
+skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
+<p>
+    The prompt slug is: lowercase, special characters stripped, spaces replaced with underscores, truncated to 40 characters.
+</p>
+
+<!-- ── API Reference ────────────────────────────────────────────────────── -->
+<h2 id="api-reference">API Reference</h2>
+<p>
+    The plugin communicates with the SkyboxLab backend via these HTTP endpoints. Authentication is via the
+    <code>X-API-Key</code> header on every request.
+</p>
+
+<h3><code>GET /health</code></h3>
+<p>Connection test. Returns <code>{ "status": "ok" }</code>. Timeout: 8 seconds.</p>
+
+<h3><code>GET /api/user/usage</code></h3>
+<p>Returns quota information for the authenticated user.</p>
+<pre><code>{
+  "used": 42,
+  "limit": 100,        <span class="comment">// null if unlimited</span>
+  "unlimited": false,
+  "remaining": 58,     <span class="comment">// null if unlimited</span>
+  "tier": "starter"
+}</code></pre>
+
+<h3><code>GET /api/payments/credits</code></h3>
+<p>Returns the user's credit balance and remaining welcome generations (if any).</p>
+<pre><code>{
+  "balance": 4.73,
+  "balance_cents": 473,
+  "formatted": "$4.73"
+}</code></pre>
+
+<h3><code>POST /api/generate</code></h3>
+<p>Submits a generation job. Returns immediately; the job runs asynchronously on the server.</p>
+<pre><code><span class="comment">// Request body:</span>
+{
+  "prompt": "Ancient ruins at golden hour...",
+  "negative_prompt": "blurry, distorted...",
+  "steps": 28,
+  "guidance": 7.5,
+  "upscale": true
+}
+
+<span class="comment">// Response:</span>
+{
+  "job_id": "abc123",
+  "status": "pending"
+}</code></pre>
+
+<h3><code>GET /api/generate/status/{job_id}</code></h3>
+<p>Polled every 3 seconds until the job completes or fails. Maximum 200 attempts (~10 minutes).</p>
+<pre><code>{
+  "id": "abc123",
+  "status": "succeeded",      <span class="comment">// "pending" | "processing" | "succeeded" | "failed"</span>
+  "output_url": "https://...",<span class="comment">// URL to the generated PNG (when succeeded)</span>
+  "error": null               <span class="comment">// error message (when failed)</span>
+}</code></pre>
+
+<!-- ── Texture Settings ─────────────────────────────────────────────────── -->
+<h2 id="texture-settings">Texture Import Settings</h2>
+<p>
+    The importer configures the downloaded PNG with these exact <code>TextureImporter</code> settings to ensure
+    optimal quality for panoramic skybox use:
+</p>
+
+<table>
+    <tr><th>Setting</th><th>Value</th><th>Reason</th></tr>
+    <tr><td><code>textureType</code></td><td><code>Default</code></td><td>Standard 2D texture</td></tr>
+    <tr><td><code>npotScale</code></td><td><code>None</code></td><td>Keep original 2:1 aspect ratio (1440&times;720 or 8192&times;4096 with upscale)</td></tr>
+    <tr><td><code>mipmapEnabled</code></td><td><code>false</code></td><td>Prevents visible seam line on the skybox sphere</td></tr>
+    <tr><td><code>wrapMode</code></td><td><code>Repeat</code></td><td>Seamless horizontal wrapping for 360&deg; panorama</td></tr>
+    <tr><td><code>filterMode</code></td><td><code>Bilinear</code></td><td>Smooth filtering without excessive blur</td></tr>
+    <tr><td><code>maxTextureSize</code></td><td><code>8192</code></td><td>Allows full resolution import without downscaling</td></tr>
+    <tr><td><code>textureCompression</code></td><td><code>Uncompressed</code></td><td>Maximum quality, no compression artifacts</td></tr>
+</table>
+
+<div class="callout warning">
+    <div class="callout-title">Do Not Re-Import Manually</div>
+    <p>
+        If you manually re-import a generated texture, make sure to keep <strong>Generate Mip Maps</strong> unchecked
+        and <strong>Wrap Mode</strong> set to <strong>Repeat</strong>. Changing these settings will cause visible seam lines
+        on the skybox sphere.
+    </p>
+</div>
+
+<!-- ── Material Config ──────────────────────────────────────────────────── -->
+<h2 id="material-config">Material Configuration</h2>
+<p>
+    The generated material uses Unity's built-in <code>Skybox/Panoramic</code> shader with these properties:
+</p>
+
+<table>
+    <tr><th>Property</th><th>Value</th><th>Meaning</th></tr>
+    <tr><td><code>_MainTex</code></td><td><em>(generated texture)</em></td><td>The equirectangular panorama</td></tr>
+    <tr><td><code>_Mapping</code></td><td><code>1</code></td><td>Latitude Longitude Layout (equirectangular)</td></tr>
+    <tr><td><code>_ImageType</code></td><td><code>0</code></td><td>360 degrees (full sphere)</td></tr>
+    <tr><td><code>_MirrorOnBack</code></td><td><code>0</code></td><td>No mirroring</td></tr>
+    <tr><td><code>_Exposure</code></td><td><code>1.0</code></td><td>Default brightness</td></tr>
+    <tr><td><code>_Rotation</code></td><td><code>0</code></td><td>No rotation offset</td></tr>
+</table>
+
+<div class="callout tip">
+    <div class="callout-title">Adjusting After Import</div>
+    <p>
+        You can freely modify the material after import. Select it in the Project window and adjust
+        <code>Exposure</code> or <code>Rotation</code> in the Inspector to fine-tune the brightness and orientation.
+    </p>
+</div>
+
+<!-- ── EditorPrefs ──────────────────────────────────────────────────────── -->
+<h2 id="editor-prefs">EditorPrefs Keys</h2>
+<p>
+    The plugin stores all user settings in <code>EditorPrefs</code> (per-machine, not committed to version control).
+    These persist between Unity sessions:
+</p>
+
+<table>
+    <tr><th>Key</th><th>Type</th><th>Default</th></tr>
+    <tr><td><code>SkyboxLab_ServerUrl</code></td><td>string</td><td><code>https://skyboxlab-production.up.railway.app</code></td></tr>
+    <tr><td><code>SkyboxLab_ApiKey</code></td><td>string</td><td><em>(empty)</em></td></tr>
+    <tr><td><code>SkyboxLab_AutoApply</code></td><td>bool</td><td><code>true</code></td></tr>
+    <tr><td><code>SkyboxLab_UpdateGI</code></td><td>bool</td><td><code>true</code></td></tr>
+    <tr><td><code>SkyboxLab_Upscale</code></td><td>bool</td><td><code>true</code></td></tr>
+    <tr><td><code>SkyboxLab_Steps</code></td><td>int</td><td><code>1</code> (28 steps)</td></tr>
+    <tr><td><code>SkyboxLab_Guidance</code></td><td>float</td><td><code>7.5</code></td></tr>
+    <tr><td><code>SkyboxLab_StyleIndex</code></td><td>int</td><td><code>-1</code> (none)</td></tr>
+    <tr><td><code>SkyboxLab_Recent</code></td><td>string (JSON)</td><td><em>(empty)</em></td></tr>
+</table>
+
+<!-- ── HDRP ─────────────────────────────────────────────────────────────── -->
+<h2 id="hdrp">HDRP Projects</h2>
+
+<div class="callout warning">
+    <div class="callout-title">HDRP Requires Manual Setup</div>
+    <p>
+        In HDRP, <code>RenderSettings.skybox</code> is not used for rendering. The auto-apply feature will still set it, but it
+        won't be visible in HDRP scenes. Instead, follow these steps:
+    </p>
+    <ol>
+        <li>Generate and import the skybox normally using SkyboxLab.</li>
+        <li>In your scene's Volume, add a <strong>Visual Environment</strong> override and set Sky Type to <strong>HDRI Sky</strong>.</li>
+        <li>Add an <strong>HDRI Sky</strong> override and assign the generated PNG texture to the <strong>HDRI Sky</strong> texture slot.</li>
+    </ol>
+    <p>
+        The texture import settings applied by SkyboxLab (no mipmaps, repeat wrap, uncompressed, 8192 max size) are
+        fully compatible with HDRP's HDRI Sky component.
+    </p>
+</div>
+
+<div class="callout tip">
+    <div class="callout-title">URP Works Out of the Box</div>
+    <p>
+        If you are using URP (Universal Render Pipeline), the auto-apply feature works as expected. No extra setup needed.
+    </p>
+</div>
+
+<!-- ── Troubleshooting ──────────────────────────────────────────────────── -->
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>"Test Connection" shows &#10007; Failed</h3>
+<ul>
+    <li>Check that the <strong>Server URL</strong> is correct and reachable from your network.</li>
+    <li>Ensure you have an active internet connection.</li>
+    <li>If using a firewall or VPN, make sure outbound HTTPS traffic is allowed.</li>
+</ul>
+
+<h3>"Generation failed" error</h3>
+<ul>
+    <li><strong><code>quota exceeded</code></strong> &mdash; your 5 free welcome generations are used up
+        and your credit balance is zero. Visit the SkyboxLab dashboard to top up credits.</li>
+    <li><strong><code>invalid API key</code></strong> &mdash; your key may have been revoked or
+        is malformed. Generate a new key from the dashboard. If your key is locked, see the
+        <a href="#connection">API Key Lock</a> section for reset instructions.</li>
+    <li><strong>Any other error</strong> &mdash; check the Unity Console for the full <code>[SkyboxLab]</code>
+        log line and include it when contacting <a href="mailto:ragendom@gmail.com">support</a>.</li>
+</ul>
+
+<h3>Generation times out after 10 minutes</h3>
+<ul>
+    <li>The backend may be under heavy load. Try again in a few minutes.</li>
+    <li>Check your network connection &mdash; the plugin needs to reach the server every 3 seconds for status polling.</li>
+</ul>
+
+<h3>Skybox has a visible seam line</h3>
+<ul>
+    <li>SkyboxLab's pipeline automatically applies a circular-shift seam fix with AI inpainting to eliminate the
+        vertical seam. If you still see a faint line, check the following:</li>
+    <li>Verify that the texture's <strong>Generate Mip Maps</strong> is <em>unchecked</em> in the Inspector. The importer
+        does this automatically, but if you re-imported manually, double-check this setting.</li>
+    <li>Ensure <strong>Wrap Mode</strong> is set to <strong>Repeat</strong>.</li>
+</ul>
+
+<h3>Skybox looks low-resolution</h3>
+<ul>
+    <li>The native output is 1440&times;720px. For much sharper results, enable the <strong>8K Texture</strong> toggle,
+        which upscales to 8192&times;4096px.</li>
+    <li>Check the texture's <strong>Max Size</strong> in the Inspector &mdash; it should be <strong>8192</strong>.</li>
+    <li>Ensure <strong>Compression</strong> is set to <strong>None</strong> (Uncompressed).</li>
+</ul>
+
+<h3>Skybox not visible in HDRP</h3>
+<ul>
+    <li>See the <a href="#hdrp">HDRP section</a> above. You need to manually assign the texture to an HDRI Sky volume override.</li>
+</ul>
+
+<h3>Compilation errors after import</h3>
+<ul>
+    <li>Ensure all three <code>.cs</code> files are inside the <code>Editor/</code> folder.</li>
+    <li>If you see namespace errors, confirm you are on Unity 2020.3 LTS or newer.</li>
+</ul>
+
+<h3>Cannot edit the API Key field</h3>
+<ul>
+    <li>Your key has been locked after a successful connection. This is intentional.
+        See <a href="#connection">API Key Lock</a> for reset instructions.</li>
+</ul>
+
+<!-- ── FAQ ──────────────────────────────────────────────────────────────── -->
+<h2 id="faq">Frequently Asked Questions</h2>
+
+<h3>Does this plugin affect my game's build size or runtime performance?</h3>
+<p>
+    <strong>No.</strong> All plugin scripts are in an <code>Editor/</code> folder and are excluded from builds automatically.
+    The generated PNG textures and materials <em>are</em> included in your build (like any other asset), but the plugin code itself has zero runtime footprint.
+</p>
+
+<h3>Can I use the generated skyboxes commercially?</h3>
+<p>
+    Yes. Skyboxes generated through SkyboxLab are yours to use in any project, commercial or otherwise.
+    Refer to the SkyboxLab terms of service on the dashboard for full details.
+</p>
+
+<h3>Can I use this plugin offline?</h3>
+<p>
+    The plugin requires an internet connection to generate new skyboxes, as the AI rendering happens on cloud GPUs.
+    However, previously generated skyboxes (saved in <code>Assets/SkyboxLab/Generated/</code>) are standard Unity assets
+    and work fully offline.
+</p>
+
+<h3>How large are the generated textures?</h3>
+<p>
+    Native output is <strong>1440&times;720</strong> pixels. With the <strong>8K Texture</strong> option enabled (the default),
+    the output is upscaled to <strong>8192&times;4096</strong> pixels. File sizes are typically 2&ndash;20 MB per PNG
+    depending on the resolution and scene complexity.
+</p>
+
+<h3>Can I use this with Addressables or Asset Bundles?</h3>
+<p>
+    Yes. The generated PNG textures and materials are standard Unity assets. You can include them in
+    Addressable groups or Asset Bundles like any other texture or material.
+</p>
+
+<h3>What happens if I delete a generated skybox file?</h3>
+<p>
+    It will be removed from the gallery on the next window refresh. There is no way to recover it through the plugin &mdash;
+    you would need to generate a new one with the same (or similar) prompt.
+</p>
+
+<!-- ── Support ──────────────────────────────────────────────────────────── -->
+<h2 id="support">Support</h2>
+<p>
+    If you have any questions, encounter bugs, need help with integration, or want to request a feature, don't
+    hesitate to reach out. We're happy to help!
+</p>
+
+<div class="support-banner">
+    <h3>Need help?</h3>
+    <p style="color:var(--text-muted);">
+        Contact us anytime &mdash; we typically respond within 24 hours.
+    </p>
+    <a href="mailto:ragendom@gmail.com" class="email">ragendom@gmail.com</a>
+    <p style="color:var(--text-muted); margin-top: 16px; font-size: 13px;">
+        When reporting issues, please include your <strong>Unity version</strong>, <strong>render pipeline</strong> (Built-in / URP / HDRP),
+        and any <strong>Console error messages</strong> (lines starting with <code>[SkyboxLab]</code>).
+    </p>
+</div>
+
+<br>
+<p style="text-align:center; color:var(--text-muted); font-size:12px; margin-top: 48px;">
+    &copy; 2026 SkyboxLab &mdash; All rights reserved.
+</p>
+
+</main>
+</div>
+</body>
+</html>
