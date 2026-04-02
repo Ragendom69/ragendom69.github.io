@@ -1,1 +1,666 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel v1.0.0 — Documentation</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #0f3460;
+    --accent: #e94560;
+    --accent2: #533483;
+    --text: #e0e0e0;
+    --text-muted: #8a8a9a;
+    --green: #4ecca3;
+    --yellow: #f0c040;
+    --red: #e94560;
+    --blue: #4a9ff5;
+    --border: #2a2a4a;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* ---- HEADER ---- */
+  .hero {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent2) 50%, var(--accent) 100%);
+    padding: 60px 40px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent);
+  }
+  .hero h1 {
+    font-size: 3em;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .hero .version {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 1.2em;
+    color: rgba(255,255,255,0.85);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* ---- NAV ---- */
+  .nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .nav a {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 14px 18px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  .nav a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ---- CONTENT ---- */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  h2 {
+    font-size: 1.8em;
+    margin: 50px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    color: #fff;
+  }
+  h2:first-of-type { margin-top: 10px; }
+
+  h3 {
+    font-size: 1.3em;
+    margin: 30px 0 12px 0;
+    color: var(--blue);
+  }
+
+  h4 {
+    font-size: 1.05em;
+    margin: 20px 0 8px 0;
+    color: var(--green);
+  }
+
+  p { margin: 10px 0; }
+
+  a { color: var(--blue); }
+
+  ul, ol {
+    margin: 10px 0 10px 24px;
+  }
+  li { margin: 4px 0; }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9em;
+    color: var(--green);
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .card h4 { margin-top: 0; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .badge-error { background: var(--red); color: #fff; }
+  .badge-warning { background: var(--yellow); color: #1a1a2e; }
+  .badge-info { background: var(--blue); color: #fff; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 0.92em;
+  }
+  th {
+    background: var(--surface2);
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent);
+  }
+  td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:hover td {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .shortcut {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 0.85em;
+    color: var(--yellow);
+  }
+
+  .warning-box {
+    background: rgba(233, 69, 96, 0.1);
+    border-left: 4px solid var(--red);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+  }
+
+  .tip-box {
+    background: rgba(78, 204, 163, 0.1);
+    border-left: 4px solid var(--green);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+    font-size: 0.9em;
+  }
+  .footer a { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 30px 16px; }
+    .hero h1 { font-size: 2em; }
+    .container { padding: 20px 14px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<div class="hero">
+  <h1>Sentinel</h1>
+  <div class="version">v1.0.0</div>
+  <p>Project Health &amp; Integrity for Unity &mdash; find issues, clean garbage, track references, and guard your builds.</p>
+</div>
+
+<!-- ================================================================ -->
+<div class="nav">
+  <a href="#getting-started">Getting Started</a>
+  <a href="#issues-finder">Issues Finder</a>
+  <a href="#project-cleaner">Project Cleaner</a>
+  <a href="#references-finder">References Finder</a>
+  <a href="#trends">Trends &amp; Health</a>
+  <a href="#settings">Settings</a>
+  <a href="#ci-cd">CI/CD</a>
+  <a href="#support">Support</a>
+</div>
+
+<!-- ================================================================ -->
+<div class="container">
+
+<h2 id="getting-started">Getting Started</h2>
+
+<h3>Requirements</h3>
+<ul>
+  <li><strong>Unity 2021.3 LTS</strong> or newer (including Unity 6)</li>
+  <li>No external dependencies &mdash; works out of the box</li>
+  <li>Editor-only &mdash; nothing is included in your player builds</li>
+</ul>
+
+<h3>Installation</h3>
+<p>After importing from the Asset Store, Sentinel lives at <code>Assets/Sentinel/</code>. Unity will compile the <code>YourStudio.Sentinel.Editor</code> assembly automatically. No setup required.</p>
+
+<h3>Opening Sentinel</h3>
+<p>Go to <strong>Window &gt; Sentinel &gt; Open Window</strong> or press <span class="shortcut">Ctrl+Shift+Alt+S</span>.</p>
+<p>The main window has a toolbar and four tabs: <strong>Issues</strong>, <strong>Cleaner</strong>, <strong>References</strong>, and <strong>Trends</strong>.</p>
+
+<h3>Your First Scan</h3>
+<ol>
+  <li>Open the Sentinel window</li>
+  <li>Click <strong>"Scan Full Project"</strong> in the toolbar</li>
+  <li>Wait for the progress bar to finish</li>
+  <li>Review the results in the Issues tab</li>
+</ol>
+
+<div class="tip-box">
+  <strong>Tip:</strong> Use <strong>"Quick Scan"</strong> for a faster scan that only checks for missing scripts, missing references, and missing materials &mdash; the most critical issues.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="issues-finder">Issues Finder</h2>
+
+<p>The Issues tab scans your entire project &mdash; including closed scenes (via YAML parsing, without opening them) &mdash; and reports problems organized by severity.</p>
+
+<h3>Built-in Detectors</h3>
+
+<table>
+  <tr><th>Detector</th><th>Default Severity</th><th>What It Finds</th></tr>
+  <tr><td>Missing Script</td><td><span class="badge badge-error">Error</span></td><td>GameObjects with deleted/renamed MonoBehaviour scripts</td></tr>
+  <tr><td>Missing Reference</td><td><span class="badge badge-error">Error</span></td><td>Serialized fields pointing to destroyed/missing assets</td></tr>
+  <tr><td>Missing Material</td><td><span class="badge badge-error">Error</span></td><td>Renderers with null material slots</td></tr>
+  <tr><td>Shader Error</td><td><span class="badge badge-error">Error</span></td><td>Shaders that fail to compile</td></tr>
+  <tr><td>Empty UnityEvent</td><td><span class="badge badge-warning">Warning</span></td><td>UnityEvent fields with zero persistent listeners</td></tr>
+  <tr><td>Invalid Layer</td><td><span class="badge badge-warning">Warning</span></td><td>GameObjects assigned to undefined layer indices</td></tr>
+  <tr><td>Invalid Tag</td><td><span class="badge badge-warning">Warning</span></td><td>GameObjects with tags that don't exist in the Tag Manager</td></tr>
+  <tr><td>Unused Component</td><td><span class="badge badge-warning">Warning</span></td><td>Lone MonoBehaviours on childless leaf GameObjects</td></tr>
+  <tr><td>Empty GameObject</td><td><span class="badge badge-info">Info</span></td><td>GameObjects with only a Transform and no children</td></tr>
+  <tr><td>Duplicate Name</td><td><span class="badge badge-info">Info</span></td><td>Multiple assets sharing the same filename</td></tr>
+</table>
+
+<h3>Columns</h3>
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td><strong>Type</strong></td><td>The issue detector name (e.g., MissingScript, MissingRef)</td></tr>
+  <tr><td><strong>Asset Path</strong></td><td>Full project path to the asset (e.g., <code>Assets/Scenes/Level1.unity</code>)</td></tr>
+  <tr><td><strong>Object Type</strong></td><td>The Unity asset type (e.g., SceneAsset, GameObject, MonoScript)</td></tr>
+  <tr><td><strong>Message</strong></td><td>Human-readable description of the issue</td></tr>
+</table>
+
+<p>Click any column header to sort by that column. Click again to reverse the sort order.</p>
+
+<h3>Filtering</h3>
+<p>The left panel provides filters:</p>
+<ul>
+  <li><strong>Severity Filter</strong> &mdash; toggle visibility of Errors, Warnings, Infos, and Suppressed issues</li>
+  <li><strong>Issue Type Filter</strong> &mdash; enable/disable specific detector types</li>
+  <li><strong>Sort By</strong> &mdash; dropdown to sort by Severity, Asset, or Type</li>
+</ul>
+
+<h3>Fixing Issues</h3>
+<p>Issues that have automatic fixes show a <strong>"Fix:"</strong> option when right-clicked:</p>
+<ul>
+  <li><strong>Missing Script</strong> &rarr; "Fix: Remove Missing Script" &mdash; removes the null component</li>
+  <li><strong>Missing Reference</strong> &rarr; "Fix: Clear Reference" &mdash; sets the broken field to null</li>
+</ul>
+<p>All fixes support <strong>Undo</strong> (Ctrl+Z). After any fix is applied, Sentinel automatically rescans the project and shows a popup confirming how many issues were resolved.</p>
+
+<p>The <strong>"Fix All Auto-Fixable"</strong> button in the left panel applies the first available fix for every fixable issue at once.</p>
+
+<h3>Suppression</h3>
+<p>Right-click any issue and select <strong>"Suppress Issue"</strong> to hide it from future scans. Suppressions are saved to <code>Assets/SentinelData/SentinelSuppressions.json</code> (version-controlled, shared with your team).</p>
+<p>To remove a suppression, enable the "Suppressed" filter, find the issue, right-click, and select "Remove Suppression."</p>
+
+<h3>Context Menu</h3>
+<p>Right-click any issue row for:</p>
+<ul>
+  <li><strong>Fix: ...</strong> &mdash; available fix actions</li>
+  <li><strong>Suppress Issue</strong> / <strong>Remove Suppression</strong></li>
+  <li><strong>Open Asset</strong> &mdash; opens the asset in its default editor</li>
+  <li><strong>Copy Path</strong> &mdash; copies the asset path to clipboard</li>
+</ul>
+<p>Clicking any row pings the asset in the Project window.</p>
+
+<!-- ================================================================ -->
+<h2 id="project-cleaner">Project Cleaner</h2>
+
+<p>The Cleaner tab finds <strong>unreferenced assets</strong> &mdash; files that are not reachable from any build scene, Resources folder, or other root &mdash; and are safe to delete.</p>
+
+<h3>How It Works</h3>
+<p>Sentinel uses a <strong>root-tracing algorithm</strong>:</p>
+<ol>
+  <li>Identifies all <strong>root assets</strong> that must be kept (build scenes, Resources, StreamingAssets, scripts, Editor folders, Plugins, asset bundles, Addressables)</li>
+  <li><strong>Recursively traces</strong> every dependency from each root using <code>AssetDatabase.GetDependencies</code></li>
+  <li>Any asset in your project <strong>NOT reached</strong> by this trace is flagged as garbage</li>
+</ol>
+
+<h3>Protected Assets (Never Flagged)</h3>
+<ul>
+  <li>Scenes in Build Settings and all their dependencies</li>
+  <li>Everything in <code>Resources/</code> folders and their dependencies</li>
+  <li>Everything in <code>StreamingAssets/</code>, <code>Editor/</code>, <code>Plugins/</code>, <code>Gizmos/</code></li>
+  <li>All scripts (<code>.cs</code>, <code>.asmdef</code>, <code>.asmref</code>)</li>
+  <li>Assets with AssetBundle names and their dependencies</li>
+  <li>Addressable asset data and its dependencies</li>
+  <li>Assets from the last build report</li>
+  <li>Project Settings files</li>
+</ul>
+
+<h3>Using the Cleaner</h3>
+<ol>
+  <li>Switch to the <strong>Cleaner</strong> tab</li>
+  <li>Click <strong>"Find Deletable Assets"</strong></li>
+  <li>Review the results grouped by folder</li>
+  <li>Use checkboxes to select/deselect individual assets</li>
+  <li>Click <strong>"Delete Selected"</strong></li>
+</ol>
+
+<h3>Delete Confirmation</h3>
+<p>When you click "Delete Selected," a confirmation dialog appears with two options:</p>
+
+<div class="card">
+  <h4>Move to Trash (default, reversible)</h4>
+  <p>Assets are moved to <code>Assets/SentinelTrash/</code> where you can review them. To restore, simply move them back. To permanently delete later, remove the folder manually.</p>
+</div>
+
+<div class="card">
+  <h4>Delete Permanently</h4>
+  <p>Assets are deleted from the project. A backup ZIP is automatically created at <code>Library/SentinelBackups/</code> before deletion.</p>
+</div>
+
+<div class="warning-box">
+  <strong>Important:</strong> Always save your scene and project before deleting assets. While Sentinel protects critical assets, review the list carefully before confirming.
+</div>
+
+<h3>Full Preview Window</h3>
+<p>Click <strong>"Open Full Preview Window"</strong> for a larger, dedicated window with:</p>
+<ul>
+  <li>Select All / Deselect All buttons</li>
+  <li>Export to CSV for external review</li>
+  <li>Empty folder detection</li>
+</ul>
+
+<!-- ================================================================ -->
+<h2 id="references-finder">References Finder</h2>
+
+<p>The References tab answers: <strong>"Where is this asset used?"</strong></p>
+
+<h3>How to Use</h3>
+<ol>
+  <li>Switch to the <strong>References</strong> tab</li>
+  <li>Drag an asset into the <strong>Target Asset</strong> field (or use the object picker)</li>
+  <li>Click <strong>"Find References"</strong></li>
+  <li>The tree view shows every asset that references your target</li>
+</ol>
+
+<p>Sentinel rebuilds the dependency map fresh each time you search, so it always reflects the current project state. It also performs a supplementary YAML search across all scene and prefab files to catch references that the map might miss.</p>
+
+<h3>Results</h3>
+<ul>
+  <li>Click a result row to ping the referencing asset in the Project window</li>
+  <li>Expand a result to see precise locations (component, property path) &mdash; loaded on-demand for performance</li>
+  <li>Scene results are marked with <strong>[Scene]</strong>, prefabs with <strong>[Prefab]</strong></li>
+</ul>
+
+<div class="tip-box">
+  <strong>Tip:</strong> Make sure your scenes are <strong>saved</strong> before searching. Unsaved scene changes won't appear in the results until the scene file is written to disk.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="trends">Trends &amp; Health Score</h2>
+
+<p>The Trends tab tracks your project's health over time.</p>
+
+<h3>Health Score</h3>
+<p>A score from <strong>0 to 100</strong> calculated after each scan:</p>
+<pre>Score = 100 - (Errors &times; 5) - (Warnings &times; 1) - (Infos &times; 0.2)    clamped to [0, 100]</pre>
+
+<div class="card-grid">
+  <div class="card">
+    <h4 style="color: #4ecca3;">80&ndash;100: Healthy</h4>
+    <p>Project is in good shape. Few or no critical issues.</p>
+  </div>
+  <div class="card">
+    <h4 style="color: #f0c040;">50&ndash;79: Needs Attention</h4>
+    <p>Some issues accumulating. Schedule cleanup time.</p>
+  </div>
+  <div class="card">
+    <h4 style="color: #e94560;">0&ndash;49: Critical</h4>
+    <p>Significant issues. Address errors before shipping.</p>
+  </div>
+</div>
+
+<h3>Delta Indicator</h3>
+<p>Shows whether issues increased or decreased since the previous scan.</p>
+
+<h3>Trends Chart</h3>
+<p>After 2+ scans, a line chart shows errors (red), warnings (yellow), and total issues (white) over time. Sentinel stores up to 60 scan snapshots.</p>
+
+<h3>Baseline</h3>
+<p>Lock a <strong>baseline</strong> to establish "known issues." Future scans will report how many <strong>new</strong> issues appeared since the baseline was locked. This is especially useful for CI pipelines: allow existing tech debt but block new regressions.</p>
+<ul>
+  <li>Click <strong>"Lock New Baseline"</strong> in the Trends tab</li>
+  <li>The baseline is saved to <code>Assets/SentinelData/sentinel.baseline.json</code> (version-controlled)</li>
+  <li>The Issues tab status bar shows "X new since baseline"</li>
+</ul>
+
+<!-- ================================================================ -->
+<h2 id="settings">Settings</h2>
+
+<p>Go to <strong>Edit &gt; Project Settings &gt; Sentinel</strong> to configure.</p>
+
+<h3>Scan Scope</h3>
+<ul>
+  <li><strong>Included Folders</strong> &mdash; which folders to scan (default: <code>Assets</code>)</li>
+  <li><strong>Excluded Folders</strong> &mdash; folders to skip (e.g., <code>Assets/ThirdParty</code>)</li>
+</ul>
+
+<h3>Severity Configuration</h3>
+<p>Override the default severity for each issue type. For example, change "Empty UnityEvent" from Warning to Info if your project uses event-driven patterns where empty events are intentional.</p>
+
+<h3>Scan Options</h3>
+<table>
+  <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+  <tr><td>Scan Open Scenes</td><td>On</td><td>Include currently open scenes in the scan</td></tr>
+  <tr><td>Scan Closed Scenes</td><td>On</td><td>Scan .unity files via YAML (without opening them)</td></tr>
+  <tr><td>Auto Scan on Compile</td><td>Off</td><td>Trigger a scan after every script compilation</td></tr>
+  <tr><td>Fail Build on Errors</td><td>Off</td><td>Block player builds if Error-severity issues exist</td></tr>
+</table>
+
+<h3>Notifications</h3>
+<p>Paste a Slack or Discord webhook URL to receive scan result notifications. Click <strong>"Test Webhook"</strong> to verify.</p>
+
+<h3>Build Pre-Check</h3>
+<p>When <strong>"Fail Build on Errors"</strong> is enabled, Sentinel runs a fast pre-build scan (Missing Scripts + Missing References only) before every player build. If errors are found, the build is blocked with a summary of issues.</p>
+
+<h3>Suppression via Code</h3>
+<p>Add the <code>[SentinelIgnore]</code> attribute to fields, properties, or entire classes to suppress issue detection:</p>
+<pre>[SentinelIgnore("Intentionally null during async loading")]
+public GameObject optionalReference;</pre>
+
+<h3>Project Window Context Menu</h3>
+<p>Right-click assets or folders in the Project window:</p>
+<ul>
+  <li><strong>Sentinel &gt; Exclude Folder from Scans</strong> &mdash; adds the folder to the excluded list</li>
+  <li><strong>Sentinel &gt; Suppress All Issues in This Asset</strong> &mdash; suppresses all detections for that asset</li>
+</ul>
+
+<!-- ================================================================ -->
+<h2 id="ci-cd">CI/CD Integration</h2>
+
+<h3>Command-Line Usage</h3>
+<p>Run Sentinel in headless mode for CI pipelines:</p>
+<pre>Unity.exe -batchmode -quit -projectPath /path/to/project \
+  -executeMethod YourStudio.Sentinel.Editor.SentinelCLI.RunScan \
+  -sentinelOutput Reports/sentinel-report.json \
+  -sentinelFailOn Error</pre>
+
+<h3>CLI Arguments</h3>
+<table>
+  <tr><th>Argument</th><th>Default</th><th>Description</th></tr>
+  <tr><td><code>-sentinelOutput</code></td><td><code>sentinel-report.json</code></td><td>Output path for the JSON report</td></tr>
+  <tr><td><code>-sentinelFailOn</code></td><td><code>Error</code></td><td>Minimum severity to fail (<code>Error</code>, <code>Warning</code>, <code>Info</code>)</td></tr>
+  <tr><td><code>-sentinelProfile</code></td><td>(none)</td><td>Named scan profile from Project Settings</td></tr>
+</table>
+
+<h3>Exit Codes</h3>
+<table>
+  <tr><th>Code</th><th>Meaning</th></tr>
+  <tr><td><code>0</code></td><td>Scan passed &mdash; no issues at or above the fail threshold</td></tr>
+  <tr><td><code>1</code></td><td>Scan failed &mdash; issues found at or above the fail threshold</td></tr>
+  <tr><td><code>2</code></td><td>Scan error &mdash; crash, missing profile, or configuration problem</td></tr>
+</table>
+
+<h3>Output Reports</h3>
+<p>Two reports are generated side by side:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>JSON Report</h4>
+    <p>Machine-readable. Contains scan date, Unity version, duration, issue summary (errors/warnings/infos/suppressed), new-since-baseline count, and the full issues array.</p>
+  </div>
+  <div class="card">
+    <h4>JUnit XML Report</h4>
+    <p>Standard test result format. Compatible with GitHub Actions (<code>dorny/test-reporter</code>), Jenkins, GitLab CI. Includes <code>file</code> attributes for inline PR annotations and a <code>&lt;properties&gt;</code> block with scan metadata.</p>
+  </div>
+</div>
+
+<h3>GitHub Actions Template</h3>
+<p>A ready-to-use workflow is included at <code>Assets/Sentinel/GitHubActions/sentinel.yml</code>. Copy it to <code>.github/workflows/sentinel.yml</code> in your repository. It uses <a href="https://game.ci">Game CI</a> (<code>game-ci/unity-builder@v4</code>).</p>
+
+<h3>Lock Baseline from CLI</h3>
+<pre>Unity.exe -batchmode -quit -projectPath /path/to/project \
+  -executeMethod YourStudio.Sentinel.Editor.SentinelCLI.LockBaseline</pre>
+
+<h3>Git Post-Merge Hook</h3>
+<p>Sentinel can install a git hook that automatically runs a health scan after every <code>git pull</code> / <code>git merge</code>. Call <code>SentinelGitHook.InstallPostMergeHook()</code> from code or a menu item.</p>
+
+<!-- ================================================================ -->
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+
+<table>
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><span class="shortcut">Ctrl+Shift+Alt+S</span></td><td>Open Sentinel window</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="menu-reference">Menu Reference</h2>
+
+<table>
+  <tr><th>Menu Path</th><th>Action</th></tr>
+  <tr><td>Window &gt; Sentinel &gt; Open Window</td><td>Opens the main Sentinel window</td></tr>
+  <tr><td>Window &gt; Sentinel &gt; Run Scan (CLI)</td><td>Runs a scan and writes reports (same as CLI)</td></tr>
+  <tr><td>Window &gt; Sentinel &gt; Lock Baseline (CLI)</td><td>Locks the current issue state as baseline</td></tr>
+  <tr><td>Edit &gt; Project Settings &gt; Sentinel</td><td>Opens Sentinel settings</td></tr>
+  <tr><td>Assets &gt; Sentinel &gt; Exclude Folder from Scans</td><td>Right-click context menu on folders</td></tr>
+  <tr><td>Assets &gt; Sentinel &gt; Suppress All Issues in This Asset</td><td>Right-click context menu on assets</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="files-reference">Files Written by Sentinel</h2>
+
+<table>
+  <tr><th>File</th><th>Location</th><th>Version Controlled?</th><th>Purpose</th></tr>
+  <tr><td><code>SentinelMap.dat</code></td><td>Library/</td><td>No</td><td>Binary dependency graph cache</td></tr>
+  <tr><td><code>SentinelProjectSettings.asset</code></td><td>ProjectSettings/</td><td>Yes</td><td>Shared scan configuration</td></tr>
+  <tr><td><code>SentinelSuppressions.json</code></td><td>Assets/SentinelData/</td><td>Yes</td><td>Shared issue suppressions</td></tr>
+  <tr><td><code>sentinel.baseline.json</code></td><td>Assets/SentinelData/</td><td>Yes</td><td>Shared issue baseline</td></tr>
+  <tr><td><code>SentinelTrends.asset</code></td><td>UserSettings/</td><td>No</td><td>Per-developer scan history</td></tr>
+  <tr><td><code>SentinelUserSettings.asset</code></td><td>UserSettings/</td><td>No</td><td>Per-developer UI preferences</td></tr>
+  <tr><td><code>SentinelBackups/*.zip</code></td><td>Library/</td><td>No</td><td>Pre-deletion backup archives</td></tr>
+  <tr><td><code>SentinelTrash/</code></td><td>Assets/</td><td>Optional</td><td>Reversible trash folder</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="faq">FAQ</h2>
+
+<div class="card">
+  <h4>Does Sentinel affect my build size?</h4>
+  <p>No. Sentinel is entirely editor-only. The assembly definition restricts it to the Editor platform. Nothing is included in player builds.</p>
+</div>
+
+<div class="card">
+  <h4>Does Sentinel modify my assets?</h4>
+  <p>Only when you explicitly use a fix action (e.g., "Remove Missing Script" or "Clear Reference"). All fixes support Undo. The cleaner only deletes assets you manually select and confirm.</p>
+</div>
+
+<div class="card">
+  <h4>How does the closed scene scanner work?</h4>
+  <p>Sentinel reads <code>.unity</code> files as raw YAML text and uses regex patterns to extract missing script GUIDs and broken references. It never calls <code>EditorSceneManager.OpenScene()</code>, so it's fast (50+ scenes per second) and doesn't disrupt your current scene.</p>
+</div>
+
+<div class="card">
+  <h4>Can I add custom detectors?</h4>
+  <p>Yes. Create a class that extends <code>SentinelExtensionBase</code>, override the <code>DetectorName</code> property and whichever <code>On*Scanned</code> methods you need, and call <code>AddIssue()</code>. Sentinel discovers it automatically via <code>TypeCache</code> &mdash; no registration needed.</p>
+</div>
+
+<div class="card">
+  <h4>Why does the cleaner show an asset I know is used?</h4>
+  <p>Make sure the scene or prefab using that asset is saved. The dependency tracer reads files on disk, not unsaved in-memory state. Also check that the using scene is in your Build Settings.</p>
+</div>
+
+<div class="card">
+  <h4>Can I undo a deletion?</h4>
+  <p>If you used "Move to Trash," the assets are in <code>Assets/SentinelTrash/</code> &mdash; move them back manually. If you used "Delete Permanently," a backup ZIP exists at <code>Library/SentinelBackups/</code>.</p>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="support">Support</h2>
+
+<div class="card" style="text-align: center;">
+  <h3 style="margin-top: 0;">Need Help?</h3>
+  <p style="font-size: 1.1em;">Contact us at <a href="mailto:ragendom@gmail.com"><strong>ragendom@gmail.com</strong></a></p>
+  <p>Please include:</p>
+  <ul style="text-align: left; display: inline-block;">
+    <li>Your Unity version</li>
+    <li>Sentinel version (shown in the window title bar)</li>
+    <li>Steps to reproduce the issue</li>
+    <li>Console error logs if applicable</li>
+  </ul>
+</div>
+
+</div><!-- /container -->
+
+<!-- ================================================================ -->
+<div class="footer">
+  <p><strong>Sentinel v1.0.0</strong> &mdash; Project Health &amp; Integrity for Unity</p>
+  <p>Support: <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a></p>
+</div>
+
+</body>
+</html>
