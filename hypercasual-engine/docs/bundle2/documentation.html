@@ -1,1 +1,1193 @@
-fsdfds
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperCasual Games Bundle #2 - Technical Documentation</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --sidebar-width: 280px;
+            --success-color: #27ae60;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-color);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--secondary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            padding: 0 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li a {
+            display: block;
+            padding: 12px 25px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar li a:hover, .sidebar li a.active {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .sidebar .sub-link {
+            padding-left: 45px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px 80px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        section {
+            margin-bottom: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 40px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 24px;
+            background: var(--primary-color);
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+            border-left: 3px solid #ddd;
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .badge-toolkit { background-color: #e67e22; color: white; }
+        .badge-editor { background-color: #9b59b6; color: white; }
+        .badge-core { background-color: #2ecc71; color: white; }
+        .badge-script { background-color: #34495e; color: white; }
+        .sidebar li a .standalone-icon::before {
+            content: '\1F4E6';
+            margin-left: 6px;
+            font-size: 0.8rem;
+        }
+
+        .standalone-box {
+            background: linear-gradient(135deg, #f0f7ff, #e0ecf8);
+            border: 2px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .standalone-box h4 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .standalone-box h4::before {
+            content: '\1F4E6';
+            margin-right: 10px;
+        }
+
+        .standalone-box a {
+            color: #2980b9;
+            font-weight: 600;
+        }
+
+        .standalone-box a:hover {
+            color: #3498db;
+        }
+
+        .upsell-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 3px solid #f39c12;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .upsell-box h3 {
+            border-left: none;
+            padding-left: 0;
+            color: #e67e22;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .upsell-box p {
+            font-size: 1.1rem;
+        }
+
+        .upsell-box .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .upsell-button {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 16px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .upsell-button:hover {
+            background-color: #d35400;
+        }
+
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #c7254e;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .note {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background-color: #fff8e1;
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
+        .editor-box {
+            background-color: #f9f0ff;
+            border: 1px solid #d1b3e0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .editor-box h4 {
+            margin-top: 0;
+            color: #6c3483;
+            display: flex;
+            align-items: center;
+        }
+
+        .editor-box h4::before {
+            content: '\1F6E0\FE0F';
+            margin-right: 10px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .script-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .script-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .script-item strong {
+            display: block;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .script-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>Bundle #2</h2>
+        <ul>
+            <li><a href="#upsell">Get the Full Engine</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#structure">Project Structure</a></li>
+            <li><a href="#game11">#11 Hole Loop Jam</a></li>
+            <li><a href="#game12">#12 Coffee Color Block</a></li>
+            <li><a href="#game13">#13 Color Brick Loop</a></li>
+            <li><a href="#game14">#14 Good Swipe</a></li>
+            <li><a href="#game15">#15 Drop Marbles</a></li>
+            <li><a href="#game16">#16 Sand Flow Puzzle<span class="standalone-icon"></span></a></li>
+            <li><a href="#game17">#17 Snake Out<span class="standalone-icon"></span></a></li>
+            <li><a href="#game18">#18 Donut Master</a></li>
+            <li><a href="#game19">#19 StackFill</a></li>
+            <li><a href="#game20">#20 Crowd To Bus<span class="standalone-icon"></span></a></li>
+            <li><a href="#core">Core Systems</a></li>
+            <li><a href="#ads">Ads Monetization</a></li>
+            <li><a href="#development">Development Guide</a></li>
+            <li><a href="#support">Support</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+
+        <section id="upsell">
+            <h1 style="font-size: 2.8rem; text-align: center; border-bottom: none;">HyperCasual Games Bundle #2</h1>
+            <p style="text-align: center; font-size: 1.15rem; color: #666;">Games #11 through #20 &mdash; 10 fully functional mobile puzzle game templates with level editors, core systems, and ad monetization.</p>
+
+            <div class="upsell-box">
+                <h3>Want Even More Games? Get the Full Engine!</h3>
+                <p>The official <strong>HyperCasual Game Engine &ndash; Mobile Puzzle Templates</strong> asset contains this bundle, other bundles, and will continue to grow with <strong>more and more games</strong> added over time.</p>
+                <p>Lock in the price now &mdash; currently just <span class="price">$99</span> with more and more games being added over time!</p>
+                <p>Currently featuring <strong>20+ game templates</strong> with level editors, and more on the way.</p>
+                <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-136631" target="_blank" class="upsell-button">Check Out the Full Engine on the Asset Store</a>
+            </div>
+        </section>
+
+        <section id="overview">
+            <h1>Technical Overview</h1>
+            <p><span class="badge badge-toolkit">Toolkit</span> The <strong>Hypercasual Game Engine</strong> is a modular framework designed for rapid development of puzzle and arcade mechanics. It provides a standardized architecture where game-specific logic is decoupled from core engine systems.</p>
+
+            <div class="note">
+                <strong>Architecture Philosophy:</strong> Every game is treated as a "Module". The <code>Core</code> provides the services (Audio, UI, Camera, Persistence), and the <code>Games</code> folder contains the implementation of specific mechanics.
+            </div>
+
+            <h3>Core Design Patterns:</h3>
+            <ul>
+                <li><strong>Singleton Managers</strong>: Centralized control for game states and audio.</li>
+                <li><strong>Data-Driven Levels</strong>: Separation of level design (JSON/Assets) from game logic.</li>
+                <li><strong>Namespace Isolation</strong>: All scripts reside within <code>HypercasualGameEngine</code> or <code>HypercasualGameEngine.{GameName}</code> to prevent conflicts.</li>
+            </ul>
+        </section>
+
+        <section id="getting-started">
+            <h1>Getting Started</h1>
+
+            <h3>Opening the Main Scene</h3>
+            <p>The primary game scene is located at:</p>
+            <p><code>Assets/Hypercasual Game Engine/Core/Scenes/Games-Bundle-2.unity</code></p>
+            <p>Open this scene to access all game modules included in this bundle.</p>
+
+            <h3>Where to Find Level Editors</h3>
+            <p>All level editor tools are located under the Unity <strong>Tools</strong> menu in the top menu bar. There is no separate "Hypercasual" tab. To open any level editor, go to:</p>
+            <p><code>Tools > #{number} {Game Name} Level Editor</code></p>
+            <p>For example: <code>Tools > #11 HoleLoopJam Level Editor</code>, etc.</p>
+
+            <div class="warning-box">
+                <strong>Important - Resizing Level Editor Windows:</strong> When you first open any level editor tool, the popup window may appear very small by default. You will need to <strong>manually resize the window by dragging its right edge and bottom edge</strong> to expand it until you can see the full tool layout (typically a left-side control panel and a right-side grid/preview area). This applies to all level editors in the toolkit.
+            </div>
+        </section>
+
+        <section id="structure">
+            <h1>Project Structure</h1>
+            <p>Understanding the directory layout is crucial for extending the engine.</p>
+
+            <h3>Global Core (<code>Assets/Hypercasual Game Engine/Core</code>)</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SoundManager.cs</strong>
+                    Handles global SFX and Music. Supports muting and volume scaling.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Base class for all game managers. Handles Win/Loss logic and UI triggers.
+                </div>
+                <div class="script-item">
+                    <strong>ColorManager.cs</strong>
+                    Centralized color palette management for blocks and UI.
+                </div>
+                <div class="script-item">
+                    <strong>AnimationPlayer.cs</strong>
+                    A helper to trigger common animations (Scale, Rotate, Move) via code.
+                </div>
+            </div>
+
+            <h3>Game Modules (<code>Assets/Hypercasual Game Engine/Games</code>)</h3>
+            <p>Each game folder is self-contained, including its own <code>Scripts</code>, <code>Editor</code>, <code>Prefabs</code>, and <code>Levels</code>. The folder naming convention is <code>#{number}_{GameName}</code>, for example: <code>#11_HoleLoopJam</code>, <code>#16_SandFlowPuzzle</code>.</p>
+
+            <h3>Scenes (<code>Assets/Hypercasual Game Engine/Core/Scenes</code>)</h3>
+            <p>The current main scene is <strong>Games-Bundle-2</strong>. This is the scene you should open to play or test any of the game modules in this bundle.</p>
+        </section>
+
+        <section id="game11">
+            <h1>#11 Hole Loop Jam</h1>
+            <p>A conveyor-loop puzzle where players tap colored pots from a spawn queue to send them onto a grid-based loop system. Matching-colored blocks on the grid automatically pathfind and jump into passing pots. Once a pot is fully filled, it's destroyed with a particle effect. Win by filling and destroying all pots before the loop runs out of dock space.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game logic controller. Handles grid initialization, BFS-based block pathfinding, pot movement along the loop, block-to-pot delivery animations, and win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Singleton level manager that loads levels from JSON at runtime via <code>LevelManager</code>. Manages material/color mappings and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>TapOutManager.cs</strong>
+                    Input handler for touch/mouse input. Manages the pot spawn queue and handles tapping pots to send them into the conveyor loop.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Represents individual grid blocks with color, position, obstacle/hidden properties, and visual state management.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the grid layout: block positions with <code>TypeColor</code>, <code>IsHidden</code>, <code>IsObstacle</code> flags, and pot data lines (color + amount sequences).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/HoleLoopJam/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Grid-Based Pathfinding</strong>: Uses BFS (Breadth-First Search) to find the shortest path from any block to the pot location on the grid.</li>
+                <li><strong>Conveyor Loop</strong>: Pots move through a series of ApplyState positions in a continuous loop around the grid, collecting matching blocks as they pass.</li>
+                <li><strong>Color Matching</strong>: Only blocks matching a pot's color will pathfind and jump into that pot with a parabolic arc animation.</li>
+                <li><strong>Pot Destruction</strong>: When a pot reaches its target fill count, it shrinks and explodes with particle effects.</li>
+                <li><strong>Blocking Mechanics</strong>: Obstacle blocks can block paths; hidden blocks are revealed when obstacles are removed.</li>
+                <li><strong>Win Condition</strong>: All pots have been filled and destroyed.</li>
+                <li><strong>Lose Condition</strong>: A pot completes its loop and there's no available dock to return it to.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, per-cell block definitions (color, hidden, obstacle), and ordered pot data lines.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Hole Loop Jam Level Editor</h4>
+                <p><strong>Script:</strong> <code>HoleLoopJamLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #11 HoleLoopJam Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser on the left and the grid editor on the right.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #11 HoleLoopJam Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels. Click <strong>+ New Level</strong> to start a new level with auto-incrementing name.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
+                    <li>Edit the <strong>Block Grid</strong>: click cells to cycle through <code>TypeColor</code> values (None, Red, Blue, Green, Yellow, Purple). Hold <strong>Shift+click</strong> to toggle the <em>Hidden</em> flag, or <strong>Ctrl+click</strong> for the <em>Obstacle</em> flag. Cells are color-coded with overlay markers for hidden (H) and obstacle (X) states.</li>
+                    <li>Edit <strong>Pot Data Lines</strong>: add/remove lines, and within each line add pots with a <code>TypeColor</code> and fill <code>Amount</code>. Reorder lines as needed.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/HoleLoopJam/</code>. Use <strong>Save As</strong> to save under a new name.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel — it lists all <code>.json</code> files in the levels folder. Click any level name to load it.</li>
+                    <li><strong>Delete:</strong> Select a level in the browser and click the delete button to remove it.</li>
+                    <li><strong>New Level:</strong> Click <strong>+ New Level</strong> to create a blank level with an auto-generated name.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/HoleLoopJam/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game12">
+            <h1>#12 Coffee Color Block</h1>
+            <p>A color-matching puzzle where players drag shaped blocks onto a grid to position them near conveyors. Conveyors spawn colored coffee cups that automatically transfer into matching-colored blocks when they overlap. Each block has multiple slots (holes) that must be filled with cups. When all slots on a block are filled, the block clears with a slide-out animation. Complete all blocks before time runs out to win.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game controller handling grid generation, block placement, occupancy tracking, snap-to-grid logic, countdown timer, and win/lose conditions. Includes <code>InitializeFromLevelData()</code> for runtime level loading.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Mouse input handler for block interaction. Manages block clicking, physics-based dragging with collision sliding, and releasing blocks back onto the grid.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Represents a colored block with multiple cup slots. Handles coffee-to-slot arc animations, sprite sorting, block clear detection, and slide-out clear animation.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages coffee cup spawning and color sequencing. Detects overlap with matching-colored blocks via trigger collisions. Includes <code>InitializeFromLevelData()</code> to populate from JSON data.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data classes defining the level structure: grid dimensions, spacing, timer duration, block definitions (<code>BlockData</code> with color, rotation, grid position, shape offsets, cup slot count), and conveyor queue (<code>ConveyorData</code> with color and coffee count).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/CoffeeColorBlock/</code> at runtime, and provides save/delete for editor use.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevelManager.cs</strong>
+                    Runtime level loader MonoBehaviour. References <code>GridManager</code> and <code>Convenyor</code>, loads levels via <code>LevelManager</code>, and provides Next/Previous navigation with arrow keys.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Block Dragging</strong>: Players click and drag blocks with physics-based movement. Blocks slide along obstacles and snap to the nearest grid position on release.</li>
+                <li><strong>Coffee Conveyors</strong>: Multiple conveyors spawn sequences of colored coffee cups. Each conveyor can have multi-color sequences that advance as cups are consumed.</li>
+                <li><strong>Color Matching</strong>: Coffee cups only transfer from a conveyor to a block when their colors match. The conveyor's active color changes as each color sequence completes.</li>
+                <li><strong>Block Filling</strong>: Each block has multiple cup slots. Cups arc-animate into slots one at a time. When all slots are filled, the block clears automatically.</li>
+                <li><strong>Block Clear Animation</strong>: Filled blocks pull back slightly, then slide off-screen with a rotation effect.</li>
+                <li><strong>Grid Occupancy</strong>: Blocks use shape definitions to occupy multiple grid cells, preventing overlap with other blocks.</li>
+                <li><strong>Win Condition</strong>: All blocks have been filled and cleared.</li>
+                <li><strong>Lose Condition</strong>: The countdown timer expires before all blocks are cleared.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, spacing, timer, block definitions (color, rotation, position, shape offsets, cup slots), and ordered conveyor queue.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Coffee Color Block Level Editor</h4>
+                <p><strong>Script:</strong> <code>CoffeeColorBlockLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #12 CoffeeColorBlock Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #12 CoffeeColorBlock Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Configure <strong>Grid Settings</strong>: grid width, grid height, cell spacing, and level timer duration.</li>
+                    <li>Edit <strong>Blocks</strong>: add/remove block entries. Each block has a color (<code>EColor</code>), rotation (0/90/180/270), grid position, shape offsets (list of <code>Vector2Int</code> defining the block shape), and cup slot count.</li>
+                    <li>Edit the <strong>Conveyor Queue</strong>: add/remove conveyor entries, each with a color and coffee count.</li>
+                    <li>Use <strong>Capture from Scene</strong> to read current scene Block and Convenyor data into the editor, bridging the existing inspector-based workflow with the JSON system.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/CoffeeColorBlock/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li><strong>Capture from Scene:</strong> Use this button to import the current scene's block and conveyor configuration into the editor (useful if you've been building levels using the inspector).</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/CoffeeColorBlock/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game13">
+            <h1>#13 Color Brick Loop</h1>
+            <p>A casual puzzle game where players click on colored boxes to push bricks onto a circular conveyor belt path. Bricks move around the conveyor, and a cannon at the end fires at matching-colored goal bricks on the top board. Players must clear all goal colors in sequence to win the level.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Represents colored box containers holding multiple bricks. Handles clicking, slide animation, lid opening, and spawning bricks onto the conveyor.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages the circular conveyor belt path. Moves bricks step-by-step between path nodes, handles color matching with the tunnel, and checks lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>TopBoard.cs</strong>
+                    Manages the goal grid at the top of the screen. Creates goal bricks that must be eliminated and tracks the goal color sequence.
+                </div>
+                <div class="script-item">
+                    <strong>Tunnel.cs</strong>
+                    Cannon system at the conveyor's end. Fires bullets at matching goal-color bricks on the top board, rotating to aim at targets.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Singleton level coordinator. Loads levels from JSON via <code>LevelManager</code>, initializes the grid and top board, and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the color grid layout as rows of <code>EColor</code> values (Yellow, Green, Emerald, Orange) and an ordered list of goal colors.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/ColorBrickLoop/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Box Clicking</strong>: Clicking a box slides it forward onto the conveyor path. The lid flies open with animation and bricks spawn at predefined positions inside.</li>
+                <li><strong>Conveyor Circulation</strong>: Bricks move step-by-step around a circular path. Movement is blocked if the next node is occupied or if bricks are still spawning.</li>
+                <li><strong>Cannon & Color Matching</strong>: When a brick of the current goal color reaches the tunnel node, a bullet is fired at the corresponding goal brick on the top board, which pops with a scale animation.</li>
+                <li><strong>Goal Sequence</strong>: Players must eliminate all bricks of the first goal color, then the second, and so on until all goals are cleared.</li>
+                <li><strong>Win Condition</strong>: All goal colors have been eliminated successfully.</li>
+                <li><strong>Lose Condition</strong>: The conveyor becomes completely full and none of the bricks match the current goal color.</li>
+                <li><strong>Level Data</strong>: JSON-based with a color grid (rows x columns of <code>EColor</code> values) and an ordered goal color sequence.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Color Brick Loop Level Editor</h4>
+                <p><strong>Script:</strong> <code>ColorBrickLoopLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #13 ColorBrickLoop Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and color grid editor.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #13 ColorBrickLoop Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Edit the <strong>Color Grid</strong>: a visual rows x columns grid of <code>EColor</code> dropdown popups (Yellow, Green, Emerald, Orange). Add or remove rows and columns to resize the grid.</li>
+                    <li>Edit <strong>Goal Colors</strong>: an ordered list of <code>EColor</code> values that define the sequence of colors players must eliminate. Use add/remove buttons and reorder as needed.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/ColorBrickLoop/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/ColorBrickLoop/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game14">
+            <h1>#14 Good Swipe</h1>
+            <p>A swipe-based sorting puzzle where players swipe the grid in four directions to move boxes and arrange items. The goal is to group matching items (Can, Ice, Duck) within the same box. When all 4 items in a box match, the box clears and fills collection targets. Complete all targets to win.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game logic handler. Manages grid state, box movement, item swapping between adjacent boxes, scoring, win/lose evaluation, and grid refactoring after swipes.
+                </div>
+                <div class="script-item">
+                    <strong>GameManager.cs</strong>
+                    Singleton game coordinator. Loads levels from JSON via <code>LevelManager</code>, initializes the grid, and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>MouseSwipe.cs</strong>
+                    Input handler detecting and interpreting player mouse swipes (left, right, up, down) with a minimum distance threshold.
+                </div>
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Represents a grid cell containing up to 4 items. Handles destruction animations and item position tracking.
+                </div>
+                <div class="script-item">
+                    <strong>Fill.cs</strong>
+                    UI element displaying collection goals for each item type with a numeric counter that decrements as items are cleared.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the level: grid dimensions, fill targets (<code>FillData</code> with <code>TypeObject</code> and count), and box definitions (<code>BoxData</code> with grid position and item list).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/GoodSwipe/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Swipe System</strong>: Detects mouse swipes (50-pixel minimum) and moves all boxes in that direction to fill gaps in the grid.</li>
+                <li><strong>Item Swapping</strong>: After movement, the system attempts optimal swaps between adjacent boxes to match item types together.</li>
+                <li><strong>Box Clearing</strong>: When all 4 items in a box match the same type, the box vanishes with animation and collection counters decrement.</li>
+                <li><strong>Grid Refactoring</strong>: After each swipe, boxes move, items swap, boxes clear, and new boxes spawn randomly in empty slots with a bounce effect.</li>
+                <li><strong>Point System</strong>: Awards points for item arrangements (1 item = 1pt, 2 = 5pts, 3 = 20pts, 4 = 100pts) with combo bonuses.</li>
+                <li><strong>Win Condition</strong>: All collection targets reach zero.</li>
+                <li><strong>Lose Condition</strong>: Grid fills completely with no valid adjacent swaps possible.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, fill targets (item type + required count), and box definitions (grid position + item list).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Good Swipe Level Editor</h4>
+                <p><strong>Script:</strong> <code>GoodSwipeLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #14 GoodSwipe Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and box editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #14 GoodSwipe Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
+                    <li>Edit <strong>Fill Data</strong> (collection goals): add/remove target entries, each with a <code>TypeObject</code> (Can, Ice, Duck) and required count.</li>
+                    <li>Edit <strong>Boxes</strong>: add/remove box definitions. Each box has a grid position and a list of up to 4 item types (<code>TypeObject</code> enum popups). Boxes are shown as a visual grid layout.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/GoodSwipe/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/GoodSwipe/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game15">
+            <h1>#15 Drop Marbles</h1>
+            <p>A marble-sorting puzzle where players click on colored boxes to release marbles that scatter in all directions. The released marbles roll onto a conveyor belt that routes them toward color-matched target slots (FillBoxes). Fill all target slots to win before the conveyor becomes overloaded.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridTapOut.cs</strong>
+                    Manages the grid of clickable boxes. Initializes box placement from level data and handles box release logic.
+                </div>
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Represents clickable boxes containing marbles. Releases marbles in a circular spread pattern when clicked, with a lid-open animation.
+                </div>
+                <div class="script-item">
+                    <strong>Conveyor.cs</strong>
+                    Core conveyor system managing marble movement along the belt path. Handles marble rotation, fill detection, and collision management.
+                </div>
+                <div class="script-item">
+                    <strong>GridFill.cs</strong>
+                    Manages target FillBox slots. Initializes fill columns from level data, removes completed boxes with slide-up animations, and checks win conditions.
+                </div>
+                <div class="script-item">
+                    <strong>GameManager.cs</strong>
+                    Singleton game coordinator. Loads levels from JSON via <code>LevelManager</code>, initializes the grid and fill targets, and supports arrow key navigation between levels.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable data class defining the level: grid dimensions, box items (<code>BoxItem</code> with <code>TypeColor</code> lists), and fill columns (<code>GridFillColumn</code> with ordered <code>TypeColor</code> entries).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/DropMarbles/</code> at runtime, and provides save/delete for editor use.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Marble Release</strong>: Clicking a box releases all marbles inside in a circular spread pattern using physics impulse forces. Marbles scale up as they scatter.</li>
+                <li><strong>Conveyor Belt</strong>: An active conveyor rotates marbles along a fixed path. Marbles move to the next position each cycle with smooth interpolation.</li>
+                <li><strong>Color Matching</strong>: Marbles must match the exact color of their target FillBox to be accepted. Mismatched colors pass through.</li>
+                <li><strong>FillBox Completion</strong>: When a FillBox receives 3 matching-colored marbles, it's marked full and removed. Remaining boxes animate upward to fill the gap.</li>
+                <li><strong>Win Condition</strong>: All FillBoxes have been filled and removed.</li>
+                <li><strong>Lose Condition</strong>: All conveyor slots are filled and no active marbles can reach available matching targets.</li>
+                <li><strong>Level Data</strong>: JSON-based with configurable grid dimensions, box item definitions (color per marble), and fill column definitions (ordered target colors).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Drop Marbles Level Editor</h4>
+                <p><strong>Script:</strong> <code>DropMarblesLevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #15 DropMarbles Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #15 DropMarbles Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the playfield size.</li>
+                    <li>Edit <strong>Box Items</strong>: add/remove box definitions. Each box has a list of <code>TypeColor</code> values (Red, Blue, Green, Yellow) representing the marbles inside.</li>
+                    <li>Edit <strong>Fill Columns</strong>: add/remove fill column definitions. Each column has an ordered list of <code>TypeColor</code> entries defining the target colors that must be matched from bottom to top.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving & Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Click <strong>Save</strong> to write the level as a <code>.json</code> file to <code>Assets/Resources/Levels/DropMarbles/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/DropMarbles/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game16">
+            <h1>#16 Sand Flow Puzzle</h1>
+            <p>A color-matching puzzle where players manage sand flow through buckets and a conveyor belt. Click colored buckets on a grid to send them onto a moving belt, where they automatically absorb matching-color sand from an 80x80 pixel art display. Fill each bucket to clear it, and empty all the sand to win.</p>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
+                <p><a href="https://u3d.as/1Dai" target="_blank">View Sand Flow Puzzle on the Unity Asset Store</a></p>
+            </div>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SandFlowPuzzleGameManager.cs</strong>
+                    Orchestrates the game loop: level loading, UI construction, booster system (Slot, Shuffle, Magic Wand), bucket-to-belt fly animations, win/lose evaluation, and conveyor belt texture scrolling.
+                </div>
+                <div class="script-item">
+                    <strong>SandSimulator.cs</strong>
+                    80x80 pixel-based sand physics engine. Simulates gravity with sub-steps, renders to a texture via RawImage, tracks color counts, and supports pixel extraction for bucket suction.
+                </div>
+                <div class="script-item">
+                    <strong>BucketManager.cs</strong>
+                    Manages the grid of colored 3D buckets. Handles clickability logic based on neighbor rules, magic wand hover highlighting, shuffle animations, and 3D bucket creation with colliders.
+                </div>
+                <div class="script-item">
+                    <strong>ConveyorManager.cs</strong>
+                    Belt system that moves buckets along a path. Handles suction (extracting sand pixels when a bucket passes over the display), flying block particle effects, fill block visualization, and bucket completion explosions.
+                </div>
+                <div class="script-item">
+                    <strong>ImageQuantizer.cs</strong>
+                    K-means clustering algorithm that quantizes any source image into N dominant colors for level generation. Used by the Level Editor for image-based palette creation.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: 80x80 sand grid with palette color indices, bucket grid layout (rows, columns, enabled cells), bucket color/mystery assignments, belt slot count, and booster counts.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Sand Gravity</strong>: Sand pixels fall and spread using cellular automaton rules with randomized sub-steps for natural behavior.</li>
+                <li><strong>Bucket Suction</strong>: Belt buckets extract matching-color pixels from the bottom of the sand display as they pass over it, with flying block particle effects.</li>
+                <li><strong>Boosters</strong>: Slot (+1 belt capacity), Shuffle (randomize grid bucket positions), Magic Wand (click any bucket regardless of neighbor rules).</li>
+                <li><strong>Win Condition</strong>: All sand pixels cleared from the display and no particles remaining.</li>
+                <li><strong>Lose Condition</strong>: All belt slots full and every bucket has completed a full loop without extracting any sand.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Sand Flow Puzzle Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #16 Sand Flow Puzzle > Level Editor</code>. A two-panel editor with a level browser on the left and level properties on the right. Supports image quantization, palette editing, visual bucket grid editing (select/edit cells modes), auto-distribution of bucket colors, and belt/booster configuration.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full interface.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game17">
+            <h1>#17 Snake Out</h1>
+            <p>A grid-based puzzle where players drag colored snakes to guide them into matching-color holes. Snakes can be moved from either their head or tail, and must navigate around obstacles and other snakes to reach their exit.</p>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
+                <p><a href="https://u3d.as/1CKy" target="_blank">View Snake Out on the Unity Asset Store</a></p>
+            </div>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SlitherRushGame.cs</strong>
+                    Main game controller. Manages snake instantiation, input handling for dragging, grid-based movement validation, hole entry animations, win/lose checking, and level progression.
+                </div>
+                <div class="script-item">
+                    <strong>SlitherSnake.cs</strong>
+                    Snake entity with 7 color variants. Handles segment tracking with head/tail history, dragging from either end, blinking and tongue-flick animations, hole entry with particle effects, and auto-solve highlighting.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions, time limit, hole definitions (color, position), snake definitions (color, segments, can-move-by-tail flag), and obstacle positions.
+                </div>
+                <div class="script-item">
+                    <strong>InfiniteRotator.cs</strong>
+                    Utility component that continuously rotates a GameObject at a configurable speed, used for visual decoration elements.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Bidirectional Movement</strong>: Snakes can be dragged from either their head or tail, allowing strategic repositioning.</li>
+                <li><strong>Grid Pathfinding</strong>: Movement is validated against grid boundaries, obstacles, and other snake segments.</li>
+                <li><strong>Color Matching</strong>: Each snake must enter a hole of the same color. Mismatched holes are blocked.</li>
+                <li><strong>Time Limit</strong>: Configurable per level (default 120 seconds).</li>
+                <li><strong>Win Condition</strong>: All snakes have entered their matching holes.</li>
+                <li><strong>Lose Condition</strong>: Time runs out before all snakes are matched.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Snake Out Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #17 Snake Out Level Editor</code>. Grid-based level painter with paint modes for obstacles, holes, and snake segments. Visual grid at 38x38 cell size with color-coded elements.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full grid.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game18">
+            <h1>#18 Donut Master</h1>
+            <p>A matching and assembly puzzle where players arrange colored donuts on a top-down board to match target shapes. Donuts arrive in boxes via conveyor lines and must be dragged onto the board to fill designated patterns.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Initializes the conveyor system and top board from level data, coordinates gameplay flow.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages multiple conveyor lines delivering donut boxes. Handles box queuing (3 visible + pending), progression, and completion callbacks.
+                </div>
+                <div class="script-item">
+                    <strong>TopBoard.cs</strong>
+                    Grid-based target shape board. Validates donut placement against target positions and tracks completion status.
+                </div>
+                <div class="script-item">
+                    <strong>DonutBox.cs</strong>
+                    Container holding multiple donuts in defined shapes (2x2, 1x1, 1x2, L-shaped variants). Tracks fill state and manages colliders.
+                </div>
+                <div class="script-item">
+                    <strong>Donut.cs</strong>
+                    Individual color-coded donut piece (Purple, Cyan, Pink, Yellow). Supports drag-and-drop placement with validation.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: top map dimensions, box data (color, shape, position), and column data (ordered box sequences per conveyor line).
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Shape Matching</strong>: Donut boxes come in various shapes (2x2, 1x1, 1x2, L-shapes) that must fit target patterns on the board.</li>
+                <li><strong>Conveyor Lines</strong>: Multiple lines deliver boxes sequentially. Completing a box advances the line.</li>
+                <li><strong>Color System</strong>: 4 donut colors (Purple, Cyan, Pink, Yellow) that must match target positions.</li>
+                <li><strong>Win Condition</strong>: All target positions on the top board are filled with correctly colored donuts.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Donut Master Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #18 Donut Master Level Editor</code>. Visual level editor for designing donut puzzles with conveyor line configuration, box shape placement, and target board layout.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game19">
+            <h1>#19 StackFill</h1>
+            <p>A 3D block-stacking puzzle where players fill a three-dimensional grid with colored blocks according to wall constraints. Tap to place blocks from a dock into valid positions defined by colored walls on XY and YZ planes.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Singleton game manager. Initializes the tap and fill systems, provides color-to-material lookup for block rendering.
+                </div>
+                <div class="script-item">
+                    <strong>FillManager.cs</strong>
+                    Core 3D grid manager. Creates planes and constraint walls from level data, tracks block placement in a 3D array, validates placements against wall rules, and checks win conditions.
+                </div>
+                <div class="script-item">
+                    <strong>TapOutManager.cs</strong>
+                    Input handler for block selection and placement. Manages the dock of available blocks and turn-based placement flow.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: 3D grid dimensions (X, Y, Z), plane data (floor layers), wall constraints for XY and YZ axes, and block column data.
+                </div>
+                <div class="script-item">
+                    <strong>ColorMappingData.cs</strong>
+                    Maps TypeColor enum values to Unity Materials for block rendering. Supports an extensible number of color types.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>3D Grid</strong>: Fully three-dimensional playfield with configurable X, Y, Z dimensions.</li>
+                <li><strong>Wall Constraints</strong>: Colored walls on XY (horizontal) and YZ (vertical) planes define which colors can be placed in each position.</li>
+                <li><strong>Tap-to-Place</strong>: Select a block from the dock and tap a valid grid position to place it.</li>
+                <li><strong>Win Condition</strong>: All grid positions filled according to wall constraints.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>StackFill Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #19 StackFill Level Editor</code>. Two-panel level editor with a level browser on the left and level properties on the right. Supports creating, duplicating, reordering, and deleting levels with JSON-based save/load.
+                    </li>
+                    <li><strong>Editor.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector for <code>LevelData</code> ScriptableObjects. Provides visual grid editors with XY Top View and YZ Side View perspectives, color assignment tools, and invalid item cleanup utilities.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game20">
+            <h1>#20 Crowd To Bus</h1>
+            <p>A color-sorting puzzle where players move groups of colored people on a grid to match them with bus compartments. Drag people groups to valid grid positions and guide them onto buses with matching-color slots.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Initializes grid and input managers, handles level setup and game flow.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core grid and placement system. Manages the 2D grid of people, creates buses and dock areas, validates drop zones, tracks pedestals (visual placement markers), and evaluates win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>People.cs</strong>
+                    Individual color-coded person unit (Yellow, Red, Green, Orange, Purple, Blue). Tracks grid position and pedestal reference.
+                </div>
+                <div class="script-item">
+                    <strong>Car.cs</strong>
+                    Bus vehicle with colored compartments. Stores compartment data, position, and capacity for people matching.
+                </div>
+                <div class="script-item">
+                    <strong>TapOutManager.cs</strong>
+                    Input handler for tap/drag interactions. Validates people placements and manages turn flow.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions, people group data (positions, colors), and car column data (bus configurations with color slots).
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Color Matching</strong>: 6 people colors (Yellow, Red, Green, Orange, Purple, Blue) that must match bus compartment colors.</li>
+                <li><strong>Grid Movement</strong>: Drag people groups to valid positions on the grid, respecting placement constraints.</li>
+                <li><strong>Pedestal System</strong>: Visual markers indicate valid placement positions on the grid.</li>
+                <li><strong>Win Condition</strong>: All people groups matched to their corresponding bus compartments.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Crowd To Bus Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #20 Crowd To Bus Level Editor</code>. Two-panel level editor with a level browser on the left (add, delete, duplicate, reorder levels) and level properties on the right. Features a visual grid painter for assigning colored people groups to grid positions, box management with color selection and cell painting, and car column configuration with per-car color and capacity settings. Levels are saved as individual JSON files to <code>Assets/Resources/Levels/CrowdToBus/</code>.
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Importing Existing Levels:</strong> If you have levels stored as <code>LevelData</code> ScriptableObjects (e.g. in <code>Datas/Levels/</code>), use the <strong>Import from ScriptableObject</strong> button at the bottom of the left panel to convert them into the JSON format. After importing, click <strong>Save All Levels</strong> to write the JSON files.
+                        </div>
+
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>Window Size:</strong> When you first open this tool, the window may appear small. Drag the right edge and bottom edge to expand it and see the full interface.
+                        </div>
+                    </li>
+                    <li><strong>LevelEditor.cs</strong>:
+                        <br><em>Usage:</em> Custom inspector for <code>LevelData</code> ScriptableObjects. Provides box management, grid visualization, and car column configuration tools.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="standalone-box">
+                <h4>Also Available as a Standalone Asset</h4>
+                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
+                <p><a href="https://assetstore.unity.com/packages/slug/141533" target="_blank">View Crowd To Bus on the Unity Asset Store</a></p>
+            </div>
+        </section>
+
+        <section id="core">
+            <h1>Core Systems & Utilities</h1>
+
+            <div class="editor-box">
+                <h4>Core Editor Tools</h4>
+                <p>These tools are available globally to assist with general project development:</p>
+                <ul>
+                    <li><strong>DragSnapWithoutPlaymodeEditor.cs</strong>:
+                        <br><em>Usage:</em> Attach the <code>DragSnapWithoutPlaymode</code> component to any GameObject. In the Scene view, a custom handle will appear. Moving this handle will snap the object to the grid defined in the inspector. It also draws a visual grid around the object for reference.
+                    </li>
+                    <li><strong>ImportAudioIcon.cs</strong>:
+                        <br><em>Usage:</em> Automatically assigns a custom icon to audio files in the Project window, making them easier to distinguish from other assets.
+                    </li>
+                </ul>
+            </div>
+
+            <h3>LoseWinPanelManager</h3>
+            <p>A global UI controller. It listens for events from any <code>LevelManager</code> and triggers the appropriate overlay. It is designed to be "Plug and Play" — just drop the prefab into your scene's Canvas.</p>
+
+            <h3>Animation System</h3>
+            <p>The engine includes a lightweight animation system (<code>PositionAnimation.cs</code>, <code>ScaleAnimation.cs</code>, <code>RotationAnimation.cs</code>) that allows for tween-like behavior without external dependencies.</p>
+        </section>
+
+        <section id="ads">
+            <h1>Ads Monetization</h1>
+            <p>The Hypercasual Game Engine ships with a complete ad monetization system powered by <strong>RagendomAds</strong>. It supports Banner, Interstitial, Rewarded Video, and App Open Ad formats out of the box, with Google AdMob integration ready to go.</p>
+
+            <h3>Documentation</h3>
+            <p>Full setup instructions, API reference, and configuration guides are available in the dedicated RagendomAds documentation:</p>
+            <p><code>Assets/RagendomAds/Documentation/Documentation.html</code></p>
+
+            <div class="note">
+                <strong>Quick Start:</strong> Open the RagendomAds documentation for step-by-step instructions on configuring ad providers, setting up AdMob IDs, testing with dummy ads in the editor, and integrating ad calls into your game scripts.
+            </div>
+
+            <h3>Video Tutorial</h3>
+            <p>Watch our setup walkthrough to get ads running in your project:</p>
+            <p>
+                <a href="https://www.youtube.com/watch?v=nWmyWacoFAc" target="_blank" style="display: inline-block; background-color: #e74c3c; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 1rem;">Watch on YouTube</a>
+            </p>
+
+            <h3>Key Features:</h3>
+            <ul>
+                <li><strong>All ad formats</strong>: Banner, Interstitial, Rewarded Video, and App Open Ads.</li>
+                <li><strong>Provider-agnostic</strong>: Swap between AdMob and Dummy providers via a ScriptableObject — no code changes needed.</li>
+                <li><strong>Frequency capping</strong>: Built-in cooldown and level-interval settings for interstitials.</li>
+                <li><strong>No-ads purchase support</strong>: A single method call disables banners and interstitials while keeping rewarded videos available.</li>
+                <li><strong>Editor testing</strong>: Dummy ad provider shows simulated ad UIs directly in the Unity Editor.</li>
+            </ul>
+        </section>
+
+        <section id="development">
+            <h1>Development Guide</h1>
+
+            <h3>Creating a New Game Module:</h3>
+            <ol>
+                <li><strong>Folder Setup</strong>: Create <code>Assets/Hypercasual Game Engine/Games/#X_Name</code>.</li>
+                <li><strong>Manager</strong>: Create a script inheriting from <code>LevelManager</code>.
+                    <pre>public class MyGameManager : LevelManager { ... }</pre>
+                </li>
+                <li><strong>UI Integration</strong>: Ensure your scene has an <code>EventSystem</code> and a <code>Canvas</code> with the <code>LoseWinPanel</code> prefab.</li>
+                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code> or a dedicated namespace like <code>namespace YourGameName { ... }</code>.</li>
+            </ol>
+
+            <div class="important">
+                <strong>Important:</strong> When moving assets, always use the <code>AssetDatabase</code> API or the Unity Project window to preserve <code>.meta</code> files and references.
+            </div>
+        </section>
+
+        <section id="support">
+            <h1>Support</h1>
+            <p>Need help with the engine? Have questions about a specific mechanic or want to report a bug?</p>
+            <div class="note">
+                <strong>Contact Email:</strong> <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>
+            </div>
+            <p>We aim to respond to all support inquiries within 24-48 hours. Please include your order number and a detailed description of your issue for faster assistance.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Hypercasual Game Engine Toolkit. Built for rapid prototyping.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Scroll spy and smooth scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            const navLi = document.querySelectorAll('.sidebar ul li a');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
