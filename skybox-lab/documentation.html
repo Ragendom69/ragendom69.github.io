@@ -328,6 +328,7 @@
   <a href="#quick-start">Quick Start</a>
   <a href="#editor-window">Editor Window</a>
   <a href="#connection">Connection</a>
+  <a href="#version-check">Updates</a>
   <a href="#prompt-guide">Prompt Guide</a>
   <a href="#style-presets">Styles</a>
   <a href="#generation-options">Options</a>
@@ -352,6 +353,13 @@
   and a production-ready equirectangular skybox is downloaded, imported with correct texture settings, turned into a
   <code>Skybox/Panoramic</code> material, and optionally applied to your scene &mdash; all without ever leaving Unity.
 </p>
+
+<div class="tip-box">
+  <strong>Unity-only workflow.</strong> Skybox generation happens exclusively inside the Unity editor through
+  this plugin &mdash; there is no web generator. The SkyboxLab website is only used for creating your account,
+  viewing your API key, topping up credits, and browsing your generation history. Everything you actually <em>make</em>
+  happens right here, in the SkyboxLab window.
+</div>
 
 <div class="flow">
   <div class="flow-step"><div class="icon">&#9997;&#65039;</div><div>You type a text prompt in the Editor window</div></div>
@@ -392,8 +400,9 @@
     email is verified. Check your spam folder if you don't see it within a few minutes.
   </li>
   <li>
-    <strong>Start with your free welcome generations.</strong> Every new account receives <strong>5 free skybox generations</strong>
+    <strong>Start with your free welcome generations.</strong> Every new account receives <strong>5 lifetime free skybox generations</strong>
     so you can test the plugin and see the quality before purchasing credits.
+    These are a one-time allowance &mdash; they do <em>not</em> reset monthly.
   </li>
   <li>
     <strong>Copy your API key</strong> from the dashboard. Once logged in, select <strong>Settings</strong> from
@@ -407,10 +416,21 @@
 
 <div class="caution-box">
   <strong>After the 5 Free Generations:</strong>
-  Once your 5 free welcome generations are used up, you will need to purchase credits to continue
+  Once your 5 lifetime welcome generations are used up, you will need to purchase credits to continue
   generating skyboxes. You can top up credits directly from the
   <a href="https://skyboxlab-production.up.railway.app/dashboard.html">SkyboxLab dashboard</a>.
   The plugin displays your remaining free generations and credit balance in the connection section so you always know where you stand.
+  <br><br>
+  <strong>How the counter works:</strong> The welcome counter is stored both on the SkyboxLab server
+  <em>and</em> locally per-installation. Both must agree that free gens are available for a generation
+  to run free. This means reinstalling the plugin, wiping <code>EditorPrefs</code>, or deleting the
+  project's <code>ProjectSettings/SkyboxLab_fg_*.lock</code> sidecar will <em>not</em> grant you more
+  free generations &mdash; the server side always enforces the lifetime cap of 5.
+  <br><br>
+  <strong>Credits come first once you top up.</strong> As soon as your credit balance is above zero,
+  new generations are paid from credits instead of consuming your remaining welcome gens. Welcome gens
+  are only spent when your credit balance is exactly $0.00, so you can always rely on the 5-gen allowance
+  being reserved for times you genuinely have nothing to spend.
 </div>
 
 <!-- ================================================================ -->
@@ -420,7 +440,7 @@
   <tr><td>Unity Version</td><td>2020.3 LTS or newer (tested up to Unity 6)</td></tr>
   <tr><td>Render Pipeline</td><td>Built-in RP, URP, or HDRP (see <a href="#hdrp">HDRP notes</a>)</td></tr>
   <tr><td>Internet Connection</td><td>Required during generation (the AI runs on cloud GPUs)</td></tr>
-  <tr><td>SkyboxLab Account</td><td><span class="badge badge-error">Required</span> &mdash; free to create, includes 5 free welcome generations</td></tr>
+  <tr><td>SkyboxLab Account</td><td><span class="badge badge-error">Required</span> &mdash; free to create, includes 5 lifetime free welcome generations</td></tr>
   <tr><td>API Key</td><td><span class="badge badge-error">Required</span> &mdash; obtain from the SkyboxLab dashboard</td></tr>
 </table>
 
@@ -525,7 +545,9 @@
     <td><strong>Free generations</strong></td>
     <td>
       If you have free welcome generations remaining, they are displayed in green (e.g. <em>"3 free gens left"</em>).
-      Free generations are used before credits are deducted.
+      The counter shown is the <em>stricter</em> of the server-reported remaining and the local per-installation
+      counter &mdash; so the number you see is always the amount you can actually spend. Welcome gens are only
+      consumed when your credit balance is exactly $0.00; any positive credit balance is spent first.
     </td>
   </tr>
   <tr>
@@ -539,23 +561,36 @@
 <div class="warning-box">
   <strong>API Key Locks After First Connection:</strong>
   When you click <strong>Test Connection</strong> and the server responds with <em>&#10003; Connected</em>,
-  your API key is <strong>locked</strong> to this Unity installation. The editable password field
+  your API key is <strong>permanently locked</strong> to this Unity installation. The editable password field
   is replaced with a read-only masked display (<code>&#128274; skb_XXXX&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</code>)
   and cannot be changed through the plugin UI.
   <br><br>
   This is by design &mdash; it prevents accidental key changes and unauthorized key swapping.
-  <br><br>
-  <strong>If you need to reset your API key</strong> (e.g. you entered the wrong key, or you are migrating to a
-  new account), you must perform both of these steps:
-  <ol>
-    <li>Delete the file <code>{YourProject}/Library/SkyboxLab.lock</code></li>
-    <li>In Unity, open <code>Edit &rarr; Preferences</code> and remove the EditorPrefs key <code>SLB_lk_v1</code>
-      (you can use a script or the <em>EditorPrefs</em> section of a prefs editor asset)</li>
-  </ol>
-  After both steps, reopen the SkyboxLab window &mdash; the API Key field will be editable again.
-  The <code>Library/</code> folder is excluded from version control by default, so the lock does not travel
-  with your project if you share it via Git.
+  The lock persists across plugin updates, so upgrading to a newer version of the asset
+  will keep the same API key bound to your project.
 </div>
+
+<!-- ================================================================ -->
+<h2 id="version-check">Plugin Updates</h2>
+<p>
+  Every time you open the SkyboxLab window, the plugin asks the server for the current asset version
+  via <code>GET /api/version</code>. If the server reports a <code>min_required</code> version higher than
+  the one built into your plugin, the normal UI is replaced with a full-window update screen.
+</p>
+<p>
+  The update screen contains:
+</p>
+<ul>
+  <li>A clear message saying <em>"Skybox Lab X.Y.Z is outdated"</em> with the minimum required version</li>
+  <li>The release notes for the newest version</li>
+  <li>A <strong>"Download Newest Version of Skybox Lab &rarr;"</strong> button that opens the plugin's
+    page on the Unity Asset Store (<a href="https://assetstore.unity.com/packages/slug/137882" target="_blank" rel="noopener">assetstore.unity.com/packages/slug/137882</a>)</li>
+  <li>A <em>Re-check version</em> button in case you just updated and want to re-query the server</li>
+</ul>
+<p>
+  The version check is non-blocking &mdash; if the server is unreachable, the plugin assumes it is up to
+  date and loads normally. You will never be locked out because of a transient network error.
+</p>
 
 <!-- ================================================================ -->
 <h2 id="prompt-guide">Prompt Guide</h2>
@@ -679,7 +714,10 @@ low quality, jpeg artifacts, overexposed, underexposed, ugly, deformed</code></p
 </table>
 
 <p>
-  If you have free welcome generations remaining, the button shows <strong>&#9889; GENERATE SKYBOX &mdash; FREE</strong> instead.
+  If you have free welcome generations remaining <em>and</em> your credit balance is exactly $0.00,
+  the button shows <strong>&#9889; GENERATE SKYBOX &mdash; FREE</strong> instead. As soon as you top up
+  credits, the button switches to the paid price and your welcome gens are reserved &mdash; they are
+  only consumed when you have no credits to spend.
 </p>
 
 <div class="info-box">
@@ -924,12 +962,13 @@ skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
 </div>
 
 <!-- ================================================================ -->
-<h2 id="editor-prefs">EditorPrefs Keys</h2>
+<h2 id="editor-prefs">EditorPrefs &amp; Persistence Keys</h2>
 <p>
-  The plugin stores all user settings in <code>EditorPrefs</code> (per-machine, not committed to version control).
-  These persist between Unity sessions:
+  The plugin stores user-facing settings in <code>EditorPrefs</code> (per-machine, not committed to version control)
+  and a small number of sidecar files for data that needs to survive asset reinstalls or EditorPrefs wipes.
 </p>
 
+<h3>EditorPrefs (user settings)</h3>
 <table>
   <tr><th>Key</th><th>Type</th><th>Default</th></tr>
   <tr><td><code>SkyboxLab_ServerUrl</code></td><td>string</td><td><code>https://skyboxlab-production.up.railway.app</code></td></tr>
@@ -942,6 +981,26 @@ skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
   <tr><td><code>SkyboxLab_StyleIndex</code></td><td>int</td><td><code>-1</code> (none)</td></tr>
   <tr><td><code>SkyboxLab_Recent</code></td><td>string (JSON)</td><td><em>(empty)</em></td></tr>
 </table>
+
+<h3>Locked state (do not delete)</h3>
+<p>
+  These stores hold the per-installation API-key lock and the per-API-key lifetime free-gen counter.
+  Deleting them will not un-lock the key or grant extra free generations &mdash; the server still
+  enforces both, and the plugin rebuilds the missing stores from the remaining one on next launch.
+</p>
+<table>
+  <tr><th>Location</th><th>Purpose</th></tr>
+  <tr><td><code>EditorPrefs: SLB_k_v1 / SLB_lk_v1</code></td><td>Locked API key + lock flag (machine-wide)</td></tr>
+  <tr><td><code>ProjectSettings/SkyboxLab.lock</code></td><td>Locked API key (travels with the project)</td></tr>
+  <tr><td><code>Library/SkyboxLab.lock</code></td><td>Legacy lock file &mdash; still written for backwards compatibility</td></tr>
+  <tr><td><code>EditorPrefs: SLB_fg_&lt;hash&gt;_v1</code></td><td>Lifetime free-gen counter, keyed by the first 8 bytes of a SHA-256 hash of your API key</td></tr>
+  <tr><td><code>ProjectSettings/SkyboxLab_fg_&lt;hash&gt;.lock</code></td><td>Sidecar copy of the free-gen counter so it survives an EditorPrefs wipe</td></tr>
+</table>
+<p style="color:var(--text-3);font-size:13px;">
+  On every generate / usage fetch, the plugin sends its local counter via an <code>X-Unity-Free-Used</code>
+  header. The server responds with the authoritative count and the plugin reconciles both sides to the
+  maximum. Neither side can ever lower the other's view of the counter.
+</p>
 
 <!-- ================================================================ -->
 <h2 id="hdrp">HDRP Projects</h2>
@@ -976,11 +1035,12 @@ skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
 
 <h3>"Generation failed" error</h3>
 <ul>
-  <li><strong><code>quota exceeded</code></strong> &mdash; your 5 free welcome generations are used up
-    and your credit balance is zero. Visit the SkyboxLab dashboard to top up credits.</li>
+  <li><strong><code>quota exceeded</code></strong> / <strong><code>Insufficient credits</code></strong> &mdash;
+    your 5 lifetime welcome generations are used up and your credit balance is zero. Visit the SkyboxLab
+    dashboard to top up credits. Welcome gens are a one-time allowance and do not reset monthly.</li>
   <li><strong><code>invalid API key</code></strong> &mdash; your key may have been revoked or
-    is malformed. Generate a new key from the dashboard. If your key is locked, see the
-    <a href="#connection">API Key Lock</a> section for reset instructions.</li>
+    is malformed. Contact <a href="mailto:ragendom@gmail.com">support</a> if your account key
+    has changed and you need assistance.</li>
   <li><strong>Any other error</strong> &mdash; check the Unity Console for the full <code>[SkyboxLab]</code>
     log line and include it when contacting <a href="mailto:ragendom@gmail.com">support</a>.</li>
 </ul>
@@ -1017,12 +1077,6 @@ skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
 <ul>
   <li>Ensure all three <code>.cs</code> files are inside the <code>Editor/</code> folder.</li>
   <li>If you see namespace errors, confirm you are on Unity 2020.3 LTS or newer.</li>
-</ul>
-
-<h3>Cannot edit the API Key field</h3>
-<ul>
-  <li>Your key has been locked after a successful connection. This is intentional.
-    See <a href="#connection">API Key Lock</a> for reset instructions.</li>
 </ul>
 
 <!-- ================================================================ -->
