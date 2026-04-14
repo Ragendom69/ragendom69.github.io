@@ -284,7 +284,6 @@
                 <li><a href="#level-editor">Level Editor</a></li>
                 <li><a href="#auto-level-generator">Auto Level Generator</a></li>
                 <li><a href="#boosters">Boosters</a></li>
-                <li><a href="#admob-ads">AdMob Ads</a></li>
                 <li><a href="#customization">Customization</a></li>
                 <li><a href="#support">Support</a></li>
             </ul>
@@ -298,7 +297,7 @@
         <!-- ==================== OVERVIEW ==================== -->
         <section id="overview" class="section">
             <h2>Overview</h2>
-            <p>Sand Flow Puzzle is a color-sorting puzzle game where players tap color-coded buckets to send them onto a conveyor belt, which pours sand into a pixel-art image. The image is quantized from real photographs into a limited color palette using K-means++ quantization. The game features procedurally generated sand physics, a built-in level editor, an automatic level generator with image import, a booster system, and full AdMob ad integration.</p>
+            <p>Sand Flow Puzzle is a color-sorting puzzle game where players tap color-coded buckets to send them onto a conveyor belt, which pours sand into a pixel-art image. The image is quantized from real photographs into a limited color palette using K-means++ quantization. The game features procedurally generated sand physics, a built-in level editor, an automatic level generator with image import, and a booster system.</p>
 
             <div class="feature-grid">
                 <div class="feature-card">
@@ -316,10 +315,6 @@
                 <div class="feature-card">
                     <h4>Booster System</h4>
                     <p>Three in-game boosters &mdash; Extra Slot, Shuffle, and Magic Pick &mdash; with level-based unlocks, tutorial popups, and usage tracking.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>AdMob Integration</h4>
-                    <p>Ragendom Monetization module with banner, interstitial, and rewarded video ads. Includes a Dummy provider for editor testing.</p>
                 </div>
                 <div class="feature-card">
                     <h4>Image Quantization</h4>
@@ -377,15 +372,6 @@
 &#9474;   &#9500;&#9472;&#9472; <span class="file">LoseWinPanel.prefab</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">Popup_Powerup_Picker.prefab</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="file">DeveloperModeButton.prefab</span>
-&#9474;
-&#9500;&#9472;&#9472; <span class="folder">RagendomAds/</span> <span class="comment">&mdash; Monetization &amp; ad system (separate documentation inside)</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="folder">Core/</span> <span class="comment">&mdash; Shared interfaces and callbacks</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; Ad system documentation</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="folder">Examples/</span> <span class="comment">&mdash; Ad example scene and scripts</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="folder">Icons/</span>
-&#9474;   &#9492;&#9472;&#9472; <span class="folder">Modules/</span>
-&#9474;       &#9500;&#9472;&#9472; <span class="folder">Defines/</span> <span class="comment">&mdash; Scripting define management</span>
-&#9474;       &#9492;&#9472;&#9472; <span class="folder">Monetization/</span> <span class="comment">&mdash; Ad providers (AdMob, Dummy), settings, managers</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Resources/</span> <span class="comment">&mdash; Unity Resources folder (loaded at runtime)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; Level JSON files (Level_1.json, Level_2.json, ...)</span>
@@ -717,57 +703,6 @@
             <p>Press the <strong>U</strong> key during gameplay to unlock all boosters (sets all unlock levels to 0). This is useful for testing.</p>
         </section>
 
-        <!-- ==================== ADMOB ADS ==================== -->
-        <section id="admob-ads" class="section">
-            <h2>AdMob Ads</h2>
-
-            <p>This project includes a Ragendom Monetization module for integrating AdMob ads (banners, interstitials, and rewarded videos). The ad system supports both real AdMob ads on device and a built-in <strong>Dummy ad provider</strong> for testing in the Unity Editor.</p>
-
-            <h3>Documentation</h3>
-            <p>Full setup and configuration instructions for the ad system are provided in a separate documentation file located at:</p>
-            <div class="code-block">Assets/Sand Flow Puzzle/RagendomAds/Documentation/Documentation.html</div>
-            <p>That documentation covers AdMob app IDs, ad unit IDs, UMP/GDPR consent, test devices, and all monetization settings.</p>
-
-            <h3>Video Tutorial</h3>
-            <p>If you prefer a video walkthrough over reading documentation, watch the full ads setup tutorial here:</p>
-            <p style="margin: 15px 0;">
-                <a href="https://www.youtube.com/watch?v=nWmyWacoFAc" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #FF0000; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 1rem;">
-                    &#9654; Watch Ads Setup Tutorial on YouTube
-                </a>
-            </p>
-
-            <h3>Quick Overview</h3>
-            <ul>
-                <li><strong>[Monetization Init]</strong> &mdash; A GameObject with the <code>MonetizationInitModule</code> component. It initializes the ad system on Awake using the assigned <code>MonetizationSettings</code> asset.</li>
-                <li><strong>MonetizationSettings</strong> &mdash; A ScriptableObject asset at <code>Assets/Sand Flow Puzzle/RagendomAds/Modules/Monetization/MonetizationSettings.asset</code>. Contains all ad provider configuration, timing, and consent settings.</li>
-                <li><strong>AdsSettings</strong> &mdash; A sub-asset inside MonetizationSettings that controls which ad provider is used for each ad type. Defaults to the <code>Dummy</code> provider for editor testing.</li>
-            </ul>
-
-            <h3>Ad Types</h3>
-            <table>
-                <tr>
-                    <th>Ad Type</th>
-                    <th>Description</th>
-                </tr>
-                <tr>
-                    <td><strong>Banner</strong></td>
-                    <td>A small ad strip displayed at the top or bottom of the screen. Show and hide at any time.</td>
-                </tr>
-                <tr>
-                    <td><strong>Interstitial</strong></td>
-                    <td>A full-screen ad. Must be <em>requested</em> (loaded) first, then <em>shown</em> when ready. Supports cooldown timers and conditions.</td>
-                </tr>
-                <tr>
-                    <td><strong>Rewarded Video</strong></td>
-                    <td>A full-screen video ad that grants a reward on completion. Must be <em>requested</em> first, then <em>shown</em>. Always available regardless of no-ads purchases.</td>
-                </tr>
-            </table>
-
-            <h3>Testing in the Editor</h3>
-            <p>By default, the ad system uses the <strong>Dummy</strong> provider, which displays test UI overlays in the Editor (a green "TEST BANNER" bar, dark "TEST INTERSTITIAL" overlay, and blue "TEST REWARDED VIDEO" overlay). This lets you verify the ad flow without needing a real device or AdMob account.</p>
-            <p>The <strong>Developer Settings Panel</strong> (accessible via the gear icon in-game) includes ad control buttons for testing: Show/Hide Banner, Show/Request Interstitial, and Show/Request Rewarded Video.</p>
-        </section>
-
         <!-- ==================== CUSTOMIZATION ==================== -->
         <section id="customization" class="section">
             <h2>Customization Guide</h2>
@@ -850,10 +785,6 @@
                 <tr>
                     <td>Pink/missing materials</td>
                     <td>The game uses URP shaders. Ensure your project has the Universal Render Pipeline package installed and a URP Renderer Asset assigned in Project Settings &gt; Graphics.</td>
-                </tr>
-                <tr>
-                    <td>Interstitial / Rewarded ads don't show</td>
-                    <td>The <code>Monetization.IsActive</code> flag gates these ad types. The Developer Settings panel auto-forces it active, but in production ensure <code>MonetizationInitModule</code> is in the scene and its settings have <code>IsModuleActive = true</code>.</td>
                 </tr>
                 <tr>
                     <td>Dev panel buttons don't respond</td>

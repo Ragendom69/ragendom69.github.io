@@ -284,7 +284,6 @@
                 <li><a href="#level-editor">Level Editor</a></li>
                 <li><a href="#auto-level-generator">Auto Level Generator</a></li>
                 <li><a href="#boosters">Boosters</a></li>
-                <li><a href="#admob-ads">AdMob Ads</a></li>
                 <li><a href="#customization">Customization</a></li>
                 <li><a href="#support">Support</a></li>
             </ul>
@@ -298,7 +297,7 @@
         <!-- ==================== OVERVIEW ==================== -->
         <section id="overview" class="section">
             <h2>Overview</h2>
-            <p>Bus Out Crowd Jam is a crowd-sorting puzzle game where players tap buses to dock them at parking slots, and matching colored people walk from the grid to their corresponding bus. Clear all people from the grid by filling every bus to win the level. The game features 3D animated characters, a built-in level editor, an automatic level generator, a booster system, and full AdMob ad integration via RagendomAds.</p>
+            <p>Bus Out Crowd Jam is a crowd-sorting puzzle game where players tap buses to dock them at parking slots, and matching colored people walk from the grid to their corresponding bus. Clear all people from the grid by filling every bus to win the level. The game features 3D animated characters, a built-in level editor, an automatic level generator, and a booster system.</p>
 
             <div class="feature-grid">
                 <div class="feature-card">
@@ -316,10 +315,6 @@
                 <div class="feature-card">
                     <h4>Booster System</h4>
                     <p>Three in-game boosters &mdash; Shuffle (rearrange bus queue), Pick Any (select any bus), and VIP Dock (unlock a VIP parking slot) &mdash; with tutorial popups and usage tracking.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>AdMob Integration</h4>
-                    <p>RagendomAds monetization module with banner, interstitial, and rewarded video ads. Includes a Dummy provider for editor testing without a real device.</p>
                 </div>
                 <div class="feature-card">
                     <h4>500 Levels Included</h4>
@@ -374,8 +369,6 @@
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; All prefabs (Car, People, Dock, ground, UI panels)</span>
 &#9474;
-&#9500;&#9472;&#9472; <span class="folder">RagendomAds/</span> <span class="comment">&mdash; Ad integration modules (AdMob, Dummy provider)</span>
-&#9474;
 &#9500;&#9472;&#9472; <span class="folder">Resources/</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">CarOutline.shader</span> <span class="comment">&mdash; Outline shader for tappable bus highlighting</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; 500 level JSON files (Level_1.json ... Level_500.json)</span>
@@ -399,7 +392,7 @@
 &#9474;   &#9500;&#9472;&#9472; <span class="file">FLS.cs</span> <span class="comment">&mdash; BFS pathfinding utility</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">Item.cs</span> <span class="comment">&mdash; Utility component</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs</span> <span class="comment">&mdash; Dev panel toggle button</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel controls (level nav, ads)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel controls (level navigation)</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="folder">Editor/</span> <span class="comment">&mdash; Editor-only scripts (namespace: BusOutCrowdJam.Editor)</span>
 &#9474;       &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
 &#9474;       &#9500;&#9472;&#9472; <span class="file">LevelEditor.cs</span> <span class="comment">&mdash; LevelData custom inspector</span>
@@ -412,7 +405,6 @@
 <span class="folder">Settings/</span> <span class="comment">&mdash; URP render pipeline assets</span>
 <span class="folder">TextMesh Pro/</span> <span class="comment">&mdash; TextMeshPro essentials</span>
 <span class="folder">Plugins/</span> <span class="comment">&mdash; Third-party plugin binaries</span>
-<span class="folder">GoogleMobileAds/</span> <span class="comment">&mdash; Google AdMob SDK</span>
 <span class="folder">ExternalDependencyManager/</span> <span class="comment">&mdash; Unity dependency resolver</span>
             </div>
         </section>
@@ -767,58 +759,6 @@
 
             <h3>Cheat Mode</h3>
             <p>Press the <strong>U</strong> key during gameplay to unlock all boosters and refill their usage counts. Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> to jump to the next/previous level. These shortcuts are useful for testing.</p>
-        </section>
-
-        <!-- ==================== ADMOB ADS ==================== -->
-        <section id="admob-ads" class="section">
-            <h2>AdMob Ads</h2>
-
-            <p>This project includes the RagendomAds monetization module for integrating AdMob ads (banners, interstitials, and rewarded videos). The ad system supports both real AdMob ads on device and a built-in <strong>Dummy ad provider</strong> for testing in the Unity Editor.</p>
-
-            <h3>Documentation</h3>
-            <p>Full setup and configuration instructions for the ad system are provided in a separate documentation file located at:</p>
-            <div class="code-block">Assets/Bus Out Crowd Jam/RagendomAds/Documentation/Documentation.html</div>
-            <p>That documentation covers AdMob app IDs, ad unit IDs, UMP/GDPR consent, test devices, and all monetization settings.</p>
-
-            <h3>Video Tutorial</h3>
-            <p>If you prefer a video walkthrough over reading documentation, watch the full ads setup tutorial here:</p>
-            <p style="margin: 15px 0;">
-                <a href="https://www.youtube.com/watch?v=nWmyWacoFAc" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #FF0000; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 1rem;">
-                    &#9654; Watch Ads Setup Tutorial on YouTube
-                </a>
-            </p>
-
-            <h3>Quick Overview</h3>
-            <p>The ad system consists of the following key components in the scene:</p>
-            <ul>
-                <li><strong>[Monetization Init]</strong> &mdash; A GameObject with the <code>MonetizationInitModule</code> component. It initializes the ad system on Awake using the assigned <code>MonetizationSettings</code> asset.</li>
-                <li><strong>MonetizationSettings</strong> &mdash; A ScriptableObject asset at <code>Assets/Bus Out Crowd Jam/RagendomAds/Modules/Monetization/MonetizationSettings.asset</code>. Contains all ad provider configuration, timing, and consent settings.</li>
-                <li><strong>AdsSettings</strong> &mdash; A sub-asset inside MonetizationSettings that controls which ad provider is used for each ad type (Banner, Interstitial, Rewarded Video). Defaults to the <code>Dummy</code> provider for editor testing.</li>
-            </ul>
-
-            <h3>Ad Types</h3>
-            <table>
-                <tr>
-                    <th>Ad Type</th>
-                    <th>Description</th>
-                </tr>
-                <tr>
-                    <td><strong>Banner</strong></td>
-                    <td>A small ad strip displayed at the top or bottom of the screen. Show and hide at any time via <code>Ragendom.AdsManager.ShowBanner()</code> and <code>HideBanner()</code>.</td>
-                </tr>
-                <tr>
-                    <td><strong>Interstitial</strong></td>
-                    <td>A full-screen ad. Must be <em>requested</em> (loaded) first via <code>RequestInterstitial()</code>, then <em>shown</em> when ready via <code>ShowInterstitial()</code>. Supports cooldown timers and conditions.</td>
-                </tr>
-                <tr>
-                    <td><strong>Rewarded Video</strong></td>
-                    <td>A full-screen video ad that grants a reward on completion. Must be <em>requested</em> first via <code>RequestRewardBasedVideo()</code>, then <em>shown</em> via <code>ShowRewardBasedVideo()</code>. Always available regardless of no-ads purchases.</td>
-                </tr>
-            </table>
-
-            <h3>Testing in the Editor</h3>
-            <p>By default, the ad system uses the <strong>Dummy</strong> provider, which displays test UI overlays in the Editor (a green "TEST BANNER" bar, dark "TEST INTERSTITIAL" overlay, and blue "TEST REWARDED VIDEO" overlay). This lets you verify the ad flow without needing a real device or AdMob account.</p>
-            <p>The <strong>Developer Settings Panel</strong> (accessible via the gear icon in-game) includes ad control buttons for testing: Show/Hide Banner, Show/Request Interstitial, and Show/Request Rewarded Video.</p>
         </section>
 
         <!-- ==================== CUSTOMIZATION ==================== -->
