@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Parking Jam - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #d35400;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #d35400;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .feature-card h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Car Parking Jam</h1>
+        <p class="subtitle">A Car-Routing Parking Puzzle Game &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-136631" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a car-routing parking puzzle game. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Car Parking Jam is a car-routing parking puzzle game where players tap colored cars on a grid to drive them out to a row of parking slots, where matching-colored passengers automatically walk from their queues and board. Fill every car with passengers to send it off and clear the level. The game features 3D animated passengers, a built-in level editor, an automatic level generator, and a booster system.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Tap-to-Drive Puzzles</h4>
+                    <p>Intuitive touch/click controls &mdash; tap any reachable car on the grid to route it to the next free parking slot. Matching colored passengers automatically walk from their queue and board.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>Full Unity Editor window for designing levels with a visual grid painter &mdash; place colored cars, configure passenger queues, parking slots, locked VIP slots, and waypoint paths.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate hundreds of playable levels with configurable difficulty curves, grid sizes, color counts, passenger-queue depths, and parking-slot configurations.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Booster System</h4>
+                    <p>Three in-game boosters &mdash; Unlock Slot (opens a locked parking space), Shuffle (randomizes grid cars), and Balloon Pick (fly any car straight to a free parking slot) &mdash; with tutorial popups and usage tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>100 Levels Included</h4>
+                    <p>Ships with 100 pre-generated levels on a progressive difficulty curve, ready to play out of the box. Generate more at any time with the auto generator.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Built-In Monetization Hooks</h4>
+                    <p>Provider-agnostic <code>AdsManager</code> facade with a Dummy provider out of the box. Plug in AdMob (or any SDK) in one file without touching gameplay code.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Active Input Handling set to <strong>Both</strong> (legacy mouse raycasts + new Input System keyboard)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the Car Parking Jam package into your Unity project</li>
+                <li>Ensure the project is set to use the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>)</li>
+                <li>Open the game scene at <code>Assets/CarParkingJam/Scenes/GameNew.unity</code></li>
+                <li>Press Play to test the first level</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, tap any clickable car on the grid (front-row cars and any car whose path to the front is clear). The car drives through the grid, out to the back row, then parks in the next free slot. Matching-colored passengers in the queues automatically walk over and board it. When every car is filled and all passenger queues are empty, the level is cleared and the next level loads automatically.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <div class="folder-structure">
+<span class="folder">CarParkingJam/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">Animations/</span> <span class="comment">&mdash; Animator controllers and UI animation clips</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Shared materials: cars, ground, UI elements</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">Models/</span> <span class="comment">&mdash; 3D models (.fbx): cars, passengers, environment</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; UI textures (booster buttons, icons, lock sprites)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; All sound effects (.wav): Switch, Pop, Success, Fail, LevelClear, LevelFail</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span> <span class="comment">&mdash; Level Editor, Auto Level Generator, Welcome popup</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ParkingLevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ParkingLevelGenerator.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">CarParkingJamWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Fonts/</span> <span class="comment">&mdash; TextMeshPro fonts used by the HUD</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span> <span class="comment">&mdash; URP Global Volume profile</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; CAR, Car Tile, Grid Elements, Passenger, Particle effects</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Global/</span> <span class="comment">&mdash; Shared UI prefabs: GameHUD_Panel, LoseWinPanel, GameOverPanel, Booster-Popup</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">CarOutline.shader</span> <span class="comment">&mdash; Hand-written HLSL outline shader for clickable cars</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PeopleOutline.shader</span> <span class="comment">&mdash; Outline shader for passengers</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; 100 level JSON files (Level_1.json ... Level_100.json)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; The single playable scene</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">MainLevel.unity</span> <span class="comment">&mdash; Sandbox scene (optional)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; Shared UI textures (booster icons, radial-shine, lock)</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; All runtime scripts</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingGameManager.cs</span> <span class="comment">&mdash; Main gameplay orchestrator</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingLevelManager.cs</span> <span class="comment">&mdash; Static JSON level loader</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingLevelData.cs</span> <span class="comment">&mdash; Level data serialization structures</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingLevelBuilder.cs</span> <span class="comment">&mdash; Builds scene content from level data</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingLevelLoader.cs</span> <span class="comment">&mdash; Static helpers for reload / advance / jump</span>
+    &#9500;&#9472;&#9472; <span class="file">CarGridBuilder.cs</span> <span class="comment">&mdash; Car grid construction &amp; cell lookup</span>
+    &#9500;&#9472;&#9472; <span class="file">CarGridCell.cs</span> <span class="comment">&mdash; Single-cell state (occupancy, pathfinding gCost)</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingCar.cs</span> <span class="comment">&mdash; Car entity: click, drive, park, balloon fly</span>
+    &#9500;&#9472;&#9472; <span class="file">ParkingSlotManager.cs</span> <span class="comment">&mdash; Parking slots, locked/unlocked visual, gradient glow</span>
+    &#9500;&#9472;&#9472; <span class="file">PathfindingManager.cs</span> <span class="comment">&mdash; Grid pathfinding &amp; cost propagation</span>
+    &#9500;&#9472;&#9472; <span class="file">PassengerGridBuilder.cs</span> <span class="comment">&mdash; Passenger-queue grid construction</span>
+    &#9500;&#9472;&#9472; <span class="file">PassengerGridCell.cs</span> <span class="comment">&mdash; Passenger-queue cell data</span>
+    &#9500;&#9472;&#9472; <span class="file">PassengerMovement.cs</span> <span class="comment">&mdash; Passenger walking &amp; boarding</span>
+    &#9500;&#9472;&#9472; <span class="file">PassengerQueueManager.cs</span> <span class="comment">&mdash; Queue boarding coroutine &amp; win detection</span>
+    &#9500;&#9472;&#9472; <span class="file">CarColor.cs</span> <span class="comment">&mdash; Enum of car/passenger colors</span>
+    &#9500;&#9472;&#9472; <span class="file">CarColorLibrary.cs</span> <span class="comment">&mdash; ScriptableObject color-to-material mapping</span>
+    &#9500;&#9472;&#9472; <span class="file">AudioSettingsManager.cs</span> <span class="comment">&mdash; Volume / mute persistence</span>
+    &#9500;&#9472;&#9472; <span class="file">FpsDisplay.cs</span> <span class="comment">&mdash; On-screen FPS counter (optional)</span>
+    &#9500;&#9472;&#9472; <span class="file">SaveKeys.cs</span> <span class="comment">&mdash; PlayerPrefs key constants</span>
+    &#9500;&#9472;&#9472; <span class="file">TutorialPanel.cs</span> <span class="comment">&mdash; Per-level tutorial popup helper</span>
+    &#9500;&#9472;&#9472; <span class="file">Vibration.cs</span> <span class="comment">&mdash; Haptic feedback wrapper</span>
+    &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; 3-booster state machine &amp; popups (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Generic level index tracker (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Generic booster-count container (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Singleton audio facade (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Win/lose panel + auto-advance (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs</span> <span class="comment">&mdash; Dev panel toggle (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel controls (HypercasualGameEngine)</span>
+    &#9492;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Multi-camera helper (HypercasualGameEngine)</span>
+
+<span class="folder">Plugins/</span> <span class="comment">&mdash; Reserved for iOS/Android native plugins (e.g. AdMob SDK)</span>
+<span class="folder">Settings/</span> <span class="comment">&mdash; URP render pipeline assets</span>
+<span class="folder">TextMesh Pro/</span> <span class="comment">&mdash; TextMeshPro essentials</span>
+<span class="folder">TutorialInfo/</span> <span class="comment">&mdash; Unity URP template starter assets</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level features a grid of color-coded <strong>cars</strong>, a set of <strong>passenger queues</strong> above the grid, and a row of <strong>parking dock slots</strong> between them. The goal is to clear all passengers from the queues by filling every outgoing car with matching-colored passengers.</p>
+
+            <ul>
+                <li><strong>Tap to drive</strong> &mdash; Tap a clickable car to route it from the grid to the next free parking slot along a pre-authored waypoint path</li>
+                <li><strong>Front-row gating</strong> &mdash; Only cars whose path to the back row is clear are clickable; a visible outline marks them</li>
+                <li><strong>Pathfinding propagation</strong> &mdash; When a car leaves the grid, pathfinding costs propagate around it and may unblock cars that were previously obstructed</li>
+                <li><strong>Color matching</strong> &mdash; Passengers at the front of each queue walk to the docked car that matches their color</li>
+                <li><strong>Car capacity</strong> &mdash; Each car has a seat count; once full, it drives off the back of the parking row and frees its slot</li>
+                <li><strong>Parking slots</strong> &mdash; Limited dock slots mean you must plan which cars to route first; a full dock blocks new cars until one departs</li>
+                <li><strong>Locked slots</strong> &mdash; Some parking slots start locked and must be unlocked with the Unlock Slot booster</li>
+                <li><strong>Hidden cars</strong> &mdash; A "covered" car on the grid is revealed (with a smoke effect) the moment its cell becomes reachable</li>
+            </ul>
+
+            <h3>Car Colors</h3>
+            <p>The game supports nine predefined car/passenger colors defined in the <code>CarColor</code> enum:</p>
+            <table>
+                <tr>
+                    <th>Color Key</th>
+                    <th>Color</th>
+                    <th>Reference Hex</th>
+                </tr>
+                <tr>
+                    <td><code>Red</code></td>
+                    <td><span class="color-swatch" style="background:#FF4757;"></span> Red</td>
+                    <td>#FF4757</td>
+                </tr>
+                <tr>
+                    <td><code>Green</code></td>
+                    <td><span class="color-swatch" style="background:#7BED9F;"></span> Green</td>
+                    <td>#7BED9F</td>
+                </tr>
+                <tr>
+                    <td><code>Blue</code></td>
+                    <td><span class="color-swatch" style="background:#48DBFB;"></span> Blue</td>
+                    <td>#48DBFB</td>
+                </tr>
+                <tr>
+                    <td><code>Yellow</code></td>
+                    <td><span class="color-swatch" style="background:#ECCC68;"></span> Yellow</td>
+                    <td>#ECCC68</td>
+                </tr>
+                <tr>
+                    <td><code>Orange</code></td>
+                    <td><span class="color-swatch" style="background:#FFA502;"></span> Orange</td>
+                    <td>#FFA502</td>
+                </tr>
+                <tr>
+                    <td><code>Violet</code></td>
+                    <td><span class="color-swatch" style="background:#BC8CFF;"></span> Violet</td>
+                    <td>#BC8CFF</td>
+                </tr>
+                <tr>
+                    <td><code>Pink</code></td>
+                    <td><span class="color-swatch" style="background:#FF6B81;"></span> Pink</td>
+                    <td>#FF6B81</td>
+                </tr>
+                <tr>
+                    <td><code>Brown</code></td>
+                    <td><span class="color-swatch" style="background:#A0522D;"></span> Brown</td>
+                    <td>#A0522D</td>
+                </tr>
+                <tr>
+                    <td><code>Gray</code></td>
+                    <td><span class="color-swatch" style="background:#A4B0BE;"></span> Gray</td>
+                    <td>#A4B0BE</td>
+                </tr>
+            </table>
+            <p>The palette is defined by the Materials you assign to <code>CarColorLibrary</code>; the hex values above are the reference look used by the shipped art.</p>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; All grid cars have been parked and filled, and all passenger queues are empty. The level index advances and the next level loads automatically after a short celebration.</li>
+                <li><strong>Lose</strong> &mdash; All parking dock slots are occupied by cars that cannot be filled (no matching passengers remain, or the queue is stuck behind an incompatible front car). The Game Over panel appears with a Retry button that reloads the current level.</li>
+            </ul>
+
+            <h3>Animations</h3>
+            <p>Passengers have three animation states: <strong>idle</strong> (waiting in the queue), <strong>run</strong> (walking from the queue to the docked car), and <strong>boarded</strong> (seated inside the car). Cars animate with smoothed path following, rotate toward their heading, and play a smoke-burst effect when the "hidden" cover is revealed. The Balloon Pick booster adds a rise &rarr; fly &rarr; drop sequence with a soft balloon sprite and particle plume.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Gameplay scripts live in the global namespace under <code>Assets/CarParkingJam/Scripts/</code>. Reusable engine scripts live in the same <code>Assets/CarParkingJam/Scripts/</code> folder under the <code>HypercasualGameEngine</code> namespace.</p>
+
+            <h3>Core Gameplay</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>ParkingGameManager</code></td>
+                    <td>The orchestrator. Tracks game state (<code>stopGame</code>, <code>isPowerupActive</code>, <code>carMovingCount</code>), bridges the engine <code>LevelManager</code> to <code>ParkingLevelManager</code>, wires booster callbacks, handles keyboard shortcuts, and triggers win/lose flow.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingLevelManager</code></td>
+                    <td>Static level loader. Loads every <code>Level_N.json</code> from <code>Resources/Levels/</code>, sorts by index, and tracks progression via the <code>ParkingJam_CurrentLevel</code> PlayerPrefs key. Exposes editor-only save/load helpers.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingLevelData</code></td>
+                    <td>Serializable POCO: grid size &amp; spacing, cell list, passenger queue columns, parking slot count, locked-slot indices, waypoint paths, and per-level booster counts.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingLevelBuilder</code></td>
+                    <td>Builds the runtime scene from <code>ParkingLevelData</code>: spawns grid tiles, places cars, builds passenger queues, activates parking slots, applies locks, and lays out waypoints. Invoked on <code>Start</code> by <code>BuildCurrentLevel()</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingLevelLoader</code></td>
+                    <td>Thin static helpers for scene reload, level advance, and jump-to-level. Used by win flow, dev panel, and keyboard shortcuts.</td>
+                </tr>
+                <tr>
+                    <td><code>CarGridBuilder</code></td>
+                    <td>Car-grid construction and lookup. Holds the 2D <code>CarGridCell</code> cache and exposes <code>GetGridCell(col, row)</code> / <code>GetCar(col, row)</code> to the rest of the system.</td>
+                </tr>
+                <tr>
+                    <td><code>CarGridCell</code></td>
+                    <td>Single grid cell. Stores row/column, occupancy flags (<code>isOccupied</code>, <code>isEmpty</code>, <code>blockedPath</code>), assigned <code>CarColor</code>, reference to the spawned car, and A*-style <code>gCost</code> used by pathfinding.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingCar</code></td>
+                    <td>Car entity. Handles <code>OnMouseDown</code> click routing, waypoint following, smoke/balloon effects, outline toggling, passenger counter display, parking finalization (SetParent + localPosition = zero), and reverse-move when a car re-enters the grid.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingSlotManager</code></td>
+                    <td>Parking-row state. Tracks <code>parkingPositions</code>, <code>parkingStatus</code> (per-slot color), <code>maximumParkingCount</code>, and <code>lockedParkingSlots</code>. Renders the gradient-glow effect on slot departure and the pop-scale animation on booster unlock.</td>
+                </tr>
+                <tr>
+                    <td><code>PathfindingManager</code></td>
+                    <td>Grid pathfinding. Maintains per-cell <code>gCost</code>, propagates costs outward from the front row, builds car paths on click, builds exit paths on departure, and updates reachability for hidden/blocked cars.</td>
+                </tr>
+                <tr>
+                    <td><code>PassengerGridBuilder</code> / <code>PassengerGridCell</code></td>
+                    <td>Construct the N-column, multi-row passenger grid with per-column spacing. Each cell stores row/column for queue-entry logic.</td>
+                </tr>
+                <tr>
+                    <td><code>PassengerMovement</code></td>
+                    <td>Passenger entity. Holds color + queue index, applies the correct material, and plays the walk &rarr; board animation sequence when summoned by <code>PassengerQueueManager</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>PassengerQueueManager</code></td>
+                    <td>Coroutine <code>TryBoardPassengers()</code> scans each queue front against every docked car and sends matching passengers. Handles queue advance, queue empty detection, and level-win trigger.</td>
+                </tr>
+                <tr>
+                    <td><code>CarColor</code> / <code>CarColorLibrary</code></td>
+                    <td>The <code>CarColor</code> enum plus a ScriptableObject mapping each color to a car material and a passenger material. Used by every spawn path.</td>
+                </tr>
+            </table>
+
+            <h3>Engine Scripts (<code>HypercasualGameEngine</code>)</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>BoosterManager</code></td>
+                    <td>Reusable 3-booster manager. Handles lock/unlock by level, consume/refund counts, toggle mode (booster C), tutorial popups keyed in PlayerPrefs, and a 4-state HUD button UI (Locked / Usable / Depleted / Active). Exposes <code>OnBoosterAUsed</code>, <code>OnBoosterBUsed</code>, <code>OnBoosterCActivated</code>, <code>OnBoosterCDeactivated</code> for per-game wiring.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelManager</code></td>
+                    <td>Generic level index tracker used by <code>BoosterManager</code>. <code>ParkingGameManager</code> mirrors <code>ParkingLevelManager</code>'s index into it on <code>Start</code>, so booster unlock levels compare against the real parking level.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelData</code></td>
+                    <td>Generic container for <code>boosterACount/B/C</code>. Registered in bulk from <code>ParkingLevelData</code> during the bridge.</td>
+                </tr>
+                <tr>
+                    <td><code>SoundManager</code></td>
+                    <td>Singleton audio facade. One <code>AudioSource</code> + <code>PlayOneShot</code> per call site. Exposes <code>PlayCarTap</code>, <code>PlayCarPark</code>, <code>PlayCarExit</code>, <code>PlayWrongCar</code>, <code>PlayBlocked</code>, <code>PlayBooster</code>, <code>PlayPassengerBoard</code>, <code>PlayButtonClick</code>, <code>PlayLevelClear</code>, <code>PlayLevelFail</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>LoseWinPanelManager</code></td>
+                    <td>Win / lose panel controller. Auto-discovers child panels by name, drives the auto-advance coroutine, rotates the radial-shine decor, and wires the retry button. Patched to call <code>ParkingLevelManager.AdvanceLevel()</code> on next-level load.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperModeButton</code> / <code>DeveloperSettingsController</code></td>
+                    <td>Corner Dev-Mode button toggles a panel with buttons for: next / previous / reload level, trigger win / lose, unlock all boosters, refill boosters, reset tutorial popups, visual theme cycling.</td>
+                </tr>
+                <tr>
+                    <td><code>AdsManager</code></td>
+                    <td>Provider-agnostic ads facade. <code>ShowBanner</code>, <code>HideBanner</code>, <code>ShowInterstitial(onClosed)</code>, <code>ShowRewardedVideo(onFinished)</code>, <code>IsRewardedVideoReady</code>. Ships with a Dummy provider &mdash; swap to AdMob in one file.</td>
+                </tr>
+                <tr>
+                    <td><code>MonetizationSettings</code></td>
+                    <td><code>ScriptableObject</code> holding provider selection (Dummy / UnityAds / AdMob), platform-specific ad unit IDs, interstitial cadence, privacy &amp; terms URLs.</td>
+                </tr>
+                <tr>
+                    <td><code>MonetizationInitModule</code></td>
+                    <td>Scene component: loads <code>MonetizationSettings</code> (inspector or <code>Resources</code>), boots <code>AdsManager</code> on <code>Awake</code>, optionally shows a banner immediately.</td>
+                </tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>ParkingLevelEditorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Car Parking Jam &gt; Level Editor</code>) for visually designing levels. Left panel lists levels with add / duplicate / reorder / delete / save-all. Right panel hosts grid painter, passenger-queue editor, parking slot count / lock editor, waypoint path editor, and booster-count fields.</td>
+                </tr>
+                <tr>
+                    <td><code>ParkingLevelGenerator</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Car Parking Jam &gt; Auto Level Generator</code>) for batch-generating levels with configurable difficulty curves.</td>
+                </tr>
+                <tr>
+                    <td><code>CarParkingJamWelcomePopup</code></td>
+                    <td>Welcome popup that appears on project open (via <code>[InitializeOnLoadMethod]</code>). Prompts for an Asset Store review and cross-promotes the HyperCasual Game Engine. Can be permanently dismissed.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+
+            <h3>Opening the Level Editor</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Car Parking Jam &gt; Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder (up/down), and delete levels in the left panel</li>
+                <li><strong>Grid Painter</strong> &mdash; Click cells on the grid to paint colored cars or erase them</li>
+                <li><strong>Paint Modes</strong> &mdash; Select a mode from the toolbar: None, Place, Erase</li>
+                <li><strong>Color Selection</strong> &mdash; Choose a car color when in Place mode (Red, Green, Blue, Yellow, Orange, Violet, Pink, Brown, Gray)</li>
+                <li><strong>Hidden Toggle</strong> &mdash; Mark a car as "hidden" (covered) so it reveals with smoke when reachable</li>
+                <li><strong>Passenger Queues</strong> &mdash; Configure each passenger-queue column: depth, per-slot color assignment</li>
+                <li><strong>Parking Row</strong> &mdash; Set total parking slots and pick which indices start locked</li>
+                <li><strong>Booster Counts</strong> &mdash; Per-level starting counts for the three boosters</li>
+                <li><strong>Grid Settings</strong> &mdash; Adjust grid width, height, and cell spacing per level</li>
+                <li><strong>Save / Reload</strong> &mdash; Save all levels to disk as JSON, or reload from disk with confirmation</li>
+            </ul>
+
+            <h3>Paint Modes</h3>
+            <table>
+                <tr>
+                    <th>Mode</th>
+                    <th>Left Click</th>
+                </tr>
+                <tr>
+                    <td><strong>None</strong></td>
+                    <td>No painting &mdash; click cells to inspect their contents</td>
+                </tr>
+                <tr>
+                    <td><strong>Place</strong></td>
+                    <td>Place a colored car at the clicked cell. Clicking an occupied cell replaces its color with the currently selected one.</td>
+                </tr>
+                <tr>
+                    <td><strong>Erase</strong></td>
+                    <td>Remove whatever car is at the clicked cell, leaving it empty.</td>
+                </tr>
+            </table>
+
+            <h3>Level Storage</h3>
+            <p>All levels are stored as individual JSON files in <code>Assets/CarParkingJam/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. They are loaded at runtime via <code>Resources.LoadAll&lt;TextAsset&gt;("Levels")</code>.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Automatic Level Generator</h2>
+
+            <p>The Automatic Level Generator is an Editor tool that batch-generates playable parking-puzzle levels procedurally. It uses configurable difficulty curves, pathfinding-aware car placement, and balanced passenger-queue distributions to create varied, solvable levels.</p>
+
+            <h3>Opening the Tool</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Car Parking Jam &gt; Auto Level Generator</code>. This opens a settings window where you can configure all parameters before generating.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Levels to Generate</strong></td>
+                    <td>How many new level files to create. New levels are appended after existing ones (never overwrites).</td>
+                </tr>
+                <tr>
+                    <td><strong>Grid Rows / Columns (Min &amp; Max)</strong></td>
+                    <td>Range for randomizing the grid dimensions of each level. Controls how much space cars have to route through.</td>
+                </tr>
+                <tr>
+                    <td><strong>Color Count (Min &amp; Max)</strong></td>
+                    <td>Range for the number of distinct colors used per level. Default: 2&ndash;5.</td>
+                </tr>
+                <tr>
+                    <td><strong>Grid Fill (Min &amp; Max)</strong></td>
+                    <td>Fraction of grid cells filled with cars. Higher fill = denser puzzle, tighter routing.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hidden Car Ratio</strong></td>
+                    <td>Fraction of cars that start "covered". Revealed with smoke when reachable.</td>
+                </tr>
+                <tr>
+                    <td><strong>Passenger Queue Columns</strong></td>
+                    <td>Number of passenger queue columns above the parking row. Default: 3.</td>
+                </tr>
+                <tr>
+                    <td><strong>Passenger Queue Depth (Min &amp; Max)</strong></td>
+                    <td>How many passengers stacked in each queue column. Sets total passengers per level.</td>
+                </tr>
+                <tr>
+                    <td><strong>Parking Slots (Min &amp; Max)</strong></td>
+                    <td>Range for the number of parking dock slots per level. Default: 3&ndash;6.</td>
+                </tr>
+                <tr>
+                    <td><strong>Locked Slots (Min &amp; Max)</strong></td>
+                    <td>Range for how many slots start locked. Only appear after the Locked-Slot intro level. Default: 0&ndash;1.</td>
+                </tr>
+                <tr>
+                    <td><strong>Lock Intro After Level</strong></td>
+                    <td>Locked slots only start appearing after this level number. Default: 10.</td>
+                </tr>
+                <tr>
+                    <td><strong>Booster Counts (Unlock / Shuffle / Balloon)</strong></td>
+                    <td>Min/Max booster uses per level. Inverted difficulty: more uses on early levels, fewer on harder levels.</td>
+                </tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Configure settings</strong> &mdash; adjust all parameters in the Editor window</li>
+                <li><strong>Click "Generate Levels"</strong> &mdash; the tool detects existing levels and appends new ones</li>
+                <li><strong>For each level</strong>, the generator:
+                    <ul>
+                        <li>Randomizes grid size, color count, and fill density within your ranges</li>
+                        <li>Interpolates difficulty based on position in the batch (easier at low levels, harder at high levels)</li>
+                        <li>Places cars on a shuffled fill pattern that guarantees at least one front-row clickable car</li>
+                        <li>Generates passenger queues whose color totals exactly match the total car capacity per color</li>
+                        <li>Distributes passengers across queue columns in a shuffled round-robin pattern</li>
+                        <li>Picks the next free parking-slot count and locked-slot positions from the active ranges</li>
+                        <li>Exports a JSON level file to <code>Resources/Levels/</code></li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="important-notice">
+                <h3>Non-Destructive</h3>
+                <p>The generator <strong>never overwrites</strong> existing level files. It always starts numbering from the next available index (e.g., if <code>Level_100</code> exists, new levels start from <code>Level_101</code>). Use the "Delete ALL Levels" button if you want to start fresh.</p>
+            </div>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+
+            <p>The game includes three booster abilities that players can activate during gameplay. Each booster has a configurable number of uses per level (set in the level JSON data) and an optional tutorial popup that appears on first use.</p>
+
+            <table>
+                <tr>
+                    <th>Booster</th>
+                    <th>Effect</th>
+                    <th>Activation</th>
+                </tr>
+                <tr>
+                    <td><strong>Unlock Slot</strong></td>
+                    <td>Unlocks the leftmost locked parking slot, making it available for incoming cars. The lock icon fades out and the slot tile pops with a scale-bounce animation. Useful when all usable slots are full but locked ones remain.</td>
+                    <td>Tap the Unlock button (Booster-Button-1). Consumes one use immediately. Automatically refunds the use if there are no locked slots to open.</td>
+                </tr>
+                <tr>
+                    <td><strong>Shuffle</strong></td>
+                    <td>Randomly rearranges every non-hidden car on the grid using a smooth arc-swap animation. Changes which cars are front-row and which paths are reachable, often turning a stuck board into a playable one.</td>
+                    <td>Tap the Shuffle button (Booster-Button-2). Consumes one use immediately.</td>
+                </tr>
+                <tr>
+                    <td><strong>Balloon Pick</strong></td>
+                    <td>Activates a special toggle mode where the player can tap <em>any</em> non-hidden car on the grid, even one that would normally be blocked. The selected car lifts with a balloon, flies through the air, and drops into the next free parking slot. Its grid cell becomes empty and is re-propagated into the pathfinding map.</td>
+                    <td>Tap the Balloon button (Booster-Button-3) to toggle the mode on. All non-clickable cars flash with a pulse to indicate they are now selectable. Tap again to cancel without consuming a use. A use is consumed only when you actually pick a car.</td>
+                </tr>
+            </table>
+
+            <h3>Booster Buttons</h3>
+            <p>Booster buttons are found in the <code>GameHUD_Panel/BottomHolder</code> in the scene UI. Each button has:</p>
+            <ul>
+                <li>A <strong>background overlay</strong> (<code>Bg</code>) that shows/hides based on availability</li>
+                <li>A <strong>use count badge</strong> (<code>PowerUpCountText</code>) showing remaining uses, or the unlock level if still locked</li>
+                <li>An <strong>active-mode tint</strong> (light blue) when Balloon Pick mode is waiting for a target click</li>
+                <li><strong>Lock by level</strong> &mdash; boosters unlock at configurable levels (default: Unlock Slot at level 1, Shuffle at level 2, Balloon Pick at level 3)</li>
+            </ul>
+
+            <h3>Cheat Mode</h3>
+            <p>Press the <strong>U</strong> key during gameplay to unlock all boosters and refill their usage counts. Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> to jump to the next/previous level. These shortcuts are useful for testing.</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization Guide</h2>
+
+            <h3>Adding New Colors</h3>
+            <p>To add a new car/passenger color:</p>
+            <ol>
+                <li>Open <code>CarColor.cs</code> and add a new entry to the enum:
+                    <div class="code-block">
+<span class="keyword">public enum</span> <span class="class">CarColor</span>
+{
+    Red,
+    Green,
+    Blue,
+    Yellow,
+    Orange,
+    Violet,
+    Pink,
+    Brown,
+    Gray,
+    <span class="comment">// Add your custom color before Null/Lock:</span>
+    Teal,
+    Null,
+    Lock
+}
+                    </div>
+                </li>
+                <li>Create a new car Material in <code>Art/Materials/</code> with the desired color, plus a matching passenger Material</li>
+                <li>Open the <code>ColorManger.asset</code> (<code>CarColorLibrary</code>) ScriptableObject and add a new entry mapping <code>CarColor.Teal</code> to those materials</li>
+                <li>Re-save every level via <code>Tools &gt; Car Parking Jam &gt; Level Editor &gt; Save All to Disk</code> so the JSON levels recognize the new color as a valid option</li>
+            </ol>
+            <p>New colors are automatically available in the Level Editor, Auto Level Generator, and at runtime.</p>
+
+            <h3>Adjusting Grid Visuals</h3>
+            <p>The grid layout is controlled by <code>CarGridBuilder</code> and <code>ParkingLevelBuilder</code>. Key properties:</p>
+            <ul>
+                <li><code>columnSpacing</code> / <code>rowSpacing</code> (per level in JSON) &mdash; World-unit spacing between grid cells</li>
+                <li><code>gridTilePrefab</code> / <code>gridTileVisualPrefab</code> &mdash; Tile mesh spawned per cell</li>
+                <li><code>tileMaterial</code> &mdash; Shared material used for every grid tile</li>
+            </ul>
+
+            <h3>Modifying Car Visuals</h3>
+            <p>Car rendering is handled by the <code>ParkingCar</code> component. Each car prefab includes:</p>
+            <ul>
+                <li><strong>MeshRenderer</strong> &mdash; The car body; material is set at runtime from <code>CarColorLibrary</code></li>
+                <li><strong>Outline effect</strong> &mdash; Uses the <code>CarOutline</code> shader loaded from Resources; outline meshes are created/toggled dynamically by <code>ParkingGameManager.UpdateCarOutlines()</code></li>
+                <li><strong>Smoke particle</strong> &mdash; Plays on hidden-car reveal and during driving</li>
+                <li><strong>Balloon effect</strong> &mdash; Lifts the car during the Balloon Pick booster sequence</li>
+                <li><strong>TextMeshPro text</strong> &mdash; Displays seat count while the car is parked</li>
+            </ul>
+
+            <h3>Modifying Passenger Visuals</h3>
+            <p>Passengers use <code>SkinnedMeshRenderer</code> with material coloring and <code>Animator</code> for character animations. To change the character model, replace the prefab mesh and ensure the Animator has triggers for the walk and seated states used by <code>PassengerMovement</code>.</p>
+
+            <h3>Modifying the Lock Visual</h3>
+            <p>Locked parking slots are indicated by a gray lock sprite overlay plus a dark-gray tile tint. Both are configured at runtime by <code>ParkingSlotManager.ApplyLockedVisual()</code>. To change the lock icon, replace the sprite on the <code>Lock</code> child of any Parking_Tile GameObject. To change the locked tile color, edit the <code>LOCKED_TILE_COLOR</code> constant in <code>ParkingSlotManager.cs</code>.</p>
+
+            <h3>Adding New Boosters</h3>
+            <p>New boosters can be added by following the existing pattern in <code>BoosterManager.cs</code>:</p>
+            <ol>
+                <li>Add booster state fields (use count, active flag, UI references)</li>
+                <li>Wire up the button in <code>HookUpExistingBoosters()</code> following the <code>HookUpBoosterButton()</code> pattern</li>
+                <li>Implement the booster logic in a new click handler method (e.g., <code>OnMyBoosterClicked()</code>)</li>
+                <li>Add a booster-count field to <code>ParkingLevelData</code> so it can be configured per level, and propagate it through the <code>SyncEngineLevelManager()</code> bridge in <code>ParkingGameManager</code></li>
+                <li>Update <code>UpdateBoosterUI()</code> to handle the new booster's lock/unlock/count display</li>
+            </ol>
+
+            <h3>Monetization (Ads)</h3>
+            <p>The project ships with a stub <code>AdsManager</code> that runs in Dummy mode so the game works out of the box. To ship real ads:</p>
+            <ol>
+                <li>Create a <code>MonetizationSettings</code> asset: right-click in <code>Assets/CarParkingJam/Resources/</code> &rarr; <code>Create &gt; Hypercasual &gt; Monetization Settings</code></li>
+                <li>Drop a <code>MonetizationInitModule</code> component on a root GameObject in <code>GameNew.unity</code> and reference the asset</li>
+                <li>Import the Google Mobile Ads SDK and the External Dependency Manager</li>
+                <li>Switch the asset's provider fields from <code>Dummy</code> to <code>AdMob</code> and fill in your real ad-unit IDs (leaving Google's test IDs as placeholders during development)</li>
+                <li>Add <code>MODULE_ADMOB</code> to <code>Project Settings &gt; Player &gt; Scripting Define Symbols</code> and wire the real SDK calls inside <code>AdsManager.cs</code></li>
+            </ol>
+            <p>Game code never imports <code>GoogleMobileAds.*</code> directly &mdash; it only calls <code>AdsManager</code>. This keeps the ad provider swappable in a single file.</p>
+
+            <h3>JSON Level Format</h3>
+            <p>Each level is a JSON file with the following structure:</p>
+            <div class="code-block">
+{
+    <span class="string">"levelNumber"</span>: 1,
+
+    <span class="string">"boosterACount"</span>: 3,   <span class="comment">// Unlock Slot</span>
+    <span class="string">"boosterBCount"</span>: 3,   <span class="comment">// Shuffle</span>
+    <span class="string">"boosterCCount"</span>: 3,   <span class="comment">// Balloon Pick</span>
+
+    <span class="string">"gridRows"</span>: 3,
+    <span class="string">"gridColumns"</span>: 4,
+    <span class="string">"columnSpacing"</span>: 0.6,
+    <span class="string">"rowSpacing"</span>: 0.9,
+    <span class="string">"cells"</span>: [
+        {
+            <span class="string">"row"</span>: 0,
+            <span class="string">"column"</span>: 1,
+            <span class="string">"cellType"</span>: <span class="string">"occupied"</span>,
+            <span class="string">"carColor"</span>: <span class="string">"Violet"</span>,
+            <span class="string">"hidden"</span>: <span class="keyword">false</span>
+        }
+        <span class="comment">// ... more cells ...</span>
+    ],
+
+    <span class="string">"passengerQueueColumns"</span>: 3,
+    <span class="string">"passengerGridRows"</span>: 5,
+    <span class="string">"passengerColumnSpacing"</span>: 0.7,
+    <span class="string">"passengerRowSpacing"</span>: 0.5,
+    <span class="string">"passengerQueues"</span>: [
+        { <span class="string">"colors"</span>: [ <span class="string">"Violet"</span>, <span class="string">"Yellow"</span>, <span class="string">"Red"</span> ] },
+        { <span class="string">"colors"</span>: [ <span class="string">"Yellow"</span>, <span class="string">"Violet"</span>, <span class="string">"Gray"</span> ] },
+        { <span class="string">"colors"</span>: [ <span class="string">"Gray"</span>, <span class="string">"Violet"</span>, <span class="string">"Yellow"</span> ] }
+    ],
+
+    <span class="string">"parkingSlotCount"</span>: 4,
+    <span class="string">"lockedParkingSlots"</span>: [ 3 ],
+
+    <span class="string">"pathToParking"</span>: [
+        { <span class="string">"x"</span>: -0.97, <span class="string">"y"</span>: -0.16, <span class="string">"z"</span>: 0.64 }
+        <span class="comment">// ... more waypoints ...</span>
+    ],
+    <span class="string">"pathToOutside"</span>: [
+        { <span class="string">"x"</span>: -0.97, <span class="string">"y"</span>: -0.16, <span class="string">"z"</span>: 0.64 },
+        { <span class="string">"x"</span>:  3.80, <span class="string">"y"</span>: -0.16, <span class="string">"z"</span>: 0.64 }
+    ]
+}
+            </div>
+            <p>The <code>cells</code> array defines grid cars (sparse: only non-empty cells). Each cell has <code>row</code>, <code>column</code>, <code>cellType</code> (<code>"occupied"</code> or <code>"empty"</code>), a <code>carColor</code> string matching the <code>CarColor</code> enum, and a <code>hidden</code> flag. The <code>passengerQueues</code> array has one entry per queue column with a list of color strings from front to back. <code>lockedParkingSlots</code> is a zero-indexed list of parking slot indices that start locked. The two <code>path*</code> arrays define the world-space waypoints cars follow from the grid to the parking row and from the parking row off-screen.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>No levels load / empty grid appears</td>
+                    <td>Ensure JSON level files exist in <code>Assets/CarParkingJam/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. Use the Auto Level Generator to create levels if the folder is empty.</td>
+                </tr>
+                <tr>
+                    <td>Pink/magenta materials on objects</td>
+                    <td>The project requires URP. Go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned. Check that the <code>Settings/</code> folder contains valid URP assets.</td>
+                </tr>
+                <tr>
+                    <td>Cars can't be clicked</td>
+                    <td>Go to <code>Project Settings &gt; Player &gt; Other Settings &gt; Active Input Handling</code> and set it to <strong>Both</strong>. Legacy <code>OnMouseDown</code> raycasts are disabled if you select "New Input System only".</td>
+                </tr>
+                <tr>
+                    <td>Car outline not showing</td>
+                    <td>The outline effect requires the <code>CarOutline.shader</code> file in <code>Assets/CarParkingJam/Resources/</code>. If missing, add it back or update <code>ParkingCar.SetOutlineVisible()</code> to use a different shader.</td>
+                </tr>
+                <tr>
+                    <td>Passengers don't walk to cars</td>
+                    <td>Check that <code>PassengerQueueManager.TryBoardPassengers()</code> is being triggered after every successful car park. Ensure queue columns are configured and the <code>passengerQueues</code> list in the level JSON is non-empty.</td>
+                </tr>
+                <tr>
+                    <td>Booster buttons don't respond</td>
+                    <td>Ensure the <code>GameHUD_Panel/BottomHolder</code> hierarchy contains children named <code>Booster-Button-1</code>, <code>Booster-Button-2</code>, and <code>Booster-Button-3</code>. Each needs a <code>Button</code> component. If you added a <code>Canvas</code> component for sorting order, you must also add a <code>GraphicRaycaster</code>.</td>
+                </tr>
+                <tr>
+                    <td>Locked slot has no lock icon</td>
+                    <td>Some Parking_Tile GameObjects in the scene may be missing their <code>Lock</code> child. <code>ParkingLevelBuilder.EnsureLockIcon</code> clones a sibling's Lock at runtime to handle this, but for a clean scene add a <code>Lock</code> child (matching the existing ones) under every Parking_Tile you want to be lockable.</td>
+                </tr>
+                <tr>
+                    <td>4th parking slot feels unusable</td>
+                    <td>The slot is probably locked by the level JSON. Use the Unlock Slot booster in-game, or remove the index from <code>lockedParkingSlots</code> in that level's JSON file.</td>
+                </tr>
+                <tr>
+                    <td>Level Editor shows empty grid</td>
+                    <td>Click "Reload from Disk" in the Level Editor window, or ensure the <code>Resources/Levels/</code> folder exists and contains valid JSON files.</td>
+                </tr>
+                <tr>
+                    <td>Ads don't show at all</td>
+                    <td>Confirm a <code>MonetizationInitModule</code> exists in <code>GameNew.unity</code> with a valid <code>MonetizationSettings</code> reference, and the providers are set to <code>AdMob</code> (not <code>Dummy</code>). Dummy mode only logs to the console.</td>
+                </tr>
+            </table>
+
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the <strong>Developer Settings Panel</strong> (gear icon) in Play mode to quickly navigate levels, trigger win/lose, unlock boosters, and test ads</li>
+                <li>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next/previous level</li>
+                <li>Press <strong>U</strong> to unlock and refill all boosters for testing</li>
+                <li>The <strong>Auto Level Generator</strong> is the fastest way to populate your game with content &mdash; generate 100+ levels in seconds</li>
+                <li>Every generated level is guaranteed solvable: total passenger counts per color exactly match total car capacity per color</li>
+                <li>Back up your <code>Resources/Levels/</code> folder regularly</li>
+                <li>The Welcome Popup can be permanently dismissed via the "Do not show this popup again" checkbox</li>
+            </ul>
+
+            <h3>Contact Us</h3>
+            <p>If you get stuck or have any issues, feel free to reach out to us at <a href="mailto:ragendom@gmail.com" style="color: #d35400; font-weight: bold;">ragendom@gmail.com</a>. We are happy to help!</p>
+
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Car Parking Jam &mdash; A Car-Routing Parking Puzzle Game Template for Unity</p>
+        <p>&copy; 2026 &mdash; Built with the HyperCasual Game Engine</p>
+    </div>
+</body>
+</html>
