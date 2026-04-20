@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fit Blast - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #d35400;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #d35400;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .feature-card h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Fit Blast</h1>
+        <p class="subtitle">A Drag-and-Drop Color-Fit Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-136631" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a drag-and-drop color-fit puzzle. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Fit Blast is a drag-and-drop color-fit puzzle where players pull tetromino-shaped colored blocks from a queue at the bottom of the screen and snap them onto pedestals on the board. Each pedestal clears when two conditions are met at the same time: every cell is filled, <strong>and</strong> every block on it is the same rendered color. Clear every pedestal to win the level. The game ships with <strong>500 pre-made unique levels</strong> on a progressive difficulty curve, a visual level editor, an automatic level generator, three boosters, and a developer debug panel.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Drag-and-Fit Puzzles</h4>
+                    <p>Touch/click a block in the bottom queue, drag it onto any pedestal. Valid placements snap into position; invalid ones bounce back. Pedestals clear when fully filled with a single color.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>Full Unity Editor window for authoring levels &mdash; configure pedestal layouts, pre-placed blocks, starting-queue pieces, per-level booster counts, and grid sizes. Read/write JSON on disk.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate dozens of playable levels along a configurable difficulty curve. Pre-placement, decoy blocks, and color counts are all tunable from a single editor window.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Booster System</h4>
+                    <p>Three in-game boosters &mdash; Hammer (smash a pedestal), Shuffle (randomize every piece on screen), and Hint (flash the best queued move) &mdash; with level-gated unlocks, popup tutorials, and usage tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>500 Levels Included</h4>
+                    <p>Ships with <strong>500 pre-made unique levels</strong> on a progressive difficulty curve, ready to play out of the box. Generate more at any time with the auto generator.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Ad-Free, PlayerPrefs Only</h4>
+                    <p>No ad SDKs, no analytics, no cloud save. Level progression persists through a single <code>PlayerPrefs</code> key. Drop it into any project without dragging in third-party monetization dependencies.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package (the project uses the New Input System for touch + mouse)</li>
+                <li>Active Input Handling set to <strong>Both</strong> (legacy UI raycasts + new Input System)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the Fit Blast package into your Unity project</li>
+                <li>Ensure the project is set to use the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>)</li>
+                <li>Open the game scene at <code>Assets/Fit Blast/Scenes/GameNew.unity</code></li>
+                <li>Press Play to test the first level</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, pick up any piece from the bottom queue (the start grid) and drag it onto a pedestal. Valid placements snap into position and the piece animates into its destination cells; invalid placements return to the queue. When a pedestal becomes fully filled with blocks that share a single rendered color, particles burst, the pedestal slides off, and any pedestals above it drop down into the freed slot. Clear the last pedestal to win the level.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <div class="folder-structure">
+<span class="folder">Fit Blast/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Shared materials (ground, particles)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">Sprites/</span> <span class="comment">&mdash; Block sprites, pedestal containers, board art</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; UI textures (booster icons, radial shine, backgrounds)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; All sound effects (.wav): Switch, Pop, Success, Fail, LevelClear, LevelFail</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; ScriptableObject configuration (BlockData, ColorData, LevelData fallback)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">FitBlastWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Block, pedestal, HUD, win/lose panels, booster popup, dev mode button</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Block.prefab</span> <span class="comment">&mdash; Single colored block used by every piece</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Depestal.prefab</span> <span class="comment">&mdash; Pedestal frame (2&times;3 or 3&times;3)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameHUD_Panel.prefab</span> <span class="comment">&mdash; Main HUD with Booster-Button-1/2/3</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LoseWinPanel.prefab</span> <span class="comment">&mdash; Win / lose overlay with auto-advance</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameOverPanel.prefab</span> <span class="comment">&mdash; Variant lose overlay (unused by default, drop-in ready)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelClearedPanel.prefab</span> <span class="comment">&mdash; Variant win overlay (unused by default)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Popup_Powerup_Picker.prefab</span> <span class="comment">&mdash; Booster first-use tutorial popup</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">DeveloperModeButton.prefab</span> <span class="comment">&mdash; Corner button that toggles the dev panel</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; 500 pre-made unique level JSON files (Level_1.json ... Level_500.json)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; The single playable scene</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; All runtime scripts</span>
+    &#9500;&#9472;&#9472; <span class="file">FitBlastGameManager.cs</span> <span class="comment">&mdash; Main gameplay orchestrator (Playing / Won / Lost)</span>
+    &#9500;&#9472;&#9472; <span class="file">GameLevel.cs</span> <span class="comment">&mdash; Grid + drag / drop + win detection + boosters</span>
+    &#9500;&#9472;&#9472; <span class="file">InputManager.cs</span> <span class="comment">&mdash; Touch + mouse pickup &amp; drag</span>
+    &#9500;&#9472;&#9472; <span class="file">Block.cs</span> <span class="comment">&mdash; Single-block runtime component</span>
+    &#9500;&#9472;&#9472; <span class="file">BlockData.cs</span> <span class="comment">&mdash; Block-shape &#9651; sprite mapping ScriptableObject</span>
+    &#9500;&#9472;&#9472; <span class="file">BlockDataEditor.cs</span> <span class="comment">&mdash; Inspector for BlockData</span>
+    &#9500;&#9472;&#9472; <span class="file">ColorData.cs</span> <span class="comment">&mdash; ColorType &#9651; RGB mapping ScriptableObject</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON level loader &amp; index tracker</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Level serialization (pedestals + queue + booster counts)</span>
+    &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Singleton audio facade (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; 3-booster state machine &amp; popups</span>
+    &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Win / lose panel + auto-advance (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs</span> <span class="comment">&mdash; Dev panel toggle (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel controls (HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Multi-camera helper (HypercasualGameEngine)</span>
+    &#9492;&#9472;&#9472; <span class="file">TabletAspectScaler.cs</span> <span class="comment">&mdash; Overrides local scale on tablet-aspect devices</span>
+
+<span class="folder">Settings/</span> <span class="comment">&mdash; URP render pipeline assets</span>
+<span class="folder">TextMesh Pro/</span> <span class="comment">&mdash; TextMeshPro essentials</span>
+<span class="folder">TutorialInfo/</span> <span class="comment">&mdash; Unity URP template starter assets</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level features a set of <strong>pedestals</strong> (2&times;3 or 3&times;3 grids) on the board and a <strong>start grid</strong> at the bottom of the screen that holds the queue of playable pieces. The goal is to clear every pedestal by filling it with blocks that all share a single color.</p>
+
+            <ul>
+                <li><strong>Drag and fit</strong> &mdash; Touch a piece in the start grid OR on any pedestal, drag it onto any pedestal; valid placements snap into the closest free cells, invalid ones bounce back.</li>
+                <li><strong>Rearrange the queue</strong> &mdash; Pieces can also be dragged back into the start grid and repositioned within it, so the queue isn't one-way. Drop candidates inside the start grid honor the <code>gridStartBlockYOffset</code> baked in at level load, and the top row is clamped to the authored ceiling (plus the optional <code>DoNotCrossTop</code> marker if present).</li>
+                <li><strong>World-space snap</strong> &mdash; The drop-target search compares the piece's world position against each candidate cell's world position, so it works correctly across parent-scale mismatches (e.g. the tablet scaler on <code>All</code>).</li>
+                <li><strong>Pedestal hover highlight</strong> &mdash; While dragging, the pedestal that would accept the release tints toward a soft green and a translucent ghost of the piece appears at the exact landing cell. Moves with the cursor and clears when the drag ends or the piece wouldn't fit anywhere.</li>
+                <li><strong>Shape-aware placement</strong> &mdash; Each piece occupies a specific set of cells (derived from its <code>BlockType</code>); it must fit entirely inside the target pedestal with no collision.</li>
+                <li><strong>Color match to clear</strong> &mdash; A pedestal clears when two conditions are met together: every cell is occupied, and every block on it is the same rendered color.</li>
+                <li><strong>Gravity-up queue</strong> &mdash; After a piece leaves the start grid, remaining pieces rise into the freed slots up to a shape-aware ceiling so the queue visually settles upward. Skipped when a piece <em>lands</em> in the queue so the player's chosen slot isn't yanked away by gravity.</li>
+                <li><strong>Pedestal gravity-down</strong> &mdash; When a pedestal clears, any pedestals above it in the same column slide down one slot.</li>
+                <li><strong>Pre-placed blocks</strong> &mdash; Levels can start with blocks already in a pedestal, committing that pedestal to a specific color from the opening move.</li>
+                <li><strong>Decoys</strong> &mdash; The auto generator can seed pedestals with off-color blocks that the player must work around or smash with Hammer. Decoyed pedestal count is capped at the level's Hammer charge so every level stays provably solvable.</li>
+            </ul>
+
+            <h3>DoNotCrossTop ceiling marker</h3>
+            <p>Optional Transform on the <code>GameLevel</code> component. If a scene GameObject named <code>DoNotCrossTop</code> exists (typically parented under the queue's <code>Depestal(Clone)</code> backdrop), any start-grid drop whose shape cells would land above the marker's world Y is rejected before the snap distance is even checked. Auto-discovered by name at <code>Start()</code> if the Inspector slot is empty. Leave the marker out to fall back to the shape-aware cell-grid ceiling alone.</p>
+
+            <h3>Block Colors</h3>
+            <p>The game supports thirteen predefined colors defined in the <code>ColorType</code> enum. Each is mapped to a render color by <code>ColorData</code>:</p>
+            <table>
+                <tr>
+                    <th>Color Key</th>
+                    <th>Color</th>
+                    <th>Reference Hex</th>
+                </tr>
+                <tr>
+                    <td><code>Red</code></td>
+                    <td><span class="color-swatch" style="background:#FF4757;"></span> Red</td>
+                    <td>#FF4757</td>
+                </tr>
+                <tr>
+                    <td><code>Green</code></td>
+                    <td><span class="color-swatch" style="background:#7BED9F;"></span> Green</td>
+                    <td>#7BED9F</td>
+                </tr>
+                <tr>
+                    <td><code>Blue</code></td>
+                    <td><span class="color-swatch" style="background:#48DBFB;"></span> Blue</td>
+                    <td>#48DBFB</td>
+                </tr>
+                <tr>
+                    <td><code>Yellow</code></td>
+                    <td><span class="color-swatch" style="background:#ECCC68;"></span> Yellow</td>
+                    <td>#ECCC68</td>
+                </tr>
+                <tr>
+                    <td><code>Cyan</code></td>
+                    <td><span class="color-swatch" style="background:#00D2D3;"></span> Cyan</td>
+                    <td>#00D2D3</td>
+                </tr>
+                <tr>
+                    <td><code>Magenta</code></td>
+                    <td><span class="color-swatch" style="background:#EF5777;"></span> Magenta</td>
+                    <td>#EF5777</td>
+                </tr>
+                <tr>
+                    <td><code>Orange</code></td>
+                    <td><span class="color-swatch" style="background:#FFA502;"></span> Orange</td>
+                    <td>#FFA502</td>
+                </tr>
+                <tr>
+                    <td><code>Purple</code></td>
+                    <td><span class="color-swatch" style="background:#BC8CFF;"></span> Purple</td>
+                    <td>#BC8CFF</td>
+                </tr>
+                <tr>
+                    <td><code>Brown</code></td>
+                    <td><span class="color-swatch" style="background:#A0522D;"></span> Brown</td>
+                    <td>#A0522D</td>
+                </tr>
+                <tr>
+                    <td><code>Gray</code></td>
+                    <td><span class="color-swatch" style="background:#A4B0BE;"></span> Gray</td>
+                    <td>#A4B0BE</td>
+                </tr>
+                <tr>
+                    <td><code>Black</code></td>
+                    <td><span class="color-swatch" style="background:#2D3436;"></span> Black</td>
+                    <td>#2D3436</td>
+                </tr>
+                <tr>
+                    <td><code>White</code></td>
+                    <td><span class="color-swatch" style="background:#F5F6FA;"></span> White</td>
+                    <td>#F5F6FA</td>
+                </tr>
+                <tr>
+                    <td><code>Pink</code></td>
+                    <td><span class="color-swatch" style="background:#FF6B81;"></span> Pink</td>
+                    <td>#FF6B81</td>
+                </tr>
+            </table>
+            <p>The palette is defined by <code>ColorData.asset</code>; the hex values above are the reference look used by the shipped art. Colors that share a rendered RGB (e.g. two custom hues that both resolve to white) are treated as the same color by the match check &mdash; match logic compares rendered RGB, not enum value.</p>
+
+            <h3>Block Shapes</h3>
+            <p>Pieces are authored as tetromino-like shapes in <code>BlockData.asset</code>. The shipping set includes 14 distinct shapes (Block1 through Block14), ranging from single cells to three-cell L / I / T variants. Each shape has an origin cell and a list of offset cells relative to the origin; placement validity and the sibling-Z render order are derived from this offset list, so you can add or edit shapes without touching gameplay code.</p>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; All pedestals have cleared (only the start grid remains). The win panel appears, the current level index advances via <code>LevelManager.AdvanceLevel()</code>, and the next level loads automatically.</li>
+                <li><strong>Lose</strong> &mdash; The player can still drag pieces, but a queue of pieces where none fit any remaining pedestal is effectively lost. The lose path is routed through <code>FitBlastGameManager.TriggerLose()</code> &mdash; call it from your own heuristic (e.g. an explicit "give up" button) or wire in a move-limit, timer, or stuck-state detector. The lose panel has a Retry button that reloads the current level.</li>
+            </ul>
+
+            <h3>Animations</h3>
+            <p>All animations are hand-rolled coroutines &mdash; no DOTween or LeanTween. Pieces ease into position on drop via <code>MoveBlockTo</code>; pedestals slide off-screen via <code>MoveImageTo</code>; the queue settles upward via <code>LevitateStartGrid</code>. Particle bursts fire via the single shared <code>ParticleSystem</code> reference on the <code>GameLevel</code>. The Hammer booster pulses every pedestal's tint on a sine curve while armed, and the Hint booster instantiates a translucent ghost of the suggested piece at the target cells for ~2.2s.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Gameplay scripts live under <code>Assets/Fit Blast/Scripts/</code> in the <code>FitBlask.Scripts</code> namespace. Reusable engine scripts live in the same folder under the <code>HypercasualGameEngine</code> namespace.</p>
+
+            <h3>Core Gameplay</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>FitBlastGameManager</code></td>
+                    <td>The orchestrator. Tracks game state (<code>Playing / Won / Lost</code>), owns arrow-key level navigation (which is why it's always active, not on the dev panel), bridges <code>LevelManager</code> to <code>GameLevel</code>, and routes win/lose through <code>LoseWinPanelManager</code>. Decorated with <code>[DefaultExecutionOrder(-100)]</code> so it wakes before any other gameplay script.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelManager</code></td>
+                    <td>Static JSON level loader. Reads every <code>Level_N.json</code> from <code>Assets/Fit Blast/Resources/Levels/</code> (editor) or via <code>Resources.Load&lt;TextAsset&gt;("Levels/Level_" + i)</code> (runtime), tracks progression via the <code>FitBlast_CurrentLevel</code> PlayerPrefs key, and self-heals cached references that Unity's scene-load <code>Resources.UnloadUnusedAssets</code> sweep destroys.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelData</code></td>
+                    <td>ScriptableObject (+ serializable POCO) defining one level: grid size, pedestal layout, block positions, start-grid queue, and the three per-level booster counts (<code>hammerBoosterCount</code>, <code>shuffleBoosterCount</code>, <code>hintBoosterCount</code>). JSON hydrates into this via <code>JsonUtility.FromJsonOverwrite</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>GameLevel</code></td>
+                    <td>The gameplay heart. Builds pedestals and the start grid from <code>LevelData</code> on <code>Start</code>, handles <code>DragBlockTo</code> / <code>DragBlockTempTo</code>, runs <code>CheckCompleteGrid</code> after every placement, executes the <code>CompleteGrid</code> clear sequence, and hosts the three booster routines (<code>HammerSmash</code>, <code>ShuffleAllContainers</code>, <code>ShowHint</code>).</td>
+                </tr>
+                <tr>
+                    <td><code>InputManager</code></td>
+                    <td>Touch + mouse pickup &amp; drag using the New Input System. Raycasts the canvas on press, detaches the picked block to a floating rect, and hands off to <code>GameLevel.DragBlockTo</code> on release. Also intercepts taps while Hammer mode is armed to call <code>GameLevel.HammerSmash</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>Block</code></td>
+                    <td>Single-block runtime component. Holds <code>blockType</code>, <code>colorType</code>, <code>gridPosition</code>, the sprite <code>Image</code>, a <code>CanTap</code> gate, and a computed draw-order priority. Placed on every instance of <code>Block.prefab</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>BlockData</code> / <code>BlockDataEditor</code></td>
+                    <td>ScriptableObject mapping each <code>BlockType</code> enum value to a sprite and a list of cell offsets. The custom inspector draws a visual cell-grid editor. Edit cells to author new shapes &mdash; placement validity follows automatically.</td>
+                </tr>
+                <tr>
+                    <td><code>ColorData</code></td>
+                    <td>ScriptableObject mapping each <code>ColorType</code> enum value to a <code>Color</code>. Unmapped enums default to white at runtime, so match logic compares rendered RGB rather than enum equality.</td>
+                </tr>
+                <tr>
+                    <td><code>PedestalRef</code></td>
+                    <td>Lightweight component (inner class of <code>GameLevel.cs</code>) stamped on every pedestal <code>Image</code> at spawn time. Carries the owning grid key so <code>InputManager</code> can resolve a Hammer tap that lands on bare pedestal (between blocks).</td>
+                </tr>
+            </table>
+
+            <h3>Engine Scripts (<code>HypercasualGameEngine</code>)</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>BoosterManager</code></td>
+                    <td>Reusable 3-booster manager. Locates <code>Booster-Button-1/2/3</code> by name in the HUD, gates by level, consumes on use, shows a first-use tutorial popup keyed <code>BoosterPopupShown_&lt;Name&gt;</code> in PlayerPrefs, and exposes <code>IsHammerMode</code> + <code>ConsumeHammerCharge</code> for the armed-tap flow.</td>
+                </tr>
+                <tr>
+                    <td><code>SoundManager</code></td>
+                    <td>Singleton audio facade. One <code>AudioSource</code> + <code>PlayOneShot</code> per call site. Exposes <code>PlayLevelWin</code>, <code>PlayLevelFail</code>, <code>PlayBoosterUse</code>, <code>PlayShuffle</code>, <code>PlayBoosterHint</code>, <code>PlayBoosterHammer</code>, <code>PlayButtonClick</code>, <code>PlayBlockTap</code>, <code>PlayBlockPlace</code>, <code>PlayBlockMatch</code>, <code>PlayBlocked</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>LoseWinPanelManager</code></td>
+                    <td>Win / lose panel controller. Auto-discovers child panels by name, rotates the radial-shine decor, and advances the level via <code>LevelManager.AdvanceLevel()</code> on next-level load. Wires the retry button to a scene-reload.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperModeButton</code></td>
+                    <td>Corner toggle that shows/hides the Developer Settings panel. Pre-placed in the <code>DeveloperModeButton.prefab</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperSettingsController</code></td>
+                    <td>Dev-panel controls: next / previous / reload level, trigger win / lose, unlock all boosters, refill boosters, reset tutorial popups, visual theme cycling. Shift+U / Shift+W / Shift+L / Shift+R hotkeys when the panel is open. (Arrow-key level navigation lives on <code>FitBlastGameManager</code> instead so it works while the panel is closed.)</td>
+                </tr>
+                <tr>
+                    <td><code>CameraSwitcher</code></td>
+                    <td>Multi-camera helper for preview builds. Unused in the default scene but ships ready to drop into launcher / home screen flows.</td>
+                </tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>LevelEditorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Fit Blast &gt; Level Editor</code>) for visually authoring levels. Left panel: list of levels with add / duplicate / reorder / delete / save-all. Right panel: grid size, pedestal placement, per-pedestal block positions, start-grid queue, and per-level booster counts.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelGeneratorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Fit Blast &gt; Auto Level Generator</code>) for batch-generating levels. Knobs for pedestal count, color count, start-grid dimensions, pre-placement fraction, decoy count &amp; probability, and booster counts. Appends new levels; never overwrites existing ones.</td>
+                </tr>
+                <tr>
+                    <td><code>FitBlastWelcomePopup</code></td>
+                    <td>Welcome popup that appears on project open (via <code>[InitializeOnLoadMethod]</code>). Two CTAs: leave an Asset Store review and cross-promote the HyperCasual Game Engine. Session-locked; permanently dismissable via the "Do not show this popup again" checkbox.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+
+            <h3>Opening the Level Editor</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Fit Blast &gt; Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Visual board</strong> &mdash; Every pedestal and the start-grid queue are drawn as real cell grids. Placed blocks render with their actual <code>ColorData</code> color and occupy their <code>BlockData</code> shape cells. What you see in the editor is exactly what loads at runtime.</li>
+                <li><strong>Paint / Erase toolbar</strong> &mdash; Toggle between <em>Paint</em> (place the palette piece on the clicked cell) and <em>Erase</em> (remove whatever block owns the clicked cell) above the board.</li>
+                <li><strong>Block palette</strong> &mdash; Row of shape thumbnails drawn directly from <code>BlockData.blockMappings</code>; click one to pick the active paint shape. The standard dropdown is also there.</li>
+                <li><strong>Color palette</strong> &mdash; Row of swatches drawn from <code>ColorData.colorMappings</code>; click to pick the paint <code>ColorType</code>. Unmapped enum values aren't shown so you can't accidentally paint white-renders.</li>
+                <li><strong>Board layout</strong> &mdash; Pedestals are arranged on the authored <code>gridSizeX</code> &times; <code>gridSizeY</code> grid. Empty slots show a <em>+ add pedestal</em> placeholder that clicks to drop in a new 3&times;3 pedestal at that grid position.</li>
+                <li><strong>Per-pedestal header</strong> &mdash; <code>2&times;3</code> / <code>3&times;3</code> size toggles (auto-prune out-of-bounds blocks) and a red <code>&times;</code> to remove the whole pedestal.</li>
+                <li><strong>Start-grid editor</strong> &mdash; Shows the queue at the bottom of the right pane with width / height numeric fields. The drawn range expands to cover every cell any authored piece touches (the queue routinely has pieces at negative Y) plus a one-row margin so you can extend downward.</li>
+                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder (up / down), and delete levels in the left panel.</li>
+                <li><strong>Booster Counts</strong> &mdash; Per-level starting counts for Hammer, Shuffle, and Hint, in the header above the board.</li>
+                <li><strong>Save All to Disk</strong> &mdash; Serialises every level in-memory back to <code>Assets/Fit Blast/Resources/Levels/Level_N.json</code>.</li>
+            </ul>
+
+            <h3>Click model</h3>
+            <ul>
+                <li><strong>Paint a block</strong> &mdash; In Paint mode, click the cell you want the block's origin at. If the shape fits (no collision, inside the pedestal bounds for pedestals, inside the X bound only for the start grid) it's added. Otherwise the click is a no-op.</li>
+                <li><strong>Erase a block</strong> &mdash; In Erase mode, click any cell belonging to the block; the whole block is removed.</li>
+                <li><strong>Add a pedestal</strong> &mdash; Click the empty slot at the desired <code>(x, y)</code> on the board.</li>
+                <li><strong>Resize a pedestal</strong> &mdash; Use the <code>2&times;3</code> / <code>3&times;3</code> buttons in its header. Existing blocks that would fall out of bounds are pruned automatically.</li>
+                <li><strong>Remove a pedestal</strong> &mdash; Red <code>&times;</code> in its header.</li>
+            </ul>
+
+            <h3>Level Storage</h3>
+            <p>All levels are stored as individual JSON files in <code>Assets/Fit Blast/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. They are loaded in the editor directly from the hard-coded absolute path (bypassing Unity's <code>Resources</code> system to avoid cross-contamination with other <code>Resources/Levels/</code> folders), and in built players via strict sequential <code>Resources.Load&lt;TextAsset&gt;("Levels/Level_" + i)</code>.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Automatic Level Generator</h2>
+
+            <p>The Automatic Level Generator is an Editor tool that batch-generates playable color-fit levels procedurally. It uses an exact-cover tiling algorithm for pedestal solutions, pre-places a difficulty-driven fraction of the solution for visual scaffolding, optionally seeds off-color decoy blocks, and emits one JSON file per level.</p>
+
+            <h3>Opening the Tool</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Fit Blast &gt; Auto Level Generator</code>.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Levels to Generate</strong></td>
+                    <td>How many new level files to create. New levels are appended after existing ones (never overwrites).</td>
+                </tr>
+                <tr>
+                    <td><strong>Random Seed</strong></td>
+                    <td>Seed for the deterministic RNG. Use the same seed to reproduce a batch.</td>
+                </tr>
+                <tr>
+                    <td><strong>Min / Max Pedestals</strong></td>
+                    <td>Range for pedestal count per level. Interpolated along the difficulty curve (easier levels hit the min, harder levels hit the max). Defaults 1&mdash;12 (2 columns &times; 6 rows at the top end).</td>
+                </tr>
+                <tr>
+                    <td><strong>Min / Max Colors</strong></td>
+                    <td>Range for distinct colors per level. Default 2&mdash;12.</td>
+                </tr>
+                <tr>
+                    <td><strong>Allow 3&times;3 Pedestals</strong></td>
+                    <td>If disabled, only 2&times;3 pedestals are spawned. 3&times;3 pedestals are noticeably harder because a match needs nine same-colored cells.</td>
+                </tr>
+                <tr>
+                    <td><strong>Unique Color Per Pedestal (if possible)</strong></td>
+                    <td>When true, the generator assigns a distinct color to every pedestal in a level when the color count allows it. Prevents "two pedestals compete for the same color" grief.</td>
+                </tr>
+                <tr>
+                    <td><strong>Start Grid Width / Height</strong></td>
+                    <td>Dimensions of the bottom queue grid (in cells). Default 7&times;3. If the solution pieces don't fit the queue, overflow is placed on the owning pedestal instead.</td>
+                </tr>
+                <tr>
+                    <td><strong>Pre-Place Min / Max Fraction</strong></td>
+                    <td>Fraction of each pedestal's solution that starts already placed on the pedestal. Interpolated inversely with difficulty: easy levels hit the max (~55% pre-placed), hard levels hit the min (~10%).</td>
+                </tr>
+                <tr>
+                    <td><strong>Curve Exponent</strong></td>
+                    <td>Power applied to the linear progress <code>t = k / (target - 1)</code> before sampling pedestal count, color count, pre-placement, and 3&times;3 eligibility. <code>1.0</code> is linear; values below 1 ramp difficulty faster in early levels. Default <code>0.4</code> &mdash; by level 50 of a 500-level batch difficulty is already ~40%, by level 250 it's ~75%.</td>
+                </tr>
+                <tr>
+                    <td><strong>Enable Decoys</strong></td>
+                    <td>If enabled, pedestals may be seeded with small off-color blocks that the player must move or smash with Hammer.</td>
+                </tr>
+                <tr>
+                    <td><strong>Max Decoys / Pedestal</strong> &amp; <strong>Chance a Pedestal Gets Decoys</strong></td>
+                    <td>Per-pedestal decoy budget and the coin-flip that governs whether a given pedestal is even eligible.</td>
+                </tr>
+                <tr>
+                    <td><strong>Booster Counts</strong></td>
+                    <td>Per-level starting counts for Hammer, Shuffle, and Hint. Applied identically to every generated level.</td>
+                </tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Configure settings</strong> &mdash; adjust all parameters in the Editor window</li>
+                <li><strong>Click "Append Levels to Disk"</strong> &mdash; the tool detects existing levels and appends new ones starting at the next free index</li>
+                <li><strong>For each level</strong>, the generator:
+                    <ul>
+                        <li>Interpolates difficulty from the level's position in the batch (plus a small jitter)</li>
+                        <li>Picks a pedestal count, a color palette, and per-pedestal colors</li>
+                        <li>Solves each pedestal as an exact-cover tiling with block shapes from the allowed set</li>
+                        <li>Pre-places a difficulty-dependent fraction of the solution on the pedestal</li>
+                        <li>Places the remaining pieces on the start grid (overflowing to the owning pedestal if the queue runs out of space)</li>
+                        <li>Optionally seeds decoy pieces on pedestals</li>
+                        <li>Writes the <code>Level_N.json</code> file</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="important-notice">
+                <h3>Non-Destructive</h3>
+                <p>The generator <strong>never overwrites</strong> existing level files. It always starts numbering from the next available index. Use the "Delete All Levels on Disk" button if you want to start fresh.</p>
+            </div>
+
+            <h3>Solvability guarantee</h3>
+            <p>Every generated level is solvable by construction. The invariants the generator maintains:</p>
+            <ul>
+                <li>Each pedestal's cells are exactly covered by its solution set (backtracking exact-cover tiling).</li>
+                <li>Every non-pre-placed solution piece sits in the start grid (enforced by a paranoid end-of-phase check).</li>
+                <li>The number of pedestals that receive decoys is capped at the level's Hammer charge. Because the start grid is not a legal drop target, decoys can only relocate to another pedestal &mdash; which pollutes that pedestal's color and forces a Hammer clear. Capping at Hammer count means the player can always hammer every decoyed pedestal outright, and the remaining pedestals are trivially drag-solvable from the queue.</li>
+            </ul>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+
+            <p>The game includes three booster abilities that players can activate during gameplay. Each booster has a configurable number of uses per level (set in the level JSON) and a first-use tutorial popup keyed in <code>PlayerPrefs</code>.</p>
+
+            <table>
+                <tr>
+                    <th>Booster</th>
+                    <th>Effect</th>
+                    <th>Activation</th>
+                </tr>
+                <tr>
+                    <td><strong>Hammer</strong></td>
+                    <td>Arms a targeting mode: the next tap on any pedestal destroys that pedestal and every block on it &mdash; same end-state as a natural match. Every pedestal pulses amber while armed so the targets are obvious. The charge is consumed only when you actually smash a pedestal; clicking the Hammer button again (or tapping empty space) cancels without spending.</td>
+                    <td>Tap the Hammer button (Booster-Button-1) to arm. Tap a pedestal to smash, or tap the button again to cancel.</td>
+                </tr>
+                <tr>
+                    <td><strong>Shuffle</strong></td>
+                    <td>Attempts random pairwise swaps across <em>every</em> container at once &mdash; both pedestals and the start-grid queue. Only commits swaps where each piece physically fits in the other's grid without collision. A piece can move between containers, so a start-grid piece may land on a pedestal and vice versa. A shuffle can directly trigger matches if a swap happens to complete a pedestal.</td>
+                    <td>Tap the Shuffle button (Booster-Button-2). Consumes one use immediately.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hint</strong></td>
+                    <td>Scores every <em>(piece, pedestal, origin)</em> triple and flashes the best move. <em>Piece</em> is every block currently in play &mdash; start-grid queue <strong>and</strong> any pedestal, so cross-pedestal moves (e.g. consolidating a yellow L onto another yellow pedestal to complete it) are considered, not just queue &rarr; pedestal drops. Priority: (1) placement that completes a pedestal, (2) pedestal already mono in the piece's color (extends progress), (3) empty pedestal (neutral starter), (4) pedestal already mixed colors, (5) pollution of a mono pedestal. Flashes a translucent ghost of the suggested piece at the target cells while pulsing the source piece for ~2.2 seconds.</td>
+                    <td>Tap the Hint button (Booster-Button-3). Consumes one use immediately.</td>
+                </tr>
+            </table>
+
+            <h3>Booster Buttons</h3>
+            <p>Booster buttons are found in the <code>GameHUD_Panel/BottomHolder</code> in the scene UI. <code>BoosterManager</code> locates them by the literal names <code>Booster-Button-1</code>, <code>Booster-Button-2</code>, <code>Booster-Button-3</code> &mdash; <strong>do not rename them</strong>. Each button has:</p>
+            <ul>
+                <li>A <strong>background overlay</strong> (<code>Bg</code>) that shows/hides based on availability</li>
+                <li>A <strong>use count badge</strong> (<code>PowerUpCountText</code>) showing remaining uses, or the unlock level if still locked</li>
+                <li>An <strong>armed-mode tint</strong> (amber) while Hammer is waiting for a target</li>
+                <li><strong>Lock by level</strong> &mdash; boosters unlock at configurable levels (default: Hammer at level 1, Shuffle at level 2, Hint at level 3)</li>
+            </ul>
+
+            <h3>First-Use Popups</h3>
+            <p>The first time a player taps each booster, a one-time tutorial popup appears explaining it. <code>BoosterManager.HookUpExistingBoosters</code> searches the active scene for <code>Booster-Popup-1/2/3</code> (including inactive objects, since they're serialized as <code>m_IsActive: 0</code> by default) &mdash; in the shipping scene these are <code>Popup_Powerup_Picker</code> prefab instances parented under <code>Games / #5 / WorldCanvas</code>. If the scene has no match for a name, a simple centered card with a dark scrim + TMP text is built at runtime as a fallback (scrim-click dismisses).</p>
+            <p>Popups auto-hide after 2.5&nbsp;s so the player never gets stuck, and runtime cards can be tapped away sooner via the scrim <code>Button</code>. The "seen" flag is keyed in PlayerPrefs as <code>BoosterPopupShown_Hammer</code>, <code>BoosterPopupShown_Shuffle</code>, <code>BoosterPopupShown_Hint</code>. Use the dev panel's <strong>Reset Popup Prefs</strong> button to re-test the popups.</p>
+
+            <h3>Dev Cheat Controls</h3>
+            <p>During Play mode, open the Developer Settings panel (gear-icon button in the top-right) to unlock every booster, refill usage counts, trigger win/lose, jump levels, and reset popups. Hotkeys while the panel is open: <strong>Shift+U</strong> (unlock + refill), <strong>Shift+W</strong> (win), <strong>Shift+L</strong> (lose), <strong>Shift+R</strong> (reload level). Level navigation with <strong>Left Arrow</strong> / <strong>Right Arrow</strong> works regardless of whether the dev panel is open because it lives on <code>FitBlastGameManager</code>.</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization Guide</h2>
+
+            <h3>Adding a New Block Color</h3>
+            <p>To add a new block color:</p>
+            <ol>
+                <li>Open <code>ColorData.cs</code> and add a new entry to the <code>ColorType</code> enum:
+                    <div class="code-block">
+<span class="keyword">public enum</span> <span class="class">ColorType</span>
+{
+    Red,
+    Green,
+    Blue,
+    Yellow,
+    Cyan,
+    Magenta,
+    Orange,
+    Purple,
+    Brown,
+    Gray,
+    Black,
+    White,
+    Pink,
+    <span class="comment">// Add your custom color:</span>
+    Teal
+}
+                    </div>
+                </li>
+                <li>Open <code>ColorData.asset</code> in <code>Assets/Fit Blast/Datas/</code> and append a <code>Color</code> entry for <code>Teal</code>. Unmapped enums default to white at runtime, so forgetting this step silently breaks the match check.</li>
+                <li>Re-save levels via <code>Tools &gt; Fit Blast &gt; Level Editor &gt; Save All to Disk</code> (or let the Auto Generator re-generate) so the JSON files reference the new color by its integer enum value.</li>
+            </ol>
+            <p>The new color is automatically available in the Level Editor, Auto Generator, and at runtime.</p>
+
+            <h3>Adding a New Block Shape</h3>
+            <p>To add a new piece shape, open <code>BlockData.asset</code> in the Inspector. Add a mapping entry: pick the next <code>BlockType</code> enum value (or extend the enum in <code>LevelData.cs</code> first), drag a sprite for the shape, and fill in the list of cell offsets relative to the origin. The custom <code>BlockDataEditor</code> draws a visual cell-grid editor so you can paint offsets click-by-click. Placement validity, pedestal-match detection, and the gravity-up settle all follow from this offset list &mdash; no gameplay code changes required.</p>
+
+            <h3>Replacing Art</h3>
+            <ul>
+                <li><strong>Block sprites</strong> &mdash; replace the sprites in <code>Art/Sprites/Blocks/</code> and re-reference them on each <code>BlockData</code> mapping entry.</li>
+                <li><strong>Pedestal containers</strong> &mdash; replace the 2&times;3 / 3&times;3 container sprites under <code>Art/Sprites/</code> and wire them into <code>GameLevel.pedestalSprites</code>.</li>
+                <li><strong>Particles</strong> &mdash; the single shared <code>ParticleSystem</code> on <code>GameLevel</code> drives every clear burst. Edit its material or curves in the Inspector.</li>
+                <li><strong>HUD / Popup</strong> &mdash; <code>GameHUD_Panel.prefab</code> and <code>Popup_Powerup_Picker.prefab</code> are standalone UI prefabs; edit their children freely as long as you preserve the load-bearing names <code>Booster-Button-1/2/3</code>, <code>Booster-Popup-1/2/3</code>, <code>PowerUpCountText</code>, <code>Bg</code>.</li>
+            </ul>
+
+            <h3>Replacing Audio</h3>
+            <p><code>SoundManager.cs</code> exposes one serialized <code>AudioClip</code> field per event (see the <code>sfxBoosterHammer</code> / <code>sfxBlockMatch</code> / <code>sfxLevelWin</code> / &hellip; list) plus four random-pick arrays (<code>successClips</code>, <code>failClips</code>, <code>popClips</code>, <code>switchClips</code>). Drop in your own <code>AudioClip</code>s by filename from <code>Assets/Fit Blast/Audio/</code>; the shipping clips are already wired up on the <code>SoundManager</code> component in <code>GameNew.unity</code>.</p>
+
+            <h3>Changing the Booster Set</h3>
+            <ol>
+                <li>Rename the fields on <code>LevelData</code> &mdash; e.g. <code>hammerBoosterCount</code> &rarr; <code>rotateBoosterCount</code> &mdash; if you are adding a new booster that needs per-level tuning. Rerun the Auto Generator after renaming to refresh the JSON files.</li>
+                <li>Update the three <code>On&lt;Name&gt;Clicked</code> click handlers in <code>BoosterManager.cs</code> and the matching <code>Apply&lt;Name&gt;</code> entry points on <code>GameLevel</code>.</li>
+                <li>Point the three <code>HookUpExistingBoosters</code> slot findings at <code>Booster-Button-1/2/3</code> exactly as before &mdash; the HUD prefab's GameObject names are load-bearing.</li>
+                <li>Swap the button icons on the HUD prefab to match the new booster art.</li>
+            </ol>
+
+            <h3>JSON Level Format</h3>
+            <p>Each level is a JSON file with the following structure:</p>
+            <div class="code-block">
+{
+    <span class="string">"gridSizeX"</span>: 2,
+    <span class="string">"gridSizeY"</span>: 3,
+
+    <span class="string">"hammerBoosterCount"</span>:  3,
+    <span class="string">"shuffleBoosterCount"</span>: 3,
+    <span class="string">"hintBoosterCount"</span>:    3,
+
+    <span class="string">"gridItems"</span>: [
+        {
+            <span class="string">"gridWidth"</span>:  3,
+            <span class="string">"gridHeight"</span>: 2,
+            <span class="string">"gridPosition"</span>: { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 0 },
+            <span class="string">"blockPositions"</span>: [
+                {
+                    <span class="string">"blockType"</span>: 5,
+                    <span class="string">"colorType"</span>: 6,
+                    <span class="string">"positionInGrid"</span>: { <span class="string">"x"</span>: 2, <span class="string">"y"</span>: 0 }
+                }
+                <span class="comment">// ... more pre-placed blocks ...</span>
+            ]
+        }
+        <span class="comment">// ... more pedestals ...</span>
+    ],
+
+    <span class="string">"gridStart"</span>: {
+        <span class="string">"gridWidth"</span>:  7,
+        <span class="string">"gridHeight"</span>: 3,
+        <span class="string">"gridPosition"</span>: { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 0 },
+        <span class="string">"blockPositions"</span>: [
+            {
+                <span class="string">"blockType"</span>: 2,
+                <span class="string">"colorType"</span>: 6,
+                <span class="string">"positionInGrid"</span>: { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 1 }
+            }
+            <span class="comment">// ... more start-grid pieces ...</span>
+        ]
+    }
+}
+            </div>
+            <p>The <code>gridItems</code> array lists every pedestal on the board; each has a width, height, position on the level's <code>gridSizeX</code>/<code>gridSizeY</code> layout, and a list of pre-placed blocks. The <code>gridStart</code> object is the bottom queue &mdash; a single grid holding the player's initial pieces. <code>blockType</code> is an integer index into the <code>BlockType</code> enum (0-based), and <code>colorType</code> is an integer index into <code>ColorType</code>. <code>positionInGrid</code> is the origin cell of the piece inside that grid.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>No levels load / empty scene</td>
+                    <td>Ensure JSON level files exist in <code>Assets/Fit Blast/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. Run the Auto Level Generator if the folder is empty.</td>
+                </tr>
+                <tr>
+                    <td>Level 1 plays, then the next reload silently loads nothing</td>
+                    <td>Runtime-created <code>ScriptableObject</code>s get swept by <code>Resources.UnloadUnusedAssets()</code> on every scene load. <code>LevelManager.AddLevelFromJson</code> already sets <code>hideFlags = HideAndDontSave</code> for this reason &mdash; do not remove that line when editing <code>LevelManager</code>.</td>
+                </tr>
+                <tr>
+                    <td>Pink/magenta materials on objects</td>
+                    <td>The project requires URP. Go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned. Check that the <code>Settings/</code> folder contains valid URP assets.</td>
+                </tr>
+                <tr>
+                    <td>Pieces can't be picked up</td>
+                    <td>Go to <code>Project Settings &gt; Player &gt; Other Settings &gt; Active Input Handling</code> and set it to <strong>Both</strong>. Also verify <code>EventSystem</code> is present in the scene and the Canvas has a <code>GraphicRaycaster</code> component.</td>
+                </tr>
+                <tr>
+                    <td>Booster buttons don't respond</td>
+                    <td>Ensure the <code>GameHUD_Panel/BottomHolder</code> hierarchy contains children named <code>Booster-Button-1</code>, <code>Booster-Button-2</code>, and <code>Booster-Button-3</code> &mdash; <code>BoosterManager.HookUpExistingBoosters</code> looks them up by literal name. Each needs a <code>Button</code> component and a child <code>PowerUpCountText</code> <code>TextMeshProUGUI</code>.</td>
+                </tr>
+                <tr>
+                    <td>Pedestal keeps a wrong-color block after a mistake</td>
+                    <td>Use the Hammer booster to destroy the whole pedestal, or jump to a fresh level via the developer panel. Fit Blast intentionally has no single-block remove to keep the mechanic focused on shape placement; Hammer replaces that role.</td>
+                </tr>
+                <tr>
+                    <td>Hint keeps picking empty pedestals when a committed-color pedestal exists</td>
+                    <td>Confirm the committed-color pedestal's blocks actually render the same RGB as the piece you'd expect it to pick. The match logic compares rendered <code>blockImage.color</code>, so two enum values that resolve to the same RGB in <code>ColorData</code> are treated as the same color.</td>
+                </tr>
+                <tr>
+                    <td>Level Editor shows empty level list</td>
+                    <td>Ensure the <code>Assets/Fit Blast/Resources/Levels/</code> folder exists and contains valid JSON files. Run the Auto Level Generator if the folder is empty, or click "Reload from Disk" inside the Level Editor.</td>
+                </tr>
+            </table>
+
+            <h3>Build Notes</h3>
+            <ul>
+                <li>Scripting Backend: <strong>IL2CPP</strong> (Android + iOS).</li>
+                <li>API Compatibility Level: <strong>.NET Standard 2.1</strong>.</li>
+                <li>Color Space: <strong>Linear</strong>.</li>
+                <li>Active Input Handling: <strong>Both</strong>.</li>
+                <li>Scripting Define Symbols: none required. The template has no ads, no analytics, and no conditional features.</li>
+                <li>Only <code>Assets/Fit Blast/Scenes/GameNew.unity</code> should be enabled in <code>EditorBuildSettings</code>.</li>
+                <li><strong>WebGL input:</strong> <code>InputManager</code> reads <code>Pointer.current</code> (the Input System's cross-device abstraction) before falling back to an active-touch scan and then <code>Mouse.current</code>. This is necessary because WebGL's runtime creates a virtual <code>Touchscreen</code> device even on desktop browsers; a naive <code>Touchscreen.current.touches.Count &gt; 0</code> check always wins and silently blocks mouse input. The current flow works identically on Standalone, mobile, WebGL-desktop, and WebGL-mobile.</li>
+            </ul>
+
+            <h3>Tablet aspect scaler</h3>
+            <p><code>Assets/Fit Blast/Scripts/TabletAspectScaler.cs</code> (attached to the <code>All</code> GameObject). On <code>Awake</code> it reads <code>Screen.width</code> / <code>Screen.height</code>, computes <code>short / long</code> aspect, and if it's at or above <code>tabletAspectThreshold</code> (default <code>0.65</code>) overrides the transform's uniform local scale to <code>tabletScale</code> (default <code>0.3452272</code>). Phone aspects (~0.45&ndash;0.56) fall below the threshold so the authored phone scale is left intact. Both values are Inspector-tunable.</p>
+
+            <h3>What This Template Does NOT Include</h3>
+            <p>By design &mdash; to keep the package tight and focused:</p>
+            <ul>
+                <li>No ads / AdMob / monetization SDK</li>
+                <li>No haptics / vibration</li>
+                <li>No analytics SDK (Unity dashboard analytics only if you enable it)</li>
+                <li>No IAP / coins / shop</li>
+                <li>No background music (SFX only)</li>
+                <li>No settings menu / main menu / pause menu</li>
+                <li>No DOTween / LeanTween (hand-rolled coroutines)</li>
+                <li>No assembly definitions for game code (by design &mdash; see <code>systems/14-assembly-definitions.md</code>)</li>
+                <li>No cloud save / localization</li>
+            </ul>
+
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the <strong>Developer Settings Panel</strong> (gear icon) in Play mode to quickly navigate levels, trigger win/lose, and unlock boosters</li>
+                <li>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next/previous level</li>
+                <li>Press <strong>Shift+U</strong> while the dev panel is open to unlock and refill all boosters for testing</li>
+                <li>The <strong>Auto Level Generator</strong> is the fastest way to add more content on top of the 500 shipped levels &mdash; generate hundreds more in seconds</li>
+                <li>Every generated level is solvable by construction: each pedestal's solution is pre-computed as an exact-cover tiling before any decoys are seeded</li>
+                <li>Back up your <code>Resources/Levels/</code> folder regularly</li>
+                <li>The Welcome Popup can be permanently dismissed via the "Do not show this popup again" checkbox</li>
+            </ul>
+
+            <h3>Changelog</h3>
+            <table>
+                <tr>
+                    <th>Version</th>
+                    <th>Changes</th>
+                </tr>
+                <tr>
+                    <td><strong>1.0</strong></td>
+                    <td>Initial release. 500 pre-made unique levels, Hammer / Shuffle / Hint boosters, Level Editor, Auto Level Generator, Welcome Popup, Developer panel, SoundManager + 11 SFX slots, ad-free build.</td>
+                </tr>
+            </table>
+
+            <h3>Contact Us</h3>
+            <p>If you get stuck or have any issues, feel free to reach out to us at <a href="mailto:ragendom@gmail.com" style="color: #d35400; font-weight: bold;">ragendom@gmail.com</a>. We are happy to help!</p>
+
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Fit Blast &mdash; A Drag-and-Drop Color-Fit Puzzle Template for Unity</p>
+        <p>&copy; 2026 &mdash; Built with the HyperCasual Game Engine</p>
+    </div>
+</body>
+</html>
