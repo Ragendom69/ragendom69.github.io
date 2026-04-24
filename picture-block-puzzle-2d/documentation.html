@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picture Block Puzzle 2D - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #d35400;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #d35400;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .feature-card h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Picture Block Puzzle 2D</h1>
+        <p class="subtitle">A Sliding Picture-Assembly Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 1.1 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-136631" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a sliding picture-assembly puzzle game. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Picture Block Puzzle 2D is a sliding picture-assembly puzzle where players drag colour-coded image pieces across a grid to reconstruct the original pictures before the timer runs out. Each block has a &ldquo;zero&rdquo; anchor piece that defines where the assembled image should sit; the remaining pieces must be placed at their solved offsets relative to that anchor. The game ships with a time-limit countdown, four boosters, axis-constrained pieces with a visible arrow overlay, a visual level editor, an automatic level generator, and a 500+ starter pack of generated JSON levels.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Slide-to-Assemble Puzzles</h4>
+                    <p>Drag image pieces on a 2D grid; drop them on empty cells to reassemble the finished picture. Multi-cell shapes snap to their true footprint and cannot overlap other pieces. The dragged piece darkens while actively held for clear feedback.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Axis-Constrained Pieces</h4>
+                    <p>Per-piece movement locks (any / horizontal-only / vertical-only) add a layer of puzzle strategy on harder levels. Constrained pieces display a double-headed arrow overlay so the player knows the allowed axis at a glance.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>A full Unity Editor window with a visual grid painter, per-cell sprite selection, per-block colour selection, obstacle placement, and per-level booster counts + time limit.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate fresh levels with configurable grid size, block count, scramble moves, time limit, and booster allowances. Uses a curated tiling-pattern library so blocks always span a clean 2&times;2 / 2&times;3 / 3&times;2 footprint. Difficulty front-loads so hard levels arrive sooner; wall density, axis-constraint chance, and scramble count all scale with progression. Append-only &mdash; never overwrites hand-tuned levels.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Four Boosters</h4>
+                    <p>Time Freeze (pause the countdown for 10 seconds), Hint (ghost-preview a displaced piece's solved position), Shuffle (randomly reposition every block without overlap), and Grid Expander (extend the playable grid by 1 cell on every side for the rest of the level).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Progression-Gated Boosters</h4>
+                    <p>Each booster unlocks at a specific level (1 / 2 / 3 / 4 by default) so new players learn one mechanic at a time. Locked buttons show <code>&quot;lvl N&quot;</code> instead of the charge count. Press <code>U</code> in the editor / a development build to unlock &amp; refill everything for testing.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Time-Pressure Countdown</h4>
+                    <p>Every level carries its own time budget. A visible FrozenImage indicator appears while the Time Freeze booster is active so the player sees at a glance that the clock has paused.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>JSON Levels + Starter Pack</h4>
+                    <p>500+ levels ship as plain JSON under <code>Resources/Levels/PictureBlockPuzzle2D/</code>. Regenerate or extend at any time with the Auto Level Generator; delete every file in one click from the generator's danger-zone button.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package (the template uses both legacy and the new Input System)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the Picture Block Puzzle 2D package into your Unity project</li>
+                <li>Ensure the project is set to use the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>)</li>
+                <li>Open the game scene at <code>Assets/Picture Block Puzzle 2D/Scenes/GameNew.unity</code></li>
+                <li>Run <code>Tools &gt; Picture Block Puzzle 2D &gt; Setup Wizard</code> once &mdash; it verifies the scene, build settings, audio clips, and level count</li>
+                <li>Press Play to test the first level</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, drag any movable block on the grid to an empty cell. When every non-zero piece of a block sits at its solved offset from that block's zero anchor, the picture completes automatically and the star particles burst. Clear all pictures before the countdown reaches 0 to win the level. On win the next level loads automatically; on time-out the lose panel appears.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <div class="folder-structure">
+<span class="folder">Picture Block Puzzle 2D/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span> <span class="comment">&mdash; Sprite artwork referenced by blocks and HUD</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; Sound effects (place, merge, hint, shuffle, win, fail, freeze, etc.)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; Legacy ScriptableObject LevelData assets (runtime uses JSON)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PictureBlockPuzzle2DSetupWizard.cs</span> <span class="comment">&mdash; Idempotent scene / settings check</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PictureBlockPuzzle2DWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">DragSnapWithoutPlaymodeEditor.cs</span> <span class="comment">&mdash; Edit-mode drag-snap helper</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ImportAudioIcon.cs</span> <span class="comment">&mdash; Editor-time audio icon importer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Input Handling is not set to Both</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">URPStartupCheck.cs</span> <span class="comment">&mdash; Warns if URP is not the active render pipeline</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Shared materials for blocks, tiles, and FX</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Physics/</span> <span class="comment">&mdash; 2D PhysicsMaterial2D assets used by blocks and the border</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Block prefabs, HUD panel, popups, tiles, star particles</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Global_UI/</span> <span class="comment">&mdash; GameHUD_Panel, Popup_Powerup_Picker, etc.</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">BlockIcons/</span> <span class="comment">&mdash; Per-piece picture sprites loaded by name</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">CAKE_SLICE.png</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/PictureBlockPuzzle2D/</span> <span class="comment">&mdash; JSON levels (Level_1.json, Level_2.json, &hellip;)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; All runtime scripts (namespace: PictureBlockPuzzle2D.Scripts)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GridManager.cs</span> <span class="comment">&mdash; Grid layout, block spawn, countdown, merge check, shuffle</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">InputManager.cs</span> <span class="comment">&mdash; Touch / mouse drag handling for blocks</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Block.cs</span> <span class="comment">&mdash; Block entity (shape, head position, color, sprites)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BlockIconLoader.cs</span> <span class="comment">&mdash; Loads per-piece sprites from Resources/BlockIcons</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">TilePrefab.cs</span> <span class="comment">&mdash; Grid cell visual / state</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GoalManger.cs</span> <span class="comment">&mdash; Tracks remaining color goals</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Goal.cs</span> <span class="comment">&mdash; Single goal entry (color + count)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Runtime level data (time, grid size, blocks, boosters)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">JsonLevelData.cs</span> <span class="comment">&mdash; JSON &harr; runtime conversion + color palette</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + level progression</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; Time Freeze, Hint, Shuffle</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PictureBlockPuzzle2DGameManager.cs</span> <span class="comment">&mdash; Scene orchestrator + dev hotkeys</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameUI.cs</span> <span class="comment">&mdash; Countdown label + HUD text updates</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Win / Lose panels + Next Level wiring</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AudioButtonController.cs</span> <span class="comment">&mdash; Mute / unmute toggle button</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Portrait / landscape camera swap</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Ecolor.cs</span> <span class="comment">&mdash; Color enum (None, Red, Blue, Green, Cyan)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ShapeData.cs</span> <span class="comment">&mdash; Shape-type &rarr; Block-prefab lookup</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SnapToClosestObjectOfList.cs</span> <span class="comment">&mdash; Utility for edit-time snapping</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SpriteDummy.cs</span> <span class="comment">&mdash; Editor-only sprite placeholder</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">MyUtils.cs</span> <span class="comment">&mdash; Time formatting + small helpers</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Global/</span> <span class="comment">&mdash; Shared HypercasualGameEngine helpers (DeveloperSettings, SoundManager, etc.)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Settings/</span> <span class="comment">&mdash; URP render pipeline assets</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Sprites/</span> <span class="comment">&mdash; UI sprite atlases</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; Booster icons (incl. frozen-button.png), background art</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level displays a grid of cells, a set of multi-cell <strong>blocks</strong> (each painted with a color and carrying a piece of a larger picture), and a visible countdown. The player drags blocks to empty cells; physics colliders prevent overlap. A block is considered assembled when every non-zero piece of its color sits at <code>zeroHead + (pieceHead &minus; zeroPieceHead)</code> &mdash; i.e. the picture is reassembled in its authored orientation. Swapping two same-colored pieces does <strong>not</strong> count; the exact offsets must match.</p>
+
+            <ul>
+                <li><strong>Drag to slide</strong> &mdash; Touch or click a block and drag it across the grid; it snaps to the nearest free cell on release. The dragged piece darkens to ~70% brightness while held and restores its original tint on release so the player always sees which piece is live</li>
+                <li><strong>Shape footprints</strong> &mdash; Blocks occupy multi-cell shapes; <code>CanApplyShapeToGrid</code> ensures every target cell is empty before the move is accepted</li>
+                <li><strong>Axis-constrained movement</strong> &mdash; Individual pieces may carry a <code>moveAxis</code> of Horizontal or Vertical, restricting drag to that single axis. A double-headed arrow overlay is rendered on top of the piece showing which axis is allowed</li>
+                <li><strong>Zero-piece anchor</strong> &mdash; Each block has one &ldquo;zero&rdquo; piece marked <code>isZeroPos: true</code>; the solved image is computed from where the zero piece currently sits</li>
+                <li><strong>Picture merge</strong> &mdash; When all pieces of a block are in place, their sprites fade into the finished picture, the star particles burst, and the matching goal icon pops with a scale-bounce animation</li>
+                <li><strong>Countdown timer</strong> &mdash; Every level has a <code>timeLimit</code> in seconds; reaching 0 triggers the lose panel. The Time Freeze booster pauses the countdown for 10 seconds and shows an on-screen FrozenImage indicator while active</li>
+                <li><strong>Obstacles</strong> &mdash; Static wall cells (<code>obstacles</code> in the JSON) cannot be entered by any block. Wall density scales with difficulty on generated levels</li>
+                <li><strong>Progression</strong> &mdash; On win, <code>LevelManager.AdvanceLevel()</code> runs before the scene reloads; on lose, the same level reloads</li>
+            </ul>
+
+            <h3>Block Colours</h3>
+            <p>Seven predefined block colours, defined in <code>Ecolor.cs</code> and mapped to RGB in <code>MyUtils.GetColor</code> / <code>JsonLevelData.cs &rarr; BlockColors</code>:</p>
+            <table>
+                <tr>
+                    <th>Colour Key</th>
+                    <th>Colour</th>
+                    <th>Approx. RGB</th>
+                </tr>
+                <tr>
+                    <td><code>yellow</code></td>
+                    <td><span class="color-swatch" style="background:#FFD700;"></span> Yellow</td>
+                    <td>(1.00, 0.84, 0.00)</td>
+                </tr>
+                <tr>
+                    <td><code>red</code></td>
+                    <td><span class="color-swatch" style="background:#FF3333;"></span> Red</td>
+                    <td>(1.00, 0.20, 0.20)</td>
+                </tr>
+                <tr>
+                    <td><code>magenta</code></td>
+                    <td><span class="color-swatch" style="background:#FF33AA;"></span> Magenta</td>
+                    <td>(1.00, 0.20, 0.67)</td>
+                </tr>
+                <tr>
+                    <td><code>purple</code></td>
+                    <td><span class="color-swatch" style="background:#8A2BE2;"></span> Purple</td>
+                    <td>(0.54, 0.17, 0.89)</td>
+                </tr>
+                <tr>
+                    <td><code>blue</code></td>
+                    <td><span class="color-swatch" style="background:#3366FF;"></span> Blue</td>
+                    <td>(0.20, 0.40, 1.00)</td>
+                </tr>
+                <tr>
+                    <td><code>mint</code></td>
+                    <td><span class="color-swatch" style="background:#66EACE;"></span> Mint</td>
+                    <td>(0.40, 0.92, 0.81)</td>
+                </tr>
+                <tr>
+                    <td><code>lime</code></td>
+                    <td><span class="color-swatch" style="background:#B6E84B;"></span> Lime</td>
+                    <td>(0.71, 0.91, 0.29)</td>
+                </tr>
+            </table>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; Every non-zero piece is at its solved offset for every color in the level. The stars burst on the completed pictures, <code>SoundManager.Instance.PlayLevelClear()</code> fires, the level index advances, and the next level loads automatically.</li>
+                <li><strong>Lose</strong> &mdash; The countdown reaches 0 before the last picture completes. The FrozenImage (if active) is dismissed, the lose panel appears, and the Retry button reloads the current level.</li>
+            </ul>
+
+            <h3>Animations &amp; Feedback</h3>
+            <p>Blocks use 2D rigidbodies with snap-to-grid placement for drag feedback. Completed pictures fade their ghost sprites into the final image and emit a star particle burst. The Hint booster spawns a translucent ghost of a displaced piece at its solved position and pulses it for ~2.2 seconds while also briefly scaling the real piece so the player can see which piece should move where. The Shuffle booster reseats blocks with an explicit no-overlap validation pass.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Runtime scripts use the <code>PictureBlockPuzzle2D.Scripts</code> namespace. Editor scripts use the <code>PictureBlockPuzzle2D.Editor</code> and <code>PictureBlockPuzzle2D.EditorTools</code> namespaces. Shared helpers (<code>SoundManager</code>, <code>DeveloperSettingsController</code>, <code>LoseWinPanelManager</code>) live under <code>HypercasualGameEngine</code>.</p>
+
+            <h3>Core Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>GridManager</code></td>
+                    <td>Main gameplay controller. Builds the grid from <code>LevelData.gridSize</code>, spawns blocks from <code>blockDatas</code>, runs the level countdown coroutine, toggles the FrozenImage indicator during a Time Freeze, validates shape placements with <code>CanApplyShapeToGrid</code>, stamps occupancy via <code>SetBlockOccupancy</code>, rebuilds occupancy from live positions before each merge check, and exposes <code>ShuffleBlocks()</code> used by the booster.</td>
+                </tr>
+                <tr>
+                    <td><code>InputManager</code></td>
+                    <td>Touch / mouse drag handling. Raycasts to pick a block, tracks the drag, and snaps the block to the nearest valid grid cell on release.</td>
+                </tr>
+                <tr>
+                    <td><code>Block</code></td>
+                    <td>Block entity. Stores color, piece data, head grid position, and the 2D rigidbody / colliders. Exposes <code>GetAllShape(head)</code> to convert a head cell + piece offsets into an occupancy list.</td>
+                </tr>
+                <tr>
+                    <td><code>BlockIconLoader</code></td>
+                    <td>Resolves per-piece picture sprites from <code>Resources/BlockIcons/</code> by name (e.g. <code>ice-cream-2_0</code>).</td>
+                </tr>
+                <tr>
+                    <td><code>GoalManger</code></td>
+                    <td>Tracks remaining color goals for the level and drives the goal UI.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelData</code></td>
+                    <td>Runtime level descriptor. Contains <code>gridSize</code>, <code>time</code>, a list of <code>BlockData</code>, obstacles, and per-level booster counts. Created at runtime with <code>HideFlags.HideAndDontSave</code> to survive scene reloads.</td>
+                </tr>
+                <tr>
+                    <td><code>JsonLevelData</code></td>
+                    <td>JSON-serialisable mirror of <code>LevelData</code> plus the <code>BlockColors</code> palette helper and the <code>ToRuntimeLevelData</code> / <code>FromRuntimeLevelData</code> conversions used by the editor tools and runtime loader.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelManager</code></td>
+                    <td>Static loader. Reads <code>Resources/Levels/PictureBlockPuzzle2D/*.json</code> into a sorted list at startup, tracks the current level index under <code>PlayerPrefs</code> key <code>PictureBlockPuzzle2D_CurrentLevel</code>, and exposes <code>GetCurrentLevel</code>, <code>AdvanceLevel</code>, <code>GoToLevel</code>, <code>ForceReload</code>, plus editor-only disk-write helpers used by the Level Editor.</td>
+                </tr>
+                <tr>
+                    <td><code>BoosterManager</code></td>
+                    <td>Manages all four boosters: Time Freeze (calls <code>GridManager.FreezeCountdown(10f)</code> and toggles the FrozenImage), Hint (ghost-previews a displaced piece's solved position), Shuffle (delegates to <code>GridManager.ShuffleBlocks()</code>), and Grid Expander (delegates to <code>GridManager.ExpandGrid()</code>). Binds to the scene buttons <code>Booster-Button-1/2/3/4</code> by string match, gates each booster by level index (<code>undoUnlockLevel=0</code>, <code>hintUnlockLevel=1</code>, <code>shuffleUnlockLevel=2</code>, <code>gridExpandUnlockLevel=3</code>), and shows first-use tutorial popups keyed in <code>PlayerPrefs</code>. Exposes <code>DebugUnlockAndRefillAll()</code> used by the <code>U</code> dev hotkey (self-healing: re-hooks button refs if <code>Init</code> hasn't run yet).</td>
+                </tr>
+                <tr>
+                    <td><code>PictureBlockPuzzle2DGameManager</code></td>
+                    <td>Scene orchestrator. Holds dev hotkeys (arrow keys for level nav, U to unlock &amp; refill boosters), refreshes the HUD level label from <code>LevelManager.CurrentLevelIndex</code>, and wires <code>BoosterManager.Init</code> to the current level on startup.</td>
+                </tr>
+                <tr>
+                    <td><code>GameUI</code></td>
+                    <td>Writes the formatted countdown string into the HUD's countdown TextMeshPro via <code>UpdateCountDownText(float)</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>LoseWinPanelManager</code></td>
+                    <td>Owns the Win / Lose panels. <code>LoadNextLevel()</code> calls <code>LevelManager.AdvanceLevel()</code> before <code>SceneManager.LoadScene</code> so progression actually sticks. Namespaced under <code>HypercasualGameEngine</code> for cross-game reuse.</td>
+                </tr>
+                <tr>
+                    <td><code>AudioButtonController</code></td>
+                    <td>HUD mute toggle. Persists the muted state and swaps the button sprite accordingly.</td>
+                </tr>
+            </table>
+
+            <h3>Utility Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>Ecolor</code></td>
+                    <td>Colour enum (<code>None</code>, <code>Yellow</code>, <code>Red</code>, <code>Magenta</code>, <code>Purple</code>, <code>Blue</code>, <code>Mint</code>, <code>Lime</code>) used by blocks and the occupancy map. Also defines <code>MoveAxis</code> (<code>Any</code> / <code>Horizontal</code> / <code>Vertical</code>) used by axis-constrained pieces.</td>
+                </tr>
+                <tr>
+                    <td><code>ShapeData</code></td>
+                    <td>Maps a shape-type integer in the JSON to a concrete Block prefab, used at spawn time by <code>MyUtils.GetBlock</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>CameraSwitcher</code></td>
+                    <td>Swaps camera presets when orientation / aspect changes.</td>
+                </tr>
+                <tr>
+                    <td><code>SnapToClosestObjectOfList</code></td>
+                    <td>Edit-time helper that snaps a Transform to the nearest object in a given list &mdash; used when hand-placing HUD elements.</td>
+                </tr>
+                <tr>
+                    <td><code>SpriteDummy</code></td>
+                    <td>Placeholder sprite component for editor-time visualisation.</td>
+                </tr>
+                <tr>
+                    <td><code>MyUtils</code></td>
+                    <td>Small helpers: time formatting, grid origin calculation, and <code>GetBlock(shapeType, shapeData)</code> prefab lookup.</td>
+                </tr>
+            </table>
+
+            <h3>Engine Scripts (HypercasualGameEngine namespace)</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>SoundManager</code></td>
+                    <td>Singleton audio system with a single <code>AudioSource</code>, master-volume slider, and one <code>PlayX()</code> method per gameplay event (e.g. <code>PlayBlockPlace</code>, <code>PlayUndo</code>, <code>PlayHint</code>, <code>PlayShuffle</code>, <code>PlayLevelClear</code>, <code>PlayFreezeTime</code>).</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperSettingsController</code></td>
+                    <td>Dev-panel controls: next / previous level, trigger win / lose, unlock all boosters, refill all boosters, reset first-use booster popups, ad-panel toggles.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperModeButton</code></td>
+                    <td>Shows / hides the <code>DeveloperSettingsPanel</code>. Auto-finds the panel child if no Inspector reference is assigned.</td>
+                </tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>LevelEditorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Picture Block Puzzle 2D &gt; Level Editor</code>) for visually designing levels. Features a left panel with level list (add / duplicate / reorder / delete-with-confirm / save / reload) and a right panel with grid painter, paint-mode toggle, per-block color + sprite picker, and per-level booster counts + time limit fields.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelGeneratorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Picture Block Puzzle 2D &gt; Auto Level Generator</code>) for batch-generating levels. Settings control grid size, block count, scramble moves, time limit, and booster counts. Uses a curated tiling-pattern library (2&times;2, 2&times;3, 3&times;2) so every block fits cleanly; scales wall density, axis-constraint chance, and scramble depth with difficulty; front-loads difficulty with a <code>pow(t, 0.55)</code> curve so hard levels arrive sooner in the batch. Append-only &mdash; never overwrites existing levels. A &ldquo;Delete ALL&rdquo; button in the danger zone wipes every level for a clean regenerate.</td>
+                </tr>
+                <tr>
+                    <td><code>GenerateMoveAxisArrows</code></td>
+                    <td>One-click regenerator (<code>Tools &gt; Picture Block Puzzle 2D &gt; Regenerate Move-Axis Arrows</code>) that bakes the horizontal &amp; vertical double-headed arrow PNGs into <code>Resources/</code> with a supersampled antialiased outline and semi-transparent fill. Runtime only loads the baked PNGs via <code>Resources.Load&lt;Sprite&gt;</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>RebuildDevPanelLevelButtons</code></td>
+                    <td>One-click helper (<code>Tools &gt; Picture Block Puzzle 2D &gt; Rebuild Dev Panel Level Buttons</code>) that duplicates the Dev Panel's Reload button twice, renames the clones to <code>NextLevelButton</code> / <code>PreviousLevelButton</code>, stacks them above Reload, and rewires the <code>DeveloperSettingsController</code> references. Idempotent &mdash; safe to re-run any time.</td>
+                </tr>
+                <tr>
+                    <td><code>PictureBlockPuzzle2DSetupWizard</code></td>
+                    <td>Idempotent project health check. Verifies the scene is open, build settings contain only <code>GameNew.unity</code>, PlayerSettings are correct (Linear color space, IL2CPP, Both input handling), <code>SoundManager</code> clips are populated, HUD load-bearing names exist, and the level count is sane. Each step reports <code>OK</code>, <code>FIX</code>, <code>ERR</code>, or <code>SKIP</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>PictureBlockPuzzle2DWelcomePopup</code></td>
+                    <td>Welcome popup shown once per Unity session on project open. Hosts two CTAs: &ldquo;Leave a Review on the Asset Store&rdquo; and &ldquo;Get HyperCasual Game Engine&rdquo;. Permanently dismissable via <code>EditorPrefs</code>. Reopenable at <code>Tools &gt; Picture Block Puzzle 2D &gt; Welcome</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>DragSnapWithoutPlaymodeEditor</code></td>
+                    <td>Edit-mode helper that lets authors drag-snap Block prefabs to grid cells in the scene view without entering Play mode.</td>
+                </tr>
+                <tr>
+                    <td><code>ImportAudioIcon</code>, <code>InputSystemCheck</code>, <code>URPStartupCheck</code></td>
+                    <td>Editor-time diagnostics that warn the developer if required settings are missing (icons, Both input handling, URP active).</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+
+            <h3>Opening the Level Editor</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Picture Block Puzzle 2D &gt; Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder, and delete levels in the left panel</li>
+                <li><strong>Grid Painter</strong> &mdash; Click cells on the grid to place or erase block pieces and obstacles</li>
+                <li><strong>Paint Modes</strong> &mdash; Select a mode from the toolbar: None, Wall, Block, Erase</li>
+                <li><strong>Color Selection</strong> &mdash; Choose a block color when in Block paint mode (red, blue, green, cyan)</li>
+                <li><strong>Sprite Selection</strong> &mdash; Pick a piece sprite from <code>Resources/BlockIcons/</code> for the active block</li>
+                <li><strong>Block Management</strong> &mdash; Add / remove blocks per level, set the zero-piece, configure block size</li>
+                <li><strong>Grid Settings</strong> &mdash; Adjust grid width and height per level</li>
+                <li><strong>Time Limit + Boosters</strong> &mdash; Per-level <code>timeLimit</code>, <code>undoBoosterCount</code>, <code>hintBoosterCount</code>, <code>shuffleBoosterCount</code>, and <code>gridExpandBoosterCount</code> fields</li>
+                <li><strong>Save / Reload</strong> &mdash; Save all levels to disk as JSON, or reload from disk with confirmation</li>
+            </ul>
+
+            <h3>Paint Modes</h3>
+            <table>
+                <tr>
+                    <th>Mode</th>
+                    <th>Left Click</th>
+                </tr>
+                <tr>
+                    <td><strong>None</strong></td>
+                    <td>No painting &mdash; click cells to inspect their contents</td>
+                </tr>
+                <tr>
+                    <td><strong>Wall</strong></td>
+                    <td>Toggle an obstacle cell on / off at the clicked position</td>
+                </tr>
+                <tr>
+                    <td><strong>Block</strong></td>
+                    <td>Place a piece of the selected block at the clicked cell. Click the same cell again to toggle off. If the cell belongs to another block, it is reassigned to the selected block.</td>
+                </tr>
+                <tr>
+                    <td><strong>Erase</strong></td>
+                    <td>Remove whatever piece or obstacle sits at the clicked cell. Empty blocks are cleaned up automatically.</td>
+                </tr>
+            </table>
+
+            <h3>Level Storage</h3>
+            <p>All levels are stored as individual JSON files in <code>Assets/Picture Block Puzzle 2D/Resources/Levels/PictureBlockPuzzle2D/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, &hellip; The runtime loader uses <code>Resources.LoadAll&lt;TextAsset&gt;("Levels/PictureBlockPuzzle2D")</code> and sorts by the trailing number in each filename.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Automatic Level Generator</h2>
+
+            <p>The Automatic Level Generator is an Editor tool that batch-generates playable picture-assembly levels. It controls grid size, block count, scramble moves, time budget, booster allowances, axis-constraint chance, and wall density &mdash; all scaled along a front-loaded difficulty curve so hard levels arrive earlier in the batch. Generated levels always satisfy the shape-footprint / occupancy invariants used by the runtime; the in-game Shuffle, Hint, Undo, and Grid Expander boosters give players a way out of any stuck state (a forward-BFS solvability check is intentionally <em>not</em> run &mdash; it was rejecting harder scrambles and producing levels where pieces landed conveniently close to their solved positions).</p>
+
+            <h3>Opening the Tool</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Picture Block Puzzle 2D &gt; Auto Level Generator</code>. This opens a settings window where you can configure all parameters before generating.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Levels to Generate</strong></td>
+                    <td>How many new level files to create. New levels are appended after existing ones (never overwrites).</td>
+                </tr>
+                <tr>
+                    <td><strong>Grid Size (Min &amp; Max)</strong></td>
+                    <td>Range for the grid width / height. Early levels lean toward the minimum, harder levels toward the maximum.</td>
+                </tr>
+                <tr>
+                    <td><strong>Block Count (Min &amp; Max)</strong></td>
+                    <td>Range for the number of blocks (distinct pictures) per level. Default 2 &rarr; 6.</td>
+                </tr>
+                <tr>
+                    <td><strong>Scramble Moves (Min &amp; Max)</strong></td>
+                    <td>Number of legal reverse-slide moves used to displace pieces from their solved positions. The effective total scales with piece count internally so each piece receives ~N moves on average. Default 8 &rarr; 30.</td>
+                </tr>
+                <tr>
+                    <td><strong>Time Limit (Min &amp; Max)</strong></td>
+                    <td>Seconds of countdown budget per level (Max used on the easiest level, Min on the hardest).</td>
+                </tr>
+                <tr>
+                    <td><strong>Booster Counts (Min &amp; Max)</strong></td>
+                    <td>Per-booster min / max uses to write into each generated level's JSON.</td>
+                </tr>
+                <tr>
+                    <td><strong>Random Seed</strong></td>
+                    <td>Set to 0 for an unseeded run (different every time), or any non-zero integer for reproducible output.</td>
+                </tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Configure settings</strong> &mdash; adjust all parameters in the Editor window</li>
+                <li><strong>Click &ldquo;Generate Levels&rdquo;</strong> &mdash; the tool detects existing levels and appends new ones</li>
+                <li><strong>For each level</strong>, the generator:
+                    <ul>
+                        <li>Randomises grid size, block count, scramble depth, wall density, and axis-constraint chance within your ranges, all scaled by a front-loaded difficulty curve (<code>t = pow(levelIndex / total, 0.55)</code>) so the player reaches hard levels sooner</li>
+                        <li>Places blocks using the curated tiling-pattern library (2&times;2 with two stacked 1&times;2s, 2&times;3 / 3&times;2 with three 1&times;3s, L-shape + 1&times;1 combos, etc.) to guarantee clean footprints close to 1:1 aspect ratios</li>
+                        <li>Marks one piece per block as the zero-anchor and records the remaining pieces' solved offsets</li>
+                        <li>Scrambles non-zero pieces via random legal slides, biased toward destinations far from each piece's solved head so pieces actually travel rather than wobble around their goal</li>
+                        <li>Assigns at most one piece per block a <code>moveAxis</code> constraint (Horizontal or Vertical) when the chance roll succeeds &mdash; only on pieces whose scrambled &rarr; solved delta is already purely along that axis, to keep the constraint self-consistent</li>
+                        <li>Scatters wall obstacles across empty cells at increasing density with difficulty (up to ~28% of grid area at the hardest) with a minimum floor that rises with difficulty to produce that &ldquo;cramped&rdquo; hard-level feel</li>
+                        <li>Writes the JSON level file to <code>Resources/Levels/PictureBlockPuzzle2D/Level_N.json</code></li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="important-notice">
+                <h3>Non-Destructive</h3>
+                <p>The generator <strong>never overwrites</strong> existing level files. It always starts numbering from the next available index (e.g., if <code>Level_30</code> exists, new levels start from <code>Level_31</code>). Use the &ldquo;Delete ALL Levels&rdquo; button if you want to start fresh.</p>
+            </div>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+
+            <p>The game includes four booster abilities that players can activate during gameplay. Each booster has a configurable number of uses per level (set in the level JSON data) and an optional first-use tutorial popup. Each booster unlocks at a specific level so new players learn one mechanic at a time.</p>
+
+            <table>
+                <tr>
+                    <th>Booster</th>
+                    <th>Unlock</th>
+                    <th>Effect</th>
+                    <th>Activation</th>
+                </tr>
+                <tr>
+                    <td><strong>Time Freeze</strong></td>
+                    <td>Level 1</td>
+                    <td>Pauses the level countdown for 10 seconds. Enables the on-screen <code>FrozenImage</code> indicator for the duration, then hides it when the freeze expires. Multiple presses stack the remaining freeze time.</td>
+                    <td>Tap the Time Freeze button (<code>Booster-Button-1</code>). Consumes one use immediately.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hint</strong></td>
+                    <td>Level 2</td>
+                    <td>Picks a displaced non-zero piece at random, spawns a translucent ghost of it at the solved position, pulses the ghost for ~2.2 seconds, and briefly scales the real piece so the player sees <em>which</em> piece should move <em>where</em>.</td>
+                    <td>Tap the Hint button (<code>Booster-Button-2</code>). Consumes one use immediately.</td>
+                </tr>
+                <tr>
+                    <td><strong>Shuffle</strong></td>
+                    <td>Level 3</td>
+                    <td>Calls <code>GridManager.ShuffleBlocks()</code> which reseats every block on a random valid head cell using <code>CanApplyShapeToGrid</code> to guarantee no two shapes overlap and every footprint stays inside the grid. If a block cannot be placed, the whole board is rolled back and the charge is not consumed.</td>
+                    <td>Tap the Shuffle button (<code>Booster-Button-3</code>). A charge is consumed only when the shuffle actually succeeds.</td>
+                </tr>
+                <tr>
+                    <td><strong>Grid Expander</strong></td>
+                    <td>Level 4</td>
+                    <td>Calls <code>GridManager.ExpandGrid()</code> which extends the playable grid by 1 cell on every side, rebuilds the tile map, shifts every block into the new coordinate system, and repositions the border walls. One expansion per level is typically plenty.</td>
+                    <td>Tap the Grid Expander button (<code>Booster-Button-4</code>). Consumed on start of expansion; no-op if an expansion is already running or the level has ended.</td>
+                </tr>
+            </table>
+
+            <h3>Booster Buttons</h3>
+            <p>Booster buttons live in the scene under <code>GameHUD_Panel/BottomHolder</code>. Each button has:</p>
+            <ul>
+                <li>A <strong>background overlay</strong> (<code>Bg</code>) that shows / hides based on availability</li>
+                <li>A <strong>use-count badge</strong> (<code>PowerUpCountText</code>) showing remaining uses, or the unlock level (<code>&quot;lvl N&quot;</code>) if still locked</li>
+                <li><strong>Lock by level</strong> &mdash; defaults: Time Freeze at level 1 (index 0), Hint at level 2 (index 1), Shuffle at level 3 (index 2), Grid Expander at level 4 (index 3). All four fields are public on <code>BoosterManager</code> and can be tuned in the Inspector per-project</li>
+                <li><strong>First-use popup</strong> &mdash; the scene carries four inactive <code>Booster-Popup-1/2/3/4</code> GameObjects; the first use of each booster fades its popup in and out. Keys are stored in <code>PlayerPrefs</code> (<code>BoosterPopupShown_Undo</code>, <code>BoosterPopupShown_Hint</code>, <code>BoosterPopupShown_Shuffle</code>, <code>BoosterPopupShown_GridExpand</code>)</li>
+            </ul>
+
+            <h3>Cheat Mode</h3>
+            <p>Press the <strong>U</strong> key during gameplay to unlock all boosters and refill their usage counts (wrapped in <code>#if UNITY_EDITOR || DEVELOPMENT_BUILD</code> so it's stripped from release builds). The hotkey reads both the legacy <code>Input.GetKeyDown</code> and the new-Input-System <code>Keyboard.current.uKey</code> so it works regardless of which backend owns focus. It calls <code>BoosterManager.DebugUnlockAndRefillAll()</code>, a self-healing variant that re-hooks scene button references if the scene hasn't yet initialised.</p>
+            <p>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next / previous level (wraps at the ends). Handled by <code>PictureBlockPuzzle2DGameManager.Update()</code>.</p>
+            <p>The Developer Settings Panel also ships with <strong>Next Level</strong> / <strong>Previous Level</strong> / <strong>Reload</strong> buttons (run <code>Tools &gt; Picture Block Puzzle 2D &gt; Rebuild Dev Panel Level Buttons</code> to regenerate them from the Reload button's current styling).</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization Guide</h2>
+
+            <h3>Adding New Colours</h3>
+            <p>To add a new block colour (the game already ships with seven &mdash; yellow, red, magenta, purple, blue, mint, lime):</p>
+            <ol>
+                <li>Open <code>Ecolor.cs</code> and add a new entry to the <code>EColor</code> enum:
+                    <div class="code-block">
+<span class="keyword">public enum</span> <span class="class">EColor</span>
+{
+    None,
+    Yellow,
+    Red,
+    Magenta,
+    Purple,
+    Blue,
+    Mint,
+    Lime,
+    <span class="comment">// Add your custom colour:</span>
+    Teal
+}
+                    </div>
+                </li>
+                <li>Open <code>MyUtils.cs</code> and add the RGB for the new entry to <code>GetColor</code>. Open <code>JsonLevelData.cs</code> and mirror it in the <code>BlockColors</code> dictionaries (<code>colors</code>, <code>toEnum</code>, <code>toKey</code>, <code>AllKeys</code>)</li>
+                <li>Open <code>LevelGeneratorWindow.cs</code> and add the new key to the <code>COLOR_KEYS</code> array so the generator picks from it</li>
+                <li>Regenerate or hand-author a level that uses the new colour key</li>
+            </ol>
+            <p>New colours are automatically available in the Level Editor, Auto Level Generator, and at runtime.</p>
+
+            <h3>Adjusting Grid Visuals</h3>
+            <p>The grid layout is controlled by <code>GridManager.cs</code>. Key Inspector properties:</p>
+            <ul>
+                <li><code>cellSpace</code> &mdash; Spacing between grid cells in world units</li>
+                <li><code>tilePrefab</code> &mdash; The visual prefab placed at each grid cell</li>
+                <li><code>shapeData</code> &mdash; Lookup that maps <code>shapeType</code> integers in the JSON to concrete Block prefabs</li>
+                <li><code>starParticlePrefab</code> &mdash; The burst VFX played when a picture completes</li>
+                <li><code>borderRoot</code> &mdash; Optional invisible Border with 4 collider walls; repositioned to the current grid size at runtime if assigned</li>
+            </ul>
+
+            <h3>Modifying Block Visuals</h3>
+            <p>Block rendering is driven by <code>Block</code> + per-piece sprites under <code>Resources/BlockIcons/</code>. To retheme:</p>
+            <ul>
+                <li>Replace the sprites in <code>Resources/BlockIcons/</code> (keep the same filenames to avoid retagging every level JSON)</li>
+                <li>Update the Block prefabs' <code>SpriteRenderer</code> defaults if you want a new fallback tint</li>
+                <li>Edit the color palette in <code>JsonLevelData.cs &rarr; BlockColors</code> to change the tint of every block of that color</li>
+            </ul>
+
+            <h3>Audio</h3>
+            <p>Audio lives on a single <code>SoundManager</code> singleton. Replace any clip on the <code>SoundManager</code> GameObject in the scene to retheme a specific event. Add a new clip field + matching <code>PlayX()</code> method if you introduce a new gameplay event &mdash; the existing pattern is documented inside <code>SoundManager.cs</code>.</p>
+
+            <h3>Adding New Boosters</h3>
+            <p>New boosters can be added by following the existing pattern in <code>BoosterManager.cs</code>:</p>
+            <ol>
+                <li>Add booster state fields (use count, unlock level, UI references)</li>
+                <li>Wire up the button in <code>HookUpExistingBoosters()</code> by adding a fourth named child (<code>Booster-Button-4</code>) to the scene and matching it by string</li>
+                <li>Implement the booster logic in a new click handler method (e.g. <code>OnMyBoosterClicked()</code>)</li>
+                <li>Add a count field to <code>JsonLevelData</code> / <code>LevelData</code> and populate it in <code>BoosterManager.Init()</code></li>
+                <li>Update <code>UpdateBoosterUI()</code> to draw the new button's lock / unlock / count display</li>
+            </ol>
+
+            <h3>JSON Level Format</h3>
+            <p>Each level is a JSON file with the following structure:</p>
+            <div class="code-block">
+{
+    <span class="string">"cols"</span>: 5,
+    <span class="string">"rows"</span>: 6,
+    <span class="string">"timeLimit"</span>: 240.0,
+    <span class="string">"blocks"</span>: [
+        {
+            <span class="string">"colorKey"</span>: <span class="string">"red"</span>,
+            <span class="string">"blockSize"</span>: { <span class="string">"x"</span>: 2, <span class="string">"y"</span>: 3 },
+            <span class="string">"spriteName"</span>: <span class="string">"ice-cream-2_0"</span>,
+            <span class="string">"moveAxis"</span>: 0,                           <span class="comment">// legacy block-level axis; per-piece axis is source of truth</span>
+            <span class="string">"pieceDatas"</span>: [
+                {
+                    <span class="string">"startPos"</span>:     { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 1 },
+                    <span class="string">"headPosition"</span>: { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 0 },
+                    <span class="string">"shapeType"</span>: 0,
+                    <span class="string">"isZeroPos"</span>: <span class="keyword">true</span>,
+                    <span class="string">"moveAxis"</span>: 0                      <span class="comment">// 0=Any, 1=Horizontal, 2=Vertical</span>
+                }
+            ]
+        }
+    ],
+    <span class="string">"obstacles"</span>: [
+        { <span class="string">"x"</span>: 2, <span class="string">"y"</span>: 2 }                       <span class="comment">// static wall cells</span>
+    ],
+    <span class="string">"undoBoosterCount"</span>:       3,         <span class="comment">// Booster-Button-1 (Time Freeze)</span>
+    <span class="string">"hintBoosterCount"</span>:       3,         <span class="comment">// Booster-Button-2 (Hint)</span>
+    <span class="string">"shuffleBoosterCount"</span>:    3,         <span class="comment">// Booster-Button-3 (Shuffle)</span>
+    <span class="string">"gridExpandBoosterCount"</span>: 1          <span class="comment">// Booster-Button-4 (Grid Expander)</span>
+}
+            </div>
+            <p>The <code>blocks</code> array defines multi-piece pictures. Each block has a <code>colorKey</code> (one of <code>yellow</code> / <code>red</code> / <code>magenta</code> / <code>purple</code> / <code>blue</code> / <code>mint</code> / <code>lime</code>), a <code>blockSize</code>, a <code>spriteName</code> (resolved from <code>Resources/BlockIcons/</code>), and a list of <code>pieceDatas</code>. Each piece has:</p>
+            <ul>
+                <li><code>startPos</code> &mdash; where the piece spawns on the grid (<code>x</code>, <code>y</code> in 0-indexed grid coords, <code>(0,0)</code> at top-left)</li>
+                <li><code>headPosition</code> &mdash; the piece's offset inside the assembled picture, with <code>(0,0)</code> reserved for the zero piece</li>
+                <li><code>shapeType</code> &mdash; index into the shape library (0: 1&times;2 horizontal, 1: 1&times;2 vertical, 2: L top-right, 3: L bottom-left, 4: 1&times;1 single)</li>
+                <li><code>isZeroPos</code> &mdash; exactly one piece per block must be <code>true</code> &mdash; that piece is the solved-image anchor</li>
+                <li><code>moveAxis</code> &mdash; per-piece movement constraint: <code>0</code> = Any, <code>1</code> = Horizontal, <code>2</code> = Vertical. When non-zero the piece renders a double-headed arrow overlay and drags lock to that axis</li>
+            </ul>
+            <p><strong>Note on field name:</strong> <code>undoBoosterCount</code> is the legacy serialised name kept for save-file compatibility; at runtime it drives the Time Freeze booster.</p>
+            <p><strong>Note on <code>moveAxis</code> placement:</strong> the per-block <code>moveAxis</code> field is legacy &mdash; at runtime the per-piece <code>moveAxis</code> inside <code>pieceDatas</code> is authoritative. The generator only constrains one piece per block (on an axis where that piece's scrambled &rarr; solved delta is already purely along that axis) so levels stay self-consistent.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>No levels load / empty grid appears</td>
+                    <td>Ensure JSON level files exist in <code>Assets/Picture Block Puzzle 2D/Resources/Levels/PictureBlockPuzzle2D/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. Use the Auto Level Generator to create levels if the folder is empty.</td>
+                </tr>
+                <tr>
+                    <td>Pink / magenta materials on objects</td>
+                    <td>The project requires URP. Go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned. Check that the <code>Settings/</code> folder contains valid URP assets.</td>
+                </tr>
+                <tr>
+                    <td>Time Freeze booster icon doesn't appear</td>
+                    <td>The <code>FrozenImage</code> GameObject must exist in the scene (child of <code>WorldCanvas</code>). It uses the sprite <code>Textures/frozen-button.png</code>. The Setup Wizard will flag it as missing if you deleted the GameObject &mdash; re-run the wizard or re-add the object.</td>
+                </tr>
+                <tr>
+                    <td>Blocks pass through each other</td>
+                    <td>Every Block prefab needs a <code>Rigidbody2D</code> and matching <code>Collider2D</code>(s). Also verify the Border walls under <code>GridManager.borderRoot</code> are enabled &mdash; they constrain the play area for the drag physics.</td>
+                </tr>
+                <tr>
+                    <td>Booster buttons don't respond</td>
+                    <td>Ensure the <code>GameHUD_Panel/BottomHolder</code> hierarchy contains children named <code>Booster-Button-1</code>, <code>Booster-Button-2</code>, and <code>Booster-Button-3</code>. Each needs a <code>Button</code> component. If you added a <code>Canvas</code> component for sorting order, you must also add a <code>GraphicRaycaster</code>.</td>
+                </tr>
+                <tr>
+                    <td>First-use booster popups never show</td>
+                    <td>The popups <code>Booster-Popup-1/2/3</code> must exist in the scene with <code>m_IsActive: 0</code>. <code>GameObject.Find</code> skips inactive objects, so <code>BoosterManager</code> uses an inactive-aware scan &mdash; if you renamed the popups, restore the literal names or update the constants at the top of <code>BoosterManager.cs</code>. To replay the tutorial, click &ldquo;Reset Booster Popups&rdquo; on the Developer Settings panel.</td>
+                </tr>
+                <tr>
+                    <td>Shuffle booster consumes a charge but nothing changes</td>
+                    <td>On a tightly packed board the shuffle occasionally can't find a valid layout for every block and rolls back. In that case the charge is <strong>not</strong> consumed (the method returns <code>false</code>). If the count still ticks down, ensure no other script is decrementing <code>shuffleBoosterCount</code> behind <code>BoosterManager</code>'s back.</td>
+                </tr>
+                <tr>
+                    <td>Level Editor shows empty grid</td>
+                    <td>Click &ldquo;Reload from Disk&rdquo; in the Level Editor window, or ensure the <code>Resources/Levels/PictureBlockPuzzle2D/</code> folder exists and contains valid JSON files.</td>
+                </tr>
+            </table>
+
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the <strong>Developer Settings Panel</strong> (gear icon) in Play mode to quickly navigate levels, trigger win / lose, unlock boosters, and reset popups</li>
+                <li>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next / previous level</li>
+                <li>Press <strong>U</strong> to unlock and refill all boosters for testing</li>
+                <li>Run <code>Tools &gt; Picture Block Puzzle 2D &gt; Setup Wizard</code> whenever you import the package into a fresh project &mdash; it catches the common misconfigurations in one pass</li>
+                <li>The <strong>Auto Level Generator</strong> is the fastest way to populate your game with content &mdash; generate 100+ levels in seconds and then hand-tune Levels 1&ndash;5 in the Level Editor</li>
+                <li>Back up your <code>Resources/Levels/PictureBlockPuzzle2D/</code> folder regularly</li>
+                <li>The Welcome Popup can be permanently dismissed via the &ldquo;Do not show this popup again&rdquo; checkbox</li>
+            </ul>
+
+            <h3>Contact Us</h3>
+            <p>If you get stuck or have any issues, feel free to reach out to us at <a href="mailto:ragendom@gmail.com" style="color: #d35400; font-weight: bold;">ragendom@gmail.com</a>. We are happy to help!</p>
+
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Picture Block Puzzle 2D &mdash; A Sliding Picture-Assembly Puzzle Template for Unity</p>
+        <p>&copy; 2026 &mdash; Built with the HyperCasual Game Engine</p>
+    </div>
+</body>
+</html>
