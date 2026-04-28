@@ -6,29 +6,29 @@
 <title>PromptMotion - Documentation</title>
 <style>
 :root {
-  --bg: #0e0e12;
-  --bg-card: #16161d;
-  --bg-card-hover: #1c1c26;
-  --bg-code: #1a1a24;
-  --bg-sidebar: #111117;
+  --bg: #0D0B1A;
+  --bg-card: #161230;
+  --bg-card-hover: #1E1840;
+  --bg-code: #1A1535;
+  --bg-sidebar: #100D20;
   --text: #e2e2ea;
-  --text-dim: #8888a0;
+  --text-dim: #9088b0;
   --text-code: #c8c8d8;
-  --accent: #6c5ce7;
-  --accent-light: #a29bfe;
-  --accent-glow: rgba(108,92,231,0.15);
+  --accent: #9333EA;
+  --accent-light: #A855F7;
+  --accent-glow: rgba(147,51,234,0.15);
   --green: #00cec9;
   --green-dim: rgba(0,206,201,0.12);
   --yellow: #fdcb6e;
   --yellow-dim: rgba(253,203,110,0.12);
-  --pink: #fd79a8;
-  --pink-dim: rgba(253,121,168,0.12);
+  --pink: #EC4899;
+  --pink-dim: rgba(236,72,153,0.12);
   --orange: #e17055;
   --orange-dim: rgba(225,112,85,0.12);
-  --blue: #74b9ff;
-  --blue-dim: rgba(116,185,255,0.12);
-  --border: #2a2a38;
-  --border-light: #33334a;
+  --blue: #818cf8;
+  --blue-dim: rgba(129,140,248,0.12);
+  --border: #2D2550;
+  --border-light: #3D3560;
   --radius: 12px;
   --radius-sm: 8px;
   --sidebar-w: 280px;
@@ -60,7 +60,7 @@ body {
 .header {
   position: fixed; top: 0; left: 0; right: 0;
   height: var(--header-h);
-  background: rgba(14,14,18,0.85);
+  background: rgba(13,11,26,0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -85,7 +85,7 @@ body {
 
 .header-logo .dot {
   width: 28px; height: 28px;
-  background: linear-gradient(135deg, var(--accent), var(--pink));
+  background: linear-gradient(135deg, #9333EA, #EC4899);
   border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 800; color: #fff;
@@ -217,7 +217,7 @@ body {
   letter-spacing: -1px;
   line-height: 1.15;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--pink) 100%);
+  background: linear-gradient(135deg, #fff 0%, #A855F7 40%, #EC4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -247,11 +247,11 @@ body {
   font-weight: 600;
 }
 
-.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(108,92,231,0.25); }
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(147,51,234,0.25); }
 .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
 .badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
-.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(253,121,168,0.25); }
-.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(116,185,255,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(129,140,248,0.25); }
 
 /* ---- SECTIONS ---- */
 .section {
@@ -411,13 +411,13 @@ pre code {
   color: inherit;
 }
 
-.kw { color: #c792ea; }
+.kw { color: #C084FC; }
 .str { color: #c3e88d; }
-.cm { color: #546e7a; font-style: italic; }
-.fn { color: #82aaff; }
+.cm { color: #6B5F8A; font-style: italic; }
+.fn { color: #818cf8; }
 .tp { color: #ffcb6b; }
 .num { color: #f78c6c; }
-.op { color: #89ddff; }
+.op { color: #A78BFA; }
 
 /* ---- TABLES ---- */
 .table-wrap {
@@ -453,7 +453,7 @@ td {
 }
 
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(108,92,231,0.04); }
+tr:hover td { background: rgba(147,51,234,0.04); }
 
 /* ---- COLLAPSIBLE ---- */
 details {
@@ -519,10 +519,10 @@ details .details-body p:first-child { margin-top: 0; }
 .callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
 .callout-warn .callout-icon { color: var(--yellow); }
 
-.callout-info { background: var(--blue-dim); border: 1px solid rgba(116,185,255,0.2); }
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(129,140,248,0.2); }
 .callout-info .callout-icon { color: var(--blue); }
 
-.callout-danger { background: var(--pink-dim); border: 1px solid rgba(253,121,168,0.2); }
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); }
 .callout-danger .callout-icon { color: var(--pink); }
 
 /* ---- STEP LIST ---- */
@@ -1564,7 +1564,7 @@ details .details-body p:first-child { margin-top: 0; }
     <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
     <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
     <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">Bug reports, feature requests, licensing questions &mdash; reach out and we'll get back to you.</p>
-    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
       &#9993; ragendom@gmail.com
     </a>
     <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
