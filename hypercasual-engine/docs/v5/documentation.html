@@ -145,41 +145,6 @@
         .badge-editor { background-color: #9b59b6; color: white; }
         .badge-core { background-color: #2ecc71; color: white; }
         .badge-script { background-color: #34495e; color: white; }
-        .sidebar li a .standalone-icon::before {
-            content: '\1F4E6';
-            margin-left: 6px;
-            font-size: 0.8rem;
-        }
-
-        .standalone-box {
-            background: linear-gradient(135deg, #f0f7ff, #e0ecf8);
-            border: 2px solid var(--primary-color);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-
-        .standalone-box h4 {
-            margin-top: 0;
-            color: var(--secondary-color);
-            display: flex;
-            align-items: center;
-        }
-
-        .standalone-box h4::before {
-            content: '\1F4E6';
-            margin-right: 10px;
-        }
-
-        .standalone-box a {
-            color: #2980b9;
-            font-weight: 600;
-        }
-
-        .standalone-box a:hover {
-            color: #3498db;
-        }
-
         code {
             background-color: #f0f0f0;
             padding: 2px 6px;
@@ -289,11 +254,11 @@
             <li><a href="#getting-started">Getting Started</a></li>
             <li><a href="#structure">Project Structure</a></li>
             <li><a href="#game1">#1 Arrow Escape</a></li>
-            <li><a href="#game2">#2 Block Associations<span class="standalone-icon"></span></a></li>
+            <li><a href="#game2">#2 Block Associations</a></li>
             <li><a href="#game3">#3 Color Block Jam</a></li>
             <li><a href="#game4">#4 Jigsaw Puzzle</a></li>
             <li><a href="#game5">#5 Drop the Dog Jam</a></li>
-            <li><a href="#game6">#6 Pixel Shooter 3D<span class="standalone-icon"></span></a></li>
+            <li><a href="#game6">#6 Pixel Shooter 3D</a></li>
             <li><a href="#game7">#7 Topic Stack</a></li>
             <li><a href="#game8">#8 Solitaire Associations</a></li>
             <li><a href="#game9">#9 Coffee Go</a></li>
@@ -303,16 +268,21 @@
             <li><a href="#game13">#13 Color Brick Loop</a></li>
             <li><a href="#game14">#14 Good Swipe</a></li>
             <li><a href="#game15">#15 Drop Marbles</a></li>
-            <li><a href="#game16">#16 Sand Flow Puzzle<span class="standalone-icon"></span></a></li>
-            <li><a href="#game17">#17 Snake Out<span class="standalone-icon"></span></a></li>
+            <li><a href="#game16">#16 Sand Flow Puzzle</a></li>
+            <li><a href="#game17">#17 Snake Out</a></li>
             <li><a href="#game18">#18 Donut Master</a></li>
             <li><a href="#game19">#19 StackFill</a></li>
-            <li><a href="#game20">#20 Crowd To Bus<span class="standalone-icon"></span></a></li>
+            <li><a href="#game20">#20 Crowd To Bus</a></li>
             <li><a href="#game21">#21 Cat Block Slide</a></li>
             <li><a href="#game22">#22 Sorty Cars</a></li>
             <li><a href="#game23">#23 Foodie Sort</a></li>
             <li><a href="#game24">#24 FitBlast</a></li>
             <li><a href="#game25">#25 Slide Block</a></li>
+            <li><a href="#game26">#26 Parking Slot Match</a></li>
+            <li><a href="#game27">#27 Color Tile Flow</a></li>
+            <li><a href="#game28">#28 Color Pixel Crush</a></li>
+            <li><a href="#game29">#29 Jig Sort</a></li>
+            <li><a href="#game30">#30 Charge Out Puzzle</a></li>
             <li><a href="#core">Core Systems</a></li>
             <li><a href="#development">Development Guide</a></li>
             <li><a href="#support">Support</a></li>
@@ -343,7 +313,7 @@
             <h3>Opening the Main Scene</h3>
             <p>The primary game scene is located at:</p>
             <p><code>Assets/Hypercasual Game Engine/Core/Scenes/Games-v4.0.unity</code></p>
-            <p>Open this scene to access all 25 game modules. Previous version scenes (<code>Games.unity</code>, <code>Games-v2.0.unity</code>) are also available in the same folder for reference.</p>
+            <p>Open this scene to access all 30 game modules. Previous version scenes (<code>Games.unity</code>, <code>Games-v2.0.unity</code>) are also available in the same folder for reference.</p>
 
             <h3>Where to Find Level Editors</h3>
             <p>All level editor tools are located under the Unity <strong>Tools</strong> menu in the top menu bar. There is no separate "Hypercasual" tab. To open any level editor, go to:</p>
@@ -468,12 +438,6 @@
         <section id="game2">
             <h1>#2 Block Associations</h1>
             <p>A drag-and-drop matching game. Players must organize items into sets to clear the board.</p>
-
-            <div class="standalone-box">
-                <h4>Also Available as a Standalone Asset</h4>
-                <p>This game is also available as a <strong>dedicated standalone package</strong> with <strong>5 fully designed levels</strong>, extended level editors, and additional customization options for deeper development.</p>
-                <p><a href="https://assetstore.unity.com/packages/templates/packs/block-associations-puzzle-template-editor-351872" target="_blank">View Block Associations on the Unity Asset Store</a></p>
-            </div>
 
             <h3>Main Scripts:</h3>
             <div class="script-list">
@@ -642,12 +606,6 @@
         <section id="game6">
             <h1>#6 Pixel Shooter 3D</h1>
             <p>A color-matching puzzle-shooter. Players manage a conveyor belt of "pigs" that automatically shoot colored bullets at same-colored blocks on a grid. The challenge lies in strategic pig selection and resource management.</p>
-
-            <div class="standalone-box">
-                <h4>Also Available as a Standalone Asset</h4>
-                <p>This game is also available as a <strong>dedicated standalone package</strong> with <strong>5 fully designed levels</strong>, extended level editors, and additional customization options for deeper development.</p>
-                <p><a href="https://assetstore.unity.com/packages/templates/packs/pixel-shooter-3d-jam-template-editor-154253" target="_blank">View Pixel Shooter 3D on the Unity Asset Store</a></p>
-            </div>
 
             <h3>Main Scripts:</h3>
             <div class="script-list">
@@ -1322,12 +1280,6 @@
             <h1>#16 Sand Flow Puzzle</h1>
             <p>A color-matching puzzle where players manage sand flow through buckets and a conveyor belt. Click colored buckets on a grid to send them onto a moving belt, where they automatically absorb matching-color sand from an 80x80 pixel art display. Fill each bucket to clear it, and empty all the sand to win.</p>
 
-            <div class="standalone-box">
-                <h4>Also Available as a Standalone Asset</h4>
-                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
-                <p><a href="https://u3d.as/1Dai" target="_blank">View Sand Flow Puzzle on the Unity Asset Store</a></p>
-            </div>
-
             <h3>Main Scripts:</h3>
             <div class="script-list">
                 <div class="script-item">
@@ -1382,12 +1334,6 @@
         <section id="game17">
             <h1>#17 Snake Out</h1>
             <p>A grid-based puzzle where players drag colored snakes to guide them into matching-color holes. Snakes can be moved from either their head or tail, and must navigate around obstacles and other snakes to reach their exit.</p>
-
-            <div class="standalone-box">
-                <h4>Also Available as a Standalone Asset</h4>
-                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
-                <p><a href="https://u3d.as/1CKy" target="_blank">View Snake Out on the Unity Asset Store</a></p>
-            </div>
 
             <h3>Main Scripts:</h3>
             <div class="script-list">
@@ -1592,11 +1538,6 @@
                 </ul>
             </div>
 
-            <div class="standalone-box">
-                <h4>Also Available as a Standalone Asset</h4>
-                <p>This game is also available as a <strong>dedicated standalone package</strong> with extended level editors and additional customization options for deeper development.</p>
-                <p><a href="https://assetstore.unity.com/packages/slug/141533" target="_blank">View Crowd To Bus on the Unity Asset Store</a></p>
-            </div>
         </section>
 
         <section id="game21">
@@ -1873,6 +1814,263 @@
             </div>
         </section>
 
+        <section id="game26">
+            <h1>#26 Parking Slot Match</h1>
+            <p>A color-matching conveyor puzzle where players manage cars flowing through a conveyor belt system into colored parking lines. Tap mismatched cars off a parking line to send them into a waiting area that feeds the conveyor loop. As the conveyor cycles, matching-color cars automatically dock into their corresponding parking line. Clear every line by filling it with same-color cars to win — but if the conveyor backs up with 6 unplaceable cars, the game is lost.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game controller. Manages car movement between parking lines, waiting areas, and the conveyor loop. Handles docking animations, line-completion detection with particle effects, and win/lose evaluation.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene entry point. Loads the current level via <code>LevelManager</code> and initializes the grid manager.
+                </div>
+                <div class="script-item">
+                    <strong>Car.cs</strong>
+                    Individual colored car unit. Stores its <code>TypeColor</code> (Red, Yellow, Blue, Green) and handles tap interactions to trigger removal from parking lines.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Touch/mouse handler. Detects car taps and routes them to the grid manager for movement logic.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid width/height and a list of car lines, each with a grid position and an ordered list of car colors.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static JSON level manager. Loads levels from <code>Resources/Levels/ParkingSlotMatch/</code>, tracks progression via PlayerPrefs, and exposes Save All / Load All From Disk for the editor.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Conveyor Loop</strong>: Cars cycle through a wraparound conveyor belt, automatically docking into matching-color parking lines when they pass.</li>
+                <li><strong>Tap-to-Remove</strong>: Tap a car at the end of a parking line to eject it into the waiting area and onto the conveyor.</li>
+                <li><strong>Line Completion</strong>: When all cars in a parking line match its designated color, the line clears with a particle animation.</li>
+                <li><strong>Backlog Pressure</strong>: If 6 cars pile up on the conveyor without valid placements, the player loses.</li>
+                <li><strong>Win Condition</strong>: All parking lines are completed with correctly matched cars.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Parking Slot Match Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #26 ParkingSlotMatch Level Editor</code>. Two-panel editor with a level list / add / duplicate / delete / reorder / Save All / Reload on the left. The right panel features grid width/height fields, a paint mode toolbar (None / Car Line / Erase), a color palette for selecting car line colors, and a visual grid canvas. Click cells to place car lines; select a line to edit its car color sequence with add/remove controls. Levels are saved as JSON to <code>Resources/Levels/ParkingSlotMatch/</code>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game27">
+            <h1>#27 Color Tile Flow</h1>
+            <p>A conveyor-based tile routing puzzle. Colored tiles spawn in a tap-out area; tap them to load them into a dock queue (max 6). The conveyor cycles docked tiles around the grid where they must match colored directional arrows to form continuous flow paths. When a tile's color matches a complete arrow sequence, it animates through the path and exits. Clear all arrows to win — lose if the dock fills up with no valid placements.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Orchestrates the conveyor loop, dock management, tile spawning, arrow-path matching, tile flow animations, and win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>Tile.cs</strong>
+                    Colored tile unit. Stores its <code>TypeColor</code>, mesh renderer reference, and mapping/tap state flags.
+                </div>
+                <div class="script-item">
+                    <strong>Arrow.cs</strong>
+                    Grid element with color, grid position, direction (Up/Down/Left/Right), and filled/outed state tracking for flow-path resolution.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects tile taps in the spawn area to trigger dock entry.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid width/height and a list of arrow placements, each with a color, grid position, and direction.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static JSON level manager. Loads levels from <code>Resources/Levels/ColorTileFlow/</code>, tracks progression via PlayerPrefs, and exposes Save All / Load All From Disk for the editor.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Directional Arrow Paths</strong>: Arrows define colored flow paths on the grid; tiles must match both color and follow the arrow direction chain.</li>
+                <li><strong>Dock Queue</strong>: Up to 6 tiles can be docked simultaneously; the game ends if the dock is full with no valid placements.</li>
+                <li><strong>Conveyor Cycling</strong>: Docked tiles move around the grid perimeter each time step, checking for arrow matches at each position.</li>
+                <li><strong>Arrow Doddering</strong>: Visual wobble feedback on arrows when a tile could potentially match but the path is blocked.</li>
+                <li><strong>Win Condition</strong>: All arrows on the grid are filled by matching color tiles flowing through them.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Color Tile Flow Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #27 ColorTileFlow Level Editor</code>. Two-panel editor with a level list / add / duplicate / delete / reorder / Save All / Reload on the left. The right panel features grid size fields, paint mode selection (None / Arrow / Erase), color and direction pickers, and a visual grid canvas for placing colored directional arrows. An arrow list panel shows each arrow's position, direction, and color. Levels are saved as JSON to <code>Resources/Levels/ColorTileFlow/</code>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game28">
+            <h1>#28 Color Pixel Crush</h1>
+            <p>A dual-grid cannon puzzle. The board is split into a "fill" grid displaying colored target areas and a "tap-out" grid containing ammo-limited cannons. Tap a cannon to fire a colored projectile at matching-color fill items on the opposite grid. Cannons cycle through a conveyor dock system, and each has a fixed ammo count that depletes with every shot. Destroy all fill items and exhaust all cannon ammo to win — lose if the countdown timer expires.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Initializes both grids (fill and tap-out), manages the conveyor dock loop, projectile firing with raycast targeting, collision detection, and win/lose evaluation.
+                </div>
+                <div class="script-item">
+                    <strong>Cannon.cs</strong>
+                    Shooting unit with color, ammo count, raycast targeting for fill items, and firing animation state.
+                </div>
+                <div class="script-item">
+                    <strong>FillItem.cs</strong>
+                    Grid element representing a colored area on the fill grid. Destroyed when hit by a matching-color projectile.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects cannon taps to trigger the firing sequence.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: separate width/height for both grids, a list of fill items (color + position), and a list of cannons (color + position + ammo count).
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static JSON level manager. Loads levels from <code>Resources/Levels/ColorPixelCrush/</code>, tracks progression via PlayerPrefs, and exposes Save All / Load All From Disk for the editor.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Dual-Grid Design</strong>: Separate fill grid and cannon grid with independent dimensions, creating a split-screen puzzle layout.</li>
+                <li><strong>Ammo Management</strong>: Each cannon has fixed ammunition; strategic shot placement is critical since ammo cannot be replenished.</li>
+                <li><strong>Color-Matching Projectiles</strong>: Bullets only eliminate fill items that match the cannon's color.</li>
+                <li><strong>Conveyor Dock Cycling</strong>: Cannon references rotate through conveyor positions each time step, changing which cannons are accessible.</li>
+                <li><strong>Win Condition</strong>: All fill items destroyed and all cannon ammo depleted before time runs out.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Color Pixel Crush Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #28 ColorPixelCrush Level Editor</code>. Two-panel editor with a level list / add / duplicate / delete / reorder / Save All / Reload on the left. The right panel features independent width/height controls for both grids, paint mode selection (None / Fill Item / Cannon / Erase), color picker, ammo configuration for cannons, and separate visual grid editors for the fill and cannon grids. Levels are saved as JSON to <code>Resources/Levels/ColorPixelCrush/</code>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game29">
+            <h1>#29 Jig Sort</h1>
+            <p>A block-sorting jigsaw puzzle with stacked columns. Each column contains a series of colored boxes that unlock one at a time as previous boxes are completed. Drag block pieces from the tap-out area onto boxes — each block has a specific shape pattern and color that must match the target box. Blocks can be temporarily stored in a dock (up to 5). Complete every box across all columns to win.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Main game controller. Initializes grid columns from level data, manages block drag-and-drop placement, dock system, priority-based block unlocking, box completion detection with particle effects and sound, and win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Draggable block piece. Stores its <code>BlockType</code> (shape pattern), <code>ColorType</code>, grid position, and priority/tap state.
+                </div>
+                <div class="script-item">
+                    <strong>Box.cs</strong>
+                    Visual container that accepts blocks. Tracks its color type, grid dimensions, and completion state.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Handles block drag-and-drop with grid snapping and valid-placement preview.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: a list of <code>GridColumn</code> entries, each containing nested <code>GridItem</code> boxes with dimensions, color, and a list of <code>BlockPosition</code> entries (block type, color, and grid coordinates). Includes a <code>CloneGridColumns()</code> deep-copy helper.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static JSON level manager. Loads levels from <code>Resources/Levels/JigSort/</code>, tracks progression via PlayerPrefs, and exposes Save All / Load All From Disk for the editor.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Column Stacking</strong>: Multiple columns each containing a queue of boxes; completing the current box unlocks the next one in the stack.</li>
+                <li><strong>Shape Fitting</strong>: Each block has a specific shape footprint that must fit within the target box's grid dimensions.</li>
+                <li><strong>Color Matching</strong>: Blocks must match the color type of the destination box (13 color types supported).</li>
+                <li><strong>Dock Storage</strong>: Temporary holding area for up to 5 blocks, allowing strategic rearrangement.</li>
+                <li><strong>Priority Unlocking</strong>: Blocks unlock based on their vertical priority, preventing access to buried pieces until higher ones are placed.</li>
+                <li><strong>Win Condition</strong>: All boxes in every column are completed with correctly placed blocks.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Jig Sort Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #29 JigSort Level Editor</code>. Two-panel editor with a level list / add / duplicate / delete / reorder / Save All / Reload on the left. The right panel uses a column-based structure: add/remove/reorder columns, and within each column add boxes with configurable width/height, color type, and block entries. Each box features a visual grid canvas where clicking toggles block placement, plus per-block controls for type index, block type, color, and grid position. Levels are saved as JSON to <code>Resources/Levels/JigSort/</code>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game30">
+            <h1>#30 Charge Out Puzzle</h1>
+            <p>A timed block-placement puzzle. Drag colored blocks from a conveyor system onto a grid, filling highlighted target areas with matching colors. The grid has blocked cells that restrict placement, and blocks come in various shapes (1x1, 1x2, 2x2, L-shapes). When a target area is completely filled with same-color blocks, it clears with an animation. Clear all target areas before the countdown timer expires to win.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Core game controller. Generates the grid with blocked cells, initializes block placements, validates shape-aware placement with occupancy tracking, handles block snapping, target-area completion detection, countdown timer, and win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Draggable block unit. Stores its color, shape (cell footprint), grid position, and manages mask-fill animation for target area progress visualization.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Manages the conveyor belt delivering blocks to the player. Controls block cycling, dock management, and delivery timing.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Handles block drag-and-drop with grid snapping and conveyor interaction.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid width/height, time limit, a list of block entries (position, shape, color), and a list of blocked cell positions.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static JSON level manager. Loads levels from <code>Resources/Levels/ChargeOutPuzzle/</code>, tracks progression via PlayerPrefs, and exposes Save All / Load All From Disk for the editor.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Shape-Aware Placement</strong>: Blocks have various footprints (1x1, 1x2, 2x2, L-shapes); all cells must land on free grid positions.</li>
+                <li><strong>Blocked Cells</strong>: Certain grid positions are permanently unavailable, requiring strategic placement around obstacles.</li>
+                <li><strong>Color Fill Areas</strong>: Highlighted target zones clear when completely filled with same-color blocks, shown via mask progress bars.</li>
+                <li><strong>Conveyor Delivery</strong>: Blocks are presented through a conveyor system with dock management, controlling which blocks are available.</li>
+                <li><strong>Time Pressure</strong>: A countdown timer creates urgency; the player loses if time expires before all areas are cleared.</li>
+                <li><strong>Win Condition</strong>: All colored target areas are filled and cleared before the timer runs out.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Charge Out Puzzle Editor Tools</h4>
+                <ul>
+                    <li><strong>LevelEditorWindow.cs</strong>:
+                        <br><em>Open via:</em> <code>Tools > #30 ChargeOutPuzzle Level Editor</code>. Two-panel editor with a level list / add / duplicate / delete / reorder / Save All / Reload on the left. The right panel features grid width/height and time limit fields, paint mode selection (None / Block / Blocked Cell / Erase), color picker, block shape/size specification, and a visual grid editor showing placed blocks and obstacles. Levels are saved as JSON to <code>Resources/Levels/ChargeOutPuzzle/</code>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
         <section id="core">
             <h1>Core Systems & Utilities</h1>
 
@@ -1906,7 +2104,7 @@
                     <pre>public class MyGameManager : LevelManager { ... }</pre>
                 </li>
                 <li><strong>UI Integration</strong>: Ensure your scene has an <code>EventSystem</code> and a <code>Canvas</code> with the <code>LoseWinPanel</code> prefab.</li>
-                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code> or a dedicated namespace like <code>namespace YourGameName { ... }</code>. Games #1-5 use the shared <code>HypercasualGameEngine</code> namespace; games #6-15 use the <code>HypercasualGameEngine.{GameName}</code> sub-namespace convention; standalone games (#16-20) use their own top-level namespaces (e.g. <code>SandFlowPuzzle</code>, <code>SnakeOut</code>); games #21-25 continue that pattern with their own top-level namespaces (e.g. <code>CatBlockSlidePuzzle.Scripts</code>, <code>SortyCars.Scripts</code>, <code>FoodieSort.Scripts</code>, <code>FitBlask.Scripts</code>, <code>SlideBlock</code>).</li>
+                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code> or a dedicated namespace like <code>namespace YourGameName { ... }</code>. Games #1-5 use the shared <code>HypercasualGameEngine</code> namespace; games #6-15 use the <code>HypercasualGameEngine.{GameName}</code> sub-namespace convention; games #16-20 use their own top-level namespaces (e.g. <code>SandFlowPuzzle</code>, <code>SnakeOut</code>); games #21-30 continue that pattern with their own top-level namespaces (e.g. <code>CatBlockSlidePuzzle.Scripts</code>, <code>SortyCars.Scripts</code>, <code>FoodieSort.Scripts</code>, <code>FitBlask.Scripts</code>, <code>SlideBlock</code>, <code>ParkingSlotMatch.Scripts</code>, <code>ColorTileFlow.Scripts</code>, <code>ColorPixelCrush.Scripts</code>, <code>JigSort.Scripts</code>, <code>ChargeOutPuzzle.Scripts</code>).</li>
             </ol>
 
             <div class="important">
@@ -1926,60 +2124,41 @@
         <section id="version-history">
             <h1>Version History</h1>
 
-            <h3>v5.0 - Major Update (Current)</h3>
-            <p>The fifth major release adds <strong>5 brand new game modules</strong>, bringing the total to <strong>25</strong>. Every new game ships with a JSON-based level pipeline (<code>Resources/Levels/&lt;Game&gt;/Level_N.json</code>) and a dedicated two-panel level editor that opens directly on Level 1 — the same current-level data the runtime loads, so designing and testing stay in sync:</p>
+            <h3>v1.0 - Initial Release (Current)</h3>
+            <p>The debut release of the <strong>Hypercasual Game Engine</strong> ships with <strong>30 fully functional game modules</strong>, each with a JSON-based level pipeline (<code>Resources/Levels/&lt;Game&gt;/Level_N.json</code>) and a dedicated two-panel level editor accessible from the <strong>Tools</strong> menu. All games share a unified core (SoundManager, LoseWinPanelManager, animation helpers) and are namespace-isolated for clean coexistence.</p>
             <ul>
-                <li><strong>#21 Cat Block Slide</strong>: Timed sliding-block merge puzzle — assemble each color's rectangle around wall obstacles before the clock runs out. <em>Level editor with wall / block / erase paint modes, per-block shape &amp; sprite picker, and a grid canvas.</em></li>
-                <li><strong>#22 Sorty Cars</strong>: Parking-slot car color-sorting puzzle — move the top car of each slot until every slot holds a single color. <em>Level editor with Add Parking Slot / Erase paint modes and a per-slot car-sequence inspector.</em></li>
-                <li><strong>#23 Foodie Sort</strong>: Turn-based food-sorting puzzle with 23 food types — swap neighbouring slots to match triples and advance each line's turn queue. <em>Level editor with a food-line grid painter and a per-line turn builder.</em></li>
-                <li><strong>#24 FitBlast</strong>: Pedestal shape-fitting puzzle — drag 14 block shapes out of a starting tray into pedestals on the board, clearing each pedestal when it's filled with a single color. <em>Two-panel editor with pedestal paint mode, per-pedestal local-grid editor with shape+color brush, and a dedicated Start Tray mode.</em></li>
-                <li><strong>#25 Slide Block</strong>: Drop-and-chain color puzzle — slide colored blocks up into a grid to trigger BFS chain clears, with Color-wildcard tiles sweeping matching colors. <em>Editor with per-column stack builder and grid painter for pre-placed items and wildcard tiles.</em></li>
-            </ul>
-            <p><strong>Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$99.99</span></p>
-
-            <h3>v4.0 - Major Update</h3>
-            <p>The fourth major release adds <strong>5 brand new game modules</strong>, bringing the total to <strong>20</strong>. This update introduces 3D gameplay mechanics, image-based level generation, and two new standalone Asset Store titles:</p>
-            <ul>
-                <li><strong>#16 Sand Flow Puzzle</strong>: Sand physics puzzle with conveyor belt suction, 80x80 pixel art displays, and 3 booster types. <em>Visual level editor with image quantization and bucket grid painting.</em> Also available as a standalone asset.</li>
-                <li><strong>#17 Snake Out</strong>: Grid-based snake pathfinding puzzle with bidirectional drag movement, color-matched holes, and animated snake characters. <em>Level editor with grid painter.</em> Also available as a standalone asset.</li>
-                <li><strong>#18 Donut Master</strong>: Shape-matching assembly puzzle with multi-line conveyors delivering donut boxes in various shapes (2x2, L-shaped, etc.) onto a target board. <em>Visual level editor for conveyor and board layout.</em></li>
-                <li><strong>#19 StackFill</strong>: 3D block-stacking puzzle with wall constraints on XY and YZ planes. Tap-to-place mechanics in a fully three-dimensional grid. <em>Level editor window with JSON save/load and custom inspector with XY/YZ grid editors.</em></li>
-                <li><strong>#20 Crowd To Bus</strong>: Color-sorting puzzle where players move 6-color people groups on a grid to match them with bus compartments. <em>Two-panel level editor with grid painter, box management, and car column configuration.</em> Also available as a standalone asset.</li>
-            </ul>
-            <p><strong>Price:</strong> <strong>$99.99</strong></p>
-
-            <h3>v3.0 - Major Update</h3>
-            <p>The third major release adds <strong>5 brand new game modules</strong>, bringing the total to 15. All new games include <strong>custom level editors</strong> with JSON-based level management and a unified two-panel editor layout:</p>
-            <ul>
-                <li><strong>#11 Hole Loop Jam</strong>: Conveyor-loop puzzle with BFS pathfinding and pot-filling mechanics. <em>Level editor with visual grid painter and pot data line builder.</em></li>
-                <li><strong>#12 Coffee Color Block</strong>: Color-matching conveyor puzzle where coffee cups fill shaped blocks on a grid. <em>Level editor with block shape editor, conveyor queue builder, and Capture from Scene support.</em></li>
-                <li><strong>#13 Color Brick Loop</strong>: Circular conveyor belt puzzle with cannon-based goal elimination. <em>Level editor with color grid editor and goal color sequence builder.</em></li>
-                <li><strong>#14 Good Swipe</strong>: Swipe-based item sorting puzzle with combo scoring and collection targets. <em>Level editor with fill target and box placement editors.</em></li>
-                <li><strong>#15 Drop Marbles</strong>: Physics-based marble release and conveyor routing puzzle with color-matched fill targets. <em>Level editor with box item and fill column editors.</em></li>
-            </ul>
-            <p><strong>Price:</strong> <strong>$39.99</strong></p>
-
-            <h3>v2.0 - Major Update</h3>
-            <p>The second major release adds <strong>5 brand new game modules</strong>, bringing the total to 10:</p>
-            <ul>
+                <li><strong>#1 Arrow Escape</strong>: Grid-based logic puzzle with directional arrows.</li>
+                <li><strong>#2 Block Associations</strong>: Drag-and-drop matching mechanic — organize items into sets.</li>
+                <li><strong>#3 Color Block Jam</strong>: Spatial group-movement puzzle with colored blocks.</li>
+                <li><strong>#4 Jigsaw Puzzle</strong>: Dynamic texture-slicing puzzle with drag-snap pieces.</li>
+                <li><strong>#5 Drop the Dog Jam</strong>: Physics-based SDF hole mechanic.</li>
                 <li><strong>#6 Pixel Shooter 3D</strong>: Color-matching puzzle-shooter with conveyor belt and abilities.</li>
                 <li><strong>#7 Topic Stack</strong>: Category-based item sorting with lock-in mechanics.</li>
                 <li><strong>#8 Solitaire Associations</strong>: Card-based solitaire with category matching, hints, and undo.</li>
                 <li><strong>#9 Coffee Go</strong>: Conveyor-based coffee cup color-sorting puzzle.</li>
                 <li><strong>#10 Bricky Bounce</strong>: 3D layered brick-breaking with ball routing and physics destruction.</li>
+                <li><strong>#11 Hole Loop Jam</strong>: Conveyor-loop puzzle with BFS pathfinding and pot-filling mechanics.</li>
+                <li><strong>#12 Coffee Color Block</strong>: Color-matching conveyor puzzle where coffee cups fill shaped blocks on a grid.</li>
+                <li><strong>#13 Color Brick Loop</strong>: Circular conveyor belt puzzle with cannon-based goal elimination.</li>
+                <li><strong>#14 Good Swipe</strong>: Swipe-based item sorting puzzle with combo scoring and collection targets.</li>
+                <li><strong>#15 Drop Marbles</strong>: Physics-based marble release and conveyor routing puzzle.</li>
+                <li><strong>#16 Sand Flow Puzzle</strong>: Sand physics puzzle with conveyor belt suction and 80x80 pixel art displays.</li>
+                <li><strong>#17 Snake Out</strong>: Grid-based snake pathfinding puzzle with bidirectional drag movement.</li>
+                <li><strong>#18 Donut Master</strong>: Shape-matching assembly puzzle with multi-line conveyors delivering donut boxes.</li>
+                <li><strong>#19 StackFill</strong>: 3D block-stacking puzzle with wall constraints on XY and YZ planes.</li>
+                <li><strong>#20 Crowd To Bus</strong>: Color-sorting puzzle — move people groups on a grid to match bus compartments.</li>
+                <li><strong>#21 Cat Block Slide</strong>: Timed sliding-block merge puzzle with wall obstacles.</li>
+                <li><strong>#22 Sorty Cars</strong>: Parking-slot car color-sorting puzzle with queue mechanics.</li>
+                <li><strong>#23 Foodie Sort</strong>: Turn-based food-sorting puzzle with 23 food types.</li>
+                <li><strong>#24 FitBlast</strong>: Pedestal shape-fitting puzzle with 14 block shapes and color clears.</li>
+                <li><strong>#25 Slide Block</strong>: Drop-and-chain color puzzle with BFS chain clears and wildcard tiles.</li>
+                <li><strong>#26 Parking Slot Match</strong>: Conveyor-based car color-matching into parking lines.</li>
+                <li><strong>#27 Color Tile Flow</strong>: Tile routing puzzle with colored directional arrow paths.</li>
+                <li><strong>#28 Color Pixel Crush</strong>: Dual-grid cannon puzzle with ammo-limited color-matching shots.</li>
+                <li><strong>#29 Jig Sort</strong>: Block-sorting jigsaw with stacked column boxes and shape fitting.</li>
+                <li><strong>#30 Charge Out Puzzle</strong>: Timed block-placement puzzle with conveyor delivery and fill areas.</li>
             </ul>
-            <p><strong>Price:</strong> <strong>$34.99</strong></p>
-
-            <h3>v1.0 - Initial Release</h3>
-            <p>The first release of the Hypercasual Game Engine includes 5 fully functional game modules:</p>
-            <ul>
-                <li><strong>#1 Arrow Escape</strong>: Grid-based logic puzzle.</li>
-                <li><strong>#2 Block Associations</strong>: Drag-and-drop matching mechanic.</li>
-                <li><strong>#3 Color Block Jam</strong>: Spatial group-movement puzzle.</li>
-                <li><strong>#4 Jigsaw Puzzle</strong>: Dynamic texture-slicing puzzle.</li>
-                <li><strong>#5 Drop the Dog Jam</strong>: Physics-based SDF hole mechanic.</li>
-            </ul>
-            <p><strong>Launch Price:</strong> <strong>$29.99</strong></p>
+            <p><strong>Price:</strong> <span style="color: var(--success-color); font-weight: bold;">$119.99</span></p>
         </section>
 
         <footer>
