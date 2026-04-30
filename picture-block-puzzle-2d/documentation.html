@@ -264,7 +264,7 @@
     <div class="header">
         <h1>Picture Block Puzzle 2D</h1>
         <p class="subtitle">A Sliding Picture-Assembly Puzzle &mdash; Unity Template</p>
-        <p class="version">Version 1.1 | Unity 6+ | URP</p>
+        <p class="version">Version 1.2 | Unity 6+ | URP</p>
     </div>
 
     <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
@@ -309,8 +309,8 @@
                     <p>Per-piece movement locks (any / horizontal-only / vertical-only) add a layer of puzzle strategy on harder levels. Constrained pieces display a double-headed arrow overlay so the player knows the allowed axis at a glance.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>Level Editor</h4>
-                    <p>A full Unity Editor window with a visual grid painter, per-cell sprite selection, per-block colour selection, obstacle placement, and per-level booster counts + time limit.</p>
+                    <h4>Visual Level Editor</h4>
+                    <p>A full Unity Editor window that mirrors the runtime visuals: pieces are rendered with the same sliced-sprite mapping the game uses, multi-cell shapes are drawn across every cell they occupy, and movement-axis arrows show on constrained pieces. Tool modes for shape placement, drag-to-move, walls, and erase &mdash; with a green / red hover preview that validates collisions before you click. A merge helper folds adjacent single-piece blocks into one multi-piece block.</p>
                 </div>
                 <div class="feature-card">
                     <h4>Auto Level Generator</h4>
@@ -352,8 +352,7 @@
                 <li>Import the Picture Block Puzzle 2D package into your Unity project</li>
                 <li>Ensure the project is set to use the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>)</li>
                 <li>Open the game scene at <code>Assets/Picture Block Puzzle 2D/Scenes/GameNew.unity</code></li>
-                <li>Run <code>Tools &gt; Picture Block Puzzle 2D &gt; Setup Wizard</code> once &mdash; it verifies the scene, build settings, audio clips, and level count</li>
-                <li>Press Play to test the first level</li>
+                <li>Press Play to test the first level. To author or batch-create levels, use <code>Tools &gt; Picture Block Puzzle 2D &gt; Level Editor</code> or <code>&hellip; &gt; Auto Level Generator</code></li>
             </ol>
 
             <h3>Quick Test</h3>
@@ -376,10 +375,9 @@
 &#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Editor/</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (shape placement, hover preview, sliced sprite render, merge helper)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">LevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">PictureBlockPuzzle2DSetupWizard.cs</span> <span class="comment">&mdash; Idempotent scene / settings check</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">PictureBlockPuzzle2DWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PictureBlockPuzzle2DWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open (no menu item; auto-shows once per session)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">DragSnapWithoutPlaymodeEditor.cs</span> <span class="comment">&mdash; Edit-mode drag-snap helper</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">ImportAudioIcon.cs</span> <span class="comment">&mdash; Editor-time audio icon importer</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Input Handling is not set to Both</span>
@@ -631,27 +629,15 @@
                 </tr>
                 <tr>
                     <td><code>LevelEditorWindow</code></td>
-                    <td>Unity Editor window (<code>Tools &gt; Picture Block Puzzle 2D &gt; Level Editor</code>) for visually designing levels. Features a left panel with level list (add / duplicate / reorder / delete-with-confirm / save / reload) and a right panel with grid painter, paint-mode toggle, per-block color + sprite picker, and per-level booster counts + time limit fields.</td>
+                    <td>Unity Editor window (<code>Tools &gt; Picture Block Puzzle 2D &gt; Level Editor</code>) for visually designing levels. Mirrors the runtime block visuals: every cell of every multi-cell piece is drawn, the icon sprite is contain-fit-scaled to the block's bounds and clipped to each piece's cell (matching <code>Block.cs</code>), and movement-axis arrows render on constrained pieces. Tools: <strong>Select / Move</strong> (click to select a block, drag a piece to move its <code>startPos</code> with collision validation), <strong>Place Pattern</strong> (drop a 1&times;2 / 2&times;1 / L / 1&times;1 single-piece block with a green / red hover preview), <strong>Wall</strong>, and <strong>Erase</strong>. Block list shows a live mini preview (color + sprite slice in solved layout), inline per-piece editor (<code>shapeType</code> / <code>startPos</code> / <code>headPosition</code> / <code>moveAxis</code> / zero toggle), per-block color + sprite picker, and a <strong>&ldquo;&#x21AA; merge&rdquo;</strong> button that folds a block's pieces into the currently selected block, recomputing <code>blockSize</code> and each piece's <code>headPosition</code> from the combined bounding box. Top-of-panel fields edit <code>cols</code>, <code>rows</code>, <code>timeLimit</code>, and all four booster counts.</td>
                 </tr>
                 <tr>
                     <td><code>LevelGeneratorWindow</code></td>
                     <td>Unity Editor window (<code>Tools &gt; Picture Block Puzzle 2D &gt; Auto Level Generator</code>) for batch-generating levels. Settings control grid size, block count, scramble moves, time limit, and booster counts. Uses a curated tiling-pattern library (2&times;2, 2&times;3, 3&times;2) so every block fits cleanly; scales wall density, axis-constraint chance, and scramble depth with difficulty; front-loads difficulty with a <code>pow(t, 0.55)</code> curve so hard levels arrive sooner in the batch. Append-only &mdash; never overwrites existing levels. A &ldquo;Delete ALL&rdquo; button in the danger zone wipes every level for a clean regenerate.</td>
                 </tr>
                 <tr>
-                    <td><code>GenerateMoveAxisArrows</code></td>
-                    <td>One-click regenerator (<code>Tools &gt; Picture Block Puzzle 2D &gt; Regenerate Move-Axis Arrows</code>) that bakes the horizontal &amp; vertical double-headed arrow PNGs into <code>Resources/</code> with a supersampled antialiased outline and semi-transparent fill. Runtime only loads the baked PNGs via <code>Resources.Load&lt;Sprite&gt;</code>.</td>
-                </tr>
-                <tr>
-                    <td><code>RebuildDevPanelLevelButtons</code></td>
-                    <td>One-click helper (<code>Tools &gt; Picture Block Puzzle 2D &gt; Rebuild Dev Panel Level Buttons</code>) that duplicates the Dev Panel's Reload button twice, renames the clones to <code>NextLevelButton</code> / <code>PreviousLevelButton</code>, stacks them above Reload, and rewires the <code>DeveloperSettingsController</code> references. Idempotent &mdash; safe to re-run any time.</td>
-                </tr>
-                <tr>
-                    <td><code>PictureBlockPuzzle2DSetupWizard</code></td>
-                    <td>Idempotent project health check. Verifies the scene is open, build settings contain only <code>GameNew.unity</code>, PlayerSettings are correct (Linear color space, IL2CPP, Both input handling), <code>SoundManager</code> clips are populated, HUD load-bearing names exist, and the level count is sane. Each step reports <code>OK</code>, <code>FIX</code>, <code>ERR</code>, or <code>SKIP</code>.</td>
-                </tr>
-                <tr>
                     <td><code>PictureBlockPuzzle2DWelcomePopup</code></td>
-                    <td>Welcome popup shown once per Unity session on project open. Hosts two CTAs: &ldquo;Leave a Review on the Asset Store&rdquo; and &ldquo;Get HyperCasual Game Engine&rdquo;. Permanently dismissable via <code>EditorPrefs</code>. Reopenable at <code>Tools &gt; Picture Block Puzzle 2D &gt; Welcome</code>.</td>
+                    <td>Welcome popup shown once per Unity session on project open. Hosts two CTAs: &ldquo;Leave a Review on the Asset Store&rdquo; and &ldquo;Get HyperCasual Game Engine&rdquo;. Permanently dismissable via the &ldquo;Do not show this popup again&rdquo; checkbox (stored in <code>EditorPrefs</code>). The popup has no menu item &mdash; the auto-show on session start is its only entry point.</td>
                 </tr>
                 <tr>
                     <td><code>DragSnapWithoutPlaymodeEditor</code></td>
@@ -671,45 +657,78 @@
             <h3>Opening the Level Editor</h3>
             <p>In the Unity menu bar, go to <code>Tools &gt; Picture Block Puzzle 2D &gt; Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
 
-            <h3>Features</h3>
+            <h3>Layout</h3>
             <ul>
-                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder, and delete levels in the left panel</li>
-                <li><strong>Grid Painter</strong> &mdash; Click cells on the grid to place or erase block pieces and obstacles</li>
-                <li><strong>Paint Modes</strong> &mdash; Select a mode from the toolbar: None, Wall, Block, Erase</li>
-                <li><strong>Color Selection</strong> &mdash; Choose a block color when in Block paint mode (red, blue, green, cyan)</li>
-                <li><strong>Sprite Selection</strong> &mdash; Pick a piece sprite from <code>Resources/BlockIcons/</code> for the active block</li>
-                <li><strong>Block Management</strong> &mdash; Add / remove blocks per level, set the zero-piece, configure block size</li>
-                <li><strong>Grid Settings</strong> &mdash; Adjust grid width and height per level</li>
-                <li><strong>Time Limit + Boosters</strong> &mdash; Per-level <code>timeLimit</code>, <code>undoBoosterCount</code>, <code>hintBoosterCount</code>, <code>shuffleBoosterCount</code>, and <code>gridExpandBoosterCount</code> fields</li>
-                <li><strong>Save / Reload</strong> &mdash; Save all levels to disk as JSON, or reload from disk with confirmation</li>
+                <li><strong>Left panel</strong> &mdash; Level list with add, duplicate, reorder (&#9650; / &#9660;), and delete-with-confirm buttons; Save All Levels (writes JSON to <code>Resources/Levels/PictureBlockPuzzle2D/</code>); Reload from Disk; and Refresh Sprites (re-scans <code>Resources/BlockIcons/</code> for new artwork).</li>
+                <li><strong>Right panel</strong> &mdash; Level properties (cols, rows, time limit, all four booster counts), tool bar, tool-specific options, the visual grid, and the Blocks list (with mini previews + inline per-piece editing).</li>
             </ul>
 
-            <h3>Paint Modes</h3>
+            <h3>Visual Parity with Runtime</h3>
+            <p>The grid renders pieces exactly the way the running game does:</p>
+            <ul>
+                <li><strong>Multi-cell pieces drawn fully</strong> &mdash; L-shapes and 1&times;2 pieces show every cell they occupy (the older paint-mode editor only drew the head cell).</li>
+                <li><strong>Sliced sprite per cell</strong> &mdash; the icon sprite is centered on the block's geometric center, contain-fit-scaled to the block's bounds with a 10% padding, and clipped to each piece's cell. This mirrors <code>Block.cs</code>'s <code>SpriteMask</code> + <code>iconSpriteRenderer</code> composition, so what you see in the editor is what you'll see in Play mode.</li>
+                <li><strong>Movement axis overlay</strong> &mdash; pieces with a non-<code>Any</code> <code>moveAxis</code> show the same horizontal / vertical arrow sprite the runtime renders.</li>
+                <li><strong>Selected block highlight</strong> &mdash; selected block's pieces get a yellow border across all their cells.</li>
+                <li><strong>Zero piece marker</strong> &mdash; the <code>isZeroPos: true</code> piece's head cell is labelled <code>0</code>.</li>
+            </ul>
+
+            <h3>Tools</h3>
             <table>
                 <tr>
-                    <th>Mode</th>
-                    <th>Left Click</th>
+                    <th>Tool</th>
+                    <th>Behaviour</th>
                 </tr>
                 <tr>
-                    <td><strong>None</strong></td>
-                    <td>No painting &mdash; click cells to inspect their contents</td>
+                    <td><strong>Select / Move</strong></td>
+                    <td>Click a piece to select its block (used by every other tool's color picker and by the merge helper). Drag a piece to move its <code>startPos</code> &mdash; the move is collision-validated against walls / other pieces / the grid edge, and the piece's <code>headPosition</code> is preserved so the picture-slice mapping stays correct.</td>
+                </tr>
+                <tr>
+                    <td><strong>Place Pattern</strong></td>
+                    <td>Pick a shape and a color, then click an empty cell to drop a single-piece block. A hover preview shows the cells that would be occupied, tinted green when the placement is valid and red when blocked. The five available shapes match the runtime's <code>ShapeType</code> enum: <code>1x2</code> (horizontal pair), <code>2x1</code> (vertical pair), <code>L (top-right)</code> &mdash; cells (0,0) (0,1) (1,0), <code>L (bottom-left)</code> &mdash; cells (0,1) (1,0) (1,1), and <code>1x1</code>. Each placement creates a new block (auto-selected) so you can immediately set its sprite.</td>
                 </tr>
                 <tr>
                     <td><strong>Wall</strong></td>
-                    <td>Toggle an obstacle cell on / off at the clicked position</td>
-                </tr>
-                <tr>
-                    <td><strong>Block</strong></td>
-                    <td>Place a piece of the selected block at the clicked cell. Click the same cell again to toggle off. If the cell belongs to another block, it is reassigned to the selected block.</td>
+                    <td>Click (or drag) to add a wall obstacle. Hover preview turns red over a cell that already has a wall or piece. Walls are the runtime's permanent obstacle cells &mdash; no block can ever overlap them.</td>
                 </tr>
                 <tr>
                     <td><strong>Erase</strong></td>
-                    <td>Remove whatever piece or obstacle sits at the clicked cell. Empty blocks are cleaned up automatically.</td>
+                    <td>Click (or drag) to remove whatever piece or wall sits at that cell. Empty blocks (no remaining pieces) are pruned automatically.</td>
                 </tr>
             </table>
 
+            <h3>Building a Multi-Piece Block</h3>
+            <p>Every Place Pattern click creates a single-piece block. To assemble several pieces into one logical multi-piece block (so they share one picture / sprite):</p>
+            <ol>
+                <li>In <strong>Place Pattern</strong> mode, drop each piece in its <em>solved</em> (adjacent) layout &mdash; e.g. for a 2&times;2 block built from two 1&times;2 horizontal pieces, click <code>1x2</code> at <code>(3,4)</code> and again at <code>(3,5)</code>.</li>
+                <li>Switch to <strong>Select / Move</strong> and click one of the placed pieces to select it as the destination block.</li>
+                <li>In the Blocks list, click the <strong>&ldquo;&#x21AA; merge&rdquo;</strong> button on every other block you want to fold in. Each merge:
+                    <ul>
+                        <li>Computes the bounding box of every cell of every piece in both blocks.</li>
+                        <li>Sets the destination block's <code>blockSize</code> to that bounding box.</li>
+                        <li>Rewrites every piece's <code>headPosition</code> to its slot inside the bounding box.</li>
+                        <li>Keeps the destination block's color, sprite, and zero-piece flag (extras are demoted; piece&nbsp;0 is promoted if no zero remains).</li>
+                        <li>Removes the now-empty source block.</li>
+                    </ul>
+                </li>
+                <li>Optionally switch back to <strong>Select / Move</strong> and drag pieces around to scramble them. Drag changes <code>startPos</code> only &mdash; <code>headPosition</code> stays put, so the picture mapping survives the scramble.</li>
+            </ol>
+            <p>The merge button is greyed out when nothing is selected or when you'd be merging a block into itself.</p>
+
+            <h3>Block Properties</h3>
+            <p>Every block row in the Blocks list exposes:</p>
+            <ul>
+                <li><strong>Mini preview canvas</strong> on the left (color + sprite slice in solved layout).</li>
+                <li><strong>Color picker</strong> &mdash; one of the seven palette keys (yellow / red / magenta / purple / blue / mint / lime).</li>
+                <li><strong>&#x21AA; merge / X</strong> &mdash; merge into selected block, or delete the entire block.</li>
+                <li><strong>Block size</strong> &mdash; <code>(cols, rows)</code> of the assembled picture; bigger sizes display the icon at a larger scale.</li>
+                <li><strong>Block axis</strong> &mdash; legacy whole-block <code>MoveAxis</code> (kept for old JSONs; per-piece axis is the source of truth at runtime).</li>
+                <li><strong>Icon sprite</strong> &mdash; dropdown of every sprite under <code>Resources/BlockIcons/</code>, with a thumbnail preview and a drag-drop slot.</li>
+                <li><strong>Inline pieces editor</strong> &mdash; one row per piece showing shape name, <code>startPos</code>, <code>headPosition</code>, <code>moveAxis</code>, zero-piece toggle, and a per-piece delete. Promoting a piece to zero auto-clears the others so exactly one zero remains.</li>
+            </ul>
+
             <h3>Level Storage</h3>
-            <p>All levels are stored as individual JSON files in <code>Assets/Picture Block Puzzle 2D/Resources/Levels/PictureBlockPuzzle2D/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, &hellip; The runtime loader uses <code>Resources.LoadAll&lt;TextAsset&gt;("Levels/PictureBlockPuzzle2D")</code> and sorts by the trailing number in each filename.</p>
+            <p>All levels are stored as individual JSON files in <code>Assets/Picture Block Puzzle 2D/Resources/Levels/PictureBlockPuzzle2D/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, &hellip; The runtime loader uses <code>Resources.LoadAll&lt;TextAsset&gt;("Levels/PictureBlockPuzzle2D")</code> and sorts by the trailing number in each filename. <strong>Save All Levels</strong> wipes the existing files in that folder and writes a fresh set, numbered by their order in the level list &mdash; reorder the list before saving if you want a specific numbering.</p>
         </section>
 
         <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
@@ -831,7 +850,7 @@
             <h3>Cheat Mode</h3>
             <p>Press the <strong>U</strong> key during gameplay to unlock all boosters and refill their usage counts (wrapped in <code>#if UNITY_EDITOR || DEVELOPMENT_BUILD</code> so it's stripped from release builds). The hotkey reads both the legacy <code>Input.GetKeyDown</code> and the new-Input-System <code>Keyboard.current.uKey</code> so it works regardless of which backend owns focus. It calls <code>BoosterManager.DebugUnlockAndRefillAll()</code>, a self-healing variant that re-hooks scene button references if the scene hasn't yet initialised.</p>
             <p>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next / previous level (wraps at the ends). Handled by <code>PictureBlockPuzzle2DGameManager.Update()</code>.</p>
-            <p>The Developer Settings Panel also ships with <strong>Next Level</strong> / <strong>Previous Level</strong> / <strong>Reload</strong> buttons (run <code>Tools &gt; Picture Block Puzzle 2D &gt; Rebuild Dev Panel Level Buttons</code> to regenerate them from the Reload button's current styling).</p>
+            <p>The Developer Settings Panel also ships with <strong>Next Level</strong> / <strong>Previous Level</strong> / <strong>Reload</strong> buttons.</p>
         </section>
 
         <!-- ==================== CUSTOMIZATION ==================== -->
@@ -960,7 +979,7 @@
                 </tr>
                 <tr>
                     <td>Time Freeze booster icon doesn't appear</td>
-                    <td>The <code>FrozenImage</code> GameObject must exist in the scene (child of <code>WorldCanvas</code>). It uses the sprite <code>Textures/frozen-button.png</code>. The Setup Wizard will flag it as missing if you deleted the GameObject &mdash; re-run the wizard or re-add the object.</td>
+                    <td>The <code>FrozenImage</code> GameObject must exist in the scene (child of <code>WorldCanvas</code>). It uses the sprite <code>Textures/frozen-button.png</code>. If you've deleted it, re-add the object or re-import the package.</td>
                 </tr>
                 <tr>
                     <td>Blocks pass through each other</td>
@@ -989,8 +1008,8 @@
                 <li>Use the <strong>Developer Settings Panel</strong> (gear icon) in Play mode to quickly navigate levels, trigger win / lose, unlock boosters, and reset popups</li>
                 <li>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next / previous level</li>
                 <li>Press <strong>U</strong> to unlock and refill all boosters for testing</li>
-                <li>Run <code>Tools &gt; Picture Block Puzzle 2D &gt; Setup Wizard</code> whenever you import the package into a fresh project &mdash; it catches the common misconfigurations in one pass</li>
                 <li>The <strong>Auto Level Generator</strong> is the fastest way to populate your game with content &mdash; generate 100+ levels in seconds and then hand-tune Levels 1&ndash;5 in the Level Editor</li>
+                <li>For a hand-built multi-piece block in the Level Editor: place each piece in its <em>solved</em> (adjacent) layout with Place Pattern, select one of them, then click &ldquo;&#x21AA; merge&rdquo; on the rest to fold them into a single block</li>
                 <li>Back up your <code>Resources/Levels/PictureBlockPuzzle2D/</code> folder regularly</li>
                 <li>The Welcome Popup can be permanently dismissed via the &ldquo;Do not show this popup again&rdquo; checkbox</li>
             </ul>
