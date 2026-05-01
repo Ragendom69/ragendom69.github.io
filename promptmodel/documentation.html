@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptModel — Documentation</title>
+<style>
+:root {
+  --bg: #0D0B1A;
+  --bg-card: #161230;
+  --bg-card-hover: #1E1840;
+  --bg-code: #1A1535;
+  --bg-sidebar: #100D20;
+  --text: #e2e2ea;
+  --text-dim: #9088b0;
+  --text-code: #c8c8d8;
+  --accent: #9333EA;
+  --accent-light: #A855F7;
+  --accent-glow: rgba(147,51,234,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #EC4899;
+  --pink-dim: rgba(236,72,153,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #818cf8;
+  --blue-dim: rgba(129,140,248,0.12);
+  --border: #2D2550;
+  --border-light: #3D3560;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,11,26,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex; align-items: center;
+  padding: 0 32px; gap: 16px;
+}
+.header-logo {
+  display: flex; align-items: center; gap: 12px;
+  font-weight: 700; font-size: 18px;
+  letter-spacing: -0.3px; white-space: nowrap;
+  color: var(--text); text-decoration: none;
+}
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #9333EA, #EC4899);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+.header-search { flex: 1; max-width: 420px; margin-left: auto; position: relative; }
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px; font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.header-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.header-search input::placeholder { color: var(--text-dim); }
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid var(--border); white-space: nowrap;
+}
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h); left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0; z-index: 90;
+  transition: transform 0.3s ease;
+}
+.sidebar-group { margin-bottom: 8px; }
+.sidebar-group-title {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+.sidebar a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar a:hover { color: var(--text); background: var(--accent-glow); }
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+.sidebar a .nav-icon {
+  width: 20px; text-align: center;
+  font-size: 14px; flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero h1 {
+  font-size: 42px; font-weight: 800;
+  letter-spacing: -1px; line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #A855F7 40%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+}
+.hero-badges { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+}
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(147,51,234,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(129,140,248,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+.section h2 {
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.section > .section-desc { color: var(--text-dim); margin-bottom: 28px; font-size: 15px; }
+
+h3 {
+  font-size: 19px; font-weight: 700;
+  margin-top: 32px; margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+h4 { font-size: 15px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; color: var(--accent-light); }
+p { margin-bottom: 12px; }
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 4px; }
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border-light); }
+.card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px; margin-bottom: 16px;
+}
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  transition: all 0.2s;
+  text-decoration: none; display: block; color: inherit;
+}
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.mini-card h4 { margin: 0 0 4px; font-size: 14px; color: var(--text); border: none; padding: 0; }
+.mini-card p { font-size: 12.5px; color: var(--text-dim); margin: 0; line-height: 1.5; }
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px; line-height: 1.7;
+  color: var(--text-code); margin-bottom: 16px;
+  position: relative;
+}
+pre .lang-tag {
+  position: absolute; top: 8px; right: 12px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--text-dim); opacity: 0.6; font-family: var(--font);
+}
+code {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--bg-code); padding: 2px 7px;
+  border-radius: 4px; color: var(--accent-light);
+}
+pre code { background: none; padding: 0; color: inherit; }
+.kw { color: #C084FC; }
+.str { color: #c3e88d; }
+.cm { color: #6B5F8A; font-style: italic; }
+.fn { color: #818cf8; }
+.tp { color: #ffcb6b; }
+.num { color: #f78c6c; }
+.op { color: #A78BFA; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto; margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+thead th {
+  background: var(--bg-code);
+  font-weight: 700; text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(147,51,234,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+details[open] { border-color: var(--border-light); }
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600; font-size: 14px;
+  display: flex; align-items: center; gap: 10px;
+  user-select: none; list-style: none;
+  transition: color 0.15s;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+details[open] > summary::before { transform: rotate(90deg); }
+summary:hover { color: var(--accent-light); }
+details .details-body { padding: 0 20px 18px; }
+details .details-body p:first-child { margin-top: 0; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.callout > div { flex: 1; }
+.callout p { margin-bottom: 6px; }
+.callout p:last-child { margin-bottom: 0; }
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(129,140,248,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+.step {
+  display: flex; gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+.step:last-child { border-bottom: none; }
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow); color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW ---- */
+.flow {
+  display: flex; align-items: center; gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px; font-weight: 600;
+  white-space: nowrap;
+}
+.flow-arrow { padding: 0 8px; color: var(--text-dim); font-size: 16px; }
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-info { background: var(--blue-dim); color: var(--blue); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+
+/* ---- ERROR CODE BLOCK ---- */
+.error-code {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px; margin-bottom: 12px;
+}
+.error-code.auto-retry { border-left-color: var(--yellow); }
+.error-code.user-fix { border-left-color: var(--blue); }
+.error-code-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px; flex-wrap: wrap;
+}
+.error-code-head code { background: var(--pink-dim); color: var(--pink); font-weight: 700; }
+.error-code.auto-retry .error-code-head code { background: var(--yellow-dim); color: var(--yellow); }
+.error-code.user-fix .error-code-head code { background: var(--blue-dim); color: var(--blue); }
+.error-code .meaning { color: var(--text-dim); font-size: 13.5px; margin: 0 0 6px; }
+.error-code .action { color: var(--text); font-size: 13.5px; margin: 0; }
+
+/* ---- SEARCH ---- */
+.search-overlay { display: none; position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 95; }
+.search-results {
+  display: none; position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px; max-width: calc(100vw - 32px);
+  max-height: 60vh; overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96; padding: 8px;
+}
+.search-results.visible, .search-overlay.visible { display: block; }
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none; color: var(--text);
+  transition: background 0.1s;
+}
+.search-item:hover { background: var(--accent-glow); text-decoration: none; }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <a href="#overview" class="header-logo">
+    <div class="dot">M</div>
+    <span>PromptModel</span>
+  </a>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0.0 &middot; Unity 6000.0+</span>
+</header>
+
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Generation</div>
+    <a href="#how-it-works"><span class="nav-icon">&#9881;</span> How It Works</a>
+    <a href="#powered-by"><span class="nav-icon">&#9889;</span> Powered By</a>
+    <a href="#prompts"><span class="nav-icon">&#9999;</span> Writing Prompts</a>
+    <a href="#image-input"><span class="nav-icon">&#127912;</span> Image Input</a>
+    <a href="#generated-files"><span class="nav-icon">&#128193;</span> Generated Files</a>
+    <a href="#about-lighting"><span class="nav-icon">&#128161;</span> PBR &amp; Lighting</a>
+    <a href="#auto-spawn"><span class="nav-icon">&#10148;</span> Auto-Spawn</a>
+    <a href="#variations"><span class="nav-icon">&#9881;</span> Variations</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Account</div>
+    <a href="#authentication"><span class="nav-icon">&#128274;</span> Authentication</a>
+    <a href="#machine-binding"><span class="nav-icon">&#128187;</span> Machine Binding</a>
+    <a href="#quota"><span class="nav-icon">&#9202;</span> Quota Explained</a>
+    <a href="#find-invoice"><span class="nav-icon">&#128196;</span> Where's My Invoice</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#privacy"><span class="nav-icon">&#128274;</span> Privacy</a>
+    <a href="#updating"><span class="nav-icon">&#10227;</span> Updating</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ============ HERO ============ -->
+<div class="hero" id="overview">
+  <h1>PromptModel</h1>
+  <p>AI 3D models for Unity. Type a prompt or drop a reference image inside the Editor &mdash; get a Unity Prefab with PBR materials, LODs, and centred pivot in about 60&nbsp;seconds.</p>
+  <div class="hero-badges">
+    <span class="badge badge-purple">Unity 6000.0+</span>
+    <span class="badge badge-green">URP &amp; Built-in</span>
+    <span class="badge badge-yellow">Editor Tool</span>
+    <span class="badge badge-pink">No Subscription</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>PromptModel is a hybrid product.</strong> The Unity package is what you imported; the generation itself runs on a paid backend at <code>model.promptmotion.dev</code>. Both are covered by your one-time Asset Store purchase. See <a href="#how-it-works">How It Works</a> for the full round-trip.</div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>Internet connection required.</strong> AI inference happens on the backend, not in the Editor. The package itself is offline-installable, but generation needs network access to <code>model.promptmotion.dev</code>.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#quickstart"><h4>&#9889; Quick Start</h4><p>From paste-invoice to first prefab in under three minutes (plus generation time).</p></a>
+    <a class="mini-card" href="#authentication"><h4>&#128274; Invoice Activation</h4><p>Paste your Asset Store invoice, click Verify, then Activate this machine. No accounts, no API keys.</p></a>
+    <a class="mini-card" href="#quota"><h4>&#9202; 50 / 30 days rolling</h4><p>Each generation consumes one credit; failed runs and cache hits cost zero.</p></a>
+    <a class="mini-card" href="#prompts"><h4>&#9999; Plain English Prompts</h4><p>"wooden treasure chest with iron bands" works. So does dropping a reference image.</p></a>
+    <a class="mini-card" href="#image-input"><h4>&#127912; Image Input</h4><p>PNG, JPEG, WebP &mdash; up to 10&nbsp;MB, 64&ndash;8192&nbsp;px. Single subject, neutral background, well-lit.</p></a>
+    <a class="mini-card" href="#generated-files"><h4>&#128193; Ready-to-use Prefabs</h4><p>Materials extracted, LOD0/1/2/3 wired, pivot centred. Drop into a scene; it works.</p></a>
+  </div>
+
+  <p>This document covers everything from first-run activation through the troubleshooting table. If you only have five minutes, read <a href="#quickstart">Quick Start</a> and <a href="#prompts">Writing Prompts</a>.</p>
+</section>
+
+<!-- ============ INSTALLATION ============ -->
+<section class="section" id="installation">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Installation</h2>
+  <p class="section-desc">Import once. The Editor window lights up immediately.</p>
+
+  <h3>From the Unity Asset Store</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open Package Manager</strong><br>In Unity 6000.0 LTS or later, open <code>Window &rarr; Package Manager</code> and switch the dropdown to <strong>My Assets</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Find PromptModel, click Download then Import</strong><br>Accept the import dialog with everything checked. The package lands at <code>Assets/PromptModel/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wait for compile and dependency resolution</strong><br>Unity recompiles editor scripts and pulls three UPM dependencies on first import (~30&ndash;60&nbsp;s). See <a href="#dependencies">Dependencies</a>.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the window</strong><br><code>Window &rarr; PromptModel</code>. The activation banner appears first; everything below it is gated until you bind.</div></div>
+  </div>
+
+  <h3 id="dependencies">Dependencies</h3>
+  <p>PromptModel pins three Unity Package Manager dependencies. They are added automatically on first import and visible in <code>Window &rarr; Package Manager &rarr; In Project</code>:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Package</th><th>Version</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><code>com.unity.cloud.gltfast</code></td><td>6.13.0</td><td>Imports the downloaded <code>.glb</code> as a Unity model. Unity-official maintained package.</td></tr>
+      <tr><td><code>com.unity.nuget.newtonsoft-json</code></td><td>3.2.1</td><td>JSON serialisation for backend requests/responses (Unity's <code>JsonUtility</code> can't handle nullable / dict / optional fields).</td></tr>
+      <tr><td><code>com.whinarn.unitymeshsimplifier</code></td><td>v3.1.0 (UPM git URL)</td><td>Generates LOD1/2/3 meshes from the original at 50% / 25% / 10% triangle count. MIT-licensed, battle-tested.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>What gets installed</h3>
+  <pre><code><span class="kw">Assets/PromptModel/</span>
+  Editor/                 <span class="cm">// All Editor-side C#: window, services, importers, helpers</span>
+    UI/                   <span class="cm">// Window, banner, drop zone, presenter</span>
+    Services/             <span class="cm">// HTTP client, auth store, generation coordinator</span>
+    Importers/            <span class="cm">// GLB → Prefab pipeline orchestrator</span>
+    Helpers/              <span class="cm">// MaterialApplier, LodGenerator, PrefabWrapper</span>
+    DTOs/                 <span class="cm">// Request/response types</span>
+  Documentation/          <span class="cm">// You are here</span>
+  Samples/                <span class="cm">// Showcase scene + sample prefabs</span>
+  Generated/              <span class="cm">// Output folder; created on first generation</span>
+  EULA.md                 <span class="cm">// License terms</span>
+  README.md               <span class="cm">// 30-second intro</span>
+<span class="lang-tag">Project</span></code></pre>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Generated content is yours.</strong> Anything in <code>Assets/PromptModel/Generated/</code> belongs to your project and is not overwritten by package updates.</div>
+  </div>
+</section>
+
+<!-- ============ QUICK START ============ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">Zero to your first generated prefab in under three minutes (plus generation time).</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open the window</strong><br>Menu: <code>Window &rarr; PromptModel</code>. The activation banner appears at the top.</div></div>
+    <div class="step"><div class="step-content"><strong>Paste your invoice number</strong><br>The <code>IN_xxxxxxxxxxxxxxx</code> string from your Asset Store order email. See <a href="#find-invoice">Where's My Invoice?</a> if you can't find it.</div></div>
+    <div class="step"><div class="step-content"><strong>Click <em>Verify</em>, then <em>Activate this machine</em></strong><br>Two-step on purpose &mdash; the first call is a non-mutating probe; the second binds. See <a href="#authentication">Authentication</a> for why.</div></div>
+    <div class="step"><div class="step-content"><strong>Choose <em>Text</em> or <em>Image</em> mode</strong><br>Text: type a prompt like <em>"wooden treasure chest with iron bands"</em>. Image: drop a PNG/JPEG/WebP into the drop zone, drag a <code>Texture2D</code> asset from your Project window, or click to browse.</div></div>
+    <div class="step"><div class="step-content"><strong>(Optional) Name the output</strong><br>The <strong>Name</strong> field is optional. Blank → derived from your prompt or image filename. See <a href="#generated-files">Generated Files</a> for the resulting folder layout.</div></div>
+    <div class="step"><div class="step-content"><strong>Click <em>Generate (1 credit)</em></strong><br>Wait ~60 s. The status panel shows progress; cancel safely at any time. With <em>Spawn into scene</em> checked, the prefab also drops into your active scene at world origin.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Cache hits are free.</strong> An identical <code>(prompt OR image_url, quality_preset, seed)</code> within the <strong>30-day</strong> cache TTL returns the previous prefab in milliseconds and consumes <strong>zero</strong> credits.</div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how-it-works">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> How It Works</h2>
+  <p class="section-desc">From prompt to prefab in one round-trip.</p>
+
+  <h3>Text pipeline</h3>
+  <div class="flow">
+    <span class="flow-node">Prompt</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">FLUX schnell</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Image</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">TRELLIS</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">GLB</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Prefab Pipeline</span>
+  </div>
+
+  <h3>Image pipeline</h3>
+  <div class="flow">
+    <span class="flow-node">Reference Image</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">/prod/upload</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">TRELLIS</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">GLB</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Prefab Pipeline</span>
+  </div>
+
+  <ol>
+    <li>You click <strong>Generate</strong>. The window posts <code>{ invoice, text_prompt OR image_url, quality_preset, seed }</code> to <code>https://model.promptmotion.dev/prod/generate</code> with your invoice and machine fingerprint as authentication context.</li>
+    <li>The backend returns <strong>202 Accepted</strong> with a <code>request_id</code> and starts the generation in the background.</li>
+    <li>The window polls <code>GET /prod/status/{request_id}</code> every two seconds, updating the progress bar.</li>
+    <li>For text-mode, the server runs your prompt through <strong>FLUX schnell</strong> (a fast text-to-image model) to get a reference image, then through <strong>TRELLIS</strong> (Microsoft's image-to-3D model). Image-mode skips the FLUX step.</li>
+    <li>When the GLB is ready, the window downloads it via a HMAC-signed URL into <code>Assets/PromptModel/Generated/_raw/</code>.</li>
+    <li>Our import pipeline applies materials, generates LOD0/1/2/3, centres the pivot, and saves a Unity Prefab next to the raw GLB.</li>
+    <li>If <strong>Spawn into scene</strong> is checked, the prefab is instantiated in your active scene at world origin and selected.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Generation is editor-only.</strong> Once a prefab is on disk it's a normal Unity asset and works in any build target Unity supports (standalone, mobile, console, WebGL). You can't generate <em>new</em> prefabs from a runtime build.</div>
+  </div>
+</section>
+
+<!-- ============ POWERED BY ============ -->
+<section class="section" id="powered-by">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#9889;</span> Powered By</h2>
+  <p class="section-desc">Open-source models, third-party hosting, full attribution.</p>
+
+  <h3>Microsoft TRELLIS</h3>
+  <p>The 3D-generation model is <a href="https://github.com/microsoft/TRELLIS" target="_blank">TRELLIS</a> &mdash; published by Microsoft Research at CVPR 2025, released under the MIT License. TRELLIS produces a textured mesh from a single reference image and is the strongest publicly-available image-to-3D model as of mid-2026.</p>
+
+  <h3>FLUX schnell</h3>
+  <p>For text-mode generations, an intermediate text-to-image step uses Black Forest Labs' <a href="https://blackforestlabs.ai/" target="_blank">FLUX schnell</a>. The image it produces is consumed by TRELLIS and not surfaced separately to your project.</p>
+
+  <h3>fal.ai</h3>
+  <p>Both models are hosted by <a href="https://fal.ai" target="_blank">fal.ai</a>, a serverless AI inference provider. PromptModel's backend is a thin wrapper around fal's API plus our own auth, quota, and caching layers. fal's <a href="https://fal.ai/legal/terms-of-service" target="_blank">Terms of Service</a> apply to your use of PromptModel; the relevant pass-through clauses are summarised in <a href="../EULA.md">EULA &sect; 3</a>.</p>
+
+  <h3>Whinarn UnityMeshSimplifier</h3>
+  <p>LOD0/1/2/3 generation uses <a href="https://github.com/Whinarn/UnityMeshSimplifier" target="_blank">UnityMeshSimplifier</a> (MIT License) at 100% / 50% / 25% / 10% triangle counts respectively.</p>
+
+  <h3>Unity gltFast</h3>
+  <p>The downloaded <code>.glb</code> is imported by Unity's official <a href="https://docs.unity3d.com/Packages/com.unity.cloud.gltfast@latest" target="_blank">gltFast</a> package. From there our import pipeline takes over for material extraction, LOD generation, and prefab wrapping.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Full attribution and license texts</strong> for every upstream component are in <a href="../THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a> at the package root. If your end-customer EULA needs to disclose upstream dependencies (this is sometimes the case for game studios with strict legal review), copy the relevant entries from that file into your own credits page along with the source URLs.</div>
+  </div>
+</section>
+
+<!-- ============ PROMPTS ============ -->
+<section class="section" id="prompts">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9999;</span> Writing Prompts</h2>
+  <p class="section-desc">Clear, single-subject, concrete. AI 3D models are a different prompt regime than text-to-image.</p>
+
+  <h3>What works well</h3>
+  <ul>
+    <li><strong>Single concrete subject</strong> &mdash; a prop, an object, a creature. Not "a battle scene" or "the inside of a tavern".</li>
+    <li><strong>Material details</strong> &mdash; "iron-banded", "carved wood", "rusty", "polished marble".</li>
+    <li><strong>Style hints</strong> &mdash; "stylized low-poly", "PBR realistic", "cartoon".</li>
+    <li><strong>Game-ready scope</strong> &mdash; barrels, weapons, tools, furniture, plants, simple creatures.</li>
+  </ul>
+
+  <h3>What doesn't work as well</h3>
+  <ul>
+    <li><strong>Multiple subjects in one prompt</strong> &mdash; "a sword and a shield" usually produces a fused mess. Generate them separately.</li>
+    <li><strong>Hero characters with detailed faces</strong> &mdash; TRELLIS handles props much better than people. Try <a href="#image-input">image-mode</a> with a clean reference instead.</li>
+    <li><strong>Photorealistic cinematic detail</strong> &mdash; the output is meant for 3D viewports, not VFX shots. Set the <strong>Quality</strong> dropdown to <em>High Detail</em> if you need more triangles.</li>
+    <li><strong>Branded or copyrighted characters</strong> &mdash; this is also against the <a href="../EULA.md">EULA</a>.</li>
+  </ul>
+
+  <h3>Examples</h3>
+  <div class="card-grid">
+    <div class="mini-card"><h4>&#10004; "wooden treasure chest with iron bands"</h4><p>Single subject. Concrete materials. Game-ready scope. Reliable.</p></div>
+    <div class="mini-card"><h4>&#10004; "blacksmith hammer"</h4><p>Tight, low-ambiguity prop. Will produce a clean mesh fast.</p></div>
+    <div class="mini-card"><h4>&#10004; "stylized low-poly tree stump"</h4><p>Style hint helps the FLUX intermediate produce a TRELLIS-friendly reference.</p></div>
+    <div class="mini-card" style="border-color: rgba(236,72,153,0.4);"><h4>&#10006; "epic medieval battlefield"</h4><p>Way too broad. TRELLIS produces objects, not scenes.</p></div>
+    <div class="mini-card" style="border-color: rgba(236,72,153,0.4);"><h4>&#10006; "Mickey Mouse holding a sword"</h4><p>Branded character (EULA violation) plus multi-subject (technical issue).</p></div>
+  </div>
+
+  <h3>Quality preset</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Preset</th><th>Effect</th><th>When to pick it</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Game Ready</strong> (default)</td><td>Heavier mesh simplification (smaller GLB, lower triangle count).</td><td>Mobile games, VR, anything where draw calls matter.</td></tr>
+      <tr><td><strong>High Detail</strong></td><td>Most-detail-preserving simplification fal currently allows.</td><td>Hero props, Editor screenshots, prototypes where polycount doesn't matter yet.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ IMAGE INPUT ============ -->
+<section class="section" id="image-input">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127912;</span> Image Input</h2>
+  <p class="section-desc">Drop an image; TRELLIS reconstructs a 3D model from it. Frequently produces sharper outputs than text-mode for visually-distinct subjects.</p>
+
+  <h3>Three input paths</h3>
+  <ol>
+    <li><strong>Texture2D from Project view</strong> &mdash; drag a <code>Texture2D</code> asset into the drop zone. Requires <em>Read/Write Enabled</em> in the texture's import settings (a clear inline error is shown if not, and the asset is pinged).</li>
+    <li><strong>OS file from Explorer / Finder</strong> &mdash; drag a <code>.png</code> / <code>.jpg</code> / <code>.jpeg</code> / <code>.webp</code> file straight from your operating system.</li>
+    <li><strong>Click to browse</strong> &mdash; click anywhere on the empty drop zone to open a native file picker.</li>
+  </ol>
+
+  <h3>Limits</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Property</th><th>Limit</th></tr></thead>
+    <tbody>
+      <tr><td>Formats</td><td>PNG, JPEG, WebP (sniffed by magic bytes &mdash; we don't trust the file extension)</td></tr>
+      <tr><td>Maximum file size</td><td>10 MB</td></tr>
+      <tr><td>Dimensions</td><td>64 to 8192 px on each axis</td></tr>
+      <tr><td>Animated content</td><td>First frame only (GIF / animated WebP)</td></tr>
+      <tr><td>Transparency</td><td>Alpha channels are honoured for the cutout but not for the 3D output (TRELLIS produces opaque meshes)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>What makes a good reference image</h3>
+  <ul>
+    <li><strong>Single subject filling most of the frame</strong> &mdash; TRELLIS treats the image as one object. If there are two, expect a fused result.</li>
+    <li><strong>Clean, neutral background</strong> &mdash; white, grey, or transparent works best. Busy backgrounds confuse silhouette extraction.</li>
+    <li><strong>Even, soft lighting</strong> &mdash; harsh shadows get baked into the mesh's albedo and look wrong from other angles.</li>
+    <li><strong>Three-quarters view</strong> &mdash; pure front or pure profile gives TRELLIS less to extrapolate from. A 30&ndash;45&deg; offset is the sweet spot.</li>
+    <li><strong>Resolution sweet spot 512&ndash;1024 px</strong> &mdash; below that loses detail; above isn't beneficial for current TRELLIS quality.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Tip: a phone photo against a white wall is a great reference.</strong> Aim natural-light, single object, everything else cropped out. No editing needed.</div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>Copyright responsibility is on you.</strong> Don't drop in a film still or a screenshot from a game; per the <a href="../EULA.md">EULA &sect; 5.3</a> you confirm you own or have a license for any reference image.</div>
+  </div>
+</section>
+
+<!-- ============ GENERATED FILES ============ -->
+<section class="section" id="generated-files">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128193;</span> Generated Files</h2>
+  <p class="section-desc">Where everything lands and what each file is for.</p>
+
+  <pre><code><span class="kw">Assets/PromptModel/Generated/</span>
+  _raw/
+    req_xxxxxxxx.glb                  <span class="cm">// Raw GLB downloaded from the backend</span>
+  wooden_barrel/                      <span class="cm">// Folder named after your prompt / Name field</span>
+    wooden_barrel.prefab              <span class="cm">// The prefab to drop into your scene</span>
+    wooden_barrel.metadata.json       <span class="cm">// Sidecar: prompt + seed (powers "Generate similar")</span>
+    wooden_barrel 1.prefab            <span class="cm">// Second generation of the same name (Unity's space-suffix)</span>
+    wooden_barrel 1.metadata.json
+    materials/
+      wooden_barrel_mat_00.mat        <span class="cm">// Native URP Lit / Standard material</span>
+      wooden_barrel_mat_00_basemap.png
+      wooden_barrel_mat_00_metallicglossmap.png
+    lods/
+      geometry_0_LOD1.asset           <span class="cm">// 50% triangles (LOD asset names track the source mesh)</span>
+      geometry_0_LOD2.asset           <span class="cm">// 25% triangles</span>
+      geometry_0_LOD3.asset           <span class="cm">// 10% triangles</span>
+  wooden_barrel_v2/                   <span class="cm">// Variations from "Generate similar" get their own folder</span>
+    wooden_barrel_v2.prefab           <span class="cm">// Original is conceptually v1; variations start at _v2</span>
+    wooden_barrel_v2.metadata.json
+    ...
+  knight_helmet/
+    knight_helmet_untextured.prefab   <span class="cm">// Prefab suffix when fallback grey material was applied</span>
+    knight_helmet_untextured.metadata.json
+    ...
+<span class="lang-tag">Project</span></code></pre>
+
+  <h3>Naming</h3>
+  <p>The basename is derived in this order: explicit <strong>Name</strong> field &rarr; your prompt &rarr; image filename &rarr; <code>pmod_{request_id}</code>. The result is sanitised: lowercase, spaces &rarr; underscores, only <code>[a-z 0-9 _ -]</code> kept, max 64 characters.</p>
+
+  <p>If a prefab with the same basename already exists, Unity's <code>AssetDatabase.GenerateUniqueAssetPath</code> appends a space-prefixed counter (<code> 1</code>, <code> 2</code>, &hellip;) so the new prefab lands as <code>wooden_barrel 1.prefab</code> in the same folder. We never overwrite a previous prefab. Variations from <em>Generate similar</em> follow a different convention &mdash; each gets its own <code>{name}_v{N}/</code> folder starting at <code>_v2</code>.</p>
+
+  <h3>The <code>_untextured</code> suffix</h3>
+  <p>If TRELLIS produces a GLB with no PBR textures (rare but possible for very abstract prompts), the pipeline applies a neutral grey fallback material and suffixes the prefab name with <code>_untextured</code>. You'll also see a <code>[PromptModel] WARN: GLB had no PBR textures</code> in the Editor Console.</p>
+
+  <h3>What's safe to delete</h3>
+  <ul>
+    <li><strong>Whole folder</strong> &mdash; deletes the prefab, materials, and LOD meshes for that generation. Safe.</li>
+    <li><strong><code>_raw/</code></strong> &mdash; deletes the original GLBs but keeps the prefabs. Safe; you lose the ability to re-run the pipeline locally on those models, but the prefabs themselves still work.</li>
+    <li><strong>Individual <code>.mat</code> or <code>.png</code></strong> &mdash; the prefab will go pink (missing material). Don't do this unless you're replacing the file.</li>
+  </ul>
+</section>
+
+<!-- ============ ABOUT PBR &amp; LIGHTING ============ -->
+<section class="section" id="about-lighting">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#128161;</span> About PBR materials and lighting</h2>
+  <p class="section-desc">Why generated models can look like they have shadows baked in &mdash; and how to compensate.</p>
+
+  <p>PromptModel uses Microsoft <strong>TRELLIS</strong> for 3D generation. Like all current AI 3D models, TRELLIS bakes lighting and shadows into the model's texture during generation. The albedo (base color) texture includes the implicit lighting from the reference image, rather than being a clean unlit surface color.</p>
+
+  <h3>What this means for your scenes</h3>
+  <ul>
+    <li>Generated models work best in scenes with <strong>soft, diffuse lighting</strong> &mdash; HDRI skyboxes, area lights, or carefully tuned ambient.</li>
+    <li><strong>Avoid harsh single directional lights</strong> &mdash; they double-up with the baked-in shadows on the texture.</li>
+    <li>Adjust via the Material Inspector if needed: lower metallic, raise smoothness, or apply a slight tint to compensate.</li>
+  </ul>
+
+  <h3>For cinematic / hand-painted-quality PBR projects</h3>
+  <ul>
+    <li>Unity's built-in <strong>Window &rarr; Rendering &rarr; Delighting</strong> tool can help separate baked light from albedo.</li>
+    <li>Third-party tools like <strong>Marmoset Toolbag</strong> or <strong>Adobe Substance Sampler</strong> do this professionally.</li>
+    <li>We're exploring automated delighting as a <strong>v1.1</strong> feature.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>This is a fundamental limitation of all current AI 3D generation</strong> &mdash; Meshy, Tripo, Hunyuan3D, and TRELLIS all share it. We surface it here so you can plan accordingly.</div>
+  </div>
+</section>
+
+<!-- ============ AUTO-SPAWN ============ -->
+<section class="section" id="auto-spawn">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#10148;</span> Auto-Spawn</h2>
+  <p class="section-desc">When checked, the prefab drops into your active scene at world origin as soon as it's ready.</p>
+
+  <p>The <strong>Spawn into scene when done</strong> checkbox below the Generate button controls this. Default <strong>on</strong>; preference persists across Editor restarts.</p>
+
+  <h3>What it does</h3>
+  <ol>
+    <li>Instantiates the prefab in the currently-active scene.</li>
+    <li>Positions it at world origin <code>(0, 0, 0)</code>.</li>
+    <li>Selects the new GameObject so it shows up in the Hierarchy.</li>
+    <li>Frames it in the Scene view (<code>SceneView.FrameSelected</code>).</li>
+  </ol>
+
+  <h3>When it's skipped</h3>
+  <div class="card-grid">
+    <div class="mini-card"><h4>&#9888; Play Mode</h4><p>The Editor is playing or about to play. Spawning would create a runtime instance that vanishes on stop. <strong>Warning logged; you keep the prefab in Project view to drop in manually.</strong></p></div>
+    <div class="mini-card"><h4>&#9888; Prefab Edit Mode</h4><p>You're editing another prefab. Auto-spawning into the prefab stage would dirty an unrelated asset. <strong>Skipped with a warning.</strong></p></div>
+    <div class="mini-card"><h4>&#9432; Untitled scene</h4><p>Spawning works, but a separate warning reminds you to save the scene if you want to keep the GameObject.</p></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Auto-spawn is checked at generation completion, not at submit time.</strong> A 60-second wait is enough for you to enter Play Mode mid-flight; we re-check before instantiating.</div>
+  </div>
+</section>
+
+<!-- ============ AUTHENTICATION ============ -->
+<section class="section" id="authentication">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Authentication</h2>
+  <p class="section-desc">Your Asset Store invoice is your license. No signup, no API key, no account.</p>
+
+  <h3>The two-step verify flow</h3>
+  <p>Click <strong>Verify</strong> first &mdash; it's a non-mutating probe. Only after you confirm intent does <strong>Activate this machine</strong> create a new binding.</p>
+  <ol>
+    <li><strong>Verify</strong> &mdash; <code>POST /prod/verify { invoice, bind_machine: false }</code>. Returns whether the invoice is valid and what its current binding state is. No side effects.</li>
+    <li><strong>Activate this machine</strong> &mdash; <code>POST /prod/verify { invoice, bind_machine: true }</code>. Creates a new binding. May trigger the 24-hour transfer cooldown if the invoice was bound elsewhere.</li>
+  </ol>
+
+  <p>The two-step exists to prevent accidental cooldowns. A naive single-click flow would mean any time you mistakenly verify on a friend's computer, the 24-hour timer would start on your own machine.</p>
+
+  <h3>What gets sent to the server</h3>
+  <p>Only this:</p>
+  <ul>
+    <li>Your <strong>invoice number</strong> (HTTPS, JSON body).</li>
+    <li>The <strong>machine fingerprint</strong> &mdash; <code>SHA256(SystemInfo.deviceUniqueIdentifier + ":" + invoice)</code>. We never see your raw hardware ID.</li>
+    <li>A <strong>client version</strong> string for analytics + compatibility checks.</li>
+  </ul>
+  <p><strong>Not sent:</strong> name, email, IP (other than what's inherent to TLS), Unity Editor analytics, scene contents, or any telemetry beyond the above. See <a href="#privacy">Privacy</a>.</p>
+
+  <h3>Forgetting an invoice</h3>
+  <p>Click <strong>Forget invoice</strong> in the bound banner. This clears local <code>EditorPrefs</code> entries but does <em>not</em> unbind the invoice on the server. To fully release, transfer the binding to another machine via the verify flow.</p>
+</section>
+
+<!-- ============ MACHINE BINDING ============ -->
+<section class="section" id="machine-binding">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128187;</span> Machine Binding &amp; Transfer</h2>
+  <p class="section-desc">One invoice, one machine at a time. Transfer takes 24 hours.</p>
+
+  <h3>Why machines are bound</h3>
+  <p>Machine binding prevents one purchased invoice from being shared across an entire studio. The binding is a SHA-256 hash &mdash; we don't see your hardware ID, only that you're the same machine on subsequent requests.</p>
+
+  <h3>Transferring to a new machine</h3>
+  <p>If your invoice is already bound elsewhere and you click <strong>Activate this machine</strong> on a new computer, the banner switches into transfer mode:</p>
+  <ol>
+    <li>The banner reads <em>"Transfer license to this machine?"</em> with a 24-hour cooldown notice.</li>
+    <li>Click <strong>Start 24h transfer</strong>. The transfer is irreversible from the Editor (you'd need to contact support to abort).</li>
+    <li>For 24 hours, both machines are locked out of generation. The countdown is in the banner; you can close Unity in between.</li>
+    <li>After the cooldown, the new machine is bound and the old one is released.</li>
+  </ol>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>The 24-hour delay is intentional.</strong> If your invoice ID has been stolen, the delay gives you time to notice and contact support before the unauthorised binding completes.</div>
+  </div>
+
+  <h3>If you can't access the old machine</h3>
+  <p>Hardware failure, lost laptop, etc. &mdash; email <code>ragendom@gmail.com</code> with proof of purchase identity (matching your original Asset Store order email). We can do a manual transfer out-of-band, typically within one business day.</p>
+
+  <h3>What invalidates an existing binding</h3>
+  <ul>
+    <li>Successful transfer to a new machine (after 24-hour cooldown).</li>
+    <li>OS reinstall &mdash; <code>SystemInfo.deviceUniqueIdentifier</code> is usually stable across reinstalls on Windows/macOS/Linux, but motherboard or disk replacements can change it. If your hash changes after a reinstall, contact support for a no-cooldown re-bind.</li>
+    <li>Refund processed by Unity Asset Store &mdash; we receive the webhook and revoke server-side.</li>
+  </ul>
+</section>
+
+<!-- ============ QUOTA ============ -->
+<section class="section" id="quota">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9202;</span> Quota Explained</h2>
+  <p class="section-desc">Each successful generation consumes one credit. Cache hits and failures cost zero.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>&nbsp;</th><th>Standard</th></tr></thead>
+    <tbody>
+      <tr><td>Generations per rolling 30 days</td><td>50</td></tr>
+      <tr><td>Price (one-time)</td><td>see Asset Store listing</td></tr>
+      <tr><td>Cache hits</td><td>Free (30-day TTL on identical prompt + quality + seed)</td></tr>
+      <tr><td>Failed generations</td><td>Don't count</td></tr>
+      <tr><td>Image uploads (without generation)</td><td>Free, separate hourly rate limit</td></tr>
+      <tr><td>Commercial use</td><td>Yes, with limits in <a href="../EULA.md">EULA &sect; 5.4</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>What counts as a generation</h3>
+  <p>A "generation" is a single submission to <code>POST /prod/generate</code> that:</p>
+  <ul>
+    <li>Reaches a terminal state of <code>completed</code>;</li>
+    <li>Produced a downloadable GLB; AND</li>
+    <li>Was a fresh inference run, not a cache hit.</li>
+  </ul>
+
+  <h3>What does NOT count</h3>
+  <ul>
+    <li>Failed generations &mdash; <code>FLUX_FAILED</code>, <code>TRELLIS_FAILED</code>, <code>PROVIDER_RATE_LIMIT</code>, etc.</li>
+    <li>Generations cancelled by you before reaching <code>completed</code>.</li>
+    <li>Cache hits (cached for 30 days; identical <code>(prompt OR image_url, quality_preset, seed)</code> within that window returns the previous prefab for free).</li>
+    <li>Image uploads (rate-limited separately to 30/hour).</li>
+    <li>Status polls.</li>
+  </ul>
+
+  <h3>How the rolling window works</h3>
+  <p>Each consumed credit "expires" 30 days after it was used &mdash; meaning it's restored to your available pool. Two example timelines:</p>
+
+  <div class="card">
+    <p class="card-title">&#127919; Burst usage on day 1</p>
+    <p>You spend 50 credits on Day 1. On Day 31, all 50 return at once. You'll see <code>0 / 50</code> for 29 days, then <code>50 / 50</code> on Day 31.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-title">&#9202; One per day</p>
+    <p>You spend 1 credit per day. From Day 1 to Day 30 you go from <code>49/50</code> down to <code>20/50</code>. From Day 31 onward, one credit returns each day, so you stay roughly steady at <code>20/50</code> indefinitely.</p>
+  </div>
+
+  <h3>The History panel</h3>
+  <p>The bottom of the window shows your last 10 generations, the most recent Quota line, and an estimated reset date. The numbers refresh after every generation and every status poll &mdash; no need to manually refresh.</p>
+</section>
+
+<!-- ============ VARIATIONS ============ -->
+<section class="section" id="variations">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> Generate Similar (Variations)</h2>
+  <p class="section-desc">Run the same prompt 4 times in parallel, pick the best one.</p>
+
+  <p>TRELLIS is non-deterministic &mdash; the same prompt with different seeds produces meaningfully different geometry. The <strong>Generate similar</strong> button lets you fan out a single prompt into 4 parallel variations, preview each as a thumbnail in a modal, then import only the ones you like.</p>
+
+  <h3>How to launch</h3>
+  <p>Two entry points, both producing the same result:</p>
+  <ul>
+    <li><strong>From the History panel</strong>: each row in the bottom panel has a <em>Generate similar</em> button. The button is disabled for entries created before this feature shipped (the original prompt wasn't recorded back then) and for entries from a different machine binding.</li>
+    <li><strong>From the Project view</strong>: right-click a PromptModel-generated prefab in the Project window &rarr; <strong>PromptModel: Generate similar</strong>. The menu is greyed out on prefabs that didn't come from PromptModel.</li>
+  </ul>
+
+  <h3>What the modal shows</h3>
+  <p>A utility window with up to four slots in a 2&times;2 grid. Each slot fills in independently as its variation completes:</p>
+  <ul>
+    <li><strong>Thumbnail</strong> &mdash; best-effort rendering from Unity's asset preview system. If the preview can't be generated for some reason, you'll see a checkmark placeholder &mdash; the variation is still importable.</li>
+    <li><strong>Status badge</strong> &mdash; <em>Queued</em> &rarr; <em>Generating</em> &rarr; <em>Ready</em> (or <em>Failed</em>).</li>
+    <li><strong>Seed label</strong> &mdash; the random seed used for that variation, in case you want to reproduce one later.</li>
+    <li><strong>Keep this variation</strong> checkbox &mdash; tick the ones you want to import.</li>
+  </ul>
+
+  <p>After you click <strong>Import selected</strong>, each ticked variation runs through the same import pipeline as a regular generation. The new prefabs land in <code>Assets/PromptModel/Generated/</code> with names like <code>wooden_barrel_v2.prefab</code>, <code>wooden_barrel_v3.prefab</code> &mdash; the original is conceptually <code>v1</code>, so variations start at <code>_v2</code>.</p>
+
+  <h3>Cost &amp; quota</h3>
+  <p>Each variation costs one credit, just like a regular generation. A 4-variation batch consumes 4 credits. The modal shows an estimated dollar cost (≈ $0.02&ndash;0.03 per variation) and a quota counter that updates after submission.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>One batch at a time per license.</strong> While a variation batch is in flight, single-generation requests from the same machine are blocked with <code>CONCURRENT_LIMIT</code>. Wait for the modal to finish before submitting another generation.</div>
+  </div>
+
+  <h3>What you can keep</h3>
+  <p>Only ticked + completed slots are imported. Failed slots can't be ticked. If you close the modal without ticking anything, no quota is wasted on import &mdash; the credits were already consumed when the batch was submitted, but no asset clutter is added to your project. Unticked variations are deleted from the local cache when you close the modal.</p>
+
+  <h3>Variations of variations</h3>
+  <p>Imported variations are themselves PromptModel-generated prefabs &mdash; so they get their own metadata sidecar and are valid sources for another <em>Generate similar</em> round. The modal carries forward the original prompt, not the variation's seed, so you keep generating off the same intent rather than drifting through transformed-of-transformed.</p>
+</section>
+
+<!-- ============ FIND INVOICE ============ -->
+<section class="section" id="find-invoice">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128196;</span> Where's My Invoice?</h2>
+  <p class="section-desc">Two places. Either is fine.</p>
+
+  <h3>Option 1: Asset Store website</h3>
+  <ol>
+    <li>Sign in at <a href="https://assetstore.unity.com" target="_blank">assetstore.unity.com</a>.</li>
+    <li>Top right &rarr; your avatar &rarr; <strong>My Account</strong> &rarr; <strong>My Orders</strong>.</li>
+    <li>Find PromptModel in the order list.</li>
+    <li>The invoice number looks like <code>IN_xxxxxxxxxxxxxxx</code>.</li>
+  </ol>
+
+  <h3>Option 2: order confirmation email</h3>
+  <p>Search your inbox for "Unity Asset Store order confirmation". The invoice number is in the email body and on the attached PDF.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>The invoice from a Unity Cloud subscription or Unity Pro license is <strong>not</strong> the same as an Asset Store invoice. PromptModel only accepts Asset Store invoices for the PromptModel package specifically.</div>
+  </div>
+
+  <p>Unity's own help article is at <a href="https://support.unity.com/hc/en-us/articles/207061483" target="_blank">support.unity.com &mdash; How can I get an invoice for an Asset Store purchase</a>. The "Where do I find my invoice?" link in the activation banner points there.</p>
+</section>
+
+<!-- ============ TROUBLESHOOTING ============ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Every error code the window can show, what it means, and what to do.</p>
+
+  <p>The colour bar on each entry corresponds to the in-window action:</p>
+  <ul>
+    <li><span style="color:var(--pink);font-weight:600;">Pink</span> &mdash; you need to do something (re-enter invoice, replace image, edit prompt).</li>
+    <li><span style="color:var(--yellow);font-weight:600;">Yellow</span> &mdash; we'll auto-retry; just wait.</li>
+    <li><span style="color:var(--blue);font-weight:600;">Blue</span> &mdash; informational; no action required.</li>
+  </ul>
+
+  <h3>Auth errors</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>INVOICE_INVALID</code> <span class="tag tag-required">Action: re-enter invoice</span></div>
+    <p class="meaning">The server doesn't recognise your invoice ID.</p>
+    <p class="action"><strong>Fix:</strong> double-check the value &mdash; full <code>IN_…</code> ID, no spaces or extra characters. Make sure it's a Unity <em>Asset Store</em> invoice for PromptModel, not a Unity Cloud or Unity Pro invoice. See <a href="#find-invoice">Where's My Invoice?</a>.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>INVOICE_REFUNDED</code> <span class="tag tag-required">Action: contact support</span></div>
+    <p class="meaning">The invoice has been refunded and is no longer valid.</p>
+    <p class="action"><strong>Fix:</strong> if you received a refund recently, this is expected. If you didn't, email <code>ragendom@gmail.com</code> with the invoice ID and we'll investigate.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>MACHINE_BINDING_CONFLICT</code> <span class="tag tag-info">Action: transfer or wait</span></div>
+    <p class="meaning">The invoice is bound to a different machine.</p>
+    <p class="action"><strong>Fix:</strong> click <strong>Activate this machine</strong> to start the 24-hour transfer, or use the original machine. See <a href="#machine-binding">Machine Binding &amp; Transfer</a>.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>COOLDOWN_ACTIVE</code> <span class="tag tag-info">Action: wait</span></div>
+    <p class="meaning">A transfer was started recently and the 24-hour cooldown hasn't elapsed yet.</p>
+    <p class="action"><strong>Fix:</strong> wait until the countdown finishes (banner shows time remaining), or unbind from the original machine to skip the cooldown if accessible.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>UNSUPPORTED_PACKAGE</code> <span class="tag tag-required">Action: re-enter invoice</span></div>
+    <p class="meaning">That invoice is for a different Asset Store product, not PromptModel.</p>
+    <p class="action"><strong>Fix:</strong> use the invoice from your PromptModel purchase specifically.</p>
+  </div>
+
+  <h3>Quota / rate-limit errors</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>QUOTA_EXCEEDED</code> <span class="tag tag-info">Action: wait or upgrade</span></div>
+    <p class="meaning">You've used all 50 credits in the rolling 30-day window.</p>
+    <p class="action"><strong>Fix:</strong> wait for the oldest credits to age out (the History panel's quota line shows the next reset date). See <a href="#quota">Quota Explained</a>.</p>
+  </div>
+
+  <div class="error-code auto-retry">
+    <div class="error-code-head"><code>RATE_LIMIT</code> <span class="tag tag-auto">Auto-retries</span></div>
+    <p class="meaning">You're submitting too quickly. The window auto-retries after a short delay.</p>
+    <p class="action"><strong>Fix:</strong> just wait. The retry happens automatically.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>CONCURRENT_LIMIT</code> <span class="tag tag-info">Action: wait</span></div>
+    <p class="meaning">Another generation from this machine is still in flight.</p>
+    <p class="action"><strong>Fix:</strong> wait for the in-flight one to finish, then submit. Only one generation per machine at a time.</p>
+  </div>
+
+  <h3>Input / validation errors</h3>
+
+  <div class="error-code user-fix">
+    <div class="error-code-head"><code>INPUT_VALIDATION</code> <span class="tag tag-required">Action: edit input</span></div>
+    <p class="meaning">The submitted form failed server-side checks.</p>
+    <p class="action"><strong>Fix:</strong> usually because text + image were both set or neither was. Pick exactly one and resubmit.</p>
+  </div>
+
+  <div class="error-code user-fix">
+    <div class="error-code-head"><code>INVALID_IMAGE_INPUT</code> <span class="tag tag-required">Action: replace image</span></div>
+    <p class="meaning">The reference image couldn't be processed.</p>
+    <p class="action"><strong>Fix:</strong> see <a href="#image-input">Image Input</a>. Try a clean photo with the subject filling the frame, neutral background, well-lit.</p>
+  </div>
+
+  <div class="error-code user-fix">
+    <div class="error-code-head"><code>IMAGE_TOO_LARGE</code> <span class="tag tag-required">Action: replace image</span></div>
+    <p class="meaning">Image exceeds 10 MB.</p>
+    <p class="action"><strong>Fix:</strong> save as JPEG quality 85, or reduce resolution. 1024px on the long side is plenty for TRELLIS.</p>
+  </div>
+
+  <div class="error-code user-fix">
+    <div class="error-code-head"><code>UNSUPPORTED_IMAGE_FORMAT</code> <span class="tag tag-required">Action: replace image</span></div>
+    <p class="meaning">File isn't actually a PNG, JPEG, or WebP (we sniff magic bytes).</p>
+    <p class="action"><strong>Fix:</strong> re-export from your image editor. Don't just rename a TIFF or BMP to <code>.png</code>.</p>
+  </div>
+
+  <div class="error-code user-fix">
+    <div class="error-code-head"><code>IMAGE_DIMENSIONS_INVALID</code> <span class="tag tag-required">Action: replace image</span></div>
+    <p class="meaning">Image is below 64 px or above 8192 px on at least one axis.</p>
+    <p class="action"><strong>Fix:</strong> resize. 512&ndash;1024 on the long side is the sweet spot.</p>
+  </div>
+
+  <div class="error-code user-fix">
+    <div class="error-code-head"><code>PROMPT_TOO_SHORT</code> / <code>PROMPT_TOO_LONG</code> <span class="tag tag-required">Action: edit prompt</span></div>
+    <p class="meaning">Prompt must be 3&ndash;500 characters.</p>
+    <p class="action"><strong>Fix:</strong> a real description in plain English. See <a href="#prompts">Writing Prompts</a> for what works well.</p>
+  </div>
+
+  <h3>Provider / pipeline errors</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>FLUX_FAILED</code> <span class="tag tag-info">Action: retry</span></div>
+    <p class="meaning">The text-to-image step (FLUX schnell) hit a snag. <strong>No quota was charged.</strong></p>
+    <p class="action"><strong>Fix:</strong> click <strong>Try again</strong>. Usually clears up on retry.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>TRELLIS_FAILED</code> <span class="tag tag-info">Action: retry</span></div>
+    <p class="meaning">The 3D-generation step (TRELLIS) failed to process the image. <strong>No quota was charged.</strong></p>
+    <p class="action"><strong>Fix:</strong> if it persists, the input may be too abstract or too cluttered. Try a clearer reference image or a more concrete prompt.</p>
+  </div>
+
+  <div class="error-code auto-retry">
+    <div class="error-code-head"><code>PROVIDER_RATE_LIMIT</code> <span class="tag tag-auto">Auto-retries</span></div>
+    <p class="meaning">The upstream provider is rate-limited. Window auto-retries after the cooldown.</p>
+    <p class="action"><strong>Fix:</strong> wait. If it persists for more than a couple minutes, retry manually.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>PROVIDER_AUTH_FAILED</code> <span class="tag tag-required">Action: contact support</span></div>
+    <p class="meaning">Backend can't authenticate with fal.ai. Server-side issue, not yours.</p>
+    <p class="action"><strong>Fix:</strong> wait a few minutes and retry. If it persists, email <code>ragendom@gmail.com</code> with the diagnostic ID.</p>
+  </div>
+
+  <h3>Service / network errors</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>NETWORK_ERROR</code> <span class="tag tag-info">Action: retry</span></div>
+    <p class="meaning">The Editor couldn't reach the PromptModel service.</p>
+    <p class="action"><strong>Fix:</strong> check internet connection. If you're behind a corporate firewall, ensure <code>model.promptmotion.dev</code> is reachable. Cloudflare-blocked clients (some VPNs / Tor exits) may also see this.</p>
+  </div>
+
+  <div class="error-code auto-retry">
+    <div class="error-code-head"><code>SERVICE_UNAVAILABLE</code> <span class="tag tag-auto">Auto-retries</span></div>
+    <p class="meaning">Backend is temporarily unavailable (often during a brief restart for maintenance).</p>
+    <p class="action"><strong>Fix:</strong> auto-retry handles transient cases. If it persists for more than a few minutes, check the Asset Store listing's update notes.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>EXPIRED_DOWNLOAD</code> <span class="tag tag-auto">Auto-retries</span></div>
+    <p class="meaning">The signed download URL timed out before the GLB was fetched. Window re-polls status to get a fresh URL.</p>
+    <p class="action"><strong>Fix:</strong> handled automatically.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>GENERATION_TIMEOUT</code> <span class="tag tag-info">Action: check History later</span></div>
+    <p class="meaning">Your generation didn't finish in 5 minutes. The server may still complete it.</p>
+    <p class="action"><strong>Fix:</strong> wait a few minutes, then re-open the window and check the History panel &mdash; the result may appear there.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>PIPELINE_FAILED</code> <span class="tag tag-required">Action: locate raw GLB</span></div>
+    <p class="meaning">GLB downloaded fine but the post-processing pipeline (materials / LODs / prefab wrap) hit an error.</p>
+    <p class="action"><strong>Fix:</strong> the error popup has a <strong>Locate raw GLB</strong> button &mdash; click it to find the GLB at <code>Assets/PromptModel/Generated/_raw/</code>. You can manually drag it into your scene as a placeholder while we investigate. Email <code>ragendom@gmail.com</code> with the diagnostic ID and the GLB attached so we can debug.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>INTERNAL</code> <span class="tag tag-required">Action: contact support</span></div>
+    <p class="meaning">Unexpected server-side error.</p>
+    <p class="action"><strong>Fix:</strong> retry once. If it persists, email <code>ragendom@gmail.com</code> with the diagnostic ID. We log every <code>INTERNAL</code> on the server side and will investigate.</p>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Every error message in the window includes a <code>diagnostic: diag_xxxxxx</code> string. Including this in your support email lets us correlate with our server-side logs in seconds.</div>
+  </div>
+</section>
+
+<!-- ============ PRIVACY ============ -->
+<section class="section" id="privacy">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128274;</span> Privacy</h2>
+  <p class="section-desc">Short version: we don't sell your data, prompts and images aren't used to train models, and we keep almost nothing about you.</p>
+
+  <h3>What we collect</h3>
+  <ul>
+    <li>Your <strong>invoice ID</strong> (sent in the JSON body of authenticated requests).</li>
+    <li>Your <strong>machine fingerprint</strong> &mdash; SHA-256 of <code>deviceUniqueIdentifier + invoice</code>. We see the hash, not the source.</li>
+    <li>Your <strong>prompts</strong> (text strings).</li>
+    <li>Your <strong>reference image bytes</strong> when you submit image-mode generations.</li>
+    <li>A <strong>client version</strong> string.</li>
+  </ul>
+
+  <h3>What we don't collect</h3>
+  <ul>
+    <li>Your name, email address (other than what's in your support email if you write us), or phone number.</li>
+    <li>Your IP address (other than what's inherent to TLS termination on Cloudflare).</li>
+    <li>Unity Editor analytics, scene contents, or telemetry beyond the above.</li>
+    <li>Any cookies in the Editor (no browser involved).</li>
+  </ul>
+
+  <h3>Retention</h3>
+  <ul>
+    <li><strong>Generated GLBs and uploaded reference images:</strong> cached for <strong>30 days</strong>. After that they're deleted from disk.</li>
+    <li><strong>Per-generation audit log entries</strong> (cost telemetry, error codes, durations): retained for <strong>90 days</strong> for operational debugging and refund accounting.</li>
+    <li><strong>Invoice + binding records:</strong> retained for the lifetime of the service.</li>
+  </ul>
+
+  <h3>Third-party processing</h3>
+  <p>Your prompts and reference images are forwarded to <strong>fal.ai</strong> and <strong>Microsoft TRELLIS</strong> for inference. fal.ai's <a href="https://fal.ai/legal/terms-of-service" target="_blank">Terms of Service</a> govern their handling of your data; they retain inputs only as needed to perform inference. We do not authorise (and they do not perform) model training on customer inputs.</p>
+
+  <h3>GDPR-style rights</h3>
+  <p>The publisher is in Hungary (EU). Email <code>ragendom@gmail.com</code> for: a copy of all data we hold for your invoice, deletion, or correction. We respond within 30 days. See <a href="../EULA.md">EULA &sect; 9</a> for the full text.</p>
+</section>
+
+<!-- ============ UPDATING ============ -->
+<section class="section" id="updating">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#10227;</span> Updating PromptModel</h2>
+  <p class="section-desc">Standard Asset Store update flow. Your data persists.</p>
+
+  <ol>
+    <li>Open <code>Window &rarr; Package Manager &rarr; My Assets</code>.</li>
+    <li>If a new version is available, the <strong>Update</strong> button appears next to PromptModel.</li>
+    <li>Click <strong>Update</strong>, then <strong>Import</strong>. Accept the import dialog.</li>
+  </ol>
+
+  <h3>What persists across updates</h3>
+  <ul>
+    <li>Your invoice and binding state (in <code>EditorPrefs</code>).</li>
+    <li>The History panel's last 10 generations.</li>
+    <li>Your auto-spawn preference.</li>
+    <li>Anything in <code>Assets/PromptModel/Generated/</code> &mdash; package updates never touch your generated outputs.</li>
+  </ul>
+
+  <h3>What gets replaced</h3>
+  <ul>
+    <li>Source code under <code>Assets/PromptModel/Editor/</code>.</li>
+    <li>Documentation, EULA, README.</li>
+    <li>Sample scene and bundled prefabs.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Pinned UPM dependency mismatch?</strong> If you've manually upgraded gltFast / Newtonsoft / UnityMeshSimplifier and the PromptModel update bumps the pinned version lower, Unity keeps the higher version (this is normal). PromptModel works against any version &ge; the pin.</div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">The questions support gets most often.</p>
+
+  <details>
+    <summary>Can I use generated models commercially?</summary>
+    <div class="details-body">
+      <p>Yes &mdash; in your own Unity content (games, simulations, training material, AR/VR experiences, anything you sell or distribute). You may not resell the raw <code>.prefab</code> / <code>.glb</code> files as-is on a marketplace. See <a href="../EULA.md">EULA &sect; 5.4</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does PromptModel work offline?</summary>
+    <div class="details-body">
+      <p>The Unity package is fully offline-installable, but generation itself requires a network connection to the backend. Already-generated prefabs continue to work offline forever &mdash; they're standard Unity assets after import.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I generate characters / humans?</summary>
+    <div class="details-body">
+      <p>Technically yes; practically TRELLIS handles props much better than people. Faces in particular are weak. If you must, try <a href="#image-input">image-mode</a> with a clean photo. For hero characters, use a dedicated character generator.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What about HDRP support?</summary>
+    <div class="details-body">
+      <p>v1.0 supports URP and Built-in. HDRP detection emits a warning and falls back to URP shader paths (which look incorrect under HDRP rendering). Full HDRP support is on the v1.1 roadmap.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I use my own AnimatorController on the prefabs?</summary>
+    <div class="details-body">
+      <p>The output prefabs are static meshes &mdash; no skinning, no rig. You can add an Animator yourself if you want to animate transforms, but they're not designed for character animation. (TRELLIS does not produce skinned meshes in v1.)</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What's the difference between Game Ready and High Detail?</summary>
+    <div class="details-body">
+      <p>Both run TRELLIS the same way; the difference is the mesh-simplification target. Game Ready uses <code>mesh_simplify=0.95</code> (heavier reduction), High Detail uses <code>0.90</code> (the most-detail-preserving value fal currently allows). See <a href="#prompts">Writing Prompts &mdash; Quality preset</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Do generations work on Apple Silicon / ARM?</summary>
+    <div class="details-body">
+      <p>Yes &mdash; the Editor side is plain C# and Unity 6 supports Apple Silicon natively. The actual inference runs server-side on fal.ai (NVIDIA GPUs), so your local CPU architecture doesn't matter.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What happens if the backend goes down?</summary>
+    <div class="details-body">
+      <p>The window will surface <code>NETWORK_ERROR</code> or <code>SERVICE_UNAVAILABLE</code>. Already-generated prefabs continue to work in your project (they're just regular Unity assets). The publisher commits to 30 days notice + pro-rated refund of unused quota in the unlikely case of permanent shutdown. See <a href="../EULA.md">EULA &sect; 6</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I script generation outside the window?</summary>
+    <div class="details-body">
+      <p>The public API surface is the <code>Window &rarr; PromptModel</code> menu. Bulk / automated generation outside the Editor window is prohibited by the EULA (&sect; 5.5). For one-off Editor scripts, the internal <code>GenerationCoordinator</code> class is reachable from any Editor C# code in your project, but is unsupported.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>How do I cancel a generation in flight?</summary>
+    <div class="details-body">
+      <p>Click <strong>Cancel</strong> in the Status panel. The local request is cancelled, and the Editor stops downloading. <strong>The server-side generation may still complete and consume a credit</strong> &mdash; cancellation is best-effort on our side, not a refund mechanism.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>The "Generate similar" button is greyed out on my old prefab. Why?</summary>
+    <div class="details-body">
+      <p>Variations need the original prompt, which is stored in a <code>.metadata.json</code> sidecar next to the prefab. Prefabs generated before this feature shipped don't have that sidecar, so the button can't replay the prompt. Generate a fresh model and the new one will support <em>Generate similar</em> normally. The same applies to History rows from before the feature shipped.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Why do my generated models look like they have shadows baked in?</summary>
+    <div class="details-body">
+      <p>They do &mdash; see the <a href="#about-lighting">About PBR materials and lighting</a> section above. This is intrinsic to current AI 3D generation. We document it openly and provide guidance for working around it.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============ SUPPORT ============ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128236;</span> Support</h2>
+  <p class="section-desc">One inbox. We read everything.</p>
+
+  <div class="card">
+    <p class="card-title">&#128231; Email</p>
+    <p><a href="mailto:ragendom@gmail.com?subject=%5BPromptModel%5D%20">ragendom@gmail.com</a> &mdash; please prefix the subject with <strong>[PromptModel]</strong>.</p>
+    <p>Expected response: within <strong>24&ndash;48 hours on weekdays</strong>. The publisher is in CET; expect slower responses on European weekends and holidays.</p>
+  </div>
+
+  <h3>What to include</h3>
+  <p>The faster we can reproduce the issue, the faster we can fix it. Please include:</p>
+  <ul>
+    <li>Your <strong>invoice ID</strong> (<code>IN_xxxxxxxxxxxxxxx</code>).</li>
+    <li>The <strong>diagnostic ID</strong> from any error message you've seen (looks like <code>diag_xxxxxxxxxxxx</code>).</li>
+    <li>Your <strong>Unity Editor version</strong> and <strong>operating system</strong>.</li>
+    <li>The <strong>prompt or image filename</strong> involved.</li>
+    <li>A short description of what you were trying to do, and what happened instead.</li>
+    <li><strong>Console output</strong> (copy/paste the relevant lines &mdash; the window logs <code>[PromptModel]</code>-prefixed messages there).</li>
+  </ul>
+
+  <h3>What we can't help with directly</h3>
+  <ul>
+    <li><strong>Asset Store refunds</strong> &mdash; those go through Unity's standard process at <a href="https://support.unity.com/hc/en-us/articles/207061243" target="_blank">Unity Support</a>. We can confirm refund-related auth state, but we can't issue the refund ourselves.</li>
+    <li><strong>fal.ai or TRELLIS bugs</strong> &mdash; we relay them upstream but can't fix model behaviour ourselves. We <em>can</em> often get a refund of the affected credit on your behalf.</li>
+    <li><strong>Custom integrations / SLAs</strong> &mdash; v1 doesn't offer enterprise tiers. Email anyway and we'll see if we can help.</li>
+  </ul>
+
+  <h3>Other ways to follow PromptModel</h3>
+  <ul>
+    <li>Asset Store update notes &mdash; check the listing for new releases and known issues.</li>
+    <li>The publisher's portfolio site (linked in the Asset Store listing).</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>If you've found PromptModel useful, please consider leaving a review on the Asset Store. Reviews are how new users discover the package and how the publisher decides which features to prioritise next.</div>
+  </div>
+</section>
+
+</main>
+
+<script>
+const sections = [];
+document.querySelectorAll('.section, .hero').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const h1 = s.querySelector('h1');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const id = s.id || (s.parentElement && s.parentElement.id) || '';
+  if (!id) return;
+  sections.push({
+    id: id,
+    title: h2 ? h2.textContent.trim() : (h1 ? h1.textContent.trim() : ''),
+    desc: desc ? desc.textContent.trim() : '',
+    content: s.textContent.toLowerCase(),
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
+  if (e.key === 'Escape') closeSearch();
+});
+
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section[id], .hero[id]').forEach(s => observer.observe(s));
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
