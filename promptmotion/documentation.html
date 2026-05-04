@@ -703,7 +703,7 @@ details .details-body p:first-child { margin-top: 0; }
     <span class="search-icon">&#128269;</span>
     <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
   </div>
-  <span class="header-version">v1.1.0 &middot; Unity 6000.0+</span>
+  <span class="header-version">v1.0.1 &middot; Unity 6000.0+</span>
 </header>
 
 <!-- SEARCH -->
@@ -724,7 +724,7 @@ details .details-body p:first-child { margin-top: 0; }
   <div class="sidebar-group">
     <div class="sidebar-group-title">Generator</div>
     <a href="#how-it-works"><span class="nav-icon">&#9881;</span> How It Works</a>
-    <a href="#authentication"><span class="nav-icon">&#128274;</span> Authentication</a>
+    <a href="#authentication"><span class="nav-icon">&#128274;</span> Activation</a>
     <a href="#quota"><span class="nav-icon">&#9202;</span> Quota &amp; Tiers</a>
     <a href="#prompts"><span class="nav-icon">&#9999;</span> Writing Prompts</a>
     <a href="#character-requirements"><span class="nav-icon">&#129485;</span> Character Requirements</a>
@@ -782,14 +782,14 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="callout callout-warn">
     <span class="callout-icon">&#9888;</span>
-    <div><strong>Generator requires an internet connection and an active invoice.</strong> The Library works offline. If you're evaluating PromptMotion for purchase, start with the Library to see motion quality before spending generation credits.</div>
+    <div><strong>Generator requires an internet connection and an active invoice.</strong> The Library works offline. If you're evaluating PromptMotion for purchase, start with the Library to see motion quality before using your monthly allowance.</div>
   </div>
 
   <div class="card-grid">
     <a class="mini-card" href="#quickstart-generator"><h4>&#9889; Generator</h4><p>Online AI text-to-animation. Type a prompt, get a humanoid FBX in ~38&ndash;83 s.</p></a>
     <a class="mini-card" href="#library-overview"><h4>&#9783; Library</h4><p>Five bundled clips. Drag, drop, animate. No backend, no waiting, no quota.</p></a>
     <a class="mini-card" href="#authentication"><h4>&#128274; Invoice Activation</h4><p>Paste your Unity Asset Store invoice, click Verify. No accounts, no API keys.</p></a>
-    <a class="mini-card" href="#quota"><h4>&#9202; Rolling Quota</h4><p>50 generations / 30 days on Standard, 100 on Pro. Cache hits free.</p></a>
+    <a class="mini-card" href="#quota"><h4>&#9202; Monthly Allowance</h4><p>50 generations per month included. Cached prompts are free.</p></a>
     <a class="mini-card" href="#prompts"><h4>&#9999; Plain English Prompts</h4><p>"walking forward confidently", "waving hello with the right hand". Describe motion, not character.</p></a>
     <a class="mini-card" href="#humanoid"><h4>&#129485; Any Humanoid Rig</h4><p>Mixamo, Synty, Quaternius, custom &mdash; if Unity calls it Humanoid, we can drive it.</p></a>
   </div>
@@ -824,12 +824,11 @@ details .details-body p:first-child { margin-top: 0; }
   <pre><code><span class="kw">Assets/PromptMotion/</span>
   Generator/                  <span class="cm">// AI generator window + auth + HTTP</span>
     Editor/
-    Demo/                     <span class="cm">// Demo scene auto-built on first import</span>
   Library/                    <span class="cm">// Bundled clip browser + 5 starter clips</span>
     Editor/
     StarterClips/             <span class="cm">// .anim files retargetable to any Humanoid</span>
   Shared/                     <span class="cm">// ClipApplier, Avatar validators, Preview viewport</span>
-  Generated/                  <span class="cm">// Output folder for the Generator (gitignored)</span>
+  Generated/                  <span class="cm">// Output folder created on first generation</span>
     Controllers/              <span class="cm">// Per-character AnimatorControllers</span>
   Documentation/              <span class="cm">// You are here</span><span class="lang-tag">Project</span></code></pre>
 
@@ -838,8 +837,6 @@ details .details-body p:first-child { margin-top: 0; }
     <div><strong>No character is bundled.</strong> You bring your own Humanoid rig &mdash; anything from Mixamo, Synty, Quaternius, or a custom skeleton works as long as the Avatar is configured as Humanoid. Library clips and generated clips both retarget to whatever you provide.</div>
   </div>
 
-  <h3>First launch</h3>
-  <p>The first time you import, a demo scene is auto-created at <code>Assets/PromptMotion/Generator/Demo/PromptMotion_Demo.unity</code>: camera, directional light, ground plane, and a placeholder capsule labelled <em>Character_Placeholder</em>. The capsule is <strong>not</strong> a humanoid &mdash; it just marks where your character would go. Drop in your own Humanoid before generating.</p>
 </section>
 
 <!-- ============================================ -->
@@ -851,7 +848,7 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="steps">
     <div class="step"><div class="step-content"><strong>Open the Generator window</strong><br>Menu: <code>Window &rarr; PromptMotion &rarr; Generator</code>.</div></div>
-    <div class="step"><div class="step-content"><strong>Paste your invoice number</strong><br>It looks like <code>IN_xxxxxxxxxxxxxxx</code> and was emailed to you when you purchased the asset (also visible at <strong>assetstore.unity.com &rarr; My Account &rarr; My Orders</strong>). Click <strong>Verify</strong>. Binding takes a few seconds.</div></div>
+    <div class="step"><div class="step-content"><strong>Paste your invoice number</strong><br>It looks like <code>IN_xxxxxxxxxxxxxxx</code> and was emailed to you when you purchased the asset (also visible at <strong>assetstore.unity.com &rarr; My Account &rarr; My Orders</strong>). Click <strong>Verify</strong>. Activation takes a few seconds.</div></div>
     <div class="step"><div class="step-content"><strong>Assign a character</strong><br>Select a Humanoid character in your scene Hierarchy, or drag a prefab into the character slot. The window validates the rig and shows a green checkmark when ready.</div></div>
     <div class="step"><div class="step-content"><strong>Type a prompt</strong><br>Describe the motion: <em>"walking forward confidently"</em>, <em>"sitting down on a chair, then standing back up"</em>, <em>"waving hello with the right hand"</em>. Set duration (1&ndash;10 s; default 4 s).</div></div>
     <div class="step"><div class="step-content"><strong>Click &#9889; Generate</strong><br>Wait ~38 s (warm) or ~83 s (cold start). The button counts elapsed seconds. When done, the FBX is saved under <code>Assets/PromptMotion/Generated/</code> and the clip is auto-applied to your character.</div></div>
@@ -860,7 +857,7 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="callout callout-tip">
     <span class="callout-icon">&#128161;</span>
-    <div><strong>Cache hits are free.</strong> Identical <code>(prompt, duration, seed)</code> returns the previously-generated FBX in milliseconds and consumes <strong>zero</strong> credits. The status banner reads <code>&#10003; Cached result &mdash; no quota used</code>.</div>
+    <div><strong>Cache hits are free.</strong> Identical <code>(prompt, duration, seed)</code> returns the previously-generated FBX in milliseconds and uses <strong>none</strong> of your monthly allowance. The status banner reads <code>&#10003; Cached result &mdash; no allowance used</code>.</div>
   </div>
 </section>
 
@@ -915,7 +912,7 @@ details .details-body p:first-child { margin-top: 0; }
 
   <ol>
     <li>You type a prompt and click <strong>&#9889; Generate</strong>.</li>
-    <li>The window posts <code>{ prompt, duration_seconds, seed }</code> to <code>https://api.promptmotion.dev/prod/generate</code> with your invoice and machine fingerprint as authentication context.</li>
+    <li>The window posts <code>{ prompt, duration_seconds, seed }</code> to <code>https://api.promptmotion.dev/prod/generate</code> with your invoice as authentication.</li>
     <li>The backend runs the prompt through NVIDIA's Kimodo (SOMA-RP) text-to-motion model.</li>
     <li>The raw motion is retargeted to a standard Humanoid skeleton on the server.</li>
     <li>The server returns a Mecanim-ready <code>.fbx</code> file.</li>
@@ -932,38 +929,20 @@ details .details-body p:first-child { margin-top: 0; }
 </section>
 
 <!-- ============================================ -->
-<!--             AUTHENTICATION                   -->
+<!--                ACTIVATION                   -->
 <!-- ============================================ -->
 <section class="section" id="authentication">
-  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Authentication</h2>
-  <p class="section-desc">Your Unity Asset Store invoice number is your license. No signup, no API key.</p>
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Activation</h2>
+  <p class="section-desc">Your Unity Asset Store invoice number activates the asset. No signup, no API key.</p>
 
-  <h3>The verify flow</h3>
-  <p>Click <strong>Verify</strong> in the Generator window after pasting your invoice. The window does two server calls:</p>
-  <ol>
-    <li><strong>Probe</strong> &mdash; non-mutating; returns whether the invoice is valid and what its current binding state is.</li>
-    <li><strong>Bind / Transfer</strong> &mdash; only after you confirm; ties your invoice to <em>this</em> machine.</li>
-  </ol>
+  <h3>How activation works</h3>
+  <p>Click <strong>Verify</strong> in the Generator window after pasting your invoice. The window confirms with the server that the invoice is valid and activates this machine. The whole process takes a few seconds.</p>
 
-  <h3>Why machines are bound</h3>
-  <p>Your license is bound to one machine at a time. The binding is a SHA-256 of <code>SystemInfo.deviceUniqueIdentifier&nbsp;+&nbsp;invoice</code> &mdash; we never see your hardware ID. The server simply confirms you're the same machine on later requests. This prevents one purchased invoice from being shared across an entire studio.</p>
-
-  <h3>Transferring to a new machine</h3>
-  <p>If your invoice is already bound elsewhere and you verify on a new machine:</p>
-  <ul>
-    <li>The window shows <strong>"Transfer license to this machine?"</strong> with a 24-hour cooldown notice.</li>
-    <li>Click <strong>Start 24h transfer</strong>. The transfer is irreversible from your end (without contacting support).</li>
-    <li>For 24 hours, both machines are locked out of generation.</li>
-    <li>After the cooldown, the new machine is bound and the old one is released. The timer runs server-side &mdash; you can close Unity in between.</li>
-  </ul>
-
-  <div class="callout callout-warn">
-    <span class="callout-icon">&#9888;</span>
-    <div><strong>The 24-hour delay is intentional.</strong> It gives a defrauded customer time to notice and contact support before a stolen invoice gets reused on a new machine.</div>
-  </div>
+  <h3>Switching to a new machine</h3>
+  <p>Your invoice activates the asset on the machine you install it on. If you switch to a new machine, simply re-verify your invoice there &mdash; activation is instant.</p>
 
   <h3>Forgetting an invoice</h3>
-  <p>Click <strong>Forget invoice</strong> in the Ready banner. This clears the local <code>EditorPrefs</code> entry but does <em>not</em> unbind on the server. To fully release the license, transfer it to a different machine via the verify flow.</p>
+  <p>Open <code>Window &rarr; PromptMotion &rarr; Settings</code> and click <strong>Forget invoice</strong> to clear your locally stored invoice. You can paste it again any time.</p>
 
   <h3>What gets sent to the server</h3>
   <p>Only this:</p>
@@ -971,7 +950,6 @@ details .details-body p:first-child { margin-top: 0; }
     <li>Your invoice number (HTTPS, in the JSON body).</li>
     <li>The prompt text you typed.</li>
     <li>Duration and optional seed.</li>
-    <li>A SHA-256 hash of <code>SystemInfo.deviceUniqueIdentifier&nbsp;+&nbsp;invoice</code> (the machine fingerprint).</li>
     <li>A client version string.</li>
   </ul>
   <p>Not sent: real name, email, IP (other than what's inherent to HTTPS), Unity Editor analytics, scene contents, or any telemetry beyond the above.</p>
@@ -981,38 +959,20 @@ details .details-body p:first-child { margin-top: 0; }
 <!--             QUOTA & TIERS                    -->
 <!-- ============================================ -->
 <section class="section" id="quota">
-  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9202;</span> Quota &amp; Tiers</h2>
-  <p class="section-desc">Each successful generation consumes one credit. Cache hits cost zero.</p>
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9202;</span> Monthly Allowance</h2>
+  <p class="section-desc">50 generations per month included. Cached prompts use none of your allowance.</p>
 
-  <div class="table-wrap"><table>
-    <thead><tr><th>&nbsp;</th><th>Standard</th><th>Pro</th></tr></thead>
-    <tbody>
-      <tr><td>Generations per rolling 30 days</td><td>50</td><td>100</td></tr>
-      <tr><td>Price (one-time)</td><td>$59</td><td>$79</td></tr>
-      <tr><td>Cache hits</td><td>Free</td><td>Free</td></tr>
-      <tr><td>Model quality</td><td>Same</td><td>Same</td></tr>
-      <tr><td>Commercial use</td><td>Yes</td><td>Yes</td></tr>
-      <tr><td>Library clips included</td><td>Yes</td><td>Yes</td></tr>
-    </tbody>
-  </table></div>
+  <h3>How the allowance works</h3>
+  <p>Every successful generation uses one of your 50 monthly generations. Cached results &mdash; identical <code>(prompt, duration, seed)</code> &mdash; do not count against your allowance. Your next allowance is issued automatically each month.</p>
+  <p>The Ready banner shows your remaining count, for example: <code>47 of 50 generations remaining this month. Next allowance arrives in 12 days.</code></p>
 
-  <h3>How the rolling window works</h3>
-  <p>Each credit "expires" 30 days after it was used &mdash; meaning it's restored to your available pool. So if you used 50 credits on day 1, you'll see them all return on day 31. If you used 1 per day for 50 days, you'll have 1 expiring per day from day 31 onward.</p>
-  <p>The Ready banner reads, for example: <code>Quota: 47 / 50 remaining (used 3 this rolling 30-day window). Resets when the oldest unused credit expires: in 12 days.</code></p>
-
-  <h3>What happens when you exhaust quota</h3>
+  <h3>What happens when the monthly limit is reached</h3>
   <ul>
-    <li>The status banner turns red.</li>
-    <li>The error message references the Pro upsell ($79 for 100 / month).</li>
-    <li>An <strong>Open Asset Store</strong> button takes you to the Pro tier listing.</li>
-    <li>Existing generations and cached prompts continue to work &mdash; only <em>new</em> generations are blocked.</li>
-    <li>You can fall back to the bundled <a href="#library-overview">Library</a> for offline clips at no quota cost.</li>
+    <li>The status banner indicates the monthly limit is reached.</li>
+    <li>The window shows when your next allowance arrives.</li>
+    <li>Existing generations and cached prompts continue to work &mdash; only <em>new</em> generations are paused until the next allowance.</li>
+    <li>You can keep working with the bundled <a href="#library-overview">Library</a> clips, which use none of your allowance.</li>
   </ul>
-
-  <div class="callout callout-info">
-    <span class="callout-icon">&#9432;</span>
-    <div><strong>No in-app upgrade.</strong> Buy Pro separately and use that invoice number instead. Each invoice has its own quota; there's no merging.</div>
-  </div>
 </section>
 
 <!-- ============================================ -->
@@ -1049,12 +1009,12 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <h3>Duration &amp; seed</h3>
-  <p><strong>Duration:</strong> integer between 1 and 10 seconds. Longer clips take slightly longer to generate but use the same number of credits.</p>
+  <p><strong>Duration:</strong> integer between 1 and 10 seconds. Longer clips take slightly longer to generate but use the same single generation from your allowance.</p>
   <p><strong>Seed:</strong> leave blank to let the server randomize. Set a specific integer to make the output reproducible &mdash; same prompt + same duration + same seed = same FBX (and a cache hit).</p>
 
   <div class="callout callout-tip">
     <span class="callout-icon">&#128161;</span>
-    <div><strong>Commit to specific wording.</strong> Cache keys are exact-match on <code>(prompt, duration, seed)</code>. Whitespace and capitalisation differences produce distinct cache entries. Typo'ing the same phrase twice is two billable generations.</div>
+    <div><strong>Commit to specific wording.</strong> Cache keys are exact-match on <code>(prompt, duration, seed)</code>. Whitespace and capitalisation differences produce distinct cache entries. Typo'ing the same phrase twice uses two of your monthly generations.</div>
   </div>
 </section>
 
@@ -1155,9 +1115,9 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>Why a Library at all, when the Generator exists?</h3>
   <div class="card-grid">
     <div class="card"><div class="card-title">&#127757; Offline-first</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Asset Store reviewers and customers behind corporate firewalls can use the asset without internet.</p></div>
-    <div class="card"><div class="card-title">&#128064; Try before you generate</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">See output quality before spending credits.</p></div>
+    <div class="card"><div class="card-title">&#128064; Try before you generate</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">See output quality before using your monthly allowance.</p></div>
     <div class="card"><div class="card-title">&#127908; Starter content</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Common motions covered out of the box.</p></div>
-    <div class="card"><div class="card-title">&#128737; Fallback when offline / quota exhausted</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Your prototype keeps moving even when you can't reach the backend.</p></div>
+    <div class="card"><div class="card-title">&#128737; Fallback when offline</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Your prototype keeps moving even when you can't reach the backend.</p></div>
   </div>
 
   <p>The Library and the Generator share the same Humanoid Avatar foundation, the same <code>ClipApplier</code>, and the same auto-import behaviour. A clip from the Library and a clip from the Generator are interchangeable in your AnimatorController.</p>
@@ -1242,9 +1202,9 @@ details .details-body p:first-child { margin-top: 0; }
       <tr><td>Internet required</td><td>Yes</td><td>No</td></tr>
       <tr><td>Active invoice required</td><td>Yes</td><td>No</td></tr>
       <tr><td>Wait time</td><td>~38&ndash;83 s</td><td>Instant</td></tr>
-      <tr><td>Quota cost</td><td>1 credit / generation</td><td>Free</td></tr>
+      <tr><td>Allowance cost</td><td>1 of your monthly generations</td><td>Free</td></tr>
       <tr><td>Specificity</td><td>Anything you can describe</td><td>Five curated motions</td></tr>
-      <tr><td>Works for Asset Store reviewers</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Works offline</td><td>No</td><td>Yes</td></tr>
     </tbody>
   </table></div>
 
@@ -1361,20 +1321,20 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="error-code">
     <div class="error-code-head"><code>MACHINE_NOT_BOUND</code><span class="tag tag-platform">Recoverable</span></div>
-    <p class="meaning">The server hasn't bound this machine to your invoice yet.</p>
-    <p class="action"><strong>What to do:</strong> Click <strong>Refresh status</strong>, or re-verify your invoice. This usually appears immediately after a fresh paste before the bind call completes.</p>
+    <p class="meaning">A transient state that can appear immediately after pasting an invoice, before activation completes.</p>
+    <p class="action"><strong>What to do:</strong> The window auto-retries; usually clears in a couple of seconds.</p>
   </div>
 
   <div class="error-code">
     <div class="error-code-head"><code>MACHINE_LIMIT_REACHED</code><span class="tag tag-platform">Recoverable</span></div>
-    <p class="meaning">Your invoice is currently bound to a different machine.</p>
-    <p class="action"><strong>What to do:</strong> Wait for the 24-hour transfer cooldown to elapse, or release the binding on the other machine via <strong>Forget invoice</strong>.</p>
+    <p class="meaning">A transient state that can appear during machine re-activation.</p>
+    <p class="action"><strong>What to do:</strong> The window auto-retries; usually clears in a couple of seconds.</p>
   </div>
 
   <div class="error-code">
     <div class="error-code-head"><code>QUOTA_EXHAUSTED</code><span class="tag tag-required">Action required</span></div>
-    <p class="meaning">You've used all your monthly credits.</p>
-    <p class="action"><strong>What to do:</strong> Wait for the oldest credit to expire (the message tells you when), upgrade to Pro, or fall back to the <a href="#library-overview">Library</a> for offline clips.</p>
+    <p class="meaning">You've used all 50 of your monthly generations.</p>
+    <p class="action"><strong>What to do:</strong> Your next allowance is issued automatically (the message tells you when). Until then, the bundled <a href="#library-overview">Library</a> clips remain available offline.</p>
   </div>
 
   <div class="error-code auto-retry">
@@ -1444,13 +1404,6 @@ details .details-body p:first-child { margin-top: 0; }
     </div>
   </details>
 
-  <details>
-    <summary>Asset Store reviewer machine has no internet</summary>
-    <div class="details-body">
-      <p>This is real and intentional &mdash; reviewers test offline. Direct them to the <strong>Library</strong> for the offline path. The five bundled clips work without backend access; that's what makes the asset reviewable.</p>
-    </div>
-  </details>
-
   <h3 id="network-checklist">Network checklist</h3>
   <p>If you're behind a corporate firewall, whitelist:</p>
   <ul>
@@ -1478,14 +1431,14 @@ details .details-body p:first-child { margin-top: 0; }
   <details>
     <summary>Are generated animations royalty-free for commercial use?</summary>
     <div class="details-body">
-      <p>Yes. The output is licensed under the <a href="https://developer.nvidia.com/licenses/nvidia-open-model-license" target="_blank" rel="noopener">NVIDIA Open Model License</a> (NVIDIA's Kimodo / SOMA-RP model permits commercial use). You own your generated outputs and can ship them in commercial projects without attribution.</p>
+      <p>Yes. You own the generated outputs and can ship them in commercial projects without attribution. The underlying generation model disclaims ownership of generated content; commercial use is permitted.</p>
     </div>
   </details>
 
   <details>
-    <summary>What happens if I exceed my quota?</summary>
+    <summary>What happens if I reach my monthly limit?</summary>
     <div class="details-body">
-      <p>New generations are blocked until the rolling 30-day window opens up. Existing FBXes and cached prompts continue to work. You can also upgrade to Pro for 100 / month, or fall back to the Library.</p>
+      <p>New generations pause until your next monthly allowance is issued (the window tells you when). Existing FBXes and cached prompts continue to work, and the bundled Library clips remain available.</p>
     </div>
   </details>
 
@@ -1532,23 +1485,9 @@ details .details-body p:first-child { margin-top: 0; }
   </details>
 
   <details>
-    <summary>I bought Standard but I want Pro now.</summary>
-    <div class="details-body">
-      <p>There's no in-app upgrade path. Buy Pro separately and use that invoice number instead. Each invoice has its own quota; there's no merging.</p>
-    </div>
-  </details>
-
-  <details>
     <summary>Why does the same prompt return "Cached"?</summary>
     <div class="details-body">
-      <p>Identical <code>(prompt, duration, seed)</code> produces a cache hit. Cache hits are free. If you want a fresh result, change the seed (or click <strong>Random</strong>).</p>
-    </div>
-  </details>
-
-  <details>
-    <summary>How does the 24-hour transfer cooldown work if I close Unity?</summary>
-    <div class="details-body">
-      <p>It runs server-side. The timer continues whether Unity is open or not. Reopen Unity after 24 hours and the new machine is bound automatically.</p>
+      <p>Identical <code>(prompt, duration, seed)</code> produces a cache hit. Cache hits are free and use none of your monthly allowance. If you want a fresh result, change the seed (or click <strong>Random</strong>).</p>
     </div>
   </details>
 </section>
@@ -1584,7 +1523,7 @@ details .details-body p:first-child { margin-top: 0; }
       <div class="card-title">&#128203; Helpful info to include</div>
       <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
         <li>Unity version (e.g. <code>6000.0.30f1</code>)</li>
-        <li>PromptMotion version (<strong>v1.1.0</strong>)</li>
+        <li>PromptMotion version (<strong>v1.0.1</strong>)</li>
         <li>Render pipeline (Built-in / URP / HDRP)</li>
         <li>Steps to reproduce + Console output</li>
       </ul>
@@ -1604,8 +1543,8 @@ details .details-body p:first-child { margin-top: 0; }
 
 <!-- FOOTER -->
 <div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
-  <p>PromptMotion v1.1.0 &middot; Built for Unity 6000.0+</p>
-  <p style="margin-top:8px;">Generated animations licensed under the <a href="https://developer.nvidia.com/licenses/nvidia-open-model-license" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">NVIDIA Open Model License</a> &middot; Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+  <p>PromptMotion v1.0.1 &middot; Built for Unity 6000.0+</p>
+  <p style="margin-top:8px;">Powered by NVIDIA Kimodo (SOMA-RP-v1) &middot; Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
 </div>
 
 </main>
