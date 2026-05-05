@@ -936,10 +936,10 @@ details .details-body p:first-child { margin-top: 0; }
   <p class="section-desc">Your Unity Asset Store invoice number activates the asset. No signup, no API key.</p>
 
   <h3>How activation works</h3>
-  <p>Click <strong>Verify</strong> in the Generator window after pasting your invoice. The window confirms with the server that the invoice is valid and activates this machine. The whole process takes a few seconds.</p>
+  <p>Click <strong>Verify</strong> in the Generator window after pasting your invoice. The window confirms with the server that the invoice is valid. The whole process takes a few seconds.</p>
 
-  <h3>Switching to a new machine</h3>
-  <p>Your invoice activates the asset on the machine you install it on. If you switch to a new machine, simply re-verify your invoice there &mdash; activation is instant.</p>
+  <h3>Working across multiple installations</h3>
+  <p>Your invoice activates the asset across all your installations. Paste your invoice number anywhere you've installed PromptMotion and it will work &mdash; quota is shared across installations.</p>
 
   <h3>Forgetting an invoice</h3>
   <p>Open <code>Window &rarr; PromptMotion &rarr; Settings</code> and click <strong>Forget invoice</strong> to clear your locally stored invoice. You can paste it again any time.</p>
@@ -1320,18 +1320,6 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <div class="error-code">
-    <div class="error-code-head"><code>MACHINE_NOT_BOUND</code><span class="tag tag-platform">Recoverable</span></div>
-    <p class="meaning">A transient state that can appear immediately after pasting an invoice, before activation completes.</p>
-    <p class="action"><strong>What to do:</strong> The window auto-retries; usually clears in a couple of seconds.</p>
-  </div>
-
-  <div class="error-code">
-    <div class="error-code-head"><code>MACHINE_LIMIT_REACHED</code><span class="tag tag-platform">Recoverable</span></div>
-    <p class="meaning">A transient state that can appear during machine re-activation.</p>
-    <p class="action"><strong>What to do:</strong> The window auto-retries; usually clears in a couple of seconds.</p>
-  </div>
-
-  <div class="error-code">
     <div class="error-code-head"><code>QUOTA_EXHAUSTED</code><span class="tag tag-required">Action required</span></div>
     <p class="meaning">You've used all 50 of your monthly generations.</p>
     <p class="action"><strong>What to do:</strong> Your next allowance is issued automatically (the message tells you when). Until then, the bundled <a href="#library-overview">Library</a> clips remain available offline.</p>
@@ -1480,7 +1468,7 @@ details .details-body p:first-child { margin-top: 0; }
   <details>
     <summary>My team has multiple developers. Do we each need a license?</summary>
     <div class="details-body">
-      <p>Yes. Per Unity Asset Store policy, each seat / machine that uses the asset needs its own license.</p>
+      <p>Yes. Per Unity Asset Store policy, each seat that uses the asset needs its own license.</p>
     </div>
   </details>
 
