@@ -1731,17 +1731,18 @@ rateUsService.<span class="fn">RegisterSession</span>();
   <p>Enable <code>UseSoftPrompt</code> to show a custom dialog ("Enjoying the game?") before the native review UI. If the user declines, the attempt is counted but the native dialog is skipped.</p>
 
   <h3>Production Setup &mdash; Native Popup Wiring</h3>
-  <p>Both platforms need a one-time wiring step before <code>MaybeRequestReviewAsync</code> can show the OS-level stars-and-feedback dialog. Without these, the backend silently degrades to opening the store listing in a browser.</p>
+  <p>HCE ships a fully self-contained wiring for the Android native popup &mdash; no project-level Gradle edits required. iOS needs nothing at all.</p>
 
   <div class="steps">
-    <div class="step"><div class="step-content"><strong>Android &mdash; add the Play In-App Review Gradle dep</strong><br>Open <code>Tools &rarr; HCE &rarr; Toolset &rarr; Rate Us</code> and click <strong>"Add Play Review dep to gradle"</strong>. The Toolset inserts <code>implementation 'com.google.android.play:review:2.0.1'</code> into <code>Assets/Plugins/Android/mainTemplate.gradle</code>. Without it, <code>AndroidRateUsBackend</code> can't reflect the <code>ReviewManagerFactory</code> class and falls through to the Play Store deep-link.</div></div>
+    <div class="step"><div class="step-content"><strong>Android &mdash; bundled .androidlib (preferred)</strong><br>HCE ships <code>Plugins/Android/HCEPlayReview.androidlib/</code> as a Gradle library module. Unity (2020.3+) auto-includes any <code>*.androidlib</code> folder under <code>Plugins/Android/</code> as a separate Gradle subproject, and that lib's <code>build.gradle</code> declares <code>implementation 'com.google.android.play:review:2.0.1'</code>. The dependency resolves from Maven at build time and <code>AndroidRateUsBackend</code> reflects <code>ReviewManagerFactory</code> at runtime &mdash; nothing to install, nothing to paste, no Custom Main Gradle Template needed.</div></div>
+    <div class="step"><div class="step-content"><strong>Android &mdash; manual fallback (legacy projects)</strong><br>If your Unity version doesn't honour the bundled <code>.androidlib</code> (e.g. Unity 2019), open <code>Tools &rarr; HCE &rarr; Toolset &rarr; Rate Us</code> and click <strong>"Add Play Review dep to gradle (fallback)"</strong>. The Toolset inserts the implementation line into <code>Assets/Plugins/Android/mainTemplate.gradle</code> for you. Without either signal, the backend silently opens the Play Store listing instead.</div></div>
     <div class="step"><div class="step-content"><strong>iOS &mdash; nothing to install</strong><br><code>SKStoreReviewController</code> ships with iOS StoreKit. The included <code>Plugins/iOS/HCERateUs.mm</code> calls <code>requestReviewInScene:</code> on iOS 14+ and <code>requestReview</code> on 10.3+. Set <code>RateUs &rarr; IOSAppId</code> for the deep-link fallback when the soft cap kicks in.</div></div>
     <div class="step"><div class="step-content"><strong>Test on a Play-Store install</strong><br>Sideloaded debug APKs and direct downloads will not display the Android native popup &mdash; Google requires the app to be installed via the Play Store (Internal/Closed/Open testing tracks all qualify). On iOS, the native popup is rate-limited to 3 prompts per 365 days per app and can no-op silently.</div></div>
   </div>
 
   <div class="callout callout-info">
     <span class="callout-icon">&#9432;</span>
-    <div>Run the <strong>Pre-flight checks</strong> button on the Rate Us tab after adding the dep. The Toolset detects the gradle line directly so a green <em>"Play Review gradle dep is in mainTemplate.gradle"</em> banner confirms the wiring &mdash; the <code>HCE_PLAY_REVIEW</code> scripting define is optional (build-time hint only; the runtime backend uses reflection).</div>
+    <div>Run the <strong>Pre-flight checks</strong> button on the Rate Us tab to confirm wiring. A green <em>"Play Review wired via bundled HCEPlayReview.androidlib"</em> banner means you're ready &mdash; the <code>HCE_PLAY_REVIEW</code> scripting define is optional (build-time hint only; the runtime backend uses reflection).</div>
   </div>
 
   <div class="callout callout-warn">
