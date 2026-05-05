@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperCasual Essentials - Documentation</title>
+<style>
+:root {
+  --bg: #0e0e12;
+  --bg-card: #16161d;
+  --bg-card-hover: #1c1c26;
+  --bg-code: #1a1a24;
+  --bg-sidebar: #111117;
+  --text: #e2e2ea;
+  --text-dim: #8888a0;
+  --text-code: #c8c8d8;
+  --accent: #6c5ce7;
+  --accent-light: #a29bfe;
+  --accent-glow: rgba(108,92,231,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #fd79a8;
+  --pink-dim: rgba(253,121,168,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #74b9ff;
+  --blue-dim: rgba(116,185,255,0.12);
+  --border: #2a2a38;
+  --border-light: #33334a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(14,14,18,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), var(--pink));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(108,92,231,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(253,121,168,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+
+.mini-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  padding: 0;
+}
+
+.mini-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+pre .lang-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-family: var(--font);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.kw { color: #c792ea; }
+.str { color: #c3e88d; }
+.cm { color: #546e7a; }
+.fn { color: #82aaff; }
+.tp { color: #ffcb6b; }
+.num { color: #f78c6c; }
+.op { color: #89ddff; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(108,92,231,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:hover { color: var(--accent-light); }
+
+details .details-body { padding: 0 20px 18px; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(116,185,255,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(253,121,168,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <div class="header-logo">
+    <div class="dot">H</div>
+    <span>HyperCasual Essentials</span>
+  </div>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0.1 &middot; Unity 2021.3+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+    <a href="#architecture"><span class="nav-icon">&#128736;</span> Architecture</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Core</div>
+    <a href="#services"><span class="nav-icon">&#128268;</span> Service Locator</a>
+    <a href="#settings"><span class="nav-icon">&#9881;</span> HCE Settings</a>
+    <a href="#save"><span class="nav-icon">&#128190;</span> Save System</a>
+    <a href="#flow"><span class="nav-icon">&#127916;</span> Scene Flow</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Game Systems</div>
+    <a href="#audio"><span class="nav-icon">&#128266;</span> Audio</a>
+    <a href="#haptics"><span class="nav-icon">&#128243;</span> Haptics</a>
+    <a href="#economy"><span class="nav-icon">&#128176;</span> Economy</a>
+    <a href="#shop"><span class="nav-icon">&#128722;</span> Shop &amp; Skins</a>
+    <a href="#iap"><span class="nav-icon">&#128179;</span> In-App Purchases</a>
+    <a href="#ads"><span class="nav-icon">&#128250;</span> Ads</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Engagement</div>
+    <a href="#daily"><span class="nav-icon">&#127873;</span> Daily Rewards</a>
+    <a href="#wheel"><span class="nav-icon">&#127921;</span> Reward Wheel</a>
+    <a href="#minigames"><span class="nav-icon">&#127922;</span> Minigames</a>
+    <a href="#gating"><span class="nav-icon">&#128274;</span> Feature Gating</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">UI &amp; Feedback</div>
+    <a href="#popups"><span class="nav-icon">&#128488;</span> Popups &amp; Toasts</a>
+    <a href="#ui-helpers"><span class="nav-icon">&#127912;</span> UI Helpers</a>
+    <a href="#shaders"><span class="nav-icon">&#127752;</span> Toon Shaders</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Platform &amp; Analytics</div>
+    <a href="#analytics"><span class="nav-icon">&#128202;</span> Analytics</a>
+    <a href="#notifications"><span class="nav-icon">&#128276;</span> Notifications</a>
+    <a href="#rateus"><span class="nav-icon">&#11088;</span> Rate Us</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Tools &amp; Debug</div>
+    <a href="#editor-tools"><span class="nav-icon">&#128295;</span> Editor Tools</a>
+    <a href="#cheats"><span class="nav-icon">&#127918;</span> Cheat Console</a>
+    <a href="#defines"><span class="nav-icon">&#128218;</span> Scripting Defines</a>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero">
+  <h1>HyperCasual<br>Essentials</h1>
+  <p>Drop-in Unity toolkit for hyper-casual games. Audio, economy, IAP, ads, haptics, daily rewards, reward wheel, skin shop, toon shaders, and more &mdash; all wired up and ready to ship.</p>
+  <div class="hero-badges">
+    <span class="badge badge-purple">Unity 2021.3+</span>
+    <span class="badge badge-green">20 Modules</span>
+    <span class="badge badge-yellow">148+ Runtime Scripts</span>
+    <span class="badge badge-pink">BiRP / URP / HDRP</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!--                OVERVIEW                      -->
+<!-- ============================================ -->
+<section class="section" id="overview">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127968;</span> Overview</h2>
+  <p class="section-desc">Everything you need for a hyper-casual game, nothing you don't.</p>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#audio"><h4>&#128266; Audio</h4><p>Pooled SFX, crossfading music, per-category mixer</p></a>
+    <a class="mini-card" href="#economy"><h4>&#128176; Economy</h4><p>Multi-currency wallet with overflow protection</p></a>
+    <a class="mini-card" href="#shop"><h4>&#128722; Shop &amp; Skins</h4><p>Item catalog, material &amp; mesh skin system</p></a>
+    <a class="mini-card" href="#iap"><h4>&#128179; IAP</h4><p>Unity IAP wrapper with dummy testing backend</p></a>
+    <a class="mini-card" href="#ads"><h4>&#128250; Ads</h4><p>AdMob rewarded, interstitial &amp; banner ads</p></a>
+    <a class="mini-card" href="#haptics"><h4>&#128243; Haptics</h4><p>Pattern-based vibration for Android &amp; iOS</p></a>
+    <a class="mini-card" href="#daily"><h4>&#127873; Daily Rewards</h4><p>Streak tracking, welcome gifts, ad-boosted claims</p></a>
+    <a class="mini-card" href="#wheel"><h4>&#127921; Reward Wheel</h4><p>Weighted spinner with tick audio cues</p></a>
+    <a class="mini-card" href="#minigames"><h4>&#127922; Minigames</h4><p>Chest loot drops &amp; slot machine</p></a>
+    <a class="mini-card" href="#popups"><h4>&#128488; Popups &amp; Toasts</h4><p>Modal popup stack &amp; FIFO toast queue</p></a>
+    <a class="mini-card" href="#gating"><h4>&#128274; Feature Gating</h4><p>Level, currency, cooldown &amp; flag unlock gates</p></a>
+    <a class="mini-card" href="#shaders"><h4>&#127752; Toon Shaders</h4><p>Cel-shaded rendering for all pipelines</p></a>
+    <a class="mini-card" href="#analytics"><h4>&#128202; Analytics</h4><p>Pluggable bus with Firebase &amp; Unity sinks</p></a>
+    <a class="mini-card" href="#notifications"><h4>&#128276; Notifications</h4><p>Local push notifications on mobile</p></a>
+    <a class="mini-card" href="#rateus"><h4>&#11088; Rate Us</h4><p>Gated review prompts with soft-prompt option</p></a>
+    <a class="mini-card" href="#save"><h4>&#128190; Save System</h4><p>Versioned blobs with schema migration</p></a>
+    <a class="mini-card" href="#flow"><h4>&#127916; Scene Flow</h4><p>Async scene loading with fade transitions</p></a>
+    <a class="mini-card" href="#cheats"><h4>&#127918; Cheats</h4><p>Debug console with hotkeys &amp; 3-finger gesture</p></a>
+    <a class="mini-card" href="#editor-tools"><h4>&#128295; Editor Tools</h4><p>Setup wizard, toolset window, CSV importers</p></a>
+    <a class="mini-card" href="#defines"><h4>&#128218; Scripting Defines</h4><p>Feature flags for optional SDK integrations</p></a>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Modular by design.</strong> Every system is independent. Use only what you need &mdash; no monolithic dependencies.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              QUICK START                     -->
+<!-- ============================================ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">Get up and running in under 2 minutes.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import the package</strong><br>Import HyperCasual Essentials into your Unity project via the Asset Store or by copying the <code>HyperCasualEssentials/</code> folder into <code>Assets/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Run the Setup Wizard</strong><br>Open <code>Tools &rarr; HCE &rarr; Setup Wizard</code>. Toggle both options (create default configs + enable cheats) and click <strong>Run</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the Toolset</strong><br>Open <code>Tools &rarr; HCE &rarr; Toolset</code> to see the status of all modules. Green = ready, yellow = warning, red = action needed.</div></div>
+    <div class="step"><div class="step-content"><strong>Import the Demo (optional)</strong><br>Import the sample from <code>Samples~/Demo/</code> and open <code>DemoScene.unity</code>. Press Play to see every module in action.</div></div>
+    <div class="step"><div class="step-content"><strong>Configure for production</strong><br>Open <code>Resources/HCE/HCESettings.asset</code> and fill in your ad unit IDs, IAP product IDs, and notification settings. Switch modes from Dummy to Production when ready.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>No auto-modifications.</strong> HyperCasual Essentials never edits your <code>Packages/manifest.json</code>, opens URLs, or downloads anything without your explicit consent.</div>
+  </div>
+
+  <h3>Automatic Bootstrap</h3>
+  <p>At runtime, two bootstrappers fire automatically &mdash; no scene setup required:</p>
+  <div class="flow">
+    <span class="flow-node">BeforeSceneLoad</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">ServiceBootstrap</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Register MonoHost</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">AfterSceneLoad</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">GameBootstrapper</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Apply Settings</span>
+  </div>
+  <p><code>GameBootstrapper</code> applies your <code>HCESettings</code>: target frame rate (default 60), screen sleep prevention, time scale restoration, and multi-touch.</p>
+
+  <h3>Sample Prefabs</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Prefab</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>HCE_Bootstrap</code></td><td>Initializes services, loads save data</td></tr>
+      <tr><td><code>HCE_ToastCanvas</code></td><td>FIFO toast notification queue</td></tr>
+      <tr><td><code>HCE_PopupCanvas</code></td><td>Modal popup stack with backdrop</td></tr>
+      <tr><td><code>HCE_FadeCanvas</code></td><td>Black overlay for scene transitions</td></tr>
+      <tr><td><code>HCE_WheelPrefab</code></td><td>Spinning prize wheel UI</td></tr>
+      <tr><td><code>HCE_ShopItemPrefab</code></td><td>Single shop item row template</td></tr>
+      <tr><td><code>HCE_CoinBurstPrefab</code></td><td>Coin gather particle animation</td></tr>
+      <tr><td><code>HCE_BannerAnchor</code></td><td>Banner ad positioning container</td></tr>
+      <tr><td><code>HCE_HudPrefab</code></td><td>Live currency balance display</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--             ARCHITECTURE                     -->
+<!-- ============================================ -->
+<section class="section" id="architecture">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128736;</span> Architecture</h2>
+  <p class="section-desc">How everything connects under the hood.</p>
+
+  <h3>Service Locator Pattern</h3>
+  <p>All modules register and resolve dependencies through the static <code>HCE.Core.Services</code> class. This keeps systems decoupled &mdash; Audio doesn't know about Economy, Economy doesn't know about Shop.</p>
+
+  <h3>Factory Pattern</h3>
+  <p>Platform-specific backends (Ads, Haptics, IAP, Notifications, Rate Us) are created by factory classes that read <code>HCESettings</code> and select the right implementation. Missing SDKs gracefully fall back to dummy/mock backends.</p>
+
+  <h3>ScriptableObject Configuration</h3>
+  <p>Every system is configured through Inspector-editable ScriptableObject assets. No hardcoded values, no code changes needed for designers to tune behavior.</p>
+
+  <h3>Event-Driven Updates</h3>
+  <p>Services emit C# events (<code>BalanceChanged</code>, <code>Purchased</code>, <code>SpinCompleted</code>, etc.) so UI automatically reacts to state changes without polling.</p>
+
+  <h3>Folder Structure</h3>
+  <pre><code>HyperCasualEssentials/
+  Config/            <span class="cm">// Default ScriptableObject configs</span>
+  Demo/              <span class="cm">// Feature dashboard</span>
+  Documentation~/    <span class="cm">// This documentation</span>
+  Editor/            <span class="cm">// Editor windows, inspectors, importers</span>
+  Plugins/           <span class="cm">// Native iOS/Android code</span>
+  Resources/HCE/     <span class="cm">// HCESettings singleton + icons</span>
+  Runtime/           <span class="cm">// All game systems (148 C# files)</span>
+    Ads/  Analytics/  Audio/  Cheats/  Core/
+    DailyReward/  Economy/  Flow/  Gating/
+    Haptics/  IAP/  Minigames/  Notifications/
+    RateUs/  Save/  Shaders/  Shop/  UI/  Wheel/
+  Samples~/          <span class="cm">// Optional importable demo</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--            SERVICE LOCATOR                   -->
+<!-- ============================================ -->
+<section class="section" id="services">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128268;</span> Service Locator</h2>
+  <p class="section-desc">Minimal static registry for dependency injection.</p>
+
+  <pre><code><span class="cm">// Register a service (once, during bootstrap)</span>
+<span class="tp">Services</span>.<span class="fn">Register</span>&lt;<span class="tp">AudioService</span>&gt;(<span class="kw">new</span> <span class="tp">AudioService</span>());
+
+<span class="cm">// Resolve anywhere</span>
+<span class="kw">var</span> audio = <span class="tp">Services</span>.<span class="fn">Resolve</span>&lt;<span class="tp">IAudioService</span>&gt;();
+audio.<span class="fn">Play</span>(<span class="kw">new</span> <span class="tp">SoundId</span>(<span class="str">"click"</span>));
+
+<span class="cm">// Safe resolve (no exception if missing)</span>
+<span class="kw">if</span> (<span class="tp">Services</span>.<span class="fn">TryResolve</span>&lt;<span class="tp">IWalletService</span>&gt;(<span class="kw">out var</span> wallet))
+    wallet.<span class="fn">Credit</span>(<span class="tp">CurrencyId</span>.Coins, <span class="num">100</span>, <span class="str">"bonus"</span>);<span class="lang-tag">C#</span></code></pre>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Register&lt;T&gt;(T instance)</code></td><td>Bind a singleton by type. Throws if already registered.</td></tr>
+      <tr><td><code>Resolve&lt;T&gt;()</code></td><td>Get a registered service. Throws if missing.</td></tr>
+      <tr><td><code>TryResolve&lt;T&gt;(out T)</code></td><td>Non-throwing resolve. Returns <code>false</code> if missing.</td></tr>
+      <tr><td><code>IsRegistered&lt;T&gt;()</code></td><td>Check existence without throwing.</td></tr>
+      <tr><td><code>Unregister&lt;T&gt;()</code></td><td>Remove a binding. No-op if absent.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--              HCE SETTINGS                    -->
+<!-- ============================================ -->
+<section class="section" id="settings">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> HCE Settings</h2>
+  <p class="section-desc">Single ScriptableObject configuring every module.</p>
+
+  <p>Located at <code>Resources/HCE/HCESettings.asset</code>. Access at runtime via <code>HCESettings.Instance</code>. Falls back to safe defaults if the asset is missing.</p>
+
+  <details>
+    <summary>General Settings</summary>
+    <div class="details-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Field</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>TargetFrameRate</code></td><td>60</td><td>Application.targetFrameRate (set if currently &le; 0)</td></tr>
+          <tr><td><code>NeverSleep</code></td><td>true</td><td>Prevent screen sleep on mobile</td></tr>
+          <tr><td><code>VerboseLogging</code></td><td>false</td><td>Enable detailed HCE log output</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>All Sub-Settings</summary>
+    <div class="details-body">
+      <p>HCESettings contains nested settings objects for each module:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Property</th><th>Type</th><th>Section</th></tr></thead>
+        <tbody>
+          <tr><td><code>Ads</code></td><td>AdMobSettings</td><td><a href="#ads">Ads</a></td></tr>
+          <tr><td><code>Analytics</code></td><td>AnalyticsSettings</td><td><a href="#analytics">Analytics</a></td></tr>
+          <tr><td><code>IAP</code></td><td>IAPSettings</td><td><a href="#iap">IAP</a></td></tr>
+          <tr><td><code>Audio</code></td><td>AudioSettings</td><td><a href="#audio">Audio</a></td></tr>
+          <tr><td><code>Haptics</code></td><td>HapticsSettings</td><td><a href="#haptics">Haptics</a></td></tr>
+          <tr><td><code>Notifications</code></td><td>NotificationsSettings</td><td><a href="#notifications">Notifications</a></td></tr>
+          <tr><td><code>RateUs</code></td><td>RateUsSettings</td><td><a href="#rateus">Rate Us</a></td></tr>
+          <tr><td><code>WelcomeGifts</code></td><td>WelcomeGiftsSettings</td><td><a href="#daily">Daily Rewards</a></td></tr>
+          <tr><td><code>Minigames</code></td><td>MinigamesSettings</td><td><a href="#minigames">Minigames</a></td></tr>
+          <tr><td><code>General</code></td><td>GeneralSettings</td><td>Above</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--               SAVE SYSTEM                    -->
+<!-- ============================================ -->
+<section class="section" id="save">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128190;</span> Save System</h2>
+  <p class="section-desc">Versioned JSON blobs with schema migration and debounced writes.</p>
+
+  <h3>How It Works</h3>
+  <p>All game state is serialized into a <code>SaveBlobV1</code> and stored in a single PlayerPrefs key (<code>HCE_SAVE_V1</code>). Writes are debounced to at most once per second to avoid I/O spam.</p>
+
+  <pre><code><span class="cm">// Save</span>
+<span class="kw">var</span> blob = <span class="kw">new</span> <span class="tp">SaveBlobV1</span>();
+walletService.<span class="fn">SaveToBlob</span>(blob);
+shopService.<span class="fn">SaveToBlob</span>(blob);
+backend.<span class="fn">WriteBlob</span>(blob);
+
+<span class="cm">// Load</span>
+<span class="kw">var</span> loaded = backend.<span class="fn">ReadBlob</span>();
+<span class="kw">if</span> (loaded != <span class="kw">null</span>) {
+    loaded = <span class="tp">SaveMigrator</span>.<span class="fn">Upgrade</span>(loaded, loaded.SchemaVersion, <span class="tp">SaveMigrator</span>.CurrentVersion);
+    walletService.<span class="fn">LoadFromBlob</span>(loaded);
+    shopService.<span class="fn">LoadFromBlob</span>(loaded);
+}<span class="lang-tag">C#</span></code></pre>
+
+  <h3>SaveBlobV1 Structure</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>SchemaVersion</code></td><td>int</td><td>Current schema version (1)</td></tr>
+      <tr><td><code>Balances</code></td><td>List&lt;BalanceRecord&gt;</td><td>Currency ID + amount pairs</td></tr>
+      <tr><td><code>Strings</code></td><td>List&lt;StringKvp&gt;</td><td>Generic key-value pairs</td></tr>
+      <tr><td><code>Owned</code></td><td>List&lt;OwnedEntry&gt;</td><td>Shop item ownership + equipped flag</td></tr>
+      <tr><td><code>LastDailyStamp</code></td><td>string</td><td>Last daily reward claim timestamp</td></tr>
+      <tr><td><code>StreakCount</code></td><td>int</td><td>Current daily reward streak</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Schema Migration</h3>
+  <p>When adding new fields, create a new schema version and register an upgrader in <code>SaveMigrator.Upgrade()</code>. The migrator chains upgrades: V0 &rarr; V1 &rarr; V2 &rarr; etc.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>All HCE PlayerPrefs keys are prefixed with <code>HCE_</code> to avoid collisions with your project's data.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              SCENE FLOW                      -->
+<!-- ============================================ -->
+<section class="section" id="flow">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127916;</span> Scene Flow</h2>
+  <p class="section-desc">Async scene loading with fade transitions and cooldown timers.</p>
+
+  <h3>SceneFadeService</h3>
+  <p>Load scenes with a smooth fade-out / load / fade-in sequence. Uses unscaled delta time so it works even when the game is paused.</p>
+
+  <pre><code><span class="kw">var</span> fadeService = <span class="kw">new</span> <span class="tp">SceneFadeService</span>(fadeConfig, overlayImage);
+<span class="kw">await</span> fadeService.<span class="fn">LoadAsync</span>(sceneRef);<span class="lang-tag">C#</span></code></pre>
+
+  <div class="flow">
+    <span class="flow-node">Fade Out</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Load Scene (async)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Activate Scene</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Fade In</span>
+  </div>
+
+  <h3>CooldownTimer</h3>
+  <p>Invariant-culture cooldown gate. Serializes to tick strings that are safe across locales and devices.</p>
+
+  <pre><code><span class="kw">var</span> timer = <span class="kw">new</span> <span class="tp">CooldownTimer</span>(timeSource, <span class="tp">TimeSpan</span>.<span class="fn">FromHours</span>(<span class="num">24</span>), <span class="str">"daily_reward"</span>, savedStamp);
+<span class="kw">if</span> (timer.IsReady) {
+    <span class="cm">// Grant reward</span>
+    timer.<span class="fn">Stamp</span>();
+    <span class="tp">PlayerPrefs</span>.<span class="fn">SetString</span>(<span class="str">"stamp"</span>, timer.<span class="fn">ToSave</span>());
+} <span class="kw">else</span> {
+    <span class="tp">Debug</span>.<span class="fn">Log</span>($<span class="str">"Ready in {timer.Remaining.TotalHours:F1}h"</span>);
+}<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Time Sources</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Source</th><th>Use Case</th><th>Anti-Cheat</th></tr></thead>
+    <tbody>
+      <tr><td><code>LocalTimeSource</code></td><td>Default wall-clock time</td><td>No &mdash; user can change device clock</td></tr>
+      <tr><td><code>ServerTimeSource</code></td><td>HTTP HEAD probe for UTC time</td><td>Yes &mdash; reads server Date header</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tweening</h3>
+  <p>Lightweight static tween driver via <code>TweenRunner</code>. Supports <code>Move</code>, <code>Rotate</code>, <code>Scale</code>, and <code>Fade</code> with easing and cancellation.</p>
+
+  <pre><code><span class="tp">TweenRunner</span>.<span class="fn">Scale</span>(transform, <span class="tp">Vector3</span>.zero, <span class="tp">Vector3</span>.one, <span class="num">0.4f</span>, <span class="tp">Easing</span>.OutBack);
+<span class="tp">TweenRunner</span>.<span class="fn">Fade</span>(canvasGroup, <span class="num">0f</span>, <span class="num">1f</span>, <span class="num">0.3f</span>, <span class="tp">Easing</span>.InOutSine);<span class="lang-tag">C#</span></code></pre>
+
+  <p>Available easing functions: <code>Linear</code>, <code>InOutQuart</code>, <code>InOutSine</code>, <code>OutCubic</code>, <code>OutBack</code>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                  AUDIO                       -->
+<!-- ============================================ -->
+<section class="section" id="audio">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128266;</span> Audio</h2>
+  <p class="section-desc">Pooled SFX playback, crossfading music, and a per-category mixer.</p>
+
+  <h3>Setup</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Create a SoundBank</strong><br>Right-click in Project &rarr; <code>Create &rarr; HCE &rarr; Audio &rarr; Sound Bank</code>. Add entries with ID, AudioClip, volume, pitch, and category.</div></div>
+    <div class="step"><div class="step-content"><strong>Assign to Settings</strong><br>Drag your SoundBank into <code>HCESettings &rarr; Audio &rarr; DefaultSoundBank</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Play sounds</strong><br>Resolve the service and call <code>Play()</code> with a <code>SoundId</code>.</div></div>
+  </div>
+
+  <pre><code><span class="cm">// Play SFX</span>
+<span class="kw">var</span> audio = <span class="tp">Services</span>.<span class="fn">Resolve</span>&lt;<span class="tp">IAudioService</span>&gt;();
+audio.<span class="fn">Play</span>(<span class="kw">new</span> <span class="tp">SoundId</span>(<span class="str">"click"</span>));
+audio.<span class="fn">Play</span>(<span class="kw">new</span> <span class="tp">SoundId</span>(<span class="str">"explosion"</span>), <span class="num">0.5f</span>);  <span class="cm">// 50% volume</span>
+
+<span class="cm">// Play music with crossfade</span>
+audio.<span class="fn">PlayMusic</span>(<span class="kw">new</span> <span class="tp">SoundId</span>(<span class="str">"menu_loop"</span>), <span class="num">2f</span>);
+
+<span class="cm">// Mixer control</span>
+audio.<span class="fn">SetVolume</span>(<span class="tp">AudioCategory</span>.Sfx, <span class="num">0.8f</span>);
+audio.<span class="fn">SetMute</span>(<span class="tp">AudioCategory</span>.Music, <span class="kw">true</span>);<span class="lang-tag">C#</span></code></pre>
+
+  <h3>SoundBank Entry Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Range</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Id</code></td><td>&mdash;</td><td>Unique string identifier</td></tr>
+      <tr><td><code>Clip</code></td><td>&mdash;</td><td>AudioClip reference</td></tr>
+      <tr><td><code>Volume</code></td><td>0&ndash;1</td><td>Entry volume (multiplied by master &times; category)</td></tr>
+      <tr><td><code>Pitch</code></td><td>0.1&ndash;3</td><td>Playback pitch</td></tr>
+      <tr><td><code>PitchJitter</code></td><td>0&ndash;0.5</td><td>Random pitch variance (&plusmn;jitter)</td></tr>
+      <tr><td><code>Category</code></td><td>&mdash;</td><td>Sfx, Music, UI, Voice, or Ambient</td></tr>
+      <tr><td><code>Loop</code></td><td>&mdash;</td><td>Continuous playback for music/ambient</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>CSV Import</h3>
+  <p>Bulk-populate a SoundBank: select it in the Project window, then <code>Tools &rarr; HCE &rarr; Import SoundBank CSV</code>.</p>
+  <pre><code><span class="cm"># id, clipName, volume, pitch, pitchJitter</span>
+click, UI_Click, 0.8, 1.0, 0.05
+footstep, Footstep_Concrete, 1.0, 1.2, 0.1
+ambient_wind, , 1.0, 1.0, 0<span class="lang-tag">CSV</span></code></pre>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Auto-routing:</strong> If you call <code>Play()</code> on an entry tagged as <code>AudioCategory.Music</code>, it automatically routes to <code>PlayMusic()</code> with crossfade.</div>
+  </div>
+
+  <h3>Audio Mix Formula</h3>
+  <pre><code>Final Volume = Entry.Volume &times; Master &times; Category
+               (0 if MasterMuted OR CategoryMuted)
+Final Pitch  = Entry.Pitch &plusmn; Random(PitchJitter)<span class="lang-tag">text</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--                HAPTICS                       -->
+<!-- ============================================ -->
+<section class="section" id="haptics">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#128243;</span> Haptics</h2>
+  <p class="section-desc">Pattern-based vibration with platform-specific backends.</p>
+
+  <h3>Setup</h3>
+  <pre><code><span class="kw">var</span> haptics = <span class="kw">new</span> <span class="tp">HapticService</span>();
+haptics.<span class="fn">Initialize</span>();
+
+<span class="kw">var</span> pattern = <span class="tp">Resources</span>.<span class="fn">Load</span>&lt;<span class="tp">HapticPattern</span>&gt;(<span class="str">"Light"</span>);
+haptics.<span class="fn">Play</span>(pattern);
+haptics.<span class="fn">Cancel</span>();  <span class="cm">// Stop vibration</span><span class="lang-tag">C#</span></code></pre>
+
+  <h3>HapticPattern Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>DurationsMs</code></td><td>long[]</td><td>Duration of each pulse in ms</td></tr>
+      <tr><td><code>Amplitudes</code></td><td>int[]</td><td>Intensity per pulse (0&ndash;255)</td></tr>
+      <tr><td><code>PredefinedId</code></td><td>int</td><td>Platform effect ID (-1 = use custom waveform)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Platform Backends</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Platform</th><th>Backend</th><th>Features</th></tr></thead>
+    <tbody>
+      <tr><td>Android 26+</td><td>AndroidHapticsBackend</td><td>VibrationEffect waveforms, predefined effects (29+)</td></tr>
+      <tr><td>Android &lt;26</td><td>AndroidHapticsBackend</td><td>Legacy vibrate (no amplitudes)</td></tr>
+      <tr><td>iOS</td><td>IOSHapticsBackend</td><td>CoreHaptics via native plugin</td></tr>
+      <tr><td>Editor</td><td>EditorHapticsBackend</td><td>Log-only (no vibration)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Mode Configuration</h3>
+  <p>In <code>HCESettings &rarr; Haptics</code>:</p>
+  <ul style="margin-bottom:16px;padding-left:24px;">
+    <li><strong>Disabled:</strong> All calls dropped silently</li>
+    <li><strong>Dummy:</strong> Logs to console, no vibration</li>
+    <li><strong>Production:</strong> Real platform vibration</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>The included <code>AndroidManifest.xml</code> declares <code>android.permission.VIBRATE</code> automatically.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                ECONOMY                       -->
+<!-- ============================================ -->
+<section class="section" id="economy">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#128176;</span> Economy</h2>
+  <p class="section-desc">Multi-currency wallet with overflow protection and transaction logging.</p>
+
+  <h3>Wallet Service</h3>
+  <pre><code><span class="cm">// Credit</span>
+wallet.<span class="fn">Credit</span>(<span class="tp">CurrencyId</span>.Coins, <span class="num">500</span>, <span class="str">"level_complete"</span>);
+
+<span class="cm">// Debit (returns false if insufficient)</span>
+<span class="kw">if</span> (wallet.<span class="fn">TryDebit</span>(<span class="tp">CurrencyId</span>.Gems, <span class="num">10</span>, <span class="str">"shop_purchase"</span>)) {
+    <span class="cm">// Purchase succeeded</span>
+}
+
+<span class="cm">// Read balance</span>
+<span class="kw">long</span> coins = wallet.<span class="fn">Get</span>(<span class="tp">CurrencyId</span>.Coins);
+
+<span class="cm">// Listen for changes</span>
+wallet.BalanceChanged += (id, newBalance) =&gt; UpdateHud(id, newBalance);<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Built-in Currencies</h3>
+  <p><code>CurrencyId.Coins</code> and <code>CurrencyId.Gems</code> are predefined. Create custom currencies with <code>new CurrencyId("keys")</code>.</p>
+
+  <h3>Overflow Protection</h3>
+  <p>Balances are capped at <code>long.MaxValue / 2</code> instead of crashing on overflow. Safe for long-term play sessions.</p>
+
+  <h3>Transaction Log</h3>
+  <p>Every credit/debit is recorded in a ring buffer (default 50 entries) with timestamp, currency, delta, and reason string. Use <code>transactionLog.GetRecent(10)</code> for analytics or debugging.</p>
+
+  <h3>Coin Burst Animation</h3>
+  <p>Spawn a stream of coins flying from a world position to your HUD:</p>
+  <pre><code><span class="kw">var</span> request = <span class="kw">new</span> <span class="tp">CoinBurstRequest</span> {
+    CoinCount = <span class="num">15</span>,
+    TotalReward = <span class="num">100</span>,
+    OriginWorld = transform.position,
+    HudPositionProvider = () =&gt; hudCoinIcon.position,
+    StaggerSeconds = <span class="num">0.02f</span>
+};
+coinBurstRunner.<span class="fn">PlayAsync</span>(request, onCompleted: () =&gt; <span class="tp">Debug</span>.<span class="fn">Log</span>(<span class="str">"done"</span>));<span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--              SHOP & SKINS                    -->
+<!-- ============================================ -->
+<section class="section" id="shop">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128722;</span> Shop &amp; Skins</h2>
+  <p class="section-desc">Item catalog with material and mesh skin payloads.</p>
+
+  <h3>Setup</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Create a ShopCatalog</strong><br><code>Create &rarr; HCE &rarr; Shop &rarr; Catalog</code></div></div>
+    <div class="step"><div class="step-content"><strong>Create ShopItems</strong><br><code>Create &rarr; HCE &rarr; Shop &rarr; Item</code>. Set ID, price, currency, icon, and skin payload.</div></div>
+    <div class="step"><div class="step-content"><strong>Create Skin Payloads</strong><br><code>Create &rarr; HCE &rarr; Shop &rarr; Material Skin Payload</code> or <code>Mesh Skin Payload</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wire the SkinApplier</strong><br>Add <code>SkinApplier</code> to the target GameObject. It auto-applies skins when items are equipped.</div></div>
+  </div>
+
+  <pre><code><span class="cm">// Purchase</span>
+<span class="kw">if</span> (shopService.<span class="fn">TryPurchase</span>(item)) {
+    <span class="tp">Debug</span>.<span class="fn">Log</span>(<span class="str">"Bought!"</span>);
+}
+
+<span class="cm">// Equip</span>
+shopService.<span class="fn">Equip</span>(item);  <span class="cm">// Fires Equipped event &rarr; SkinApplier applies it</span>
+
+<span class="cm">// Events</span>
+shopService.Purchased += (item) =&gt; <span class="fn">ShowToast</span>(<span class="str">"Purchased!"</span>);
+shopService.Equipped += (item) =&gt; <span class="fn">RefreshUI</span>();<span class="lang-tag">C#</span></code></pre>
+
+  <h3>CSV Import</h3>
+  <p>Select a ShopCatalog, then <code>Tools &rarr; HCE &rarr; Import Shop CSV</code>:</p>
+  <pre><code><span class="cm"># id, price, currency, englishName</span>
+blue_skin, 100, coins, Blue Skin
+fire_sword, 50, gems, Fire Sword<span class="lang-tag">CSV</span></code></pre>
+
+  <h3>Skin Payload Types</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Type</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>MaterialSkinPayload</code></td><td>Swaps the first Renderer's <code>sharedMaterial</code></td></tr>
+      <tr><td><code>MeshSkinPayload</code></td><td>Swaps the first MeshFilter's <code>sharedMesh</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--                   IAP                        -->
+<!-- ============================================ -->
+<section class="section" id="iap">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128179;</span> In-App Purchases</h2>
+  <p class="section-desc">Unified purchase flow with real and dummy store backends.</p>
+
+  <h3>Product Setup</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Create an IAPCatalog</strong><br><code>Create &rarr; HCE &rarr; IAP &rarr; Catalog</code></div></div>
+    <div class="step"><div class="step-content"><strong>Create IAPProducts</strong><br><code>Create &rarr; HCE &rarr; IAP &rarr; Product</code>. Set store ID (lowercase a-z0-9_), kind, and reward hook.</div></div>
+    <div class="step"><div class="step-content"><strong>Create Reward Hooks</strong><br>Use <code>CoinsPurchaseReward</code> for consumables or <code>FlagPurchaseReward</code> for non-consumables.</div></div>
+    <div class="step"><div class="step-content"><strong>Configure HCESettings</strong><br>Set IAP mode: <strong>Dummy</strong> (testing), <strong>Test</strong> (real SDK, test environment), or <strong>Production</strong>.</div></div>
+  </div>
+
+  <h3>Purchase Flow</h3>
+  <pre><code><span class="kw">var</span> result = <span class="kw">await</span> iapBridge.<span class="fn">PurchaseAsync</span>(<span class="str">"com.game.1000coins"</span>);
+<span class="kw">if</span> (result.Success) {
+    <span class="cm">// Reward already granted via RewardHook</span>
+    <span class="fn">ShowToast</span>(<span class="str">"Thank you!"</span>);
+}<span class="lang-tag">C#</span></code></pre>
+
+  <div class="flow">
+    <span class="flow-node">User taps Buy</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">IAPBridge.PurchaseAsync</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Store Backend</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">PurchaseResult</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">RewardHook.Grant()</span>
+  </div>
+
+  <h3>Reward Hook Types</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Type</th><th>Use Case</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><code>CoinsPurchaseReward</code></td><td>Consumable (coins, gems)</td><td>Credits wallet</td></tr>
+      <tr><td><code>FlagPurchaseReward</code></td><td>Non-consumable (no-ads, skin pack)</td><td>Sets PlayerPrefs flag</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Failure Reasons (PurchaseResult.Reason)</h3>
+  <p>The Unity IAP backend pre-validates every purchase request before calling the store, so failures surface as a clean <code>PurchaseResult { Success = false, Reason = "..." }</code> instead of throwing. Show <code>Reason</code> in toasts/logs to diagnose live issues.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Reason</th><th>Meaning</th><th>Common cause</th></tr></thead>
+    <tbody>
+      <tr><td><code>not_initialized</code></td><td>Backend hasn't finished <code>InitializeAsync</code>.</td><td>Buy tapped before init resolved &mdash; gate the button on <code>IsInitialized</code>.</td></tr>
+      <tr><td><code>invalid_product_id</code></td><td>Empty or null product id passed in.</td><td>Caller bug, e.g. missing <code>IapProductId</code> on a shop entry.</td></tr>
+      <tr><td><code>product_not_in_catalog</code></td><td>The id isn't in the controller's product list.</td><td>Product not registered in Play Console / App Store Connect for this package, or the id was misspelled.</td></tr>
+      <tr><td><code>product_not_available</code></td><td>Store fetched the product but flagged it unavailable.</td><td>Product inactive on the store, region not supported, or test track config issue.</td></tr>
+      <tr><td><code>purchase_threw: &lt;message&gt;</code></td><td>Synchronous exception from <code>controller.InitiatePurchase</code>.</td><td>Last-line guard against any future Unity Purchasing change. Inspect the wrapped message.</td></tr>
+      <tr><td><code>UserCancelled</code> &middot; <code>NetworkError</code> &middot; <code>PaymentDeclined</code> &hellip;</td><td>Forwarded from Unity Purchasing's <code>PurchaseFailureReason</code>.</td><td>Standard live-purchase failure modes &mdash; show a generic error toast.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>The <code>product_not_in_catalog</code> guard prevents the deep <code>InvalidCartItemException</code> that Unity Purchasing v5 throws when an unregistered id reaches <code>InitiatePurchase</code>. Surface it as "Product unavailable" to the user and check Play Console / App Store Connect first.</div>
+  </div>
+
+  <h3>Dummy Backend</h3>
+  <p>The dummy backend simulates purchases with configurable behavior:</p>
+  <ul style="margin-bottom:16px;padding-left:24px;">
+    <li><strong>AlwaysSucceed:</strong> Returns success with dummy receipt</li>
+    <li><strong>AlwaysFail:</strong> Returns "simulated_failure"</li>
+    <li><strong>AlwaysCancel:</strong> Returns "user_cancelled"</li>
+  </ul>
+  <p>Latency is configurable (default 250ms) to test loading spinners.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                   ADS                        -->
+<!-- ============================================ -->
+<section class="section" id="ads">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#128250;</span> Ads</h2>
+  <p class="section-desc">AdMob integration with rewarded, interstitial, and banner support.</p>
+
+  <h3>Showing Ads</h3>
+  <pre><code><span class="kw">var</span> adService = <span class="tp">Services</span>.<span class="fn">Resolve</span>&lt;<span class="tp">AdService</span>&gt;();
+
+<span class="cm">// Rewarded video</span>
+<span class="kw">var</span> result = <span class="kw">await</span> adService.<span class="fn">ShowRewardedAsync</span>(rewardedPlacement);
+<span class="kw">if</span> (result.Completed) <span class="fn">GrantReward</span>();
+
+<span class="cm">// Interstitial</span>
+<span class="kw">bool</span> shown = <span class="kw">await</span> adService.<span class="fn">ShowInterstitialAsync</span>(interstitialPlacement);
+
+<span class="cm">// Banner</span>
+adService.<span class="fn">LoadBanner</span>(bannerPlacement);
+adService.<span class="fn">HideBanner</span>(bannerPlacement);<span class="lang-tag">C#</span></code></pre>
+
+  <h3>RewardedResult</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>Completed</code></td><td>User watched the full video</td></tr>
+      <tr><td><code>Skipped</code></td><td>User dismissed before completion</td></tr>
+      <tr><td><code>Failed</code></td><td>Load or show error (check <code>Reason</code>)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Mode Configuration</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mode</th><th>Backend</th><th>Use When</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dummy</strong></td><td>MockAdBackend</td><td>Development &mdash; no SDK needed</td></tr>
+      <tr><td><strong>Test</strong></td><td>AdMobBackend</td><td>Testing &mdash; uses Google's test ad unit IDs</td></tr>
+      <tr><td><strong>Production</strong></td><td>AdMobBackend</td><td>Release &mdash; uses your production ad unit IDs</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Production Setup</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Install Google Mobile Ads SDK</strong><br>The <code>HCE_ADMOB</code> define is auto-set when the SDK is detected.</div></div>
+    <div class="step"><div class="step-content"><strong>Fill production IDs</strong><br>In <code>HCESettings &rarr; Ads</code>, fill in all Android and iOS production ad unit IDs.</div></div>
+    <div class="step"><div class="step-content"><strong>Switch to Production mode</strong><br>The Toolset window will show green status when all IDs are configured.</div></div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>GDPR:</strong> <code>RequestNonPersonalizedAdsOnly</code> is <strong>true</strong> by default, adding <code>"npa"="1"</code> to all ad requests for EU consent compliance.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             DAILY REWARDS                    -->
+<!-- ============================================ -->
+<section class="section" id="daily">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127873;</span> Daily Rewards</h2>
+  <p class="section-desc">Streak-based welcome gifts with ad-boosted claiming.</p>
+
+  <h3>How It Works</h3>
+  <div class="flow">
+    <span class="flow-node">Player opens app</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">DailyStreakTracker.RegisterLogin()</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Streak advances (or resets)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">WelcomeGiftSchedule.TryGetForDay()</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Grant reward</span>
+  </div>
+
+  <h3>Streak Logic</h3>
+  <ul style="margin-bottom:16px;padding-left:24px;">
+    <li><strong>Same day:</strong> No-op (already claimed)</li>
+    <li><strong>Next day:</strong> Streak increments</li>
+    <li><strong>Skipped days:</strong> Streak resets to 1 (unless grace days configured)</li>
+  </ul>
+
+  <h3>Default Schedule</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Day</th><th>Reward</th><th>Amount</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Coins</td><td>50</td></tr>
+      <tr><td>2</td><td>Coins</td><td>100</td></tr>
+      <tr><td>3</td><td>Gems</td><td>5</td></tr>
+      <tr><td>4</td><td>Coins</td><td>250</td></tr>
+      <tr><td>5</td><td>Coins</td><td>500</td></tr>
+      <tr><td>6</td><td>Gems</td><td>20</td></tr>
+      <tr><td>7</td><td>Coins (Jackpot)</td><td>1000</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Ad-Boosted Claiming</h3>
+  <pre><code><span class="cm">// 2x reward via rewarded ad</span>
+<span class="kw">if</span> (service.<span class="fn">TryClaimWithMultiplier</span>(<span class="num">2</span>, <span class="kw">out var</span> gift)) {
+    <span class="fn">ShowCelebration</span>(gift);
+}<span class="lang-tag">C#</span></code></pre>
+  <p>The <code>WelcomeGiftPanel</code> UI has built-in "x2 via Ad" button support. Wire an <code>AdPlacement</code> in settings and the panel handles the ad flow automatically.</p>
+
+  <h3>Welcome Gift Configuration</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Schedule</code></td><td>&mdash;</td><td>WelcomeGiftSchedule ScriptableObject</td></tr>
+      <tr><td><code>LoopAfterLastDay</code></td><td>false</td><td>Re-grant last day's gift on day 8+</td></tr>
+      <tr><td><code>GraceDays</code></td><td>0</td><td>Missed days that don't break the streak</td></tr>
+      <tr><td><code>UseServerTime</code></td><td>false</td><td>Anti-cheat: use server UTC time</td></tr>
+      <tr><td><code>DoubleAdPlacement</code></td><td>&mdash;</td><td>AdPlacement for 2x via Ad button</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tile States</h3>
+  <p>The <code>WelcomeGiftPanel</code> renders each day as a tile with one of four states:</p>
+  <ul style="margin-bottom:16px;padding-left:24px;">
+    <li><strong>Claimed:</strong> Dimmed (already collected)</li>
+    <li><strong>Today:</strong> Highlighted green (claimable now)</li>
+    <li><strong>Locked:</strong> Dark overlay (future day)</li>
+    <li><strong>Missed:</strong> Faded (grace days feature)</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--              REWARD WHEEL                    -->
+<!-- ============================================ -->
+<section class="section" id="wheel">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127921;</span> Reward Wheel</h2>
+  <p class="section-desc">Weighted prize spinner with visual building and tick audio cues.</p>
+
+  <h3>Setup</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Create a WheelSliceDatabase</strong><br><code>Create &rarr; HCE &rarr; Wheel &rarr; Slice Database</code>. Define slices with icon, label, amount, and weight.</div></div>
+    <div class="step"><div class="step-content"><strong>Assign the WheelSpinner</strong><br>Add <code>WheelSpinner</code> to your wheel UI. Assign the database and the RectTransform to rotate.</div></div>
+    <div class="step"><div class="step-content"><strong>Spin!</strong><br>Call <code>Spin()</code> and listen for <code>SpinCompleted</code>.</div></div>
+  </div>
+
+  <pre><code>wheelSpinner.<span class="fn">Spin</span>();
+wheelSpinner.SpinCompleted += (result) =&gt; {
+    <span class="tp">Debug</span>.<span class="fn">Log</span>($<span class="str">"Won {result.Slice.Amount} coins!"</span>);
+    wallet.<span class="fn">Credit</span>(<span class="tp">CurrencyId</span>.Coins, result.Slice.Amount, <span class="str">"wheel_reward"</span>);
+};<span class="lang-tag">C#</span></code></pre>
+
+  <h3>WheelSlice Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Icon</code></td><td>Sprite displayed on the wheel</td></tr>
+      <tr><td><code>Label</code></td><td>LocalizedText name</td></tr>
+      <tr><td><code>Amount</code></td><td>Reward amount</td></tr>
+      <tr><td><code>Weight</code></td><td>Probability weight (higher = more likely)</td></tr>
+      <tr><td><code>RewardId</code></td><td>Identifier for the reward type</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Spin Animation</h3>
+  <p>The spinner performs <code>_extraSpins</code> full rotations (default 5) before landing on the selected slice, using <code>InOutQuart</code> easing over <code>_spinDuration</code> seconds (default 4s).</p>
+  <p>The <code>WheelTickEmitter</code> fires a <code>Tick</code> event for every slice boundary crossed &mdash; perfect for driving a click sound.</p>
+
+  <h3>Weighted Selection</h3>
+  <p>Uses prefix-sum binary search for O(log N) selection. Zero-weight slices are never selected. The inspector warns if total weight is 0 or slice count is outside 2&ndash;12.</p>
+</section>
+
+<!-- ============================================ -->
+<!--               MINIGAMES                      -->
+<!-- ============================================ -->
+<section class="section" id="minigames">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#127922;</span> Minigames</h2>
+  <p class="section-desc">Chest loot drops and slot machine.</p>
+
+  <h3>Chests</h3>
+  <pre><code><span class="kw">var</span> result = chestService.<span class="fn">TryOpen</span>(<span class="str">"rare_chest"</span>);
+<span class="kw">if</span> (result.Success)
+    <span class="tp">Debug</span>.<span class="fn">Log</span>($<span class="str">"Got {result.Drop.Amount} {result.Drop.CurrencyId}!"</span>);<span class="lang-tag">C#</span></code></pre>
+
+  <p>Each <code>ChestTier</code> has a key cost (debited from wallet), an icon, a tint color, and a weighted loot table of <code>ChestRewardDrop</code> entries. Drops can grant currency or set item flags.</p>
+
+  <h3>Slot Machine</h3>
+  <pre><code><span class="kw">if</span> (slotMachine.<span class="fn">TrySpin</span>(<span class="kw">out var</span> result)) {
+    <span class="kw">if</span> (result.HitJackpot)
+        <span class="tp">Debug</span>.<span class="fn">Log</span>($<span class="str">"JACKPOT! Won {result.RewardAmount}!"</span>);
+}<span class="lang-tag">C#</span></code></pre>
+
+  <p>Configure reels, symbols (with weights), and payout rules. The default setup: 3 reels, symbols Cherry/Lemon/Bell/Bar/Seven with payouts from 30 to 2500.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Config Field</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ReelCount</code></td><td>3</td><td>Number of spinning reels</td></tr>
+      <tr><td><code>SpinDurationSeconds</code></td><td>2.5</td><td>Animation duration</td></tr>
+      <tr><td><code>StopStaggerSeconds</code></td><td>0.3</td><td>Delay between reel stops</td></tr>
+      <tr><td><code>SpinCost</code></td><td>10</td><td>Currency cost per spin</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--             FEATURE GATING                   -->
+<!-- ============================================ -->
+<section class="section" id="gating">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#128274;</span> Feature Gating</h2>
+  <p class="section-desc">Lock features behind level, currency, cooldown, or flag conditions.</p>
+
+  <h3>UnlockGate Component</h3>
+  <p>Add an <code>UnlockGate</code> to any Button. Assign an <code>UnlockCondition</code> asset. The gate automatically disables the button, shows a lock reason, and toggles a lock overlay.</p>
+
+  <h3>Condition Types</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Type</th><th>Unlocks When</th><th>Lock Message Example</th></tr></thead>
+    <tbody>
+      <tr><td><code>LevelUnlockCondition</code></td><td>Player level &ge; required</td><td>"Unlocks at level 4"</td></tr>
+      <tr><td><code>CurrencyUnlockCondition</code></td><td>Currency balance &ge; required</td><td>"Need 100 coins (have 42)"</td></tr>
+      <tr><td><code>CooldownUnlockCondition</code></td><td>Time elapsed since last use</td><td>"Ready in 14:32"</td></tr>
+      <tr><td><code>FlagUnlockCondition</code></td><td>PlayerPrefs flag is set (or NOT set)</td><td>"Locked" (customizable)</td></tr>
+      <tr><td><code>CompositeUnlockCondition</code></td><td>All children (AND) or Any child (OR)</td><td>First locked child's message</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Usage</h3>
+  <pre><code><span class="cm">// Listen for gate status changes</span>
+unlockGate.StatusChanged += (status) =&gt; {
+    <span class="kw">if</span> (status.Unlocked)
+        <span class="tp">Debug</span>.<span class="fn">Log</span>(<span class="str">"Feature unlocked!"</span>);
+    <span class="kw">else</span>
+        <span class="tp">Debug</span>.<span class="fn">Log</span>(status.LockReason);
+};<span class="lang-tag">C#</span></code></pre>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Composable:</strong> Use <code>CompositeUnlockCondition</code> to combine conditions. Example: "Level 5 AND 100 coins AND 24h cooldown" using <code>All</code> mode.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--            POPUPS & TOASTS                   -->
+<!-- ============================================ -->
+<section class="section" id="popups">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128488;</span> Popups &amp; Toasts</h2>
+  <p class="section-desc">Modal popup stack and FIFO toast notifications.</p>
+
+  <h3>Popups</h3>
+  <pre><code><span class="cm">// Show a popup</span>
+popupService.<span class="fn">Open</span>(<span class="kw">new</span> <span class="tp">PopupRequest</span>(myPopupPrefab, dimBackdrop: <span class="kw">true</span>, payload: someData));
+
+<span class="cm">// Close from inside the popup</span>
+<span class="kw">public class</span> <span class="tp">MyPopup</span> : <span class="tp">PopupView</span> {
+    <span class="kw">public override void</span> <span class="fn">OnOpened</span>(<span class="kw">object</span> payload) { <span class="cm">/* setup UI */</span> }
+    <span class="kw">public void</span> <span class="fn">OnCloseClicked</span>() =&gt; <span class="fn">Close</span>();
+}<span class="lang-tag">C#</span></code></pre>
+
+  <p>Popups stack. The backdrop uses reference counting &mdash; it stays visible until all popups are closed. Set <code>IgnoreTimeScale = true</code> for pause-proof animations.</p>
+
+  <h3>Toasts</h3>
+  <pre><code>toastService.<span class="fn">Show</span>(<span class="kw">new</span> <span class="tp">ToastRequest</span>(<span class="str">"Level complete!"</span>, <span class="tp">ToastKind</span>.Success, <span class="num">2f</span>));
+toastService.<span class="fn">Show</span>(<span class="kw">new</span> <span class="tp">ToastRequest</span>(<span class="str">"Not enough coins"</span>, <span class="tp">ToastKind</span>.Warning));<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Toast Kinds</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Kind</th><th>Visual</th></tr></thead>
+    <tbody>
+      <tr><td><code>Info</code></td><td>Default neutral style</td></tr>
+      <tr><td><code>Success</code></td><td>Green accent</td></tr>
+      <tr><td><code>Warning</code></td><td>Yellow accent</td></tr>
+      <tr><td><code>Error</code></td><td>Red accent</td></tr>
+    </tbody>
+  </table></div>
+  <p>Toasts queue in FIFO order with 0.1s pause between each. Duration defaults to 2 seconds.</p>
+</section>
+
+<!-- ============================================ -->
+<!--              UI HELPERS                      -->
+<!-- ============================================ -->
+<section class="section" id="ui-helpers">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#127912;</span> UI Helpers</h2>
+  <p class="section-desc">Ready-made components for common UI patterns.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Component</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>NumberTicker</code></td><td>Animates a TMP label from one number to another with <code>OutCubic</code> easing (0.6s default)</td></tr>
+      <tr><td><code>PressFeedback</code></td><td>Scales a button down to 94% on press, bounces back with <code>OutBack</code> on release (0.06s)</td></tr>
+      <tr><td><code>SafeAreaFitter</code></td><td>Adjusts RectTransform anchors to match <code>Screen.safeArea</code>, handling notches and rounded corners</td></tr>
+      <tr><td><code>ModalBlocker</code></td><td>Full-screen transparent raycast target that swallows all pointer events</td></tr>
+      <tr><td><code>RewardButton</code></td><td>Plays an Animator dismiss animation then self-destructs</td></tr>
+      <tr><td><code>SceneFadeTrigger</code></td><td>Inspector-wired button that loads a scene via <code>SceneFadeService</code></td></tr>
+      <tr><td><code>WalletHud</code></td><td>Auto-updates a TMP label when the bound currency balance changes</td></tr>
+    </tbody>
+  </table></div>
+
+  <pre><code><span class="cm">// NumberTicker usage</span>
+numberTicker.<span class="fn">SetImmediate</span>(<span class="num">0</span>);
+numberTicker.<span class="fn">TweenTo</span>(<span class="num">1500</span>);  <span class="cm">// Animates 0 &rarr; 1500 over 0.6s</span><span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--              TOON SHADERS                    -->
+<!-- ============================================ -->
+<section class="section" id="shaders">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127752;</span> Toon Shaders</h2>
+  <p class="section-desc">Cel-shaded rendering for BiRP, URP, and HDRP.</p>
+
+  <h3>Shader Variants</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Shader</th><th>Pipeline</th><th>Feature</th></tr></thead>
+    <tbody>
+      <tr><td><code>HCE/Toon/BiRP-Lit</code></td><td>Built-in RP</td><td>Banded toon lighting + rim highlight</td></tr>
+      <tr><td><code>HCE/Toon/BiRP-Outline</code></td><td>Built-in RP</td><td>Inverted hull outline pass</td></tr>
+      <tr><td><code>HCE/Toon/BiRP-Transparent</code></td><td>Built-in RP</td><td>Alpha blended toon (no rim)</td></tr>
+      <tr><td><code>HCE/Toon/URP-Lit</code></td><td>Universal RP</td><td>Self-contained toon + rim</td></tr>
+      <tr><td><code>HCE/Toon/URP-Outline</code></td><td>Universal RP</td><td>Clip-space outline pass</td></tr>
+      <tr><td><code>HCE/Toon/URP-Transparent</code></td><td>Universal RP</td><td>Alpha blended toon</td></tr>
+      <tr><td><code>HCE/Toon/HDRP-Lit</code></td><td>HD RP</td><td>Minimal toon (linear blend)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Material Properties</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Property</th><th>Range</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>_BaseMap</code></td><td>&mdash;</td><td>white</td><td>Albedo texture</td></tr>
+      <tr><td><code>_BaseColor</code></td><td>&mdash;</td><td>white</td><td>Tint color</td></tr>
+      <tr><td><code>_ShadowTint</code></td><td>&mdash;</td><td>(0.4, 0.4, 0.55)</td><td>Shadow color (blue-ish)</td></tr>
+      <tr><td><code>_RimColor</code></td><td>&mdash;</td><td>white</td><td>Rim highlight color</td></tr>
+      <tr><td><code>_RimPower</code></td><td>0.1&ndash;16</td><td>4</td><td>Rim falloff exponent</td></tr>
+      <tr><td><code>_BandCount</code></td><td>1&ndash;8</td><td>3</td><td>Number of discrete light bands</td></tr>
+      <tr><td><code>_BandSmoothness</code></td><td>0&ndash;1</td><td>0.15</td><td>Edge softness between bands</td></tr>
+      <tr><td><code>_ToonFloor</code></td><td>0&ndash;1</td><td>0.25</td><td>Minimum brightness</td></tr>
+      <tr><td><code>_ToonCeiling</code></td><td>0&ndash;1</td><td>1.0</td><td>Maximum brightness</td></tr>
+      <tr><td><code>_OutlineColor</code></td><td>&mdash;</td><td>black</td><td>Outline color (outline shader only)</td></tr>
+      <tr><td><code>_OutlineWidthPixels</code></td><td>0&ndash;16</td><td>2.0</td><td>Screen-space outline width in pixels</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Pipeline Detection</h3>
+  <pre><code><span class="cm">// Auto-select the right shader for the active pipeline</span>
+<span class="kw">string</span> shaderName = <span class="tp">RenderPipelineUtil</span>.<span class="fn">GetPreferredToonShader</span>();
+<span class="kw">var</span> shader = <span class="tp">Shader</span>.<span class="fn">Find</span>(shaderName);<span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--               ANALYTICS                      -->
+<!-- ============================================ -->
+<section class="section" id="analytics">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128202;</span> Analytics</h2>
+  <p class="section-desc">Pluggable event bus with multiple sink backends.</p>
+
+  <pre><code><span class="kw">var</span> bus = <span class="tp">Services</span>.<span class="fn">Resolve</span>&lt;<span class="tp">AnalyticsBus</span>&gt;();
+bus.<span class="fn">Emit</span>(<span class="str">"level_complete"</span>, <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">object</span>&gt; {
+    { <span class="str">"level"</span>, <span class="num">5</span> },
+    { <span class="str">"score"</span>, <span class="num">1200</span> },
+    { <span class="str">"time_seconds"</span>, <span class="num">42.5</span> }
+});<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Available Sinks</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Sink</th><th>Requires</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td><code>DebugLogSink</code></td><td>Nothing</td><td>Unity Console: <code>[HCE.Analytics] event_name { key=value }</code></td></tr>
+      <tr><td><code>UnityAnalyticsSink</code></td><td><code>com.unity.services.analytics</code></td><td>Unity Services dashboard</td></tr>
+      <tr><td><code>FirebaseAnalyticsSink</code></td><td>Firebase SDK</td><td>Firebase console</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Sinks are isolated &mdash; if one throws, others still receive the event. Configure in <code>HCESettings &rarr; Analytics</code>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             NOTIFICATIONS                    -->
+<!-- ============================================ -->
+<section class="section" id="notifications">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#128276;</span> Notifications</h2>
+  <p class="section-desc">Schedule local push notifications on mobile.</p>
+
+  <pre><code><span class="kw">var</span> svc = <span class="tp">NotificationService</span>.<span class="fn">CreateFromSettings</span>();
+<span class="kw">await</span> svc.<span class="fn">InitializeAsync</span>();
+<span class="kw">await</span> svc.<span class="fn">RequestPermissionAsync</span>();
+
+<span class="cm">// Schedule a notification 4 hours from now</span>
+<span class="kw">string</span> id = svc.<span class="fn">Schedule</span>(<span class="str">"Come back!"</span>, <span class="str">"Your energy is full."</span>, <span class="tp">TimeSpan</span>.<span class="fn">FromHours</span>(<span class="num">4</span>));
+
+<span class="cm">// Cancel it</span>
+svc.<span class="fn">Cancel</span>(id);
+svc.<span class="fn">CancelAll</span>();<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Platform Behavior</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Platform</th><th>Backend</th><th>Permission</th></tr></thead>
+    <tbody>
+      <tr><td>Android 13+</td><td>UnityMobileNotificationBackend</td><td>POST_NOTIFICATIONS runtime permission</td></tr>
+      <tr><td>Android &lt;13</td><td>UnityMobileNotificationBackend</td><td>No permission needed</td></tr>
+      <tr><td>iOS</td><td>UnityMobileNotificationBackend</td><td>UNUserNotificationCenter authorization</td></tr>
+      <tr><td>Editor</td><td>DummyNotificationBackend</td><td>Logs to console</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Requires <code>com.unity.mobile.notifications</code> package. The <code>HCE_MOBILE_NOTIFICATIONS</code> define is auto-set when detected.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                RATE US                       -->
+<!-- ============================================ -->
+<section class="section" id="rateus">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#11088;</span> Rate Us</h2>
+  <p class="section-desc">Gated review prompts with platform-native dialogs.</p>
+
+  <pre><code><span class="cm">// Register each app launch</span>
+rateUsService.<span class="fn">RegisterSession</span>();
+
+<span class="cm">// Gated prompt (checks all conditions first)</span>
+<span class="kw">var</span> result = <span class="kw">await</span> rateUsService.<span class="fn">MaybeRequestReviewAsync</span>();
+
+<span class="cm">// Force prompt (for explicit "Rate Us" button in settings)</span>
+<span class="kw">var</span> result = <span class="kw">await</span> rateUsService.<span class="fn">ForceRequestReviewAsync</span>();<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Gate Conditions</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Gate</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>Min sessions</td><td>3</td><td>Minimum app launches before first prompt</td></tr>
+      <tr><td>Min seconds since first launch</td><td>600 (10 min)</td><td>Minimum time since first app launch</td></tr>
+      <tr><td>Min days between asks</td><td>30</td><td>Cooldown between prompts</td></tr>
+      <tr><td>Max lifetime asks</td><td>3</td><td>Apple caps at 3 per 365 days</td></tr>
+      <tr><td>Skip if rated</td><td>true</td><td>Don't prompt again after user rated</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Soft Prompt</h3>
+  <p>Enable <code>UseSoftPrompt</code> to show a custom dialog ("Enjoying the game?") before the native review UI. If the user declines, the attempt is counted but the native dialog is skipped.</p>
+
+  <h3>Production Setup &mdash; Native Popup Wiring</h3>
+  <p>Both platforms need a one-time wiring step before <code>MaybeRequestReviewAsync</code> can show the OS-level stars-and-feedback dialog. Without these, the backend silently degrades to opening the store listing in a browser.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Android &mdash; add the Play In-App Review Gradle dep</strong><br>Open <code>Tools &rarr; HCE &rarr; Toolset &rarr; Rate Us</code> and click <strong>"Add Play Review dep to gradle"</strong>. The Toolset inserts <code>implementation 'com.google.android.play:review:2.0.1'</code> into <code>Assets/Plugins/Android/mainTemplate.gradle</code>. Without it, <code>AndroidRateUsBackend</code> can't reflect the <code>ReviewManagerFactory</code> class and falls through to the Play Store deep-link.</div></div>
+    <div class="step"><div class="step-content"><strong>iOS &mdash; nothing to install</strong><br><code>SKStoreReviewController</code> ships with iOS StoreKit. The included <code>Plugins/iOS/HCERateUs.mm</code> calls <code>requestReviewInScene:</code> on iOS 14+ and <code>requestReview</code> on 10.3+. Set <code>RateUs &rarr; IOSAppId</code> for the deep-link fallback when the soft cap kicks in.</div></div>
+    <div class="step"><div class="step-content"><strong>Test on a Play-Store install</strong><br>Sideloaded debug APKs and direct downloads will not display the Android native popup &mdash; Google requires the app to be installed via the Play Store (Internal/Closed/Open testing tracks all qualify). On iOS, the native popup is rate-limited to 3 prompts per 365 days per app and can no-op silently.</div></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Run the <strong>Pre-flight checks</strong> button on the Rate Us tab after adding the dep. The Toolset detects the gradle line directly so a green <em>"Play Review gradle dep is in mainTemplate.gradle"</em> banner confirms the wiring &mdash; the <code>HCE_PLAY_REVIEW</code> scripting define is optional (build-time hint only; the runtime backend uses reflection).</div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div>Both platforms silently rate-limit. Apple caps at 3 prompts per 365 days; Google enforces a per-user quota that's not exposed to your app. Either may complete <code>MaybeRequestReviewAsync</code> with no visible UI &mdash; that's normal, not a bug. Don't show "thanks for rating!" toasts pre-emptively.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             EDITOR TOOLS                     -->
+<!-- ============================================ -->
+<section class="section" id="editor-tools">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128295;</span> Editor Tools</h2>
+  <p class="section-desc">Setup wizard, toolset window, custom inspectors, and CSV importers.</p>
+
+  <h3>Tools Menu</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Menu Path</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>Tools &rarr; HCE &rarr; Toolset</code></td><td>Main editor window with 11 tabs for all modules</td></tr>
+      <tr><td><code>Tools &rarr; HCE &rarr; Setup Wizard</code></td><td>First-run project setup</td></tr>
+      <tr><td><code>Tools &rarr; HCE &rarr; Create Default Config Assets</code></td><td>Generate all default configs</td></tr>
+      <tr><td><code>Tools &rarr; HCE &rarr; Import SoundBank CSV</code></td><td>Bulk import audio entries</td></tr>
+      <tr><td><code>Tools &rarr; HCE &rarr; Import Shop CSV</code></td><td>Bulk import shop items</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Toolset Window</h3>
+  <p>The main HCE editor window (11 tabs) shows the health status of every module:</p>
+  <ul style="margin-bottom:16px;padding-left:24px;">
+    <li><span style="color:var(--green)">&#9679;</span> <strong>Green:</strong> Module ready</li>
+    <li><span style="color:var(--yellow)">&#9679;</span> <strong>Yellow:</strong> Warning (e.g., SDK missing but not required)</li>
+    <li><span style="color:var(--pink)">&#9679;</span> <strong>Red:</strong> Action needed (e.g., production IDs missing)</li>
+  </ul>
+  <p>Tabs: Overview, Ads, Analytics, IAP, Audio, Haptics, Notifications, Rate Us, Welcome Gifts, Minigames, General.</p>
+
+  <h3>Custom Inspectors</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Inspector</th><th>Asset Type</th><th>Extra Feature</th></tr></thead>
+    <tbody>
+      <tr><td>SoundBankInspector</td><td>SoundBank</td><td>Reorderable drag list</td></tr>
+      <tr><td>WheelSliceDatabaseInspector</td><td>WheelSliceDatabase</td><td>Total weight display + warnings</td></tr>
+      <tr><td>ShopCatalogInspector</td><td>ShopCatalog</td><td>Duplicate ID detection + auto-fix</td></tr>
+      <tr><td>IAPCatalogInspector</td><td>IAPCatalog</td><td>Product ID format validation</td></tr>
+      <tr><td>HapticPatternInspector</td><td>HapticPattern</td><td>Visual waveform preview</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Property Drawers</h3>
+  <p>Smart dropdown pickers are provided for <code>SoundId</code>, <code>CurrencyId</code>, <code>ShopItemId</code>, and <code>SceneReference</code> fields. They auto-scan all relevant assets in the project.</p>
+
+  <h3>Build Validator</h3>
+  <p>Runs automatically before every build (<code>IPreprocessBuildWithReport</code>). Warns if a SoundBank or ShopCatalog is missing &mdash; never blocks the build.</p>
+</section>
+
+<!-- ============================================ -->
+<!--              CHEAT CONSOLE                   -->
+<!-- ============================================ -->
+<section class="section" id="cheats">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#127918;</span> Cheat Console</h2>
+  <p class="section-desc">Debug console with hotkeys and 3-finger mobile gesture.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div>The entire cheat system is compiled only when <code>HCE_CHEATS</code> is defined. It compiles to empty stubs in release builds.</div>
+  </div>
+
+  <h3>Activation</h3>
+  <ul style="margin-bottom:16px;padding-left:24px;">
+    <li><strong>Keyboard:</strong> Press <kbd>`</kbd> (backtick) to toggle the console</li>
+    <li><strong>Mobile:</strong> 3-finger long-press for 1+ second</li>
+  </ul>
+
+  <h3>Built-in Cheats</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Cheat</th><th>Hotkey</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>Grant Coins</td><td><kbd>F1</kbd></td><td>Credit 1000 coins (configurable)</td></tr>
+      <tr><td>Wipe Save</td><td><kbd>F2</kbd></td><td>Delete all persisted data</td></tr>
+      <tr><td>Reload Scene</td><td><kbd>F3</kbd></td><td>Reload the active scene</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>CheatBindings Config</h3>
+  <p>Create via <code>Create &rarr; HCE &rarr; Cheats &rarr; Bindings</code>. Customize hotkeys and grant amounts in the Inspector.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           SCRIPTING DEFINES                  -->
+<!-- ============================================ -->
+<section class="section" id="defines">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128218;</span> Scripting Defines</h2>
+  <p class="section-desc">Feature flags for optional SDK integrations.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Define</th><th>Required Package</th><th>What It Enables</th><th>Auto-Set</th></tr></thead>
+    <tbody>
+      <tr><td><code>HCE_ADMOB</code></td><td>Google Mobile Ads SDK</td><td>AdMob backend</td><td>Yes (asmdef)</td></tr>
+      <tr><td><code>HCE_UNITY_ANALYTICS</code></td><td>com.unity.services.analytics</td><td>Unity Analytics sink</td><td>Yes (asmdef)</td></tr>
+      <tr><td><code>HCE_FIREBASE</code></td><td>Firebase SDK</td><td>Firebase Analytics sink</td><td>No (manual)</td></tr>
+      <tr><td><code>HCE_MOBILE_NOTIFICATIONS</code></td><td>com.unity.mobile.notifications</td><td>OS push notifications</td><td>Yes (asmdef)</td></tr>
+      <tr><td><code>HCE_CHEATS</code></td><td>None</td><td>Debug cheat console</td><td>Setup Wizard</td></tr>
+      <tr><td><code>HCE_LOG_VERBOSE</code></td><td>None</td><td>Detailed HCE log output</td><td>No (manual)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div>Most defines are auto-set via <code>asmdef</code> version defines when you install the corresponding package. No manual setup needed.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--            TROUBLESHOOTING                   -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Common issues and their solutions.</p>
+
+  <details>
+    <summary>"HCESettings asset not found" warning at runtime</summary>
+    <div class="details-body">
+      <p>The singleton asset must exist at <code>Assets/HyperCasualEssentials/Resources/HCE/HCESettings.asset</code>. Run <code>Tools &rarr; HCE &rarr; Setup Wizard</code> to create it, or verify the path hasn't been moved.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Ads always show as mock/dummy</summary>
+    <div class="details-body">
+      <p>Check three things: (1) Google Mobile Ads SDK is installed, (2) <code>HCE_ADMOB</code> define is present in Player Settings, (3) <code>HCESettings &rarr; Ads &rarr; Mode</code> is set to Test or Production.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>IAP purchases fail with "not_initialized"</summary>
+    <div class="details-body">
+      <p>Ensure <code>await iapBridge.InitializeAsync(catalog)</code> is called and awaited before any purchase. Check Unity Console for initialization errors.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Haptics don't work on device</summary>
+    <div class="details-body">
+      <p>Verify: (1) <code>HCESettings &rarr; Haptics &rarr; Mode</code> is Production, (2) Platform toggles (<code>EnableOnAndroid</code>/<code>EnableOnIOS</code>) are on, (3) <code>AndroidManifest.xml</code> with VIBRATE permission is included.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Daily reward resets unexpectedly</summary>
+    <div class="details-body">
+      <p>The streak tracker uses UTC dates. If you're testing across midnight UTC, the streak will advance. For forgiving behavior, increase <code>GraceDays</code> in WelcomeGiftsSettings. Enable <code>UseServerTime</code> to prevent clock manipulation.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Toon shaders are pink / not rendering</summary>
+    <div class="details-body">
+      <p>Make sure you're using the shader that matches your render pipeline. Use <code>RenderPipelineUtil.GetPreferredToonShader()</code> to auto-detect, or manually assign: BiRP-Lit for Built-in, URP-Lit for Universal, HDRP-Lit for HD.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Build validator warns about missing SoundBank</summary>
+    <div class="details-body">
+      <p>Run <code>Tools &rarr; HCE &rarr; Create Default Config Assets</code> to generate all default configs. Then assign your SoundBank in <code>HCESettings &rarr; Audio &rarr; DefaultSoundBank</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Notifications don't appear on device</summary>
+    <div class="details-body">
+      <p>Ensure <code>com.unity.mobile.notifications</code> is installed, <code>HCE_MOBILE_NOTIFICATIONS</code> define is set, Mode is Production, and <code>RequestPermissionAsync()</code> was called and returned true.</p>
+    </div>
+  </details>
+
+  <h3>Threading Rules</h3>
+  <div class="callout callout-danger">
+    <span class="callout-icon">&#9888;</span>
+    <div>
+      <strong>Main thread only:</strong> All <code>UnityEngine.*</code> calls, <code>PlayerPrefs</code>, <code>MonoBehaviour</code> callbacks, <code>Mathf</code>.<br>
+      <strong>Background safe:</strong> <code>System.Math</code>, <code>CultureInfo.InvariantCulture</code>, pure C# collections.<br>
+      Use <code>MonoHost.Post(action)</code> to marshal work back to the main thread from native callbacks.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                SUPPORT                       -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128236;</span> Support</h2>
+  <p class="section-desc">Need help? We're here for you.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">If you run into any issues, have feature requests, or need help integrating HyperCasual Essentials into your project, don't hesitate to reach out.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before Contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Check the <a href="#troubleshooting" style="color:var(--accent-light);">Troubleshooting</a> section</li>
+        <li>Verify your <a href="#defines" style="color:var(--accent-light);">Scripting Defines</a> are set</li>
+        <li>Open <code>Tools &rarr; HCE &rarr; Toolset</code> to check module status</li>
+        <li>Include your Unity version and target platform</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful Info to Include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Unity version &amp; render pipeline (BiRP/URP/HDRP)</li>
+        <li>HCE version (currently 1.0.1)</li>
+        <li>Target platform (Android/iOS/both)</li>
+        <li>Console error logs or screenshots</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>HyperCasual Essentials v1.0.1 &middot; Built for Unity 2021.3+</p>
+  <p style="margin-top:8px;">Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const content = s.textContent.toLowerCase();
+  sections.push({
+    id: s.id,
+    title: h2 ? h2.textContent.trim() : '',
+    desc: desc ? desc.textContent.trim() : '',
+    content: content,
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return `<a href="#${m.id}" class="search-item" onclick="closeSearch()">
+        <div class="search-item-section">${m.title}</div>
+        <div class="search-item-title">${matchH3 || m.desc || m.title}</div>
+      </a>`;
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// Active sidebar link
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+// Close mobile sidebar on nav click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
