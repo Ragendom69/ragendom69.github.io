@@ -1,1 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperCasual Games Pack #3 - Technical Documentation</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --sidebar-width: 280px;
+            --success-color: #27ae60;
+        }
 
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-color);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--secondary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            padding: 0 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li a {
+            display: block;
+            padding: 12px 25px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar li a:hover, .sidebar li a.active {
+            background-color: #34495e;
+            color: white;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .sidebar .sub-link {
+            padding-left: 45px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px 80px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        section {
+            margin-bottom: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 40px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 24px;
+            background: var(--primary-color);
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+            border-left: 3px solid #ddd;
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .badge-toolkit { background-color: #e67e22; color: white; }
+        .badge-editor { background-color: #9b59b6; color: white; }
+        .badge-core { background-color: #2ecc71; color: white; }
+        .badge-script { background-color: #34495e; color: white; }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #c7254e;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .note {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background-color: #fff8e1;
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
+        .editor-box {
+            background-color: #f9f0ff;
+            border: 1px solid #d1b3e0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .editor-box h4 {
+            margin-top: 0;
+            color: #6c3483;
+            display: flex;
+            align-items: center;
+        }
+
+        .editor-box h4::before {
+            content: '\1F6E0\FE0F';
+            margin-right: 10px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .script-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .script-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .script-item strong {
+            display: block;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .script-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>Pack #3</h2>
+        <ul>
+            <li><a href="#welcome">Welcome</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#structure">Project Structure</a></li>
+            <li><a href="#game21">#21 Cat Block Slide Puzzle</a></li>
+            <li><a href="#game22">#22 Sorty Cars</a></li>
+            <li><a href="#game23">#23 Foodie Sort</a></li>
+            <li><a href="#game24">#24 Fit Blast</a></li>
+            <li><a href="#game25">#25 Slide Block</a></li>
+            <li><a href="#game26">#26 Parking Slot Match</a></li>
+            <li><a href="#game27">#27 Color Tile Flow</a></li>
+            <li><a href="#game28">#28 Color Pixel Crush</a></li>
+            <li><a href="#game29">#29 Jig Sort</a></li>
+            <li><a href="#game30">#30 Charge Out Puzzle</a></li>
+            <li><a href="#core">Core Systems</a></li>
+            <li><a href="#development">Development Guide</a></li>
+            <li><a href="#support">Support</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+
+        <section id="welcome">
+            <h1 style="font-size: 2.8rem; text-align: center; border-bottom: none;">HyperCasual Games Pack #3</h1>
+            <p style="text-align: center; font-size: 1.15rem; color: #666;">Games #21 through #30 &mdash; 10 fully functional mobile puzzle game templates with level editors and core systems.</p>
+
+            <div style="background: linear-gradient(135deg, #f0f7ff, #e8f0fe); border: 2px solid #4a90d9; padding: 24px 30px; margin: 24px 0 0 0; border-radius: 10px; text-align: center;">
+                <p style="font-size: 1.15rem; margin: 0 0 8px 0; color: #333;">This pack is part of the <strong>HyperCasual Game Engine &ndash; Mobile Puzzle Templates</strong>.</p>
+                <p style="font-size: 1.05rem; margin: 0 0 16px 0; color: #555;">The full engine includes this and other packs, with more game templates and level editors.</p>
+                <a href="https://assetstore.unity.com/packages/slug/133649" target="_blank" style="display: inline-block; background-color: #4a90d9; color: white; padding: 12px 32px; border-radius: 7px; text-decoration: none; font-weight: bold; font-size: 1.05rem; transition: background-color 0.2s;">View the Full Engine on the Asset Store</a>
+            </div>
+        </section>
+
+        <section id="overview">
+            <h1>Technical Overview</h1>
+            <p><span class="badge badge-toolkit">Toolkit</span> The <strong>Hypercasual Game Engine</strong> is a modular framework designed for rapid development of puzzle and arcade mechanics. It provides a standardized architecture where game-specific logic is decoupled from core engine systems.</p>
+
+            <div class="note">
+                <strong>Architecture Philosophy:</strong> Every game is treated as a "Module". The <code>Core</code> provides the services (Audio, UI, Camera, Persistence), and the <code>Games</code> folder contains the implementation of specific mechanics.
+            </div>
+
+            <h3>Core Design Patterns:</h3>
+            <ul>
+                <li><strong>Singleton Managers</strong>: Centralized control for game states and audio.</li>
+                <li><strong>Data-Driven Levels</strong>: Separation of level design (JSON/Assets) from game logic.</li>
+                <li><strong>Namespace Isolation</strong>: All scripts reside within <code>HypercasualGameEngine</code> or <code>HypercasualGameEngine.{GameName}</code> to prevent conflicts.</li>
+            </ul>
+        </section>
+
+        <section id="getting-started">
+            <h1>Getting Started</h1>
+
+            <h3>Opening the Main Scene</h3>
+            <p>The primary game scene is located at:</p>
+            <p><code>Assets/Hypercasual Game Engine/Core/Scenes/HC-Games-Pack-3.unity</code></p>
+            <p>Open this scene to access all game modules included in this pack.</p>
+
+            <h3>Where to Find Level Editors</h3>
+            <p>All level editor tools are located under the Unity <strong>Tools</strong> menu in the top menu bar. There is no separate "Hypercasual" tab. To open any level editor, go to:</p>
+            <p><code>Tools > #{number} {Game Name} Level Editor</code></p>
+            <p>For example: <code>Tools > #21 CatBlockSlide Level Editor</code>, etc.</p>
+
+            <div class="warning-box">
+                <strong>Important - Resizing Level Editor Windows:</strong> When you first open any level editor tool, the popup window may appear very small by default. You will need to <strong>manually resize the window by dragging its right edge and bottom edge</strong> to expand it until you can see the full tool layout (typically a left-side control panel and a right-side grid/preview area). This applies to all level editors in the toolkit.
+            </div>
+        </section>
+
+        <section id="structure">
+            <h1>Project Structure</h1>
+            <p>Understanding the directory layout is crucial for extending the engine.</p>
+
+            <h3>Global Core (<code>Assets/Hypercasual Game Engine/Core</code>)</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>SoundManager.cs</strong>
+                    Handles global SFX and Music. Supports muting and volume scaling.
+                </div>
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Base class for all game managers. Handles Win/Loss logic and UI triggers.
+                </div>
+                <div class="script-item">
+                    <strong>ColorManager.cs</strong>
+                    Centralized color palette management for blocks and UI.
+                </div>
+                <div class="script-item">
+                    <strong>AnimationPlayer.cs</strong>
+                    A helper to trigger common animations (Scale, Rotate, Move) via code.
+                </div>
+            </div>
+
+            <h3>Game Modules (<code>Assets/Hypercasual Game Engine/Games</code>)</h3>
+            <p>Each game folder is self-contained, including its own <code>Scripts</code>, <code>Editor</code>, <code>Prefabs</code>, and <code>Resources/Levels</code>. The folder naming convention is <code>#{number}_{GameName}</code>, for example: <code>#21_CatBlockSlidePuzzle</code>, <code>#27_ColorTileFlow</code>.</p>
+
+            <h3>Scenes (<code>Assets/Hypercasual Game Engine/Core/Scenes</code>)</h3>
+            <p>The current main scene is <strong>HC-Games-Pack-3</strong>. This is the scene you should open to play or test any of the game modules in this pack.</p>
+        </section>
+
+        <section id="game21">
+            <h1>#21 Cat Block Slide Puzzle</h1>
+            <p>A sliding-block puzzle where players drag colored blocks across a grid to fill goal targets within a time limit. Blocks are constrained by walls and other blocks; sliding stops on collision. Match the goal counts for every color before the countdown runs out to win the level.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>CatBlockLevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/CatBlockSlidePuzzle/</code> at runtime and tracks progression via <code>PlayerPrefs</code>.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Initializes the grid, spawns blocks from level data, manages block movement, runs the countdown timer, and evaluates win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Handles mouse/touch drag input, block selection, wall-sliding physics during drag, and snap-to-grid on release.
+                </div>
+                <div class="script-item">
+                    <strong>GoalManger.cs</strong>
+                    Tracks goal indicators per block color and triggers the win event when all goal counts reach zero.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Draggable block entity with color, sprite, and collision/occupancy tracking on the grid.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid size, time limit, block data (size, color, sprite), and per-block piece layouts.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Drag Sliding</strong>: Drag a block in any cardinal direction; it slides until it hits a wall or another block.</li>
+                <li><strong>Multi-Cell Pieces</strong>: Each block can be composed of multiple connected piece cells defined in the level data.</li>
+                <li><strong>Goal Tracking</strong>: A goal panel shows required colors and counts. Goals decrement as matching blocks are placed.</li>
+                <li><strong>Countdown Timer</strong>: A per-level time limit counts down on the UI. Lose if it reaches zero.</li>
+                <li><strong>Win Condition</strong>: All goal counters for every color reach zero.</li>
+                <li><strong>Lose Condition</strong>: Countdown timer reaches zero, or no valid moves remain on a jammed grid.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Cat Block Slide Puzzle Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #21 CatBlockSlide Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser, grid editor, and properties panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #21 CatBlockSlide Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, reorder, or delete levels.</li>
+                    <li>Set the <strong>Grid Size</strong> and <strong>Time Limit</strong> for the current level.</li>
+                    <li>Paint walls and blocks onto the grid by selecting a color from the palette and clicking cells. Blocks can span multiple cells via piece data.</li>
+                    <li>Configure goal targets per color (the counts that must be reached to win).</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Hypercasual Game Engine/Games/#21_CatBlockSlidePuzzle/Resources/Levels/CatBlockSlidePuzzle/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/CatBlockSlidePuzzle/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game22">
+            <h1>#22 Sorty Cars</h1>
+            <p>A color-sorting puzzle where colored cars are stacked in vertical parking lines. Players drag cars between lines to consolidate matching colors. Win when every line is filled with cars of a single color.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/SortyCars/</code> at runtime and provides save/delete for editor use.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Initializes the grid of parking lines, spawns cars from level data, handles drag/snap movement, conveyor cycling, and win/lose checks.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene entry point. Loads the active level via <code>LevelManager</code> and initializes <code>GridManager</code>.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects car selection via raycast, handles drag with smooth movement, and snaps cars into valid line slots on release.
+                </div>
+                <div class="script-item">
+                    <strong>Car.cs</strong>
+                    Colored car entity with drag state and parent line tracking.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions and per-line car color configurations.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Vertical Lines</strong>: Each parking line stacks up to several cars. Drag a car to move it to a different line.</li>
+                <li><strong>Color Sorting</strong>: A line is "complete" when all of its cars share the same color.</li>
+                <li><strong>Collision Snapping</strong>: Cars stop at the next occupied slot when moving into a partially-filled line.</li>
+                <li><strong>Conveyor System</strong>: Cycles new cars into waiting positions as lines clear.</li>
+                <li><strong>Win Condition</strong>: All lines have been completed (each contains a single color).</li>
+                <li><strong>Lose Condition</strong>: Stalemate detection &mdash; cars stuck with no valid moves available.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Sorty Cars Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #22 SortyCars Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and grid editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #22 SortyCars Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, reorder, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define the number of parking lines and slots per line.</li>
+                    <li>Paint the line cars: select a color and click cells to assign cars to specific positions.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/SortyCars/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/SortyCars/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game23">
+            <h1>#23 Foodie Sort</h1>
+            <p>A fast-paced food sorting puzzle where players drag food items into matching color trays. Multiple food lines feed items in rotation, and trays must be filled before queues overflow. Win by clearing every tray; lose when any food line piles up beyond its capacity.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/FoodieSort/</code> at runtime and provides save/delete for editor use.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Spawns food trays and items, drives food rotation per line, detects matches and queue overflow, and manages win/lose evaluation.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene entry point. Loads the level via <code>LevelManager</code> and initializes <code>GridManager</code>.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects food item selection, handles drag-to-tray placement, and triggers visual feedback on release.
+                </div>
+                <div class="script-item">
+                    <strong>Food.cs</strong>
+                    Draggable food item with a type enum and scale animations during pickup/drop.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions and per-line food turn sequences.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Rotating Food Lines</strong>: Food items spawn into ready slots and rotate into waiting positions on a turn-based cycle.</li>
+                <li><strong>Tray Matching</strong>: Drag food onto a color-matched tray to add it; each tray accepts a fixed number of items.</li>
+                <li><strong>Queue Overflow</strong>: If too many items pile up in a single line without being matched, the level is lost.</li>
+                <li><strong>Sequence Editor</strong>: Levels define ordered food sequences per line so designers control the difficulty curve.</li>
+                <li><strong>Win Condition</strong>: All food sequences cleared and all trays completed.</li>
+                <li><strong>Lose Condition</strong>: A food line exceeds its waiting-queue capacity.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Foodie Sort Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #23 FoodieSort Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #23 FoodieSort Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> to define line layout.</li>
+                    <li>Edit per-line <strong>food turn sequences</strong>: each turn defines which food types appear and in what order.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/FoodieSort/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/FoodieSort/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game24">
+            <h1>#24 Fit Blast</h1>
+            <p>A Tetris-style block-fitting puzzle where players drag shaped blocks into pedestals on a grid. Each pedestal accepts only blocks of a specific shape and size. Win by filling every pedestal; lose when no remaining block can fit any open pedestal.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/FitBlast/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene controller. Loads the level, spawns blocks from the queue, builds grid pedestals, and evaluates win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects block selection, handles drag movement across the screen, and validates pedestal placement on release.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Draggable block with assigned color, shape, and fitted-state tracking.
+                </div>
+                <div class="script-item">
+                    <strong>BlockData.cs</strong>
+                    ScriptableObject defining available block shapes and colors for spawn sequences.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid pedestals (position and size constraints) and the ordered block spawn queue.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Pedestal Grid</strong>: Pedestals have fixed dimensions (e.g., 2&times;3 or 3&times;3 cells) and only accept matching shapes.</li>
+                <li><strong>Block Queue</strong>: Blocks spawn in order from a designer-defined queue. Drag the active block onto a valid pedestal.</li>
+                <li><strong>Shape Validation</strong>: Drops on incompatible pedestals are rejected; valid drops snap into place with particle feedback.</li>
+                <li><strong>No Time Limit</strong>: The puzzle is purely combinatorial &mdash; the challenge is fitting blocks before the queue ends.</li>
+                <li><strong>Win Condition</strong>: All pedestals filled with correctly-sized, color-matched blocks.</li>
+                <li><strong>Lose Condition</strong>: Remaining blocks cannot fit any unfilled pedestal (board jammed).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Fit Blast Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code> (with custom <code>BlockDataEditor.cs</code> inspector)</p>
+                <p><strong>Open via:</strong> <code>Tools > #24 FitBlast Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and pedestal editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #24 FitBlast Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, or delete levels.</li>
+                    <li>Edit grid <strong>pedestals</strong>: place each pedestal with its position, width, and height.</li>
+                    <li>Define the <strong>block spawn queue</strong> by referencing entries from <code>BlockData</code>.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/FitBlast/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/FitBlast/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game25">
+            <h1>#25 Slide Block</h1>
+            <p>A column-stacking puzzle where players tap blocks to move them between vertical columns. Blocks fall and stack within columns, and grid pedestals show target colors that must be filled. Win by satisfying every pedestal; lose when no further valid moves are possible.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/SlideBlock/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene controller. Spawns blocks in columns, builds grid pedestals, plays spawn animations, and evaluates win/lose conditions.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects block taps, validates move legality (column capacity / block type), and triggers move animations.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Stackable block entity with color, parent column, and fill-state tracking.
+                </div>
+                <div class="script-item">
+                    <strong>ColorData.cs</strong>
+                    ScriptableObject mapping color enums to Unity Materials for block rendering.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: column configurations (block stacks) and grid target positions.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Column Stacking</strong>: Blocks spawn into columns and stack vertically with a scale-in animation (~0.25s).</li>
+                <li><strong>Tap-to-Move</strong>: Tap a block to move it &mdash; the system validates target column space before committing.</li>
+                <li><strong>Pedestal Targets</strong>: Grid pedestals indicate the colors that must be supplied to win the level.</li>
+                <li><strong>Combo Clears</strong>: Matching colors in adjacent target cells trigger combo clears with particle feedback.</li>
+                <li><strong>Win Condition</strong>: All pedestals filled with color-matched blocks.</li>
+                <li><strong>Lose Condition</strong>: No remaining valid moves can satisfy the unfilled pedestals.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Slide Block Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #25 SlideBlock Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and grid editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #25 SlideBlock Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, or delete levels.</li>
+                    <li>Edit <strong>columns</strong>: assign starting block stacks per column with color and order.</li>
+                    <li>Edit <strong>grid pedestals</strong>: choose target colors for each grid cell that must be satisfied.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/SlideBlock/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/SlideBlock/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game26">
+            <h1>#26 Parking Slot Match</h1>
+            <p>A car-parking matching puzzle where colored cars are dragged into grid-aligned parking slots. Each slot accepts a specific color; cars must be sorted into their matching slots. Win when every car is parked in its correct color slot.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/ParkingSlotMatch/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Initializes parking lines and slots, spawns cars from level data, processes drag movement, and handles match/collision detection.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene entry point. Loads the level via <code>LevelManager</code> and initializes <code>GridManager</code>.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects car selection via raycast, handles drag with smooth movement, and snaps cars onto valid grid positions on release.
+                </div>
+                <div class="script-item">
+                    <strong>Car.cs</strong>
+                    Colored car entity with drag state and parent parking-line tracking.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions and per-line parking slot color configurations.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Color Slots</strong>: Each parking slot is color-coded; cars only "park" when dropped onto a slot matching their color.</li>
+                <li><strong>Drag Movement</strong>: Drag cars vertically within or between lines with smooth path movement.</li>
+                <li><strong>Slot Highlight</strong>: Matching color slots highlight as a car is dragged near them.</li>
+                <li><strong>Collision Prevention</strong>: Occupied slots block other cars from overlapping.</li>
+                <li><strong>Win Condition</strong>: All cars parked in slots that match their color.</li>
+                <li><strong>Lose Condition</strong>: Stalemate &mdash; no valid moves available with mismatched cars remaining.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Parking Slot Match Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #26 ParkingSlotMatch Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and grid editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #26 ParkingSlotMatch Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, reorder, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> for your parking layout.</li>
+                    <li>Paint parking-slot colors and place cars in starting positions using the color palette.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/ParkingSlotMatch/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/ParkingSlotMatch/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game27">
+            <h1>#27 Color Tile Flow</h1>
+            <p>A conveyor-routing puzzle where colored tiles flow through a grid guided by directional arrows. Players place arrows so that tiles are routed into their matching color docks. Win by filling all docks with correct colors; lose if tiles overflow the grid.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/ColorTileFlow/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene controller. Spawns tiles, arrows, and docks from level data; manages tile routing and overflow detection.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects arrow/tile selection, validates rotation/placement, and handles drag-to-grid placement.
+                </div>
+                <div class="script-item">
+                    <strong>Arrow.cs</strong>
+                    Directional tile guiding tile flow. Tracks grid position and current direction (Up/Down/Left/Right).
+                </div>
+                <div class="script-item">
+                    <strong>Tile.cs</strong>
+                    Colored tile that travels through the conveyor system following arrows toward docks.
+                </div>
+                <div class="script-item">
+                    <strong>Dock.cs</strong>
+                    Color-coded outlet that consumes matching tiles. Levels track per-dock progress for win evaluation.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions, arrow layouts, dock positions, and tile spawn sources.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Arrow Routing</strong>: Arrows on the grid steer tiles in cardinal directions; chains of arrows form full conveyor paths.</li>
+                <li><strong>Color Matching</strong>: Each dock accepts only tiles of its matching color. Wrong-color tiles must be re-routed.</li>
+                <li><strong>Multiple Docks</strong>: Up to 6 docks can be configured per level, each with their own color requirement.</li>
+                <li><strong>Overflow Loss</strong>: Tiles that have nowhere to go fill the grid and trigger a loss when capacity is exceeded.</li>
+                <li><strong>Win Condition</strong>: All tile sources are exhausted and every dock is filled with its correct color.</li>
+                <li><strong>Lose Condition</strong>: Tiles overflow the grid (no valid path to a matching dock).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Color Tile Flow Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #27 ColorTileFlow Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser, grid editor, and dock configuration panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #27 ColorTileFlow Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong> and <strong>Grid Height</strong> for your playfield.</li>
+                    <li>Paint <strong>Arrows</strong> by selecting a direction and clicking grid cells.</li>
+                    <li>Place <strong>Docks</strong> at grid edges and assign target colors.</li>
+                    <li>Define <strong>tile spawn sources</strong> with color and timing.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/ColorTileFlow/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/ColorTileFlow/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game28">
+            <h1>#28 Color Pixel Crush</h1>
+            <p>A cannon-based block-matching game where colored fill items are launched into a grid. Three or more matching items in a row crush each other; remaining items cascade with gravity. Win by crushing all required colors; lose if the grid overflows.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/ColorPixelCrush/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene controller. Manages the fill grid, cannon, item spawn, gravity physics, and crush detection.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects cannon angle input, fires the cannon, and tracks projectile trajectories.
+                </div>
+                <div class="script-item">
+                    <strong>Cannon.cs</strong>
+                    The aimable cannon that launches colored items into the playfield. Tracks angle and fire rate.
+                </div>
+                <div class="script-item">
+                    <strong>FillItem.cs</strong>
+                    Crushable colored item with gravity/collision physics that settles into grid cells.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid dimensions (fill and tap-out), cannon spawn sequences, and per-color crush targets.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Aim &amp; Fire</strong>: Drag the cannon to aim; tap fire to launch the next colored item.</li>
+                <li><strong>Gravity Settling</strong>: Items fall into the grid and stack. They cascade downward when items below them crush.</li>
+                <li><strong>3-In-A-Row Crush</strong>: Three or more matching colors in a horizontal/vertical row are removed with smoke/particle feedback.</li>
+                <li><strong>Tap-Out Grid</strong>: A side grid shows items that exit the system &mdash; useful for level pacing.</li>
+                <li><strong>Win Condition</strong>: All target colors crushed in their required quantities.</li>
+                <li><strong>Lose Condition</strong>: The fill grid overflows (items stack past the grid height).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Color Pixel Crush Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #28 ColorPixelCrush Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser, grid editor, and target panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #28 ColorPixelCrush Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, or delete levels.</li>
+                    <li>Set <strong>Fill Grid</strong> and <strong>Tap-Out Grid</strong> dimensions.</li>
+                    <li>Define the <strong>cannon spawn sequence</strong> &mdash; the ordered colors that the cannon will fire.</li>
+                    <li>Define <strong>crush targets</strong> &mdash; the per-color crush counts required to win.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/ColorPixelCrush/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/ColorPixelCrush/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game29">
+            <h1>#29 Jig Sort</h1>
+            <p>A jigsaw-matching puzzle where players drag shaped blocks into pedestals of the same outline (L, T, I, etc.). Each pedestal accepts only its specific shape and color. Win by filling every pedestal; lose when no remaining block can fit any open pedestal.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/JigSort/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GameLevel.cs</strong>
+                    Scene controller. Spawns blocks from the queue, builds grid pedestals, and evaluates shape-fit completion.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects block selection via raycast, handles drag across the grid, and validates shape-fit on release.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Shaped, draggable block with assigned color and fit-state tracking.
+                </div>
+                <div class="script-item">
+                    <strong>BlockData.cs</strong>
+                    ScriptableObject defining the available block shapes and colors used in spawn sequences.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid pedestals (shape and color constraints) and the ordered block spawn queue.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Shape Library</strong>: A palette of jigsaw shapes (L, T, I, square, etc.) is shared across levels.</li>
+                <li><strong>Pedestal Outlines</strong>: Pedestals show ghosted outlines of the shape they accept.</li>
+                <li><strong>Color &amp; Shape Matching</strong>: Both the shape and the color must match for a block to settle into a pedestal.</li>
+                <li><strong>Glass Overlay</strong>: An overlay UI fills in as pedestals complete, providing visual progress.</li>
+                <li><strong>Win Condition</strong>: All pedestals filled with shape- and color-matching blocks.</li>
+                <li><strong>Lose Condition</strong>: Remaining blocks cannot fit any unfilled pedestal (board jammed).</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Jig Sort Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code> (with custom <code>BlockDataEditor.cs</code> inspector)</p>
+                <p><strong>Open via:</strong> <code>Tools > #29 JigSort Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser and pedestal editor panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #29 JigSort Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, or delete levels.</li>
+                    <li>Place <strong>pedestals</strong> on the grid by selecting a shape and color from the palette.</li>
+                    <li>Configure the <strong>block spawn queue</strong> using shapes from <code>BlockData</code>.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/JigSort/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/JigSort/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="game30">
+            <h1>#30 Charge Out Puzzle</h1>
+            <p>A block-sliding puzzle on an irregular grid where players drag colored blocks into matching color conveyor zones. Blocks slide until they hit a wall, an obstacle, or the edge. Win by routing every block onto its matching conveyor before time expires.</p>
+
+            <h3>Main Scripts:</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <strong>LevelManager.cs</strong>
+                    Static utility for JSON-based level persistence. Loads levels from <code>Resources/Levels/ChargeOutPuzzle/</code> at runtime.
+                </div>
+                <div class="script-item">
+                    <strong>GridManager.cs</strong>
+                    Initializes the irregular grid, manages block movement, wall/obstacle detection, conveyor tracking, and the countdown timer.
+                </div>
+                <div class="script-item">
+                    <strong>InputManager.cs</strong>
+                    Detects block selection via raycast, handles drag-to-push movement, and validates slide paths.
+                </div>
+                <div class="script-item">
+                    <strong>Block.cs</strong>
+                    Draggable colored block with grid-position tracking.
+                </div>
+                <div class="script-item">
+                    <strong>Shape.cs</strong>
+                    Wall and obstacle entity that blocks block movement and shapes the playfield outline.
+                </div>
+                <div class="script-item">
+                    <strong>Convenyor.cs</strong>
+                    Conveyor zone that consumes blocks of a matching color when they slide onto it.
+                </div>
+                <div class="script-item">
+                    <strong>LevelData.cs</strong>
+                    Serializable level definition: grid width/height, time limit, block/obstacle/conveyor placements.
+                </div>
+            </div>
+
+            <h3>Key Mechanics:</h3>
+            <ul>
+                <li><strong>Irregular Grid</strong>: Some grid cells are disabled to create custom playfield shapes (e.g., perimeter borders).</li>
+                <li><strong>Slide Until Stop</strong>: Drag a block in any cardinal direction; it slides until it hits a wall, an obstacle, or another block.</li>
+                <li><strong>Color Conveyors</strong>: Each conveyor zone accepts only blocks of its matching color. Routed blocks are consumed with particle feedback.</li>
+                <li><strong>Countdown Timer</strong>: A per-level time limit counts down on the UI. Lose if it reaches zero before all blocks are routed.</li>
+                <li><strong>Win Condition</strong>: All blocks have been routed onto their matching color conveyor zones.</li>
+                <li><strong>Lose Condition</strong>: Countdown timer reaches zero before completion.</li>
+            </ul>
+
+            <div class="editor-box">
+                <h4>Charge Out Puzzle Level Editor</h4>
+                <p><strong>Script:</strong> <code>LevelEditorWindow.cs</code></p>
+                <p><strong>Open via:</strong> <code>Tools > #30 ChargeOutPuzzle Level Editor</code></p>
+
+                <div class="warning-box">
+                    <strong>Window Size:</strong> When you first open this editor, the window may appear small. Drag the right edge and bottom edge of the window to expand it and see the full level browser, grid painter, and properties panels.
+                </div>
+
+                <p><strong>How to use:</strong></p>
+                <ol>
+                    <li>Open via <code>Tools > #30 ChargeOutPuzzle Level Editor</code>.</li>
+                    <li>Use the <strong>Level Browser</strong> (left panel) to create, load, duplicate, reorder, or delete levels.</li>
+                    <li>Set <strong>Grid Width</strong>, <strong>Grid Height</strong>, and <strong>Time Limit</strong>.</li>
+                    <li>Use the paint modes to place <strong>walls/obstacles</strong>, <strong>blocks</strong>, and <strong>conveyor zones</strong> with assigned colors.</li>
+                </ol>
+
+                <h4 style="margin-top: 20px; color: #6c3483;">Saving &amp; Loading Levels</h4>
+                <ul>
+                    <li><strong>Save:</strong> Levels are written as <code>.json</code> files to <code>Assets/Resources/Levels/ChargeOutPuzzle/</code>.</li>
+                    <li><strong>Load:</strong> Use the <strong>Level Browser</strong> in the left panel to see and load existing levels.</li>
+                    <li>At runtime, levels are loaded from <code>Resources/Levels/ChargeOutPuzzle/</code> using Unity's <code>Resources.Load</code> system.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="core">
+            <h1>Core Systems &amp; Utilities</h1>
+
+            <div class="editor-box">
+                <h4>Core Editor Tools</h4>
+                <p>These tools are available globally to assist with general project development:</p>
+                <ul>
+                    <li><strong>DragSnapWithoutPlaymodeEditor.cs</strong>:
+                        <br><em>Usage:</em> Attach the <code>DragSnapWithoutPlaymode</code> component to any GameObject. In the Scene view, a custom handle will appear. Moving this handle will snap the object to the grid defined in the inspector. It also draws a visual grid around the object for reference.
+                    </li>
+                    <li><strong>ImportAudioIcon.cs</strong>:
+                        <br><em>Usage:</em> Automatically assigns a custom icon to audio files in the Project window, making them easier to distinguish from other assets.
+                    </li>
+                </ul>
+            </div>
+
+            <h3>LoseWinPanelManager</h3>
+            <p>A global UI controller. It listens for events from any <code>LevelManager</code> and triggers the appropriate overlay. It is designed to be "Plug and Play" — just drop the prefab into your scene's Canvas.</p>
+
+            <h3>Animation System</h3>
+            <p>The engine includes a lightweight animation system (<code>PositionAnimation.cs</code>, <code>ScaleAnimation.cs</code>, <code>RotationAnimation.cs</code>) that allows for tween-like behavior without external dependencies.</p>
+        </section>
+
+        <section id="development">
+            <h1>Development Guide</h1>
+
+            <h3>Creating a New Game Module:</h3>
+            <ol>
+                <li><strong>Folder Setup</strong>: Create <code>Assets/Hypercasual Game Engine/Games/#X_Name</code>.</li>
+                <li><strong>Manager</strong>: Create a script inheriting from <code>LevelManager</code>.
+                    <pre>public class MyGameManager : LevelManager { ... }</pre>
+                </li>
+                <li><strong>UI Integration</strong>: Ensure your scene has an <code>EventSystem</code> and a <code>Canvas</code> with the <code>LoseWinPanel</code> prefab.</li>
+                <li><strong>Namespace</strong>: Wrap all code in <code>namespace HypercasualGameEngine.YourGameName { ... }</code> or a dedicated namespace like <code>namespace YourGameName { ... }</code>.</li>
+            </ol>
+
+            <div class="important">
+                <strong>Important:</strong> When moving assets, always use the <code>AssetDatabase</code> API or the Unity Project window to preserve <code>.meta</code> files and references.
+            </div>
+        </section>
+
+        <section id="support">
+            <h1>Support</h1>
+            <p>Need help with the engine? Have questions about a specific mechanic or want to report a bug?</p>
+            <div class="note">
+                <strong>Contact Email:</strong> <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>
+            </div>
+            <p>We aim to respond to all support inquiries within 24-48 hours. Please include your order number and a detailed description of your issue for faster assistance.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Hypercasual Game Engine Toolkit. Built for rapid prototyping.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Scroll spy and smooth scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            const navLi = document.querySelectorAll('.sidebar ul li a');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
