@@ -521,10 +521,9 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <div class="sidebar-group">
-    <div class="sidebar-group-title">Account</div>
-    <a href="#authentication"><span class="nav-icon">&#128274;</span> Authentication</a>
-    <a href="#machine-binding"><span class="nav-icon">&#128187;</span> Machine Binding</a>
-    <a href="#quota"><span class="nav-icon">&#9202;</span> Quota Explained</a>
+    <div class="sidebar-group-title">Invoice</div>
+    <a href="#authentication"><span class="nav-icon">&#128274;</span> Activation</a>
+    <a href="#quota"><span class="nav-icon">&#9202;</span> Monthly Allowance</a>
     <a href="#find-invoice"><span class="nav-icon">&#128196;</span> Where's My Invoice</a>
   </div>
 
@@ -567,8 +566,8 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="card-grid">
     <a class="mini-card" href="#quickstart"><h4>&#9889; Quick Start</h4><p>From paste-invoice to first prefab in under three minutes (plus generation time).</p></a>
-    <a class="mini-card" href="#authentication"><h4>&#128274; Invoice Activation</h4><p>Paste your Asset Store invoice, click Verify, then Activate this machine. No accounts, no API keys.</p></a>
-    <a class="mini-card" href="#quota"><h4>&#9202; 50 / 30 days rolling</h4><p>Each generation consumes one credit; failed runs and cache hits cost zero.</p></a>
+    <a class="mini-card" href="#authentication"><h4>&#128274; Invoice Activation</h4><p>Paste your Asset Store invoice, click Verify. No accounts, no API keys.</p></a>
+    <a class="mini-card" href="#quota"><h4>&#9202; 50 generations / month</h4><p>Each generation uses one of your monthly generations; failed runs and cache hits cost zero.</p></a>
     <a class="mini-card" href="#prompts"><h4>&#9999; Plain English Prompts</h4><p>"wooden treasure chest with iron bands" works. So does dropping a reference image.</p></a>
     <a class="mini-card" href="#image-input"><h4>&#127912; Image Input</h4><p>PNG, JPEG, WebP &mdash; up to 10&nbsp;MB, 64&ndash;8192&nbsp;px. Single subject, neutral background, well-lit.</p></a>
     <a class="mini-card" href="#generated-files"><h4>&#128193; Ready-to-use Prefabs</h4><p>Materials extracted, LOD0/1/2/3 wired, pivot centred. Drop into a scene; it works.</p></a>
@@ -630,15 +629,15 @@ details .details-body p:first-child { margin-top: 0; }
   <div class="steps">
     <div class="step"><div class="step-content"><strong>Open the window</strong><br>Menu: <code>Window &rarr; PromptModel</code>. The activation banner appears at the top.</div></div>
     <div class="step"><div class="step-content"><strong>Paste your invoice number</strong><br>The <code>IN_xxxxxxxxxxxxxxx</code> string from your Asset Store order email. See <a href="#find-invoice">Where's My Invoice?</a> if you can't find it.</div></div>
-    <div class="step"><div class="step-content"><strong>Click <em>Verify</em>, then <em>Activate this machine</em></strong><br>Two-step on purpose &mdash; the first call is a non-mutating probe; the second binds. See <a href="#authentication">Authentication</a> for why.</div></div>
+    <div class="step"><div class="step-content"><strong>Click <em>Verify</em></strong><br>The server returns your monthly allowance and remaining generations.</div></div>
     <div class="step"><div class="step-content"><strong>Choose <em>Text</em> or <em>Image</em> mode</strong><br>Text: type a prompt like <em>"wooden treasure chest with iron bands"</em>. Image: drop a PNG/JPEG/WebP into the drop zone, drag a <code>Texture2D</code> asset from your Project window, or click to browse.</div></div>
     <div class="step"><div class="step-content"><strong>(Optional) Name the output</strong><br>The <strong>Name</strong> field is optional. Blank → derived from your prompt or image filename. See <a href="#generated-files">Generated Files</a> for the resulting folder layout.</div></div>
-    <div class="step"><div class="step-content"><strong>Click <em>Generate (1 credit)</em></strong><br>Wait ~60 s. The status panel shows progress; cancel safely at any time. With <em>Spawn into scene</em> checked, the prefab also drops into your active scene at world origin.</div></div>
+    <div class="step"><div class="step-content"><strong>Click <em>Generate</em></strong><br>Wait ~60 s. The status panel shows progress; cancel safely at any time. With <em>Spawn into scene</em> checked, the prefab also drops into your active scene at world origin.</div></div>
   </div>
 
   <div class="callout callout-tip">
     <span class="callout-icon">&#128161;</span>
-    <div><strong>Cache hits are free.</strong> An identical <code>(prompt OR image_url, quality_preset, seed)</code> within the <strong>30-day</strong> cache TTL returns the previous prefab in milliseconds and consumes <strong>zero</strong> credits.</div>
+    <div><strong>Cache hits are free.</strong> An identical <code>(prompt OR image_url, quality_preset, seed)</code> within the <strong>30-day</strong> cache TTL returns the previous prefab in milliseconds and uses <strong>zero</strong> of your monthly generations.</div>
   </div>
 </section>
 
@@ -676,7 +675,7 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <ol>
-    <li>You click <strong>Generate</strong>. The window posts <code>{ invoice, text_prompt OR image_url, quality_preset, seed }</code> to <code>https://model.promptmotion.dev/prod/generate</code> with your invoice and machine fingerprint as authentication context.</li>
+    <li>You click <strong>Generate</strong>. The window posts <code>{ invoice, text_prompt OR image_url, quality_preset, seed }</code> to <code>https://model.promptmotion.dev/prod/generate</code> with your invoice as authentication context.</li>
     <li>The backend returns <strong>202 Accepted</strong> with a <code>request_id</code> and starts the generation in the background.</li>
     <li>The window polls <code>GET /prod/status/{request_id}</code> every two seconds, updating the progress bar.</li>
     <li>For text-mode, the server runs your prompt through <strong>FLUX schnell</strong> (a fast text-to-image model) to get a reference image, then through <strong>TRELLIS</strong> (Microsoft's image-to-3D model). Image-mode skips the FLUX step.</li>
@@ -903,75 +902,35 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 </section>
 
-<!-- ============ AUTHENTICATION ============ -->
+<!-- ============ ACTIVATION ============ -->
 <section class="section" id="authentication">
-  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Authentication</h2>
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Activation</h2>
   <p class="section-desc">Your Asset Store invoice is your license. No signup, no API key, no account.</p>
 
-  <h3>The two-step verify flow</h3>
-  <p>Click <strong>Verify</strong> first &mdash; it's a non-mutating probe. Only after you confirm intent does <strong>Activate this machine</strong> create a new binding.</p>
-  <ol>
-    <li><strong>Verify</strong> &mdash; <code>POST /prod/verify { invoice, bind_machine: false }</code>. Returns whether the invoice is valid and what its current binding state is. No side effects.</li>
-    <li><strong>Activate this machine</strong> &mdash; <code>POST /prod/verify { invoice, bind_machine: true }</code>. Creates a new binding. May trigger the 24-hour transfer cooldown if the invoice was bound elsewhere.</li>
-  </ol>
+  <p>Paste your Unity Asset Store invoice number into the field at the top of the PromptModel window and click <strong>Verify</strong>. Your invoice activates the asset across all your installations &mdash; there's no machine-specific binding.</p>
 
-  <p>The two-step exists to prevent accidental cooldowns. A naive single-click flow would mean any time you mistakenly verify on a friend's computer, the 24-hour timer would start on your own machine.</p>
+  <p>Your purchase includes 50 generations every month. Cached prompts return instantly without using your allowance.</p>
 
   <h3>What gets sent to the server</h3>
-  <p>Only this:</p>
   <ul>
     <li>Your <strong>invoice number</strong> (HTTPS, JSON body).</li>
-    <li>The <strong>machine fingerprint</strong> &mdash; <code>SHA256(SystemInfo.deviceUniqueIdentifier + ":" + invoice)</code>. We never see your raw hardware ID.</li>
     <li>A <strong>client version</strong> string for analytics + compatibility checks.</li>
   </ul>
   <p><strong>Not sent:</strong> name, email, IP (other than what's inherent to TLS), Unity Editor analytics, scene contents, or any telemetry beyond the above. See <a href="#privacy">Privacy</a>.</p>
 
   <h3>Forgetting an invoice</h3>
-  <p>Click <strong>Forget invoice</strong> in the bound banner. This clears local <code>EditorPrefs</code> entries but does <em>not</em> unbind the invoice on the server. To fully release, transfer the binding to another machine via the verify flow.</p>
-</section>
-
-<!-- ============ MACHINE BINDING ============ -->
-<section class="section" id="machine-binding">
-  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128187;</span> Machine Binding &amp; Transfer</h2>
-  <p class="section-desc">One invoice, one machine at a time. Transfer takes 24 hours.</p>
-
-  <h3>Why machines are bound</h3>
-  <p>Machine binding prevents one purchased invoice from being shared across an entire studio. The binding is a SHA-256 hash &mdash; we don't see your hardware ID, only that you're the same machine on subsequent requests.</p>
-
-  <h3>Transferring to a new machine</h3>
-  <p>If your invoice is already bound elsewhere and you click <strong>Activate this machine</strong> on a new computer, the banner switches into transfer mode:</p>
-  <ol>
-    <li>The banner reads <em>"Transfer license to this machine?"</em> with a 24-hour cooldown notice.</li>
-    <li>Click <strong>Start 24h transfer</strong>. The transfer is irreversible from the Editor (you'd need to contact support to abort).</li>
-    <li>For 24 hours, both machines are locked out of generation. The countdown is in the banner; you can close Unity in between.</li>
-    <li>After the cooldown, the new machine is bound and the old one is released.</li>
-  </ol>
-
-  <div class="callout callout-warn">
-    <span class="callout-icon">&#9888;</span>
-    <div><strong>The 24-hour delay is intentional.</strong> If your invoice ID has been stolen, the delay gives you time to notice and contact support before the unauthorised binding completes.</div>
-  </div>
-
-  <h3>If you can't access the old machine</h3>
-  <p>Hardware failure, lost laptop, etc. &mdash; email <code>ragendom@gmail.com</code> with proof of purchase identity (matching your original Asset Store order email). We can do a manual transfer out-of-band, typically within one business day.</p>
-
-  <h3>What invalidates an existing binding</h3>
-  <ul>
-    <li>Successful transfer to a new machine (after 24-hour cooldown).</li>
-    <li>OS reinstall &mdash; <code>SystemInfo.deviceUniqueIdentifier</code> is usually stable across reinstalls on Windows/macOS/Linux, but motherboard or disk replacements can change it. If your hash changes after a reinstall, contact support for a no-cooldown re-bind.</li>
-    <li>Refund processed by Unity Asset Store &mdash; we receive the webhook and revoke server-side.</li>
-  </ul>
+  <p>Choose <code>Window &rarr; PromptModel &rarr; Forget Invoice</code>. This clears the locally stored invoice.</p>
 </section>
 
 <!-- ============ QUOTA ============ -->
 <section class="section" id="quota">
-  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9202;</span> Quota Explained</h2>
-  <p class="section-desc">Each successful generation consumes one credit. Cache hits and failures cost zero.</p>
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9202;</span> Monthly Allowance</h2>
+  <p class="section-desc">Each successful generation uses one of your monthly generations. Cache hits and failures cost zero.</p>
 
   <div class="table-wrap"><table>
     <thead><tr><th>&nbsp;</th><th>Standard</th></tr></thead>
     <tbody>
-      <tr><td>Generations per rolling 30 days</td><td>50</td></tr>
+      <tr><td>Generations per month</td><td>50</td></tr>
       <tr><td>Price (one-time)</td><td>see Asset Store listing</td></tr>
       <tr><td>Cache hits</td><td>Free (30-day TTL on identical prompt + quality + seed)</td></tr>
       <tr><td>Failed generations</td><td>Don't count</td></tr>
@@ -997,21 +956,11 @@ details .details-body p:first-child { margin-top: 0; }
     <li>Status polls.</li>
   </ul>
 
-  <h3>How the rolling window works</h3>
-  <p>Each consumed credit "expires" 30 days after it was used &mdash; meaning it's restored to your available pool. Two example timelines:</p>
-
-  <div class="card">
-    <p class="card-title">&#127919; Burst usage on day 1</p>
-    <p>You spend 50 credits on Day 1. On Day 31, all 50 return at once. You'll see <code>0 / 50</code> for 29 days, then <code>50 / 50</code> on Day 31.</p>
-  </div>
-
-  <div class="card">
-    <p class="card-title">&#9202; One per day</p>
-    <p>You spend 1 credit per day. From Day 1 to Day 30 you go from <code>49/50</code> down to <code>20/50</code>. From Day 31 onward, one credit returns each day, so you stay roughly steady at <code>20/50</code> indefinitely.</p>
-  </div>
+  <h3>How the monthly allowance works</h3>
+  <p>Your purchase includes 50 generations every month. Your next allowance arrives at the start of the next calendar month &mdash; unused generations do not roll over.</p>
 
   <h3>The History panel</h3>
-  <p>The bottom of the window shows your last 10 generations, the most recent Quota line, and an estimated reset date. The numbers refresh after every generation and every status poll &mdash; no need to manually refresh.</p>
+  <p>The bottom of the window shows your last 10 generations and the most recent quota line. The numbers refresh after every generation and every status poll &mdash; no need to manually refresh.</p>
 </section>
 
 <!-- ============ VARIATIONS ============ -->
@@ -1024,7 +973,7 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>How to launch</h3>
   <p>Two entry points, both producing the same result:</p>
   <ul>
-    <li><strong>From the History panel</strong>: each row in the bottom panel has a <em>Generate similar</em> button. The button is disabled for entries created before this feature shipped (the original prompt wasn't recorded back then) and for entries from a different machine binding.</li>
+    <li><strong>From the History panel</strong>: each row in the bottom panel has a <em>Generate similar</em> button. The button is disabled for entries created before this feature shipped (the original prompt wasn't recorded back then).</li>
     <li><strong>From the Project view</strong>: right-click a PromptModel-generated prefab in the Project window &rarr; <strong>PromptModel: Generate similar</strong>. The menu is greyed out on prefabs that didn't come from PromptModel.</li>
   </ul>
 
@@ -1040,15 +989,15 @@ details .details-body p:first-child { margin-top: 0; }
   <p>After you click <strong>Import selected</strong>, each ticked variation runs through the same import pipeline as a regular generation. The new prefabs land in <code>Assets/PromptModel/Generated/</code> with names like <code>wooden_barrel_v2.prefab</code>, <code>wooden_barrel_v3.prefab</code> &mdash; the original is conceptually <code>v1</code>, so variations start at <code>_v2</code>.</p>
 
   <h3>Cost &amp; quota</h3>
-  <p>Each variation costs one credit, just like a regular generation. A 4-variation batch consumes 4 credits. The modal shows an estimated dollar cost (≈ $0.02&ndash;0.03 per variation) and a quota counter that updates after submission.</p>
+  <p>Each variation uses one of your monthly generations, just like a regular generation. A 4-variation batch uses 4 generations. The modal shows a quota counter that updates after submission.</p>
 
   <div class="callout callout-warn">
     <span class="callout-icon">&#9888;</span>
-    <div><strong>One batch at a time per license.</strong> While a variation batch is in flight, single-generation requests from the same machine are blocked with <code>CONCURRENT_LIMIT</code>. Wait for the modal to finish before submitting another generation.</div>
+    <div><strong>One batch at a time.</strong> While a variation batch is in flight, single-generation requests are blocked with <code>CONCURRENT_LIMIT</code>. Wait for the modal to finish before submitting another generation.</div>
   </div>
 
   <h3>What you can keep</h3>
-  <p>Only ticked + completed slots are imported. Failed slots can't be ticked. If you close the modal without ticking anything, no quota is wasted on import &mdash; the credits were already consumed when the batch was submitted, but no asset clutter is added to your project. Unticked variations are deleted from the local cache when you close the modal.</p>
+  <p>Only ticked + completed slots are imported. Failed slots can't be ticked. If you close the modal without ticking anything, no quota is wasted on import &mdash; the generations were already consumed when the batch was submitted, but no asset clutter is added to your project. Unticked variations are deleted from the local cache when you close the modal.</p>
 
   <h3>Variations of variations</h3>
   <p>Imported variations are themselves PromptModel-generated prefabs &mdash; so they get their own metadata sidecar and are valid sources for another <em>Generate similar</em> round. The modal carries forward the original prompt, not the variation's seed, so you keep generating off the same intent rather than drifting through transformed-of-transformed.</p>
@@ -1105,18 +1054,6 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <div class="error-code">
-    <div class="error-code-head"><code>MACHINE_BINDING_CONFLICT</code> <span class="tag tag-info">Action: transfer or wait</span></div>
-    <p class="meaning">The invoice is bound to a different machine.</p>
-    <p class="action"><strong>Fix:</strong> click <strong>Activate this machine</strong> to start the 24-hour transfer, or use the original machine. See <a href="#machine-binding">Machine Binding &amp; Transfer</a>.</p>
-  </div>
-
-  <div class="error-code">
-    <div class="error-code-head"><code>COOLDOWN_ACTIVE</code> <span class="tag tag-info">Action: wait</span></div>
-    <p class="meaning">A transfer was started recently and the 24-hour cooldown hasn't elapsed yet.</p>
-    <p class="action"><strong>Fix:</strong> wait until the countdown finishes (banner shows time remaining), or unbind from the original machine to skip the cooldown if accessible.</p>
-  </div>
-
-  <div class="error-code">
     <div class="error-code-head"><code>UNSUPPORTED_PACKAGE</code> <span class="tag tag-required">Action: re-enter invoice</span></div>
     <p class="meaning">That invoice is for a different Asset Store product, not PromptModel.</p>
     <p class="action"><strong>Fix:</strong> use the invoice from your PromptModel purchase specifically.</p>
@@ -1125,9 +1062,9 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>Quota / rate-limit errors</h3>
 
   <div class="error-code">
-    <div class="error-code-head"><code>QUOTA_EXCEEDED</code> <span class="tag tag-info">Action: wait or upgrade</span></div>
-    <p class="meaning">You've used all 50 credits in the rolling 30-day window.</p>
-    <p class="action"><strong>Fix:</strong> wait for the oldest credits to age out (the History panel's quota line shows the next reset date). See <a href="#quota">Quota Explained</a>.</p>
+    <div class="error-code-head"><code>QUOTA_EXCEEDED</code> <span class="tag tag-info">Action: wait</span></div>
+    <p class="meaning">You've used all 50 generations this month.</p>
+    <p class="action"><strong>Fix:</strong> your next allowance arrives at the start of next month. See <a href="#quota">Monthly Allowance</a>.</p>
   </div>
 
   <div class="error-code auto-retry">
@@ -1138,8 +1075,8 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="error-code">
     <div class="error-code-head"><code>CONCURRENT_LIMIT</code> <span class="tag tag-info">Action: wait</span></div>
-    <p class="meaning">Another generation from this machine is still in flight.</p>
-    <p class="action"><strong>Fix:</strong> wait for the in-flight one to finish, then submit. Only one generation per machine at a time.</p>
+    <p class="meaning">Another generation is still in flight.</p>
+    <p class="action"><strong>Fix:</strong> wait for the in-flight one to finish, then submit. Only one generation at a time.</p>
   </div>
 
   <h3>Input / validation errors</h3>
@@ -1258,7 +1195,6 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>What we collect</h3>
   <ul>
     <li>Your <strong>invoice ID</strong> (sent in the JSON body of authenticated requests).</li>
-    <li>Your <strong>machine fingerprint</strong> &mdash; SHA-256 of <code>deviceUniqueIdentifier + invoice</code>. We see the hash, not the source.</li>
     <li>Your <strong>prompts</strong> (text strings).</li>
     <li>Your <strong>reference image bytes</strong> when you submit image-mode generations.</li>
     <li>A <strong>client version</strong> string.</li>
@@ -1389,7 +1325,7 @@ details .details-body p:first-child { margin-top: 0; }
   <details>
     <summary>How do I cancel a generation in flight?</summary>
     <div class="details-body">
-      <p>Click <strong>Cancel</strong> in the Status panel. The local request is cancelled, and the Editor stops downloading. <strong>The server-side generation may still complete and consume a credit</strong> &mdash; cancellation is best-effort on our side, not a refund mechanism.</p>
+      <p>Click <strong>Cancel</strong> in the Status panel. The local request is cancelled, and the Editor stops downloading. <strong>The server-side generation may still complete and use one of your monthly generations</strong> &mdash; cancellation is best-effort on our side, not a refund mechanism.</p>
     </div>
   </details>
 
@@ -1433,7 +1369,7 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>What we can't help with directly</h3>
   <ul>
     <li><strong>Asset Store refunds</strong> &mdash; those go through Unity's standard process at <a href="https://support.unity.com/hc/en-us/articles/207061243" target="_blank">Unity Support</a>. We can confirm refund-related auth state, but we can't issue the refund ourselves.</li>
-    <li><strong>fal.ai or TRELLIS bugs</strong> &mdash; we relay them upstream but can't fix model behaviour ourselves. We <em>can</em> often get a refund of the affected credit on your behalf.</li>
+    <li><strong>fal.ai or TRELLIS bugs</strong> &mdash; we relay them upstream but can't fix model behaviour ourselves. We <em>can</em> often restore the affected generation to your monthly allowance on your behalf.</li>
     <li><strong>Custom integrations / SLAs</strong> &mdash; v1 doesn't offer enterprise tiers. Email anyway and we'll see if we can help.</li>
   </ul>
 
