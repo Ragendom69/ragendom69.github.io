@@ -641,7 +641,6 @@ details .details-body { padding: 0 20px 18px; }
   </div>
   <div class="sidebar-group">
     <div class="sidebar-group-title">Licensing</div>
-    <a href="#machine-binding"><span class="nav-icon">&#128187;</span> Machine Binding</a>
     <a href="#quota"><span class="nav-icon">&#128202;</span> Monthly Quota</a>
     <a href="#version-check"><span class="nav-icon">&#128259;</span> Plugin Updates</a>
   </div>
@@ -782,55 +781,24 @@ details .details-body { padding: 0 20px 18px; }
     <thead><tr><th>Control</th><th>Description</th></tr></thead>
     <tbody>
       <tr><td><strong>Invoice Number</strong></td><td>Your Unity Asset Store invoice number, starting with <code>IN</code>. Find it in your purchase email or <a href="https://assetstore.unity.com/orders">order history</a>.</td></tr>
-      <tr><td><strong>Verify Invoice</strong></td><td>Validates your invoice with the SkyboxLab server, binds your machine, and displays remaining generations.</td></tr>
-      <tr><td><strong>Check Status</strong></td><td>Refreshes your quota display. Shows current usage and remaining generations.</td></tr>
-      <tr><td><strong>Reset</strong></td><td>Clears the stored invoice so you can enter a different one.</td></tr>
+      <tr><td><strong>Verify Invoice</strong></td><td>Validates your invoice with the SkyboxLab server and displays remaining generations.</td></tr>
     </tbody>
   </table></div>
-</section>
 
-<!-- ============================================ -->
-<!--           MACHINE BINDING                    -->
-<!-- ============================================ -->
-<section class="section" id="machine-binding">
-  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#128187;</span> Machine Binding</h2>
-  <p class="section-desc">One license, one machine at a time &mdash; transferable when you need it.</p>
-
+  <h3>Activation</h3>
   <p>
-    Your invoice is bound to <strong>one machine at a time</strong>. This prevents a single license from being
-    shared across multiple computers simultaneously.
+    Paste your Unity Asset Store invoice number into the field at the top of the SkyboxLab window
+    and click <strong>Verify Invoice</strong>. Your invoice activates the asset across all your
+    installations &mdash; there's no machine-specific binding.
   </p>
-
-  <h3>How it works</h3>
-  <ul>
-    <li>The first time you verify your invoice on a machine, it is <strong>automatically bound</strong> to that machine.</li>
-    <li>If you verify the same invoice on a different machine, you'll see an amber message: <em>"This license is active on another machine."</em></li>
-    <li>Click <strong>Transfer License to This Machine</strong> to move the license. The previous machine will no longer be able to generate.</li>
-  </ul>
-
-  <h3>Transfer cooldown</h3>
   <p>
-    After transferring your license to a new machine, there is a <strong>24-hour cooldown</strong> before it can be
-    transferred again. This prevents abuse while still allowing legitimate use cases like switching between
-    a desktop and laptop.
+    Your purchase includes 50 generations every month. Cached prompts return instantly without using
+    your allowance.
   </p>
-
-  <div class="callout callout-warn">
-    <span class="callout-icon">&#9888;</span>
-    <div>
-      <strong>During the 24-hour cooldown:</strong>
-      <ul style="margin-top:6px;">
-        <li>The <strong>new machine</strong> (the one you transferred to) can generate immediately.</li>
-        <li>The <strong>old machine</strong> can no longer generate.</li>
-        <li>No <strong>third machine</strong> can request a transfer until the cooldown expires.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="callout callout-info">
-    <span class="callout-icon">&#9432;</span>
-    <div><strong>Hardware changes.</strong> Reinstalling Unity or your OS does not change your machine identity. Your license will still be bound after a reinstall. If you need to reset your machine binding after a hardware change, contact <a href="mailto:ragendom@gmail.com">support</a>.</div>
-  </div>
+  <p>
+    If you need to clear a stored invoice (for example, after a typo), use
+    <code>Window &rarr; SkyboxLab &rarr; Forget Invoice</code>.
+  </p>
 </section>
 
 <!-- ============================================ -->
@@ -838,23 +806,15 @@ details .details-body { padding: 0 20px 18px; }
 <!-- ============================================ -->
 <section class="section" id="quota">
   <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128202;</span> Monthly Quota</h2>
-  <p class="section-desc">50 generations per month, included with your purchase.</p>
+  <p class="section-desc">50 generations every month, included with your purchase.</p>
 
-  <p>Each purchase includes a <strong>rolling monthly quota</strong> of skybox generations. The quota resets every 30 days based on a rolling window.</p>
+  <p>Your purchase includes <strong>50 generations every month</strong>. The allowance is issued every month for as long as you own the asset.</p>
 
-  <div class="table-wrap"><table>
-    <thead><tr><th>Tier</th><th>Monthly Generations</th><th>Included With</th></tr></thead>
-    <tbody>
-      <tr><td>Standard</td><td><strong>50</strong></td><td>SkyboxLab &mdash; AI Skybox Generator</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3>How the quota works</h3>
+  <h3>How the allowance works</h3>
   <ul>
-    <li>Each non-cached generation uses <strong>1 credit</strong> from your monthly quota.</li>
-    <li>The quota is based on a <strong>rolling 30-day window</strong> &mdash; generations older than 30 days automatically free up quota.</li>
+    <li>Each non-cached generation uses one of your monthly generations.</li>
     <li>Unused generations do <strong>not</strong> accumulate or carry over.</li>
-    <li><strong>Cache hits are free.</strong> If you generate the exact same prompt with the same settings, the server returns the cached result instantly without using a credit.</li>
+    <li><strong>Cache hits are free.</strong> If you generate the exact same prompt with the same settings, the server returns the cached result instantly without using one of your monthly generations.</li>
   </ul>
 
   <div class="callout callout-tip">
@@ -868,18 +828,12 @@ details .details-body { padding: 0 20px 18px; }
 <!-- ============================================ -->
 <section class="section" id="version-check">
   <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128259;</span> Plugin Updates</h2>
-  <p class="section-desc">Automatic version checking keeps you up to date.</p>
+  <p class="section-desc">Update from the Unity Asset Store at any time for the latest features.</p>
 
   <p>
-    Every time you open the SkyboxLab window, the plugin checks the server for the current minimum required version.
-    If the server reports a newer version is required, the normal UI is replaced with a full-window update screen
-    containing an <strong>"Update SkyboxLab"</strong> button that opens the Asset Store page.
+    New versions of SkyboxLab are released through the Unity Asset Store. You can update at any time from your
+    <a href="https://assetstore.unity.com/orders">order history</a> or from the Package Manager.
   </p>
-
-  <div class="callout callout-info">
-    <span class="callout-icon">&#9432;</span>
-    <div><strong>Non-blocking.</strong> If the server is unreachable, the plugin assumes it is up to date and loads normally. You will never be locked out because of a transient network error.</div>
-  </div>
 </section>
 
 <!-- ============================================ -->
@@ -894,7 +848,7 @@ details .details-body { padding: 0 20px 18px; }
   <div class="table-wrap"><table>
     <thead><tr><th>Section</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><strong>Invoice</strong></td><td>Invoice number input, verification status, quota display, and machine transfer controls</td></tr>
+      <tr><td><strong>Invoice</strong></td><td>Invoice number input, verification status, and remaining-generations display</td></tr>
       <tr><td><strong>Prompt</strong></td><td>Main text prompt input area</td></tr>
       <tr><td><strong>Style</strong></td><td>Collapsible style preset picker (12 presets)</td></tr>
       <tr><td><strong>Negative Prompt</strong></td><td>Collapsible field for things to avoid in the generation</td></tr>
@@ -1013,7 +967,7 @@ low quality, jpeg artifacts, overexposed, underexposed, ugly, deformed</code></p
 
   <div class="callout callout-tip">
     <span class="callout-icon">&#128161;</span>
-    <div><strong>All generations are included in your purchase.</strong> There is no per-generation cost. Both standard and 8K upscaled generations count as 1 credit each from your monthly quota of 50.</div>
+    <div><strong>All generations are included in your purchase.</strong> There is no per-generation cost. Both standard and 8K upscaled generations use one of your monthly generations.</div>
   </div>
 </section>
 
@@ -1125,10 +1079,9 @@ low quality, jpeg artifacts, overexposed, underexposed, ugly, deformed</code></p
     <thead><tr><th>Script</th><th>Type</th><th>Responsibility</th></tr></thead>
     <tbody>
       <tr><td><code>SkyboxLabWindow.cs</code></td><td><code>EditorWindow</code></td><td>Main UI. Draws all controls, manages state, persists settings via <code>EditorPrefs</code>, orchestrates the verify &rarr; generate &rarr; poll &rarr; import flow, and displays the gallery.</td></tr>
-      <tr><td><code>SkyboxLabAPI.cs</code></td><td><code>static class</code></td><td>HTTP client. Handles <code>/prod/verify</code>, <code>/prod/status</code>, <code>/prod/generate</code>, polling, and version checking. Sends <code>X-Machine-Hash</code> and <code>X-Client-Version</code> headers. Uses <code>EditorApplication.update</code> for async polling.</td></tr>
+      <tr><td><code>SkyboxLabAPI.cs</code></td><td><code>static class</code></td><td>HTTP client. Handles <code>/prod/verify</code>, <code>/prod/status</code>, and <code>/prod/generate</code>, plus async polling. Sends <code>X-Client-Version</code> (and <code>X-Invoice</code> on downloads) headers. Uses <code>EditorApplication.update</code> for async polling.</td></tr>
       <tr><td><code>SkyboxLabImporter.cs</code></td><td><code>static class</code></td><td>Downloads the PNG with authentication headers, saves to disk, configures <code>TextureImporter</code>, creates <code>Skybox/Panoramic</code> material, and optionally applies to scene.</td></tr>
       <tr><td><code>SkyboxLabError.cs</code></td><td><code>static class</code></td><td>Error code constants and user-friendly message mapping.</td></tr>
-      <tr><td><code>SkyboxLabUrls.cs</code></td><td><code>static class</code></td><td>URL constants for external links (website, support, etc.).</td></tr>
       <tr><td><code>SkyboxLabWelcome.cs</code></td><td><code>EditorWindow</code></td><td>One-time welcome popup shown on first open after import.</td></tr>
     </tbody>
   </table></div>
@@ -1154,7 +1107,6 @@ low quality, jpeg artifacts, overexposed, underexposed, ugly, deformed</code></p
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabAPI.cs</span> <span class="desc">&mdash; HTTP client (invoice auth, async polling)</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabImporter.cs</span> <span class="desc">&mdash; Download, texture import, material creation</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabError.cs</span> <span class="desc">&mdash; Error code mapping</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabUrls.cs</span> <span class="desc">&mdash; External URL constants</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabWelcome.cs</span> <span class="desc">&mdash; First-open welcome popup</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SkyboxLabIcon-transparent.png</span> <span class="desc">&mdash; Plugin branding icon</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Documentation/</span><br>
@@ -1214,16 +1166,9 @@ skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
   </details>
 
   <details>
-    <summary>&#128187; "This license is active on another machine"</summary>
-    <div class="details-body">
-      <p>Your invoice is bound to a different computer. Click <strong>Transfer License to This Machine</strong> to move it here. After transferring, you must wait 24 hours before transferring again.</p>
-    </div>
-  </details>
-
-  <details>
     <summary>&#128202; "No generations remaining this month"</summary>
     <div class="details-body">
-      <p>Your monthly quota of 50 generations has been used up. The quota resets on a rolling 30-day window &mdash; generations older than 30 days automatically free up quota. Click <strong>Check Status</strong> to see your remaining count.</p>
+      <p>You've used all 50 generations from this month's allowance. Your next allowance arrives at the start of next month.</p>
     </div>
   </details>
 
@@ -1306,17 +1251,17 @@ skybox_{yyyyMMdd_HHmmss}_{sanitised_prompt_slug}_Mat.mat</code></pre>
 
   <details>
     <summary>Can I use one invoice on multiple machines?</summary>
-    <div class="details-body"><p>Your invoice is bound to <strong>one machine at a time</strong>. You can transfer between machines (e.g. desktop and laptop) using the <strong>Transfer License</strong> button, with a 24-hour cooldown between transfers.</p></div>
+    <div class="details-body"><p>Yes. Your invoice activates the asset across all your installations &mdash; there's no machine-specific binding.</p></div>
   </details>
 
   <details>
     <summary>Do unused generations carry over?</summary>
-    <div class="details-body"><p>No. The monthly quota is based on a rolling 30-day window. Unused generations do not accumulate.</p></div>
+    <div class="details-body"><p>No. Unused generations do not accumulate. Your allowance is issued every month for as long as you own the asset.</p></div>
   </details>
 
   <details>
     <summary>Does the same prompt always produce the same result?</summary>
-    <div class="details-body"><p>If all settings (prompt, style, steps, guidance, upscale) are identical, the server may return a <strong>cached result</strong> instantly without using a generation credit. Otherwise, the AI produces a new unique image each time.</p></div>
+    <div class="details-body"><p>If all settings (prompt, style, steps, guidance, upscale) are identical, the server may return a <strong>cached result</strong> instantly without using one of your monthly generations. Otherwise, the AI produces a new unique image each time.</p></div>
   </details>
 
   <details>
