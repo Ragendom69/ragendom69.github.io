@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoundCraft AI — Documentation</title>
+<style>
+:root {
+  --bg: #0e0e12;
+  --bg-card: #16161d;
+  --bg-card-hover: #1c1c26;
+  --bg-code: #1a1a24;
+  --bg-sidebar: #111117;
+  --text: #e2e2ea;
+  --text-dim: #8888a0;
+  --text-code: #c8c8d8;
+  --accent: #4a9ff5;
+  --accent-light: #74b9ff;
+  --accent-glow: rgba(74,159,245,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #fd79a8;
+  --pink-dim: rgba(253,121,168,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #74b9ff;
+  --blue-dim: rgba(116,185,255,0.12);
+  --border: #2a2a38;
+  --border-light: #33334a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 260px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(14,14,18,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), #00cec9);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(116,185,255,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(253,121,168,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 10px 0 16px 24px; }
+li { margin: 4px 0; }
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.cm { color: #546e7a; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(74,159,245,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+summary:hover { color: var(--accent-light); }
+details .details-body { padding: 0 20px 18px; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(116,185,255,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(253,121,168,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-default { background: var(--green-dim); color: var(--green); }
+
+/* ---- FILE TREE ---- */
+.file-tree {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: var(--text-dim);
+}
+
+.file-tree .folder { color: var(--accent-light); font-weight: 600; }
+.file-tree .file { color: var(--text); }
+.file-tree .desc { color: var(--text-dim); }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <div class="header-logo">
+    <div class="dot">&#128266;</div>
+    <span>SoundCraft AI</span>
+  </div>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0 &middot; Unity 2021.3+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+    <a href="#invoice"><span class="nav-icon">&#128196;</span> Invoice Activation</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Licensing</div>
+    <a href="#allowance"><span class="nav-icon">&#128202;</span> Monthly Allowance</a>
+    <a href="#updates"><span class="nav-icon">&#128259;</span> Plugin Updates</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Generation</div>
+    <a href="#window"><span class="nav-icon">&#128444;</span> Generator Window</a>
+    <a href="#prompts"><span class="nav-icon">&#128172;</span> Prompt Guide</a>
+    <a href="#models"><span class="nav-icon">&#127911;</span> Sound Models</a>
+    <a href="#styles"><span class="nav-icon">&#127912;</span> Style Presets</a>
+    <a href="#options"><span class="nav-icon">&#9881;</span> Options</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Output</div>
+    <a href="#import"><span class="nav-icon">&#128230;</span> Auto-Import</a>
+    <a href="#categories"><span class="nav-icon">&#128193;</span> Categories</a>
+    <a href="#audio-settings"><span class="nav-icon">&#128190;</span> AudioImporter Settings</a>
+    <a href="#prefabs"><span class="nav-icon">&#128266;</span> AudioSource Prefabs</a>
+    <a href="#history"><span class="nav-icon">&#128340;</span> History</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Technical</div>
+    <a href="#architecture"><span class="nav-icon">&#128736;</span> Architecture</a>
+    <a href="#files"><span class="nav-icon">&#128193;</span> File Structure</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Help</div>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero">
+  <h1>SoundCraft AI</h1>
+  <p>Generate game-ready sound effects from text prompts, directly inside the Unity Editor. No accounts, no API keys &mdash; just your Asset Store invoice number.</p>
+  <div class="hero-badges">
+    <span class="badge badge-blue">Unity 2021.3+</span>
+    <span class="badge badge-green">250 Gens / Month</span>
+    <span class="badge badge-yellow">Auto-Categorised</span>
+    <span class="badge badge-pink">Editor-Only</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!--                OVERVIEW                      -->
+<!-- ============================================ -->
+<section class="section" id="overview">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127968;</span> Overview</h2>
+  <p class="section-desc">Type a prompt, click generate, get a game-ready sound effect in seconds.</p>
+
+  <p>
+    <strong>SoundCraft AI</strong> is a Unity Editor plugin that connects to the SoundCraft AI cloud backend to
+    generate game sound effects from simple text descriptions. The result is downloaded, sorted into a category
+    folder, imported with correct <code>AudioImporter</code> settings, and &mdash; optionally &mdash; wrapped in a
+    ready-to-use <code>AudioSource</code> prefab, all without ever leaving Unity.
+  </p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>No accounts, no API keys.</strong> SoundCraft AI is activated with your Unity Asset Store invoice number. No separate website registration, no API keys to manage. Just enter your invoice, verify, and start generating.</div>
+  </div>
+
+  <h3>Generation Flow</h3>
+  <div class="flow">
+    <span class="flow-node">&#9997;&#65039; Type prompt</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128640; Send to cloud</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#9203; Poll progress</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128229; Download clip(s)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128193; Auto-categorise &amp; import</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              QUICK START                     -->
+<!-- ============================================ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">Get up and running in under 2 minutes.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import the package</strong><br>Import SoundCraft AI into your Unity project via the Asset Store. All files live under <code>Assets/SoundCraftAI/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the plugin</strong><br>Go to <code>Window &rarr; SoundCraft AI &rarr; Generator</code>. A welcome popup will guide you on first open.</div></div>
+    <div class="step"><div class="step-content"><strong>Enter your invoice</strong><br>Paste your <strong>Invoice Number</strong> from the Asset Store purchase email (starts with <code>IN</code>) and click <strong>Verify Invoice</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Write a prompt</strong><br>Type a description, e.g. <em>"8-bit retro coin pickup chime"</em> or <em>"heavy iron sword hitting plate armor"</em>.</div></div>
+    <div class="step"><div class="step-content"><strong>Generate!</strong><br>Optionally pick a <strong>Style</strong> preset and a number of <strong>Variations</strong>, then click <strong>Generate</strong>. In a few seconds your clip is imported, sorted, and pinged in the Project window.</div></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>No dependencies.</strong> SoundCraft AI uses only built-in Unity APIs (<code>UnityWebRequest</code>, <code>EditorWindow</code>, <code>AudioImporter</code>, <code>AssetDatabase</code>). No packages to install.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           INVOICE ACTIVATION                 -->
+<!-- ============================================ -->
+<section class="section" id="invoice">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128196;</span> Invoice Activation</h2>
+  <p class="section-desc">Your Asset Store invoice number is your license key.</p>
+
+  <p>
+    SoundCraft AI uses your <strong>Unity Asset Store invoice number</strong> to verify your purchase and manage your
+    generation allowance. No separate account, API key, or registration is needed.
+  </p>
+
+  <h3>How to find your invoice number</h3>
+  <ol>
+    <li>Check the <strong>purchase confirmation email</strong> from the Unity Asset Store. The invoice number starts with <code>IN</code> followed by 8&ndash;18 characters (e.g. <code>IN0123456789AB</code>).</li>
+    <li>You can also find it in your <a href="https://assetstore.unity.com/orders">Unity Asset Store order history</a>.</li>
+  </ol>
+
+  <h3>Activating the plugin</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content">Open the SoundCraft AI window (<code>Window &rarr; SoundCraft AI &rarr; Generator</code>).</div></div>
+    <div class="step"><div class="step-content">Enter your invoice number in the <strong>Invoice Number</strong> field.</div></div>
+    <div class="step"><div class="step-content">Click <strong>Verify Invoice</strong>.</div></div>
+    <div class="step"><div class="step-content">On success, you'll see a green message: <em>"&#10003; Verified &mdash; X of Y generations remaining this month"</em>.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Automatic verification.</strong> When you enter a valid invoice number for the first time, the server automatically verifies your purchase against the Unity Asset Store and activates your license. No manual approval or waiting required.</div>
+  </div>
+
+  <h3>Invoice section controls</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Control</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Invoice Number</strong></td><td>Your Unity Asset Store invoice number, starting with <code>IN</code>. Find it in your purchase email or <a href="https://assetstore.unity.com/orders">order history</a>.</td></tr>
+      <tr><td><strong>Verify Invoice</strong></td><td>Validates your invoice with the SoundCraft AI server and displays your remaining generations.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Activation</h3>
+  <p>
+    Paste your Unity Asset Store invoice number into the field at the top of the SoundCraft AI window
+    and click <strong>Verify Invoice</strong>. Your invoice activates the asset across all your
+    installations &mdash; there's no machine-specific binding.
+  </p>
+  <p>
+    Your purchase includes 250 generations every month. Cached prompts return instantly without using
+    your allowance.
+  </p>
+  <p>
+    If you need to clear a stored invoice (for example, after a typo), use
+    <code>Window &rarr; SoundCraft AI &rarr; Forget Invoice</code>.
+  </p>
+</section>
+
+<!-- ============================================ -->
+<!--           MONTHLY ALLOWANCE                  -->
+<!-- ============================================ -->
+<section class="section" id="allowance">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128202;</span> Monthly Allowance</h2>
+  <p class="section-desc">250 generations every month, included with your purchase.</p>
+
+  <p>Your purchase includes <strong>250 generations every month</strong>. The allowance is issued every month for as long as you own the asset.</p>
+
+  <h3>How the allowance works</h3>
+  <ul>
+    <li>Each non-cached generation uses one of your monthly generations.</li>
+    <li>A request for several <strong>variations</strong> uses one generation per variation produced.</li>
+    <li>Unused generations do <strong>not</strong> accumulate or carry over.</li>
+    <li><strong>Cache hits are free.</strong> If you generate the exact same prompt with the same settings, the server returns the cached result instantly without using any of your monthly generations.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Allowance display.</strong> After verifying your invoice, the plugin shows: <em>"&#10003; Verified &mdash; 248 of 250 generations remaining this month"</em>. This updates as you generate.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           PLUGIN UPDATES                     -->
+<!-- ============================================ -->
+<section class="section" id="updates">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128259;</span> Plugin Updates</h2>
+  <p class="section-desc">Update from the Unity Asset Store at any time for the latest features.</p>
+
+  <p>
+    New versions of SoundCraft AI are released through the Unity Asset Store. You can update at any time from your
+    <a href="https://assetstore.unity.com/orders">order history</a> or from the Package Manager.
+  </p>
+</section>
+
+<!-- ============================================ -->
+<!--           GENERATOR WINDOW                   -->
+<!-- ============================================ -->
+<section class="section" id="window">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128444;</span> Generator Window</h2>
+  <p class="section-desc">Your single control panel for everything.</p>
+
+  <p>Open it via <code>Window &rarr; SoundCraft AI &rarr; Generator</code>. The window is resizable and divided into these sections from top to bottom:</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Section</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Invoice</strong></td><td>Invoice number input, verification status, and remaining-generations display</td></tr>
+      <tr><td><strong>Prompt</strong></td><td>Main text prompt input, plus a collapsible negative-prompt field</td></tr>
+      <tr><td><strong>Options</strong></td><td>Model selector, style preset, category, duration, and variation count</td></tr>
+      <tr><td><strong>Import</strong></td><td>Per-category import settings, optional AudioSource prefab, and Project-window ping toggles</td></tr>
+      <tr><td><strong>Generate</strong></td><td>The generate button, progress bar, and cancel button</td></tr>
+      <tr><td><strong>History</strong></td><td>Your last 20 generations, with play, regenerate, locate, and delete per entry</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>All settings are persisted between Unity sessions via <code>EditorPrefs</code>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           PROMPT GUIDE                       -->
+<!-- ============================================ -->
+<section class="section" id="prompts">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128172;</span> Prompt Guide</h2>
+  <p class="section-desc">The prompt is the most important factor in the quality of your sound effect.</p>
+
+  <h3>What works well</h3>
+  <ul>
+    <li>Concrete, physical descriptions &mdash; the material, action, and surface</li>
+    <li>One clear sound per prompt, rather than a whole scene</li>
+    <li>Adjectives that set the tone (heavy, wet, metallic, distant, sharp)</li>
+  </ul>
+
+  <h3>Example prompts</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Prompt</th><th>Auto-Category</th></tr></thead>
+    <tbody>
+      <tr><td><em>"8-bit retro coin pickup chime"</em></td><td>UI</td></tr>
+      <tr><td><em>"heavy iron sword hitting plate armor"</em></td><td>Weapons</td></tr>
+      <tr><td><em>"wet footstep on grass"</em></td><td>Footsteps</td></tr>
+      <tr><td><em>"distant forest wind ambience loop"</em></td><td>Ambience</td></tr>
+      <tr><td><em>"menacing low-frequency monster growl"</em></td><td>Creatures</td></tr>
+      <tr><td><em>"wooden crate smashing apart"</em></td><td>Impacts</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Negative prompt</h3>
+  <p>The optional negative prompt tells the AI what to <em>avoid</em> &mdash; for example <em>"music, voice, distortion"</em>. Expand the collapsible Negative prompt field below the prompt to set one per generation.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Generate variations.</strong> Games need several takes of common sounds. Raise the <strong>Variations</strong> slider (1&ndash;8) to get that many distinct takes of the same prompt in a single click &mdash; ideal for footsteps, impacts and gunfire.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           SOUND MODELS                       -->
+<!-- ============================================ -->
+<section class="section" id="models">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127911;</span> Sound Models</h2>
+  <p class="section-desc">Three SFX engines, tuned for different needs.</p>
+
+  <p>The <strong>Model</strong> selector offers three AI sound engines. Pick the one that fits the job &mdash; the cloud backend routes your request to that engine.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Model</th><th>Best For</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ElevenLabs SFX v2</strong> <span class="tag tag-default">Recommended</span></td><td>Premium quality &mdash; hero and signature SFX</td><td>Up to 22 seconds</td></tr>
+      <tr><td><strong>MMAudio V2</strong> <span class="tag" style="background:var(--blue-dim);color:var(--blue)">Cheap</span></td><td>Batch placeholder SFX while prototyping</td><td>Up to 30 seconds &middot; default selection</td></tr>
+      <tr><td><strong>CassetteAI</strong> <span class="tag" style="background:var(--orange-dim);color:var(--orange)">Fast</span></td><td>Instant turnaround while iterating on prompts</td><td>Up to 30 seconds</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>All models are included in your purchase.</strong> There is no per-generation cost. Each variation produced &mdash; with any model &mdash; uses one of your monthly generations.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           STYLE PRESETS                      -->
+<!-- ============================================ -->
+<section class="section" id="styles">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#127912;</span> Style Presets</h2>
+  <p class="section-desc">Genre tags that keep a project's whole sound palette consistent.</p>
+
+  <p>Pick a style preset to prepend a short genre tag to your prompt. Your typed prompt is never modified &mdash; the style tag is added only when the generation request is sent. Choose <strong>None</strong> to send the prompt as-is.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Style</th><th>Tag Applied</th></tr></thead>
+    <tbody>
+      <tr><td><strong>None</strong></td><td><em>(prompt sent unchanged)</em></td></tr>
+      <tr><td><strong>Retro 8-bit</strong></td><td>retro 8-bit chiptune</td></tr>
+      <tr><td><strong>Realistic</strong></td><td>realistic high-fidelity</td></tr>
+      <tr><td><strong>Cartoon</strong></td><td>cartoon stylized</td></tr>
+      <tr><td><strong>Horror</strong></td><td>dark horror</td></tr>
+      <tr><td><strong>Sci-Fi</strong></td><td>sci-fi futuristic</td></tr>
+      <tr><td><strong>Fantasy</strong></td><td>fantasy magical</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--           GENERATION OPTIONS                 -->
+<!-- ============================================ -->
+<section class="section" id="options">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> Generation Options</h2>
+  <p class="section-desc">Control the model, length, and how many takes you get.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Option</th><th>Values</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Model</strong></td>
+        <td>ElevenLabs / MMAudio V2 / CassetteAI</td>
+        <td>Which AI sound engine generates the clip. See <a href="#models">Sound Models</a>.</td>
+      </tr>
+      <tr>
+        <td><strong>Style preset</strong></td>
+        <td>None <span class="tag tag-default">Default</span> / 6 presets</td>
+        <td>Optional genre tag prepended to your prompt. See <a href="#styles">Style Presets</a>.</td>
+      </tr>
+      <tr>
+        <td><strong>Category</strong></td>
+        <td>Auto <span class="tag tag-default">Default</span> / 8 categories</td>
+        <td>Which folder the clip is filed under. <strong>Auto</strong> lets the server classify the prompt; pick a category to override it.</td>
+      </tr>
+      <tr>
+        <td><strong>Duration</strong></td>
+        <td><code>0.5</code> &ndash; <code>30</code> seconds (default <code>2</code>)</td>
+        <td>Target clip length. Short UI blips work best around 0.5&ndash;1.5s; ambience loops at 8&ndash;30s.</td>
+      </tr>
+      <tr>
+        <td><strong>Variations</strong></td>
+        <td><code>1</code> &ndash; <code>8</code> (default <code>1</code>)</td>
+        <td>How many distinct takes of the prompt to generate in one click. Each variation uses one generation.</td>
+      </tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--           AUTO-IMPORT                        -->
+<!-- ============================================ -->
+<section class="section" id="import">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128230;</span> Auto-Import</h2>
+  <p class="section-desc">Control what happens after a clip is generated.</p>
+
+  <p>When a generation completes, SoundCraft AI downloads each clip, files it into a category subfolder, and imports it &mdash; ready to use. The Import section of the window controls the optional extras:</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Apply per-category import settings</strong></td><td>On</td><td>Sets the <code>AudioImporter</code> compression, load type, and mono/stereo automatically for the clip's category.</td></tr>
+      <tr><td><strong>Also create AudioSource prefab</strong></td><td>Off</td><td>Emits a ready-to-drop <code>AudioSource</code> prefab next to each clip, pre-tuned for the category.</td></tr>
+      <tr><td><strong>Ping clip in Project window</strong></td><td>On</td><td>Highlights the first generated clip in the Project window when the import finishes.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>All generated files are saved to <code>Assets/SoundCraftAI/Generated/&lt;Category&gt;/</code>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           CATEGORIES                         -->
+<!-- ============================================ -->
+<section class="section" id="categories">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128193;</span> Categories</h2>
+  <p class="section-desc">Every generation is sorted into the right folder automatically.</p>
+
+  <p>The backend classifies each prompt into one of eight categories and files the clip under <code>Generated/&lt;Category&gt;/</code>. You can override the classification with the <strong>Category</strong> dropdown in the window.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Category</th><th>Typical Sounds</th></tr></thead>
+    <tbody>
+      <tr><td><strong>UI</strong></td><td>clicks, hovers, confirms, errors, pickups, level-up chimes</td></tr>
+      <tr><td><strong>Weapons</strong></td><td>sword swings, gunshots, reloads, bow releases, blade clashes</td></tr>
+      <tr><td><strong>Footsteps</strong></td><td>steps on grass, gravel, wood, stone, snow, metal</td></tr>
+      <tr><td><strong>Ambience</strong></td><td>wind, rain, forests, caves, room tone, crowds, doors, creaks</td></tr>
+      <tr><td><strong>Creatures</strong></td><td>growls, roars, screeches, wing flaps, monster breathing</td></tr>
+      <tr><td><strong>Impacts</strong></td><td>punches, crashes, explosions, glass and wood breaking</td></tr>
+      <tr><td><strong>Music</strong></td><td>short jingles, stingers, fanfares, victory and game-over cues</td></tr>
+      <tr><td><strong>Other</strong></td><td>anything that doesn't fit the categories above</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--           AUDIO IMPORT SETTINGS              -->
+<!-- ============================================ -->
+<section class="section" id="audio-settings">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128190;</span> AudioImporter Settings</h2>
+  <p class="section-desc">Automatically configured for how each kind of sound is used in a game.</p>
+
+  <p>When <strong>Apply per-category import settings</strong> is enabled, each generated clip's <code>AudioImporter</code> is configured for its category &mdash; you never touch import settings by hand.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Category</th><th>Load Type</th><th>Channels</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td><strong>UI</strong></td><td>Decompress On Load</td><td>Mono</td><td>Tiny clips that must be instant and pan-free</td></tr>
+      <tr><td><strong>Footsteps</strong></td><td>Decompress On Load</td><td>Mono</td><td>Short, frequently triggered, positional</td></tr>
+      <tr><td><strong>Weapons / Impacts</strong></td><td>Decompress On Load</td><td>Stereo</td><td>Punchy one-shots that need to fire with no delay</td></tr>
+      <tr><td><strong>Creatures</strong></td><td>Compressed In Memory</td><td>Stereo</td><td>Mid-length clips, kept compressed to save memory</td></tr>
+      <tr><td><strong>Ambience / Music</strong></td><td>Streaming</td><td>Stereo</td><td>Long, looping audio that should stream from disk</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>You stay in control.</strong> These settings are applied once on import. You can freely change any clip's <code>AudioImporter</code> settings afterwards in the Inspector &mdash; SoundCraft AI never re-imports a clip behind your back.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           AUDIOSOURCE PREFABS                -->
+<!-- ============================================ -->
+<section class="section" id="prefabs">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128266;</span> AudioSource Prefabs</h2>
+  <p class="section-desc">Optional ready-to-drop prefabs, pre-tuned per category.</p>
+
+  <p>
+    Enable <strong>Also create AudioSource prefab</strong> in the Import section to emit a prefab next to each
+    generated clip. The prefab is a GameObject with an <code>AudioSource</code> already configured for how that
+    category of sound is normally used &mdash; drag it straight into your scene.
+  </p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Category</th><th>Spatial</th><th>Loop</th><th>Rolloff</th></tr></thead>
+    <tbody>
+      <tr><td><strong>UI / Music</strong></td><td>2D</td><td>Music loops</td><td>&mdash;</td></tr>
+      <tr><td><strong>Footsteps</strong></td><td>3D</td><td>No</td><td>Tight (short range)</td></tr>
+      <tr><td><strong>Weapons / Impacts / Creatures</strong></td><td>3D</td><td>No</td><td>Logarithmic</td></tr>
+      <tr><td><strong>Ambience</strong></td><td>3D</td><td>Yes</td><td>Logarithmic (wide range)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>On looping.</strong> Unity has no clip-level loop point &mdash; looping is an <code>AudioSource</code> property. Clips classified as <strong>Ambience</strong> or <strong>Music</strong> get <code>AudioSource.loop</code> enabled on their generated prefab.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           HISTORY                            -->
+<!-- ============================================ -->
+<section class="section" id="history">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128340;</span> History</h2>
+  <p class="section-desc">Your last 20 generations, always at hand.</p>
+
+  <p>The <strong>History</strong> section at the bottom of the window lists your last 20 generations. Each entry shows its category and prompt, with these per-entry actions:</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Action</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Play</strong></td><td>Previews any variation of the clip directly in the Editor.</td></tr>
+      <tr><td><strong>Regenerate</strong></td><td>Re-runs the same prompt and settings to get fresh takes.</td></tr>
+      <tr><td><strong>Locate</strong></td><td>Selects and highlights the clip in the Project window.</td></tr>
+      <tr><td><strong>Delete</strong></td><td>Removes the entry and deletes its generated files from the project.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>History is persisted between Unity sessions. Entries whose files have been deleted are pruned automatically when the window opens.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           ARCHITECTURE                       -->
+<!-- ============================================ -->
+<section class="section" id="architecture">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128736;</span> Architecture</h2>
+  <p class="section-desc">Editor-only generation tooling, zero runtime overhead.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Script</th><th>Type</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><code>SoundCraftAIWindow.cs</code></td><td><code>EditorWindow</code></td><td>Main UI. Draws all controls, manages state, persists settings via <code>EditorPrefs</code>, orchestrates the verify &rarr; generate &rarr; poll &rarr; import flow, and shows the history list.</td></tr>
+      <tr><td><code>SoundCraftAIAPI.cs</code></td><td><code>static class</code></td><td>HTTP client. Handles <code>/prod/verify</code>, <code>/prod/status</code>, and <code>/prod/generate</code>, plus async polling. Sends <code>X-Client-Version</code> (and <code>X-Invoice</code> on downloads) headers. Uses <code>EditorApplication.update</code> for async polling.</td></tr>
+      <tr><td><code>SoundCraftAIImporter.cs</code></td><td><code>static class</code></td><td>Downloads each clip with authentication headers, files it into a category folder, configures the <code>AudioImporter</code>, and optionally creates an <code>AudioSource</code> prefab.</td></tr>
+      <tr><td><code>SoundCraftAICatalog.cs</code></td><td><code>static class</code></td><td>Categories, style presets, models, and the per-category import + AudioSource profiles.</td></tr>
+      <tr><td><code>SoundCraftAIPreview.cs</code></td><td><code>static class</code></td><td>Plays a generated clip inside the Editor for the history Play button.</td></tr>
+      <tr><td><code>SoundCraftAISettings.cs</code></td><td><code>ScriptableObject</code></td><td>Per-project settings (backend URL, defaults).</td></tr>
+      <tr><td><code>SoundCraftAIError.cs</code></td><td><code>struct</code></td><td>Structured error returned by the backend.</td></tr>
+      <tr><td><code>SoundCraftAIWelcome.cs</code></td><td><code>EditorWindow</code></td><td>One-time welcome popup shown on first open after import.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Editor-only &mdash; zero runtime overhead.</strong> All generation scripts live in an <code>Editor/</code> folder, which means they are <strong>never included in your game build</strong>. The <code>Runtime/</code> folder holds only a version constant. Zero impact on shipped game size or performance.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           FILE STRUCTURE                     -->
+<!-- ============================================ -->
+<section class="section" id="files">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128193;</span> File Structure</h2>
+  <p class="section-desc">Everything lives under Assets/SoundCraftAI/.</p>
+
+  <div class="file-tree">
+    <span class="folder">Assets/</span><br>
+    &nbsp;&nbsp;<span class="folder">SoundCraftAI/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIWindow.cs</span> <span class="desc">&mdash; Editor window UI &amp; generation flow</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIAPI.cs</span> <span class="desc">&mdash; HTTP client (invoice auth, async polling)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIImporter.cs</span> <span class="desc">&mdash; Download, auto-import, AudioSource prefab</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAICatalog.cs</span> <span class="desc">&mdash; Categories, styles, models, profiles</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIPreview.cs</span> <span class="desc">&mdash; Editor audio preview</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAISettings.cs</span> <span class="desc">&mdash; Per-project settings</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIError.cs</span> <span class="desc">&mdash; Structured error type</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIWelcome.cs</span> <span class="desc">&mdash; First-open welcome popup</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Runtime/</span> <span class="desc">&mdash; Version constant only (no runtime behaviour)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Resources/</span> <span class="desc">&mdash; Settings asset</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Documentation/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Documentation.html</span> <span class="desc">&mdash; This file</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Generated/</span> <span class="desc">&mdash; Output, sorted into category subfolders</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">UI/</span> &nbsp; <span class="folder">Weapons/</span> &nbsp; <span class="folder">Footsteps/</span> &nbsp; <span class="desc">...</span><br>
+  </div>
+
+  <h3>Generated file naming convention</h3>
+  <pre><code>Generated/{Category}/{sanitised_prompt_slug}_v{N}_{hash}.wav</code></pre>
+  <p>The prompt slug is: lowercase, special characters stripped, spaces replaced with underscores, truncated to 40 characters. <code>N</code> is the variation number; <code>hash</code> is a short unique suffix. (ElevenLabs clips arrive as <code>.mp3</code>; the file extension always matches the real audio format.)</p>
+</section>
+
+<!-- ============================================ -->
+<!--           TROUBLESHOOTING                    -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Common issues and how to fix them.</p>
+
+  <details>
+    <summary>&#128196; "Verify Invoice" shows an error</summary>
+    <div class="details-body">
+      <ul>
+        <li><strong>Invoice number not recognized</strong> &mdash; Make sure you're entering your invoice number (starts with <code>IN</code>), not the order number. Unity invoices can take 2&ndash;4 hours to become available after purchase &mdash; try again later.</li>
+        <li><strong>"This invoice has been refunded"</strong> &mdash; The purchase has been refunded. The license is no longer valid.</li>
+        <li><strong>Could not reach the server</strong> &mdash; Check your internet connection and try again.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#128202; "No generations remaining this month"</summary>
+    <div class="details-body">
+      <p>You've used all 250 generations from this month's allowance. Your next allowance arrives at the start of next month. If you requested several variations, remember each variation uses one generation.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#9203; A generation fails or times out</summary>
+    <div class="details-body">
+      <ul>
+        <li>The cloud backend may be under heavy load. Try again in a few minutes.</li>
+        <li>Check your network connection &mdash; the plugin polls the server every 3 seconds.</li>
+        <li>If one model fails, try another from the Model selector.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#128266; A generated clip won't play</summary>
+    <div class="details-body">
+      <ul>
+        <li>Select the clip in the Project window and confirm it imported as an <code>AudioClip</code>.</li>
+        <li>Use the Play button in the History list, or the Inspector preview, to audition it.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#9888; Compilation errors after import</summary>
+    <div class="details-body">
+      <ul>
+        <li>Ensure all <code>.cs</code> files are inside the <code>Editor/</code> and <code>Runtime/</code> folders as imported.</li>
+        <li>If you see namespace errors, confirm you are on Unity 2021.3 LTS or newer.</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--           FAQ                                -->
+<!-- ============================================ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Frequently asked questions.</p>
+
+  <details>
+    <summary>Does this plugin affect my game's build size or runtime performance?</summary>
+    <div class="details-body"><p><strong>No.</strong> All generation scripts are in an <code>Editor/</code> folder and are excluded from builds automatically. The generated audio clips <em>are</em> included (like any other asset), but the plugin code has zero runtime footprint.</p></div>
+  </details>
+
+  <details>
+    <summary>Can I use the generated sound effects commercially?</summary>
+    <div class="details-body"><p>Yes. Sound effects generated through SoundCraft AI are yours to use in any project, commercial or otherwise.</p></div>
+  </details>
+
+  <details>
+    <summary>Can I use this plugin offline?</summary>
+    <div class="details-body"><p>The plugin requires an internet connection to generate new sound effects (the AI runs on cloud servers). However, previously generated clips in <code>Assets/SoundCraftAI/Generated/</code> are standard Unity assets and work fully offline.</p></div>
+  </details>
+
+  <details>
+    <summary>Can I use one invoice on multiple machines?</summary>
+    <div class="details-body"><p>Yes. Your invoice activates the asset across all your installations &mdash; there's no machine-specific binding.</p></div>
+  </details>
+
+  <details>
+    <summary>Do unused generations carry over?</summary>
+    <div class="details-body"><p>No. Unused generations do not accumulate. Your allowance is issued every month for as long as you own the asset.</p></div>
+  </details>
+
+  <details>
+    <summary>Does the same prompt always produce the same result?</summary>
+    <div class="details-body"><p>If all settings (prompt, negative prompt, style, model, duration, variation count) are identical, the server may return a <strong>cached result</strong> instantly without using any of your monthly generations. Otherwise the AI produces new audio each time.</p></div>
+  </details>
+
+  <details>
+    <summary>Can I use the clips with Addressables or Asset Bundles?</summary>
+    <div class="details-body"><p>Yes. The generated audio clips and AudioSource prefabs are standard Unity assets. You can include them in Addressable groups or Asset Bundles like any other asset.</p></div>
+  </details>
+
+  <details>
+    <summary>What happens if I delete a generated clip file?</summary>
+    <div class="details-body"><p>It is removed from the History list on the next window refresh. There is no way to recover it &mdash; you would need to generate a new one with a similar prompt.</p></div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--           SUPPORT                            -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128236;</span> Support</h2>
+  <p class="section-desc">Need help? We're here for you.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">If you run into any issues, have feature requests, or need help integrating SoundCraft AI into your project, don't hesitate to reach out.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),#00cec9);color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before Contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Check the <a href="#troubleshooting">Troubleshooting</a> section</li>
+        <li>Check the <a href="#faq">FAQ</a> section</li>
+        <li>Verify your invoice is correct (starts with <code>IN</code>)</li>
+        <li>Include your Unity version</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful Info to Include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Unity version</li>
+        <li>SoundCraft AI version (currently v1.0)</li>
+        <li>Console error messages (lines starting with <code>[SoundCraft AI]</code>)</li>
+        <li>Steps to reproduce the issue</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:20px;">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Enjoying SoundCraft AI?</strong> A review on the <a href="https://u3d.as/1qo9">Unity Asset Store</a> helps other developers discover the plugin and helps us keep improving it. Thank you!</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>SoundCraft AI v1.0 &middot; Prompt-to-SFX Generation for Unity</p>
+  <p style="margin-top:8px;">Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+  <p style="margin-top:4px;">&copy; 2026 SoundCraft AI &mdash; All rights reserved.</p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const content = s.textContent.toLowerCase();
+  sections.push({
+    id: s.id,
+    title: h2 ? h2.textContent.trim() : '',
+    desc: desc ? desc.textContent.trim() : '',
+    content: content,
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
