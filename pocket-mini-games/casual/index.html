@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pocket Mini Games · Casual Pack - Documentation</title>
+<style>
+:root {
+  --bg: #0e0e12;
+  --bg-card: #16161d;
+  --bg-card-hover: #1c1c26;
+  --bg-code: #1a1a24;
+  --bg-sidebar: #111117;
+  --text: #e2e2ea;
+  --text-dim: #8888a0;
+  --text-code: #c8c8d8;
+  --accent: #6c5ce7;
+  --accent-light: #a29bfe;
+  --accent-glow: rgba(108,92,231,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #fd79a8;
+  --pink-dim: rgba(253,121,168,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #74b9ff;
+  --blue-dim: rgba(116,185,255,0.12);
+  --border: #2a2a38;
+  --border-light: #33334a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(14,14,18,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), var(--pink));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(108,92,231,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(253,121,168,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+
+.mini-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  padding: 0;
+}
+
+.mini-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+pre .lang-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-family: var(--font);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.kw { color: #c792ea; }
+.str { color: #c3e88d; }
+.cm { color: #546e7a; }
+.fn { color: #82aaff; }
+.tp { color: #ffcb6b; }
+.num { color: #f78c6c; }
+.op { color: #89ddff; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(108,92,231,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:hover { color: var(--accent-light); }
+
+details .details-body { padding: 0 20px 18px; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(116,185,255,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(253,121,168,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+
+/* ---- CTA BUTTONS ---- */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  color: #fff;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+  border: none;
+  cursor: pointer;
+}
+
+.cta-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,92,231,0.30); }
+
+.cta-btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text);
+}
+
+.cta-btn-outline:hover { border-color: var(--accent); background: var(--accent-glow); box-shadow: none; }
+
+.cta-btn-yellow { background: linear-gradient(135deg, var(--yellow), #f0a020); color: #221700; }
+.cta-btn-yellow:hover { box-shadow: 0 8px 24px rgba(253,203,110,0.30); }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <div class="header-logo">
+    <div class="dot">P</div>
+    <span>Pocket Mini Games &middot; Casual</span>
+  </div>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.1.0 &middot; Unity 2021.3+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+    <a href="#architecture"><span class="nav-icon">&#128736;</span> Architecture</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">The 10 Games</div>
+    <a href="#match3">Match-3</a>
+    <a href="#bubble-shooter">Bubble Shooter</a>
+    <a href="#brick-balls">Brick Balls</a>
+    <a href="#twenty-forty-eight">2048</a>
+    <a href="#snake">Snake</a>
+    <a href="#maze">Maze</a>
+    <a href="#memory-match">Memory Match</a>
+    <a href="#whack-a-mole">Whack-a-Mole</a>
+    <a href="#cups-and-balls">Cups and Balls</a>
+    <a href="#tic-tac-toe">Tic Tac Toe</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Game Systems</div>
+    <a href="#boosters"><span class="nav-icon">&#128165;</span> Boosters</a>
+    <a href="#achievements"><span class="nav-icon">&#127942;</span> Achievements</a>
+    <a href="#reskins"><span class="nav-icon">&#127912;</span> Reskins</a>
+    <a href="#tutorials"><span class="nav-icon">&#127919;</span> Tutorials</a>
+    <a href="#levels"><span class="nav-icon">&#128200;</span> Level Scaling</a>
+    <a href="#theme"><span class="nav-icon">&#127769;</span> Light &amp; Dark Mode</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Integration</div>
+    <a href="#adding"><span class="nav-icon">&#10133;</span> Add to Your Project</a>
+    <a href="#customizing"><span class="nav-icon">&#9881;</span> Customizing</a>
+    <a href="#hce-bundled"><span class="nav-icon">&#127873;</span> HCE Bundled</a>
+    <a href="#extending"><span class="nav-icon">&#129520;</span> Adding New Games</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Help</div>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#release-notes"><span class="nav-icon">&#128221;</span> Release Notes</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support &amp; Review</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero">
+  <h1>Pocket Mini Games<br>Casual Pack</h1>
+  <p>Ten fully playable casual mini-games &mdash; Match-3, Bubble Shooter, Brick Balls, 2048, Snake, Maze, Memory Match, Whack-a-Mole, Cups and Balls, and Tic Tac Toe. Boosters, achievements, reskins, tutorials, and difficulty scaling are wired up out of the box.</p>
+  <div class="hero-badges">
+    <span class="badge badge-purple">Unity 2021.3+</span>
+    <span class="badge badge-green">10 Games</span>
+    <span class="badge badge-yellow">28 Boosters</span>
+    <span class="badge badge-pink">HCE Bundled</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!--                OVERVIEW                      -->
+<!-- ============================================ -->
+<section class="section" id="overview">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127968;</span> Overview</h2>
+  <p class="section-desc">Ten polished casual games, all built on a single contract so you can drop, replace, or extend them as you wish.</p>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#match3"><h4>Match-3</h4><p>Swap-to-match candy-style with specials, cascades, and combos</p></a>
+    <a class="mini-card" href="#bubble-shooter"><h4>Bubble Shooter</h4><p>Aim &amp; pop cluster-matching shooter with bombs and rainbow</p></a>
+    <a class="mini-card" href="#brick-balls"><h4>Brick Balls</h4><p>Salvo-launching arkanoid hybrid with descending rows</p></a>
+    <a class="mini-card" href="#twenty-forty-eight"><h4>2048</h4><p>Slide-and-merge classic with undo, smash &amp; shuffle</p></a>
+    <a class="mini-card" href="#snake"><h4>Snake</h4><p>Smooth or snappy snake with ghost / slow / magnet boosters</p></a>
+    <a class="mini-card" href="#maze"><h4>Maze</h4><p>Carved maze with breadcrumb trail and decision arrows</p></a>
+    <a class="mini-card" href="#memory-match"><h4>Memory Match</h4><p>Pair-flipping memory game with streak bonuses</p></a>
+    <a class="mini-card" href="#whack-a-mole"><h4>Whack-a-Mole</h4><p>Timed mole-tapping arcade with golden bonus moles</p></a>
+    <a class="mini-card" href="#cups-and-balls"><h4>Cups and Balls</h4><p>Shell-game shuffle with streak scoring</p></a>
+    <a class="mini-card" href="#tic-tac-toe"><h4>Tic Tac Toe</h4><p>Versus AI (Easy / Medium / Minimax) with hint &amp; undo</p></a>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>One contract, ten implementations.</strong> Every game implements <code>IMiniGame</code> and is auto-discovered by the dashboard. Boosters, achievements, reskins, and tutorials are picked up by reflection &mdash; no central registration list.</div>
+  </div>
+
+  <h3>Shared Capabilities</h3>
+  <div class="card-grid">
+    <a class="mini-card" href="#boosters"><h4>&#128165; Boosters</h4><p>2-4 per-game power-ups with refund safety, defined in &lt;Game&gt;BoosterSpec.cs</p></a>
+    <a class="mini-card" href="#achievements"><h4>&#127942; Achievements</h4><p>3-5 progression goals per game with toast notifications</p></a>
+    <a class="mini-card" href="#reskins"><h4>&#127912; Reskins</h4><p>Per-slot sprite overrides via ReskinManager + skin pill UI</p></a>
+    <a class="mini-card" href="#tutorials"><h4>&#127919; Tutorials</h4><p>First-run overlay tutorials defined in &lt;Game&gt;TutorialSpec.cs</p></a>
+    <a class="mini-card" href="#levels"><h4>&#128200; Difficulty Scaling</h4><p>Per-level multipliers via LevelManager</p></a>
+    <a class="mini-card" href="#hce-bundled"><h4>&#127873; HCE Bundled</h4><p>HyperCasual Essentials included for audio, IAP, ads, save</p></a>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              QUICK START                     -->
+<!-- ============================================ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">Get the demo running and your first game on screen in under 2 minutes.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import the package</strong><br>Pull <em>Pocket Mini Games &middot; Casual Pack</em> in from the Asset Store, or copy <code>Assets/PocketMiniGames/</code> into your project. The bundled <code>Assets/HyperCasualEssentials/</code> folder comes along for the ride.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the demo scene</strong><br>Find the demo at <code>Assets/PocketMiniGames/Demo/PocketMiniGamesDashboard.unity</code> (or under <em>Samples</em> in Package Manager). It shows all 10 games in a single picker.</div></div>
+    <div class="step"><div class="step-content"><strong>Press Play</strong><br>The dashboard auto-discovers every game tagged with <code>[MiniGame]</code> and lists them. Click any tile to play.</div></div>
+    <div class="step"><div class="step-content"><strong>(Optional) Run HCE Setup Wizard</strong><br><code>Tools &rarr; HCE &rarr; Setup Wizard</code> &mdash; creates the audio, economy, IAP, and ads config assets HCE needs for production builds. The casual games themselves run without any HCE setup at all.</div></div>
+    <div class="step"><div class="step-content"><strong>Drop a single game into your scene</strong><br>You don't need the dashboard. Each game implements <code>IMiniGame</code>: create an instance, call <code>Mount(host, ctx)</code>, then <code>NewRound()</code>. See <a href="#adding" style="color:var(--accent-light);">Add to Your Project</a>.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Procedural everything.</strong> No prefabs to wire up. Every game builds its UI at runtime inside the <code>RectTransform</code> you give it, so the pack has zero scene dependencies.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              ARCHITECTURE                    -->
+<!-- ============================================ -->
+<section class="section" id="architecture">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128736;</span> Architecture</h2>
+  <p class="section-desc">A small, predictable contract; every game follows the same shape.</p>
+
+  <h3>The <code>IMiniGame</code> contract</h3>
+  <p>Every game is a plain C# class implementing this interface. The dashboard (or your own host) hands the game a <code>RectTransform</code> to build inside and an <code>IMiniGameContext</code> for audio, theme, events, and settings.</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">public interface</span> <span class="tp">IMiniGame</span>
+{
+    <span class="tp">string</span> Id { <span class="kw">get</span>; }                <span class="cm">// stable snake_case id</span>
+    <span class="tp">string</span> DisplayName { <span class="kw">get</span>; }
+    <span class="tp">string</span> Category { <span class="kw">get</span>; }          <span class="cm">// "Casual" for this pack</span>
+    <span class="tp">string</span> ShortDescription { <span class="kw">get</span>; }
+
+    <span class="kw">void</span> <span class="fn">Mount</span>(<span class="tp">RectTransform</span> host, <span class="tp">IMiniGameContext</span> ctx);
+    <span class="kw">void</span> <span class="fn">Unmount</span>();
+    <span class="kw">void</span> <span class="fn">NewRound</span>();
+
+    <span class="tp">IEnumerable</span>&lt;<span class="tp">CheatAction</span>&gt; <span class="fn">GetCheatActions</span>();
+}</code></pre>
+
+  <h3>Auto-discovery</h3>
+  <p>Four reflection-based registries scan every loaded assembly at startup &mdash; you never edit a central registration list:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Registry</th><th>Discovers</th><th>Convention</th></tr></thead>
+      <tbody>
+        <tr><td><code>MiniGameRegistry</code></td><td>Classes implementing <code>IMiniGame</code> tagged <code>[MiniGame(id, name, ...)]</code></td><td>One per game</td></tr>
+        <tr><td><code>BoosterSpecRegistry</code></td><td>Classes implementing <code>IBoosterSpec</code></td><td><code>&lt;Game&gt;BoosterSpec.cs</code></td></tr>
+        <tr><td><code>AchievementRegistry</code></td><td>Classes implementing <code>IAchievementSpec</code></td><td><code>&lt;Game&gt;AchievementSpec.cs</code></td></tr>
+        <tr><td><code>ReskinSpecRegistry</code></td><td>Classes implementing <code>IReskinSpec</code></td><td><code>&lt;Game&gt;ReskinSpec.cs</code></td></tr>
+        <tr><td><code>TutorialSpecRegistry</code></td><td>Classes implementing <code>ITutorialSpec</code></td><td><code>&lt;Game&gt;TutorialSpec.cs</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Per-game folder layout</h3>
+  <p>Every game lives in its own folder under <code>Runtime/Casual/&lt;GameName&gt;/</code> with exactly five companion files:</p>
+  <pre><span class="lang-tag">Folder</span><code>Assets/PocketMiniGames/Runtime/Casual/Match3/
+&#9474;
+&#9492;&#9472; Match3Game.cs              <span class="cm">// IMiniGame   &mdash; gameplay + visuals</span>
+&#9492;&#9472; Match3Settings.cs          <span class="cm">// ScriptableObject defaults</span>
+&#9492;&#9472; Match3BoosterSpec.cs       <span class="cm">// IBoosterSpec</span>
+&#9492;&#9472; Match3AchievementSpec.cs   <span class="cm">// IAchievementSpec</span>
+&#9492;&#9472; Match3ReskinSpec.cs        <span class="cm">// IReskinSpec  &mdash; per-slot sprite slots</span>
+&#9492;&#9472; Match3TutorialSpec.cs      <span class="cm">// ITutorialSpec</span></code></pre>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Modular by design.</strong> Delete any single game's folder and the rest keep working. Add a new game by mirroring the layout above &mdash; no edits to any other file required.</div>
+  </div>
+
+  <h3>Runtime flow</h3>
+  <div class="flow">
+    <span class="flow-node">Mount(host, ctx)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">NewRound()</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Player input loop</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">RoundWon / RoundLost</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">NewRound() or Unmount()</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                 MATCH-3                      -->
+<!-- ============================================ -->
+<section class="section" id="match3">
+  <h2>Match-3</h2>
+  <p class="section-desc">Candy-style swap-to-match-three with cascades, specials, and combo chains.</p>
+
+  <h3>Gameplay</h3>
+  <p>Swipe or tap-tap an adjacent pair of gems to swap them. Three-in-a-row pops with score and audio, cascades resolve until the board is stable, and longer matches promote special candies that detonate rows, columns, 3&times;3 areas, or whole colours.</p>
+
+  <h4>Specials</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Special</th><th>Created by</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td>Striped (H/V)</td><td>4 in a line</td><td>Clears the entire row or column</td></tr>
+        <tr><td>Wrapped</td><td>L / T-shape (3&times;3 corner)</td><td>3&times;3 burst around the candy</td></tr>
+        <tr><td>Colour Bomb</td><td>5 in a line</td><td>Clears every gem of the swapped colour</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Controls</h4>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li><strong>Drag</strong> from a gem onto an adjacent gem &mdash; instant swap</li>
+    <li><strong>Tap, then tap</strong> an adjacent gem &mdash; same result, two-step fallback</li>
+  </ul>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>hammer</code></td><td>Hammer</td><td>Tap a single gem to smash it (no specials)</td></tr>
+        <tr><td><code>shuffle</code></td><td>Shuffle</td><td>Re-rolls the whole board until match-free</td></tr>
+        <tr><td><code>bomb</code></td><td>Drop a Bomb</td><td>Spawns a Colour Bomb at a random cell</td></tr>
+        <tr><td><code>clock</code></td><td>More play</td><td>+10s in time mode, +5 moves in move-limited mode</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Configurable Settings</h4>
+  <p>Edit <code>Match3Settings.cs</code> or override the default at runtime:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>Cols</code> / <code>Rows</code></td><td>5&ndash;9</td><td>Board dimensions</td></tr>
+        <tr><td><code>Colours</code></td><td>3&ndash;6</td><td>Palette size</td></tr>
+        <tr><td><code>RoundSeconds</code></td><td>0&ndash;240</td><td>0 = unlimited; ignored if MoveLimit &gt; 0</td></tr>
+        <tr><td><code>ScoreTarget</code></td><td>0&ndash;5000</td><td>Win condition. 0 = play to time-out</td></tr>
+        <tr><td><code>MoveLimit</code></td><td>0&ndash;60</td><td>&gt;0 disables timer and runs in puzzle mode</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--            BUBBLE SHOOTER                    -->
+<!-- ============================================ -->
+<section class="section" id="bubble-shooter">
+  <h2>Bubble Shooter</h2>
+  <p class="section-desc">Aim, fire, and pop clusters of three or more matching bubbles before the ceiling overflows.</p>
+
+  <h3>Gameplay</h3>
+  <p>Mouse / touch to aim, click to fire. Bubbles bounce off side walls and stick on contact. Clusters of <code>MinPopChain</code>+ same-coloured bubbles pop and grant score. Disconnected "floaters" drop and pay double. A combo streak rewards back-to-back successful shots.</p>
+
+  <h4>Special Bubbles</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td>Normal (coloured)</td><td>Clusters with same colour</td></tr>
+        <tr><td>Bomb</td><td>Detonates surrounding bubbles on impact</td></tr>
+        <tr><td>Rainbow</td><td>Adopts the most-common adjacent colour on land</td></tr>
+        <tr><td>Stone</td><td>Unpoppable; only drops when its support is broken</td></tr>
+        <tr><td>Cracked</td><td>Takes multiple hits before popping</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>force_bomb</code></td><td>Bomb Shot</td><td>Replaces the current bubble with a Bomb</td></tr>
+        <tr><td><code>force_rainbow</code></td><td>Rainbow Shot</td><td>Replaces the current bubble with a Rainbow</td></tr>
+        <tr><td><code>aim</code></td><td>Auto-Aim</td><td>Traces every shot angle, then auto-aims and fires at the largest poppable cluster</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Win / Lose Conditions</h4>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li><strong>Win:</strong> board cleared of all coloured bubbles (+250 bonus)</li>
+    <li><strong>Lose:</strong> any bubble reaches the configured danger row</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--               BRICK BALLS                    -->
+<!-- ============================================ -->
+<section class="section" id="brick-balls">
+  <h2>Brick Balls</h2>
+  <p class="section-desc">A salvo-launching arkanoid hybrid &mdash; aim once, watch your whole ball stack bounce, then survive a descending row of bricks.</p>
+
+  <h3>Gameplay</h3>
+  <p>Each turn the player aims and fires a salvo of balls. Balls bounce off walls and bricks, draining brick HP. After the salvo ends, the bricks descend one row and a new row spawns at the top. Survive long enough and you win the level.</p>
+
+  <h4>Tile Types</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td>Brick</td><td>Takes hits equal to level. Score per kill.</td></tr>
+        <tr><td>Stone</td><td>Indestructible &mdash; bounces balls forever (until pushed off the bottom)</td></tr>
+        <tr><td>Pickup</td><td>Grants an extra ball on contact for next salvo</td></tr>
+        <tr><td>Bomb</td><td>Detonates in a small radius on hit, chain-reacting</td></tr>
+        <tr><td>Arrow</td><td>Row / column arrows clear a whole line</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>extra_balls</code></td><td>Extra Balls</td><td>+5 balls to your salvo</td></tr>
+        <tr><td><code>aim_assist</code></td><td>Long Aim</td><td>Auto-Aim: simulates the full bouncing flight for every angle and fires the salvo at the most damaging shot</td></tr>
+        <tr><td><code>bomb_shot</code></td><td>Bomb Shot</td><td>Arms 3 splash-bomb balls (3&times;3 detonation); charges carry across salvos</td></tr>
+        <tr><td><code>freeze_row</code></td><td>Hold The Line</td><td>Skip the next descend; bricks stay in place</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                  2048                        -->
+<!-- ============================================ -->
+<section class="section" id="twenty-forty-eight">
+  <h2>2048</h2>
+  <p class="section-desc">The classic slide-and-merge puzzle &mdash; reach 2048, but no further moves loses.</p>
+
+  <h3>Gameplay</h3>
+  <p>Swipe / arrow keys to slide every tile in that direction. Identical adjacent tiles merge into double-value tiles. After every move a new <code>2</code> (or occasional <code>4</code>) spawns. Reach the configured <strong>WinTile</strong> to win; lose when the board is full with no merges available.</p>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>undo</code></td><td>Undo Move</td><td>Revert the last slide. One-shot per use</td></tr>
+        <tr><td><code>smash</code></td><td>Smash Tile</td><td>Arms tap-to-delete mode; cancels with refund</td></tr>
+        <tr><td><code>shuffle</code></td><td>Shuffle</td><td>Re-arranges every tile to a random cell</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Settings</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>GridSize</code></td><td>3&ndash;6</td><td>Board side length</td></tr>
+        <tr><td><code>WinTile</code></td><td>any power of 2</td><td>Default 2048</td></tr>
+        <tr><td><code>FourSpawnChance</code></td><td>0&ndash;1</td><td>Probability of spawning a 4 instead of a 2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div>The merge resolver correctly blocks double-merges within a single swipe &mdash; a freshly merged tile can't merge again the same step.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                  SNAKE                       -->
+<!-- ============================================ -->
+<section class="section" id="snake">
+  <h2>Snake</h2>
+  <p class="section-desc">The classic, with smooth interpolation, walls / wrap modes, two visual styles, and three boosters.</p>
+
+  <h3>Gameplay</h3>
+  <p>Steer with arrow keys, WASD, or the on-screen D-pad. Eat the apple to grow and score; crash into a wall (when wrap is off) or your own body and lose. Filling the entire grid wins the round.</p>
+
+  <h4>Modes</h4>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li><strong>Snappy</strong> &mdash; one cell per tick, no interpolation (true classic)</li>
+    <li><strong>Smooth</strong> &mdash; segments lerp between cells; mid-tick steering is allowed</li>
+    <li><strong>Wrap</strong> on/off &mdash; toroidal edges or hard walls (with visible boundary)</li>
+    <li><strong>Modern / Classic</strong> visual styles, toggleable from the top-right pills</li>
+  </ul>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>slow</code></td><td>Slow Time</td><td>Halves snake speed for 5 seconds</td></tr>
+        <tr><td><code>ghost</code></td><td>Phase Ghost</td><td>Pass through your own body for 5 seconds; body dims</td></tr>
+        <tr><td><code>magnet</code></td><td>Apple Magnet</td><td>Reels the apple toward your head with an accelerating gravity-pull, red trail and spark particles</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Snake's 180&deg; reversal guard uses the last-stepped direction, not the buffered input &mdash; chaining two turns in one tick can't instantly drive the head back into the body.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                   MAZE                       -->
+<!-- ============================================ -->
+<section class="section" id="maze">
+  <h2>Maze</h2>
+  <p class="section-desc">Recursive-backtracker maze with breadcrumb trail, decision arrows, and three navigation boosters.</p>
+
+  <h3>Gameplay</h3>
+  <p>Move with arrow keys / WASD / on-screen D-pad / on-board direction arrows. At every junction the available exits are highlighted. A yellow trail tracks the path you've walked; backtracking erases it. Reach the goal in the bottom-right to win.</p>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>reveal</code></td><td>Reveal Path</td><td>BFS from current cell to goal; draws a fading dot trail along the route</td></tr>
+        <tr><td><code>dash</code></td><td>Speed Dash</td><td>2.5&times; travel speed for 5 seconds; cyan halo around player</td></tr>
+        <tr><td><code>breakwall</code></td><td>Break Wall</td><td>Arms the next blocked direction to break through; amber halo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Settings</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>Width</code> / <code>Height</code></td><td>5&ndash;25</td><td>Grid cells per side</td></tr>
+        <tr><td><code>RoundSeconds</code></td><td>0&ndash;240</td><td>Optional time pressure; 0 = no timer</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             MEMORY MATCH                     -->
+<!-- ============================================ -->
+<section class="section" id="memory-match">
+  <h2>Memory Match</h2>
+  <p class="section-desc">Pair-flipping memory game with streak bonuses and three helper boosters.</p>
+
+  <h3>Gameplay</h3>
+  <p>Tap two cards to flip them. If their icons match, they stay face-up and the streak counter increments. If not, both flip back. Clear the whole board to win; fewer moves means a higher score. A "Perfect Recall" achievement fires when you clear with zero mismatches.</p>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>peek</code></td><td>Peek</td><td>Reveal every face for 1 second</td></tr>
+        <tr><td><code>hint_pair</code></td><td>Pair Hint</td><td>Highlight a still-unmatched pair</td></tr>
+        <tr><td><code>auto_match</code></td><td>Auto-Match</td><td>Instantly resolves one matching pair</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Scoring</h4>
+  <pre><span class="lang-tag">Formula</span><code>score = max(0, _pairs &times; 50 &minus; _moves &times; 5)</code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--             WHACK-A-MOLE                     -->
+<!-- ============================================ -->
+<section class="section" id="whack-a-mole">
+  <h2>Whack-a-Mole</h2>
+  <p class="section-desc">Timed mole-tapping arcade. Spawn interval ramps from <code>StartSpawnInterval</code> to <code>EndSpawnInterval</code> as the round clock drains.</p>
+
+  <h3>Gameplay</h3>
+  <p>Moles pop out of holes at quickening intervals. Tap them while they're up for points; let one disappear or tap an empty hole and you lose points. ~12% of spawns are golden moles &mdash; 3&times; score and a brief stay window.</p>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>slow</code></td><td>Slow Moles</td><td>Doubles spawn interval for 6 seconds</td></tr>
+        <tr><td><code>score2x</code></td><td>Double Score</td><td>Hits worth 2&times; for 6 seconds</td></tr>
+        <tr><td><code>multi</code></td><td>Auto-Whack</td><td>Auto-whacks the next 3 moles that pop up</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Settings</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>Cols</code> / <code>Rows</code></td><td>2&ndash;5</td><td>Grid of holes</td></tr>
+        <tr><td><code>RoundSeconds</code></td><td>15&ndash;120</td><td>Round duration</td></tr>
+        <tr><td><code>StartSpawnInterval</code></td><td>0.4&ndash;2.5</td><td>Seconds between pops at round start</td></tr>
+        <tr><td><code>EndSpawnInterval</code></td><td>0.2&ndash;1.5</td><td>Seconds at round end (faster)</td></tr>
+        <tr><td><code>MoleStayDuration</code></td><td>0.6&ndash;2.5</td><td>How long a mole stays up</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--            CUPS AND BALLS                    -->
+<!-- ============================================ -->
+<section class="section" id="cups-and-balls">
+  <h2>Cups and Balls</h2>
+  <p class="section-desc">The shell game &mdash; remember which cup hides the ball, then pick after the shuffle.</p>
+
+  <h3>Gameplay</h3>
+  <p>Peek which cup holds the ball, watch a sequence of swap animations, then tap the cup you think still hides it. Correct picks build a streak that multiplies score; wrong picks reset the streak.</p>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>slow_shuffle</code></td><td>Slow Shuffle</td><td>Doubles the duration of every remaining swap</td></tr>
+        <tr><td><code>peek</code></td><td>Peek</td><td>Briefly pulses the ball-cup. Defers to end-of-shuffle if pressed mid-shuffle</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Settings</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>CupCount</code></td><td>3&ndash;5</td><td>How many cups</td></tr>
+        <tr><td><code>Shuffles</code></td><td>3&ndash;30</td><td>Number of swap animations per round</td></tr>
+        <tr><td><code>SwapDuration</code></td><td>0.10&ndash;0.50</td><td>Seconds per swap (lower = harder to follow)</td></tr>
+        <tr><td><code>PeekDuration</code></td><td>0.3&ndash;2.0</td><td>How long the initial reveal lingers</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              TIC TAC TOE                     -->
+<!-- ============================================ -->
+<section class="section" id="tic-tac-toe">
+  <h2>Tic Tac Toe</h2>
+  <p class="section-desc">3&times;3 versus AI &mdash; pick your difficulty.</p>
+
+  <h3>Gameplay</h3>
+  <p>You play X, the AI plays O. Three in a row (horizontal, vertical, or diagonal) wins. Win streaks are tracked across rounds.</p>
+
+  <h4>AI Difficulty</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Level</th><th>Strategy</th></tr></thead>
+      <tbody>
+        <tr><td>Easy</td><td>Picks any empty cell at random</td></tr>
+        <tr><td>Medium</td><td>Win-if-possible &rarr; block player win &rarr; centre &rarr; corners &rarr; edges</td></tr>
+        <tr><td>Hard</td><td>Full minimax &mdash; never loses optimal play</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Boosters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Name</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>hint</code></td><td>Best Move</td><td>Glows the minimax-optimal cell for you</td></tr>
+        <tr><td><code>undo</code></td><td>Undo</td><td>Rolls back the last player+AI pair of moves</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                BOOSTERS                      -->
+<!-- ============================================ -->
+<section class="section" id="boosters">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#128165;</span> Boosters</h2>
+  <p class="section-desc">2&ndash;4 per-game power-ups with persistent counts, refund safety, and auto-discovery.</p>
+
+  <h3>Defining a booster</h3>
+  <p>Every game owns a <code>&lt;Game&gt;BoosterSpec.cs</code> implementing <code>IBoosterSpec</code>. The spec is auto-discovered by <code>BoosterSpecRegistry</code>:</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">public sealed class</span> <span class="tp">Match3BoosterSpec</span> : <span class="tp">IBoosterSpec</span>
+{
+    <span class="kw">public string</span> GameId =&gt; <span class="str">"casual_match3"</span>;
+    <span class="kw">public</span> <span class="tp">IReadOnlyList</span>&lt;<span class="tp">BoosterDef</span>&gt; Boosters { <span class="kw">get</span>; }
+    <span class="kw">public</span> <span class="fn">Match3BoosterSpec</span>()
+    {
+        Boosters = <span class="kw">new</span>[]
+        {
+            <span class="kw">new</span> <span class="tp">BoosterDef</span>(<span class="str">"hammer"</span>, <span class="str">"Hammer"</span>, BoosterIconFactory.Hammer,
+                Color.white, <span class="kw">new</span> <span class="tp">Color</span>(<span class="num">0.95f</span>, <span class="num">0.55f</span>, <span class="num">0.30f</span>),
+                description: <span class="str">"Tap any single gem to smash it."</span>),
+            <span class="cm">// ...</span>
+        };
+    }
+}</code></pre>
+
+  <h3>Activating a booster</h3>
+  <p>The shared <code>BoosterBar</code> component renders the strip and calls back into the game's handler. Each game routes the key through its own switch:</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">bool</span> <span class="fn">OnBoosterActivated</span>(<span class="tp">string</span> key)
+{
+    <span class="kw">if</span> (_ended || _busy) <span class="kw">return false</span>;   <span class="cm">// false = refund</span>
+    <span class="kw">switch</span> (key)
+    {
+        <span class="kw">case</span> <span class="str">"hammer"</span>: <span class="cm">/* ... */</span> <span class="kw">return true</span>;
+        <span class="kw">case</span> <span class="str">"shuffle"</span>: <span class="cm">/* ... */</span> <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>;   <span class="cm">// unknown key, refund the booster charge</span>
+}</code></pre>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Refund on false.</strong> Returning <code>false</code> from the handler refunds the booster &mdash; use this when the activation can't proceed (e.g. not enough balls for Bomb Shot). Returning <code>true</code> deducts one charge from <code>BoosterManager</code>.</div>
+  </div>
+
+  <h3>Full booster catalogue</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Game</th><th>Boosters</th></tr></thead>
+      <tbody>
+        <tr><td>Match-3</td><td>hammer, shuffle, bomb, clock</td></tr>
+        <tr><td>Bubble Shooter</td><td>force_bomb, force_rainbow, aim</td></tr>
+        <tr><td>Brick Balls</td><td>extra_balls, aim_assist, bomb_shot, freeze_row</td></tr>
+        <tr><td>2048</td><td>undo, smash, shuffle</td></tr>
+        <tr><td>Snake</td><td>slow, ghost, magnet</td></tr>
+        <tr><td>Maze</td><td>reveal, dash, breakwall</td></tr>
+        <tr><td>Memory Match</td><td>peek, hint_pair, auto_match</td></tr>
+        <tr><td>Whack-a-Mole</td><td>slow, score2x, multi</td></tr>
+        <tr><td>Cups and Balls</td><td>slow_shuffle, peek</td></tr>
+        <tr><td>Tic Tac Toe</td><td>hint, undo</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             ACHIEVEMENTS                     -->
+<!-- ============================================ -->
+<section class="section" id="achievements">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#127942;</span> Achievements</h2>
+  <p class="section-desc">3&ndash;5 progression goals per game. Tracked persistently via <code>AchievementManager</code> with toast notifications on unlock.</p>
+
+  <h3>Defining achievements</h3>
+  <p>Every game owns a <code>&lt;Game&gt;AchievementSpec.cs</code>:</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">public sealed class</span> <span class="tp">Match3AchievementSpec</span> : <span class="tp">IAchievementSpec</span>
+{
+    <span class="kw">public string</span> GameId =&gt; <span class="str">"casual_match3"</span>;
+    <span class="kw">public</span> <span class="tp">IReadOnlyList</span>&lt;<span class="tp">AchievementDef</span>&gt; Achievements { <span class="kw">get</span>; } = <span class="kw">new</span>[]
+    {
+        <span class="kw">new</span> <span class="tp">AchievementDef</span>(<span class="str">"cascade_5"</span>, <span class="str">"Sweet Cascade"</span>,
+            <span class="str">"Reach a 5+ cascade depth"</span>, target: <span class="num">5</span>),
+        <span class="cm">// ...</span>
+    };
+}</code></pre>
+
+  <h3>Raising progress</h3>
+  <p>Two helper calls from inside the game:</p>
+  <pre><span class="lang-tag">C#</span><code><span class="cm">// Set the progress to a value if it's higher than the current.</span>
+AchievementManager.<span class="fn">RaiseProgress</span>(Id, <span class="str">"cascade_5"</span>, chain);
+
+<span class="cm">// Increment cumulative counters (eg. total apples eaten).</span>
+AchievementManager.<span class="fn">IncrementProgress</span>(Id, <span class="str">"apple_picker"</span>, <span class="num">1</span>);</code></pre>
+
+  <h4>Stored data</h4>
+  <p>Progress is persisted via HCE's save system. Each achievement remembers its current value and unlock state; toast notifications fire automatically when the target is reached.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                RESKINS                       -->
+<!-- ============================================ -->
+<section class="section" id="reskins">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127912;</span> Reskins</h2>
+  <p class="section-desc">Drop in your own art per slot, per game &mdash; no code required.</p>
+
+  <h3>Per-game slot list</h3>
+  <p>Each game owns a <code>&lt;Game&gt;ReskinSpec.cs</code> that declares which sprite slots it understands. Examples:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Game</th><th>Slots</th></tr></thead>
+      <tbody>
+        <tr><td>Match-3</td><td><code>background</code>, <code>gem</code> (per colour)</td></tr>
+        <tr><td>Bubble Shooter</td><td><code>background</code>, <code>bubble</code></td></tr>
+        <tr><td>Snake</td><td><code>background</code>, <code>head</code>, <code>body</code>, <code>apple</code></td></tr>
+        <tr><td>Maze</td><td><code>background</code>, <code>player</code>, <code>goal</code></td></tr>
+        <tr><td>Tic Tac Toe</td><td><code>background</code>, <code>cell</code></td></tr>
+        <tr><td><em>(all games)</em></td><td><code>background</code> at minimum</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Applying a custom sprite</h3>
+  <p>Every game reads its reskin via <code>ReskinManager.GetSprite(gameId, slotKey, null)</code>. The <strong>Skin Toggle Pill</strong> in each game's top-left lets the player flip between default and custom art at runtime.</p>
+  <pre><span class="lang-tag">C#</span><code><span class="cm">// Inside a game's spawn / styling code</span>
+<span class="kw">var</span> custom = ReskinManager.<span class="fn">GetSprite</span>(Id, <span class="str">"bubble"</span>, <span class="kw">null</span>);
+<span class="kw">var</span> sprite = custom != <span class="kw">null</span> ? custom : SpriteFactory.Circle;</code></pre>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Sprite-only.</strong> The reskin system swaps sprites &mdash; layouts, colours, and animations stay the same. For full visual rebuilds, edit the game's <code>StyleGemVisual</code>-style method directly.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--               TUTORIALS                      -->
+<!-- ============================================ -->
+<section class="section" id="tutorials">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#127919;</span> Tutorials</h2>
+  <p class="section-desc">First-run overlay walkthroughs &mdash; defined declaratively per game.</p>
+
+  <h3>Defining a tutorial</h3>
+  <p>Each game owns a <code>&lt;Game&gt;TutorialSpec.cs</code> with an ordered list of steps. The overlay appears once on the player's first session per game and can be replayed from the cheat panel.</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">public sealed class</span> <span class="tp">SnakeTutorialSpec</span> : <span class="tp">ITutorialSpec</span>
+{
+    <span class="kw">public string</span> GameId =&gt; <span class="str">"casual_snake"</span>;
+    <span class="kw">public</span> <span class="tp">IReadOnlyList</span>&lt;<span class="tp">TutorialStep</span>&gt; Steps { <span class="kw">get</span>; } = <span class="kw">new</span>[]
+    {
+        <span class="kw">new</span> <span class="tp">TutorialStep</span>(<span class="str">"Use arrow keys or the D-pad to steer."</span>),
+        <span class="kw">new</span> <span class="tp">TutorialStep</span>(<span class="str">"Eat the red apple to grow."</span>),
+        <span class="kw">new</span> <span class="tp">TutorialStep</span>(<span class="str">"Don't crash into yourself!"</span>),
+    };
+}</code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--             LEVEL SCALING                    -->
+<!-- ============================================ -->
+<section class="section" id="levels">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128200;</span> Level Scaling</h2>
+  <p class="section-desc">Optional per-game difficulty progression via <code>LevelManager</code>.</p>
+
+  <h3>How it works</h3>
+  <p><code>LevelManager.GetDifficultyForCurrent(gameId)</code> returns a bag of scaling multipliers indexed by key. Games read e.g. <code>diff.Get("difficulty", 1f)</code> and use it to ramp score targets, time budgets, AI depth, etc.</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">var</span> diff = LevelManager.<span class="fn">GetDifficultyForCurrent</span>(Id);
+<span class="kw">float</span> k = <span class="tp">Mathf</span>.<span class="fn">Max</span>(<span class="num">0.5f</span>, diff.<span class="fn">Get</span>(<span class="str">"difficulty"</span>, <span class="num">1f</span>));
+_scoreTargetForRound = <span class="tp">Mathf</span>.<span class="fn">RoundToInt</span>(_settings.ScoreTarget * k);
+_timeLeft = <span class="tp">Mathf</span>.<span class="fn">Max</span>(<span class="num">20f</span>, _settings.RoundSeconds / <span class="tp">Mathf</span>.<span class="fn">Sqrt</span>(k));</code></pre>
+
+  <p>Level state is persisted, so <code>LevelManager.GetCurrent(gameId)</code> remembers where the player left off across sessions. Use <code>LevelManager.Advance(gameId)</code> on win, <code>LevelManager.Reset(gameId)</code> on loss (or never, depending on your design).</p>
+</section>
+
+<!-- ============================================ -->
+<!--          LIGHT & DARK MODE                   -->
+<!-- ============================================ -->
+<section class="section" id="theme">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#127769;</span> Light &amp; Dark Mode</h2>
+  <p class="section-desc">One toggle re-themes the whole scene &mdash; chrome and all ten games &mdash; between a dark and a light palette.</p>
+
+  <h3>How it works</h3>
+  <p>Every game reads its colours from <code>_ctx.Theme</code>, a <code>MiniGameTheme</code> asset. The theme now carries two full palettes and a switch:</p>
+  <pre><span class="lang-tag">C#</span><code><span class="cm">// Swap every colour field between the dark and light palettes.</span>
+theme.<span class="fn">ApplyMode</span>(<span class="kw">bool</span> light);
+
+<span class="cm">// True while the light palette is active — games can branch on it.</span>
+<span class="kw">bool</span> isLight = theme.IsLightMode;</code></pre>
+  <p>The dashboard header has a <strong>DARK / LIGHT</strong> pill. Tapping it flips the palette, persists the choice (<code>pmg_light_mode</code>), and rebuilds the scene &mdash; chrome plus the active game &mdash; so every element repaints. The default is dark.</p>
+
+  <h3>Both palettes stay readable</h3>
+  <p>The light palette is contrast-checked: light scene + white panels, dark text, medium-blue accents. The well-defined pairings &mdash; <code>PanelBackground</code>/<code>TextPrimary</code>, <code>TileFilled</code>/<code>TextOnTile</code>, <code>Accent</code>/<code>TextOnAccent</code> &mdash; keep high contrast in <em>both</em> modes, so text never washes out.</p>
+
+  <h3>Per-game adaptation</h3>
+  <p>Each game's internal surfaces (boards, grids, walls, holes, cells) adapt too. Vivid gameplay-identity colours &mdash; gem palette, snake green, 2048 number tiles, brick colours, mole brown/gold &mdash; stay vivid in both modes. A few elements flip by necessity: the maze walls are drawn light-on-dark in dark mode and must become dark-on-light in light mode, and Brick Balls' white balls / aim dots tint dark so they read against the light board.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div>Building your own game? Read every colour from <code>_ctx.Theme</code> rather than hardcoding <code>new Color(...)</code>, and it will support light mode for free. Only route <em>structural</em> surfaces through the theme &mdash; keep identity colours fixed.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--          ADD TO YOUR PROJECT                 -->
+<!-- ============================================ -->
+<section class="section" id="adding">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10133;</span> Add to Your Project</h2>
+  <p class="section-desc">Two paths: the bundled dashboard, or a single game inside your own UI.</p>
+
+  <h3>Path A &mdash; use the bundled dashboard</h3>
+  <p>The fastest way: drop <code>Assets/PocketMiniGames/Demo/PocketMiniGamesDashboard.unity</code> into your build settings. It auto-loads every <code>IMiniGame</code> in the project and lets the player switch between them. Skin it via the included theme system.</p>
+
+  <h3>Path B &mdash; embed a single game</h3>
+  <p>If you want exactly one game inside your own scene / UI:</p>
+  <pre><span class="lang-tag">C#</span><code><span class="kw">using</span> PocketMiniGames.Core;
+<span class="kw">using</span> PocketMiniGames.Casual.Match3;
+
+<span class="kw">public class</span> <span class="tp">MyGameHost</span> : <span class="tp">MonoBehaviour</span>
+{
+    [<span class="tp">SerializeField</span>] <span class="tp">RectTransform</span> _host;   <span class="cm">// where the game builds its UI</span>
+    <span class="tp">IMiniGame</span> _game;
+
+    <span class="kw">void</span> <span class="fn">Start</span>()
+    {
+        _game = <span class="kw">new</span> <span class="fn">Match3Game</span>();
+        _game.<span class="fn">Mount</span>(_host, MiniGameContext.Default);
+        <span class="cm">// NewRound() is called by Mount() automatically; call it again to restart.</span>
+    }
+
+    <span class="kw">void</span> <span class="fn">OnDestroy</span>() =&gt; _game?.<span class="fn">Unmount</span>();
+}</code></pre>
+
+  <h3>Listening to events</h3>
+  <pre><span class="lang-tag">C#</span><code>ctx.Events.<span class="fn">Subscribe</span>&lt;<span class="kw">int</span>&gt;(GameEvents.RoundWon, score =&gt; {
+    <span class="tp">Debug</span>.<span class="fn">Log</span>($<span class="str">"Player scored {score}"</span>);
+});
+ctx.Events.<span class="fn">Subscribe</span>&lt;<span class="kw">int</span>&gt;(GameEvents.RoundLost, score =&gt; { <span class="cm">/* ... */</span> });
+ctx.Events.<span class="fn">Subscribe</span>&lt;<span class="kw">int</span>&gt;(GameEvents.ScoreChanged, score =&gt; { <span class="cm">/* HUD update */</span> });</code></pre>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>Always Unmount.</strong> Every game registers coroutines on a global runner; failing to call <code>Unmount()</code> leaves animation coroutines running on destroyed transforms. The unmount path latches an internal flag that lets in-flight tweens short-circuit safely.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             CUSTOMIZING                      -->
+<!-- ============================================ -->
+<section class="section" id="customizing">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9881;</span> Customizing</h2>
+  <p class="section-desc">Tune defaults, swap art, rewire boosters &mdash; everything is configurable.</p>
+
+  <h3>Override default settings</h3>
+  <p>Each game uses a <code>ScriptableObject</code> for its defaults (e.g. <code>Match3Settings.asset</code>). Create a new <code>Match3Settings</code> via <em>Create &rarr; Pocket MiniGames &rarr; Casual</em> menus, edit fields in the inspector, and assign it via <code>ctx.Settings.Get&lt;Match3Settings&gt;()</code> &mdash; or just mutate the fields on <code>Match3Settings.Default</code> at runtime.</p>
+
+  <h3>Theme colours</h3>
+  <p>Each game pulls colours from <code>ctx.Theme</code> &mdash; <code>Accent</code>, <code>TextPrimary</code>, <code>PanelBackground</code>, <code>TileFilled</code>, <code>Success</code>, etc. Swap themes globally and every game re-skins instantly.</p>
+
+  <h3>Boosters: add / remove / rebalance</h3>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li>To <strong>remove</strong> a booster from a game, delete its <code>BoosterDef</code> from the spec.</li>
+    <li>To <strong>add</strong> a booster, append a new <code>BoosterDef</code> AND handle the key inside the game's <code>OnBoosterActivated</code>.</li>
+    <li>To <strong>change starting counts</strong>, pass <code>defaultCount: N</code> to the <code>BoosterDef</code> constructor.</li>
+    <li>To <strong>award boosters</strong> from your meta-game, call <code>BoosterManager.Add(gameId, key, count)</code>.</li>
+  </ul>
+
+  <h3>Audio</h3>
+  <p>Every game uses <code>ctx.Audio.Play(SfxKind.&lt;...&gt;)</code> &mdash; piping into HCE's <code>AudioService</code>. Configure the sound bank via <code>Tools &rarr; HCE &rarr; Toolset &rarr; Audio</code> to override which clip plays for which kind.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             HCE BUNDLED                      -->
+<!-- ============================================ -->
+<section class="section" id="hce-bundled">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127873;</span> HCE Bundled</h2>
+  <p class="section-desc">HyperCasual Essentials is included in this pack as the backend &mdash; full version, no stripping.</p>
+
+  <div class="card">
+    <div class="card-title">What HCE handles for the Casual Pack</div>
+    <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+      <li><strong>Audio</strong> &mdash; pooled SFX, music crossfade, mixer routing</li>
+      <li><strong>Save system</strong> &mdash; persistent booster counts, achievements, level progress</li>
+      <li><strong>Events bus</strong> &mdash; <code>RoundStarted</code>, <code>ScoreChanged</code>, <code>RoundWon</code>, <code>RoundLost</code></li>
+      <li><strong>Theme service</strong> &mdash; colours each game reads from at build time</li>
+      <li><strong>UI feedback</strong> &mdash; tweens, confetti, popups, toasts, countdown timers</li>
+      <li><strong>Ads / IAP / Daily / Wheel</strong> &mdash; optional meta-game systems; unused by gameplay but available for your shop / reward flows</li>
+    </ul>
+  </div>
+
+  <p>The bundled HCE is the <strong>full version</strong> &mdash; identical to the standalone Asset Store SKU. It has its own deep documentation:</p>
+
+  <pre><span class="lang-tag">Path</span><code>Assets/HyperCasualEssentials/Documentation/HCE-Documentation.html</code></pre>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+    <a class="cta-btn cta-btn-outline" href="https://u3d.as/3Y17" target="_blank" rel="noopener">
+      &#128279; HyperCasual Essentials on the Asset Store
+    </a>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>You already own it.</strong> The HCE asset is purchasable separately for projects that don't need the mini-games, but this pack includes the entire codebase &mdash; you'll never need to buy it on top.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           ADDING NEW GAMES                   -->
+<!-- ============================================ -->
+<section class="section" id="extending">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#129520;</span> Adding New Games</h2>
+  <p class="section-desc">Mirror the per-game folder shape and the dashboard picks up your game automatically.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Create a folder</strong><br><code>Assets/PocketMiniGames/Runtime/Casual/MyGame/</code></div></div>
+    <div class="step"><div class="step-content"><strong>Add <code>MyGameGame.cs</code></strong><br>Implement <code>IMiniGame</code> &mdash; <code>Mount</code>, <code>Unmount</code>, <code>NewRound</code>, <code>GetCheatActions</code>. Tag the class with <code>[MiniGame(id, name, Category=MiniGameCategory.Casual)]</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Add settings (optional)</strong><br>A <code>MyGameSettings : ScriptableObject</code> with a static <code>Default</code> getter, mirroring the other games.</div></div>
+    <div class="step"><div class="step-content"><strong>Add boosters / achievements / reskins / tutorial</strong><br>Drop in <code>MyGameBoosterSpec.cs</code>, <code>MyGameAchievementSpec.cs</code>, <code>MyGameReskinSpec.cs</code>, <code>MyGameTutorialSpec.cs</code> &mdash; each implementing its respective interface. They'll be auto-discovered.</div></div>
+    <div class="step"><div class="step-content"><strong>Done</strong><br>The dashboard now lists your game. No edits required to any existing file.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div>The same pattern is how future packs (e.g. <em>Word Pack</em>, <em>Puzzle Pack</em>, <em>Solitaire Pack</em>) extend the framework &mdash; they're just additional folders of <code>IMiniGame</code> implementations, with <code>MiniGameCategory</code> changed.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--            TROUBLESHOOTING                   -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">The most common issues, with answers.</p>
+
+  <details>
+    <summary>My game doesn't show up in the dashboard</summary>
+    <div class="details-body">
+      <p>Three things to check: (1) the class implements <code>IMiniGame</code>, (2) it has the <code>[MiniGame("snake_case_id", "Display Name", Category=MiniGameCategory.Casual)]</code> attribute, (3) the assembly is loaded &mdash; if your game lives in its own asmdef, make sure that asmdef references <code>PocketMiniGames.Core</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>A booster button does nothing when pressed</summary>
+    <div class="details-body">
+      <p>The booster's <code>key</code> in the spec must EXACTLY match the <code>case</code> in your game's <code>OnBoosterActivated</code>. If the key is unknown, the handler returns <code>false</code> and the booster is silently refunded &mdash; nothing visible happens. Compare strings character-for-character.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Boosters never run out / never persist</summary>
+    <div class="details-body">
+      <p>Booster counts are persisted via HCE's save system. If HCE's save layer isn't initialised (e.g. running tests with no <code>HCESettings</code> asset), counts default to the booster's <code>defaultCount</code> every session. Run <code>Tools &rarr; HCE &rarr; Setup Wizard</code> to create the asset.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Tutorials replay every time I press Play in the editor</summary>
+    <div class="details-body">
+      <p>The "seen" flag is keyed by <code>gameId</code> in PlayerPrefs. If you delete PlayerPrefs / Library between runs the flag resets. To force-disable replay, set <code>ITutorialSpec.AutoShow = false</code> in your tutorial spec.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Reskin sprites don't apply</summary>
+    <div class="details-body">
+      <p>Two things: (1) the slot key in <code>ReskinManager.SetSprite(gameId, slotKey, sprite)</code> must match a slot in the game's <code>ReskinSpec</code>, (2) reskin has to be <em>active</em> &mdash; either toggle the skin pill in the game's top-left or call <code>ReskinManager.SetActive(gameId, true)</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Coroutines complain about destroyed RectTransforms when I switch games</summary>
+    <div class="details-body">
+      <p>You're not calling <code>Unmount()</code> before destroying the host. The unmount path latches an internal <code>_ended</code> flag that the fire-and-forget tween coroutines watch. Skipping it means the tweens fire one extra frame against a destroyed transform. Always pair <code>Mount</code> with <code>Unmount</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Where do I report a bug specific to one game?</summary>
+    <div class="details-body">
+      <p>Email <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);">ragendom@gmail.com</a> with: Unity version, target platform, the game id (e.g. <code>casual_match3</code>), the exact steps to reproduce, and the console log if there's an exception.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--           RELEASE NOTES                      -->
+<!-- ============================================ -->
+<section class="section" id="release-notes">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128221;</span> Release Notes</h2>
+  <p class="section-desc">What changed since the first release.</p>
+
+  <h3>v1.1.0</h3>
+
+  <h4>New &mdash; Light &amp; Dark Mode</h4>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li>A <strong>DARK / LIGHT</strong> toggle in the dashboard header re-themes the whole scene &mdash; chrome plus all ten games. See <a href="#theme" style="color:var(--accent-light);">Light &amp; Dark Mode</a>.</li>
+    <li><code>MiniGameTheme</code> gained a full light palette, <code>ApplyMode(bool light)</code>, and an <code>IsLightMode</code> flag. The choice is persisted; default is dark.</li>
+    <li>Every game's internal surfaces (boards, grids, walls, holes, cells) adapt to the active palette while keeping vivid gameplay colours fixed.</li>
+  </ul>
+
+  <h4>Booster reworks</h4>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li><strong>Bubble Shooter &mdash; Auto-Aim</strong> (was Long Aim): traces every shot angle and auto-fires at the largest poppable cluster.</li>
+    <li><strong>Brick Balls &mdash; Long Aim</strong> is now a true auto-shot: it simulates the full bouncing flight for every angle and fires the salvo at the most damaging shot.</li>
+    <li><strong>Brick Balls &mdash; Bomb Shot</strong> always activates now; bomb charges carry across salvos instead of being gated by ball count.</li>
+    <li><strong>Whack-a-Mole &mdash; Auto-Whack</strong> (was Multi-Hit): auto-whacks the next 3 moles that pop up. All three boosters now show live status chips in the header.</li>
+    <li><strong>Snake &mdash; Apple Magnet</strong> now reels the apple toward the head with an accelerating gravity-pull, red trail and spark particles, instead of teleporting it.</li>
+    <li><strong>Maze &mdash; Reveal Path</strong> draws a BFS dot trail to the goal; <strong>Dash</strong> and <strong>Break Wall</strong> show a coloured aura around the player.</li>
+    <li><strong>Match-3 &mdash; More play</strong> (the clock booster) adds +5 moves in move-limited mode where a timer doesn't exist.</li>
+    <li>Slow-down boosters now use an hourglass icon; Brick Balls' Hold The Line uses a snowflake; new icons for Extra Balls and the dashboard shop button.</li>
+  </ul>
+
+  <h4>Polish &amp; fixes</h4>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li>Timed games (Match-3, Whack-a-Mole, Maze) now pop-animate the timer, redden it, and play a tick each second in the final 5 seconds.</li>
+    <li>Snake: rapid 180&deg; turns can no longer cause an instant self-collision; filling the grid now counts as a win.</li>
+    <li>Match-3: fixed the score-target scaling; a held tile darkens while dragged.</li>
+    <li>Whack-a-Mole: difficulty ramp now actually accelerates; tapping a just-hit mole no longer applies a miss penalty.</li>
+    <li>Tic Tac Toe: light-mode grid cells are light-gray rather than blue.</li>
+    <li>Hardened game teardown across the pack &mdash; coroutines, boosters and round state are cancelled / reset cleanly on Unmount and New Round.</li>
+  </ul>
+
+  <h3>v1.0.0</h3>
+  <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+    <li>Initial release &mdash; ten casual games with boosters, achievements, reskins, tutorials and difficulty scaling.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--           SUPPORT &amp; REVIEW                   -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128236;</span> Support &amp; Review</h2>
+  <p class="section-desc">We'd love to hear from you &mdash; bug reports, feature requests, or a quick review.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">If you run into any issues, have feature requests, or want help integrating a game into your project &mdash; or you'd like a brand-new mini-game added to a future update &mdash; drop us a line.</p>
+    <a class="cta-btn" href="mailto:ragendom@gmail.com">&#9993; ragendom@gmail.com</a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
+  </div>
+
+  <div class="card" style="text-align:center;padding:40px 24px;margin-top:16px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#11088;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Enjoying the pack?</h3>
+    <p style="color:var(--text-dim);max-width:520px;margin:8px auto 24px;">Reviews on the Asset Store are the single biggest help to a small indie publisher &mdash; they take a minute and they make a real difference. If <em>Pocket Mini Games &middot; Casual Pack</em> saved you time or inspired you, leaving a star rating means the world.</p>
+    <a class="cta-btn cta-btn-yellow" href="https://u3d.as/1CKj" target="_blank" rel="noopener">&#11088; Leave a Review on the Asset Store</a>
+  </div>
+
+  <div class="card-grid" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before Contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Check the <a href="#troubleshooting" style="color:var(--accent-light);">Troubleshooting</a> section</li>
+        <li>Open the demo dashboard to verify the game runs in isolation</li>
+        <li>Check the Unity Console for exceptions</li>
+        <li>Include the game id (e.g. <code>casual_snake</code>) so we know which game</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful Info to Include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Unity version &amp; render pipeline</li>
+        <li>Pack version (currently 1.0.0) and HCE version (1.0.1)</li>
+        <li>Target platform (Android / iOS / standalone)</li>
+        <li>Console error logs or screenshots</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>Pocket Mini Games &middot; Casual Pack v1.1.0 &nbsp;&middot;&nbsp; Built for Unity 2021.3+</p>
+  <p style="margin-top:8px;">Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+  <p style="margin-top:8px;">
+    <a href="https://u3d.as/1CKj" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">Asset Store</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://u3d.as/3Y17" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">HCE on Asset Store</a>
+  </p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const content = s.textContent.toLowerCase();
+  sections.push({
+    id: s.id,
+    title: h2 ? h2.textContent.trim() : '',
+    desc: desc ? desc.textContent.trim() : '',
+    content: content,
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return `<a href="#${m.id}" class="search-item" onclick="closeSearch()">
+        <div class="search-item-section">${m.title}</div>
+        <div class="search-item-title">${matchH3 || m.desc || m.title}</div>
+      </a>`;
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// Active sidebar link
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+// Close mobile sidebar on nav click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
