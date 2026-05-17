@@ -1411,31 +1411,38 @@ AchievementManager.<span class="fn">IncrementProgress</span>(Id, <span class="st
   <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127912;</span> Reskins</h2>
   <p class="section-desc">Drop in your own art per slot, per game &mdash; no code required.</p>
 
+  <h3>The Reskin Editor</h3>
+  <p>Open <strong>Tools &rarr; Pocket MiniGames &rarr; Reskin Editor</strong>. Pick a game on the left, then for each slot browse or drag in your own image. The art is copied into <code>Resources/Reskin/&lt;gameId&gt;/&lt;slot&gt;.png</code>, auto-imported as a Sprite, and a per-slot transform (scale / offset / rotation) is saved alongside it as <code>.json</code>. Both ship in builds &mdash; no addressables setup.</p>
+
   <h3>Per-game slot list</h3>
-  <p>Each game owns a <code>&lt;Game&gt;ReskinSpec.cs</code> that declares which sprite slots it understands. Examples:</p>
+  <p>Each game owns a <code>&lt;Game&gt;ReskinSpec.cs</code> declaring its sprite slots. Every slot below is read and applied by the game &mdash; drop in art and it shows up. Any slot left empty falls back to the built-in procedural look.</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Game</th><th>Slots</th></tr></thead>
       <tbody>
-        <tr><td>Match-3</td><td><code>background</code>, <code>gem</code> (per colour)</td></tr>
-        <tr><td>Bubble Shooter</td><td><code>background</code>, <code>bubble</code></td></tr>
-        <tr><td>Snake</td><td><code>background</code>, <code>head</code>, <code>body</code>, <code>apple</code></td></tr>
-        <tr><td>Maze</td><td><code>background</code>, <code>player</code>, <code>goal</code></td></tr>
-        <tr><td>Tic Tac Toe</td><td><code>background</code>, <code>cell</code></td></tr>
-        <tr><td><em>(all games)</em></td><td><code>background</code> at minimum</td></tr>
+        <tr><td>Match-3</td><td><code>gem</code> (tinted per colour), <code>background</code></td></tr>
+        <tr><td>Bubble Shooter</td><td><code>bubble</code>, <code>bomb</code>, <code>rainbow</code>, <code>shooter_base</code>, <code>background</code></td></tr>
+        <tr><td>Brick Balls</td><td><code>ball</code>, <code>block</code>, <code>pickup</code>, <code>bomb_block</code>, <code>shooter_base</code>, <code>background</code></td></tr>
+        <tr><td>2048</td><td><code>tile</code> (tinted per value), <code>cell_empty</code>, <code>background</code></td></tr>
+        <tr><td>Snake</td><td><code>head</code>, <code>body</code>, <code>apple</code>, <code>background</code></td></tr>
+        <tr><td>Maze</td><td><code>player</code>, <code>goal</code>, <code>wall</code>, <code>floor</code>, <code>background</code></td></tr>
+        <tr><td>Memory Match</td><td><code>card_back</code>, <code>card_face</code>, <code>background</code></td></tr>
+        <tr><td>Whack-a-Mole</td><td><code>mole</code>, <code>hole</code>, <code>mallet</code> (hit-effect), <code>background</code></td></tr>
+        <tr><td>Cups and Balls</td><td><code>cup</code>, <code>ball</code>, <code>background</code></td></tr>
+        <tr><td>Tic Tac Toe</td><td><code>mark_x</code>, <code>mark_o</code>, <code>cell</code>, <code>background</code></td></tr>
       </tbody>
     </table>
   </div>
 
   <h3>Applying a custom sprite</h3>
-  <p>Every game reads its reskin via <code>ReskinManager.GetSprite(gameId, slotKey, null)</code>. The <strong>Skin Toggle Pill</strong> in each game's top-left lets the player flip between default and custom art at runtime.</p>
+  <p>Every game reads its reskin via <code>ReskinManager.GetSprite(gameId, slotKey, fallback)</code>. The <strong>Skin Toggle Pill</strong> in each game's top-left lets the player flip between default and custom art at runtime &mdash; and the choice is persisted (<code>PlayerPrefs</code>), so a player who picks the custom skin still has it after relaunching.</p>
   <pre><span class="lang-tag">C#</span><code><span class="cm">// Inside a game's spawn / styling code</span>
 <span class="kw">var</span> custom = ReskinManager.<span class="fn">GetSprite</span>(Id, <span class="str">"bubble"</span>, <span class="kw">null</span>);
 <span class="kw">var</span> sprite = custom != <span class="kw">null</span> ? custom : SpriteFactory.Circle;</code></pre>
 
   <div class="callout callout-info">
     <span class="callout-icon">&#9432;</span>
-    <div><strong>Sprite-only.</strong> The reskin system swaps sprites &mdash; layouts, colours, and animations stay the same. For full visual rebuilds, edit the game's <code>StyleGemVisual</code>-style method directly.</div>
+    <div><strong>Sprite-only.</strong> The reskin system swaps sprites &mdash; layouts, colours, and animations stay the same. When a game has custom art for a slot it hides the matching procedural detail (e.g. Whack-a-Mole's drawn face, Memory Match's icon glyph stays, the card shading is dropped) so your sprite reads clean.</div>
   </div>
 </section>
 
@@ -1680,7 +1687,7 @@ ctx.Events.<span class="fn">Subscribe</span>&lt;<span class="kw">int</span>&gt;(
   <details>
     <summary>Reskin sprites don't apply</summary>
     <div class="details-body">
-      <p>Two things: (1) the slot key in <code>ReskinManager.SetSprite(gameId, slotKey, sprite)</code> must match a slot in the game's <code>ReskinSpec</code>, (2) reskin has to be <em>active</em> &mdash; either toggle the skin pill in the game's top-left or call <code>ReskinManager.SetActive(gameId, true)</code>.</p>
+      <p>Three things: (1) the image must be imported into a slot via <strong>Tools &rarr; Pocket MiniGames &rarr; Reskin Editor</strong> &mdash; it lands under <code>Resources/Reskin/&lt;gameId&gt;/</code>; (2) reskin has to be <em>active</em> &mdash; toggle the skin pill in the game's top-left, or call <code>ReskinManager.SetReskinActive(gameId, true)</code>; (3) the skin pill stays greyed out (<code>Skin: &mdash;</code>) until at least one slot has custom art &mdash; that's expected, not a bug.</p>
     </div>
   </details>
 
