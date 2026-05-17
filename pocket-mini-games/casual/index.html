@@ -825,6 +825,7 @@ details .details-body { padding: 0 20px 18px; }
       <thead><tr><th>Want to change…</th><th>Where</th></tr></thead>
       <tbody>
         <tr><td>A game's rules / difficulty / dimensions</td><td>Toolset &rarr; category tab &rarr; game panel — or its <code>&lt;Game&gt;Settings</code> asset in <code>Resources/Config/</code></td></tr>
+        <tr><td>Per-level difficulty curve</td><td>Toolset &rarr; game panel &rarr; <em>Levels</em> editor — regenerate or hand-edit each level (see <a href="#levels" style="color:var(--accent-light);">Level Scaling</a>)</td></tr>
         <tr><td>Colours / overall look</td><td>The <code>MiniGameTheme</code> asset (Toolset &rarr; Theme tab) + the in-app Light/Dark toggle</td></tr>
         <tr><td>Game art (gems, bubbles, snake, cards…)</td><td>The <a href="#reskins" style="color:var(--accent-light);">Reskin system</a> — drop your sprites per slot</td></tr>
         <tr><td>Boosters offered / their counts</td><td>Each game's <code>&lt;Game&gt;BoosterSpec.cs</code></td></tr>
@@ -1464,7 +1465,7 @@ AchievementManager.<span class="fn">IncrementProgress</span>(Id, <span class="st
 <!-- ============================================ -->
 <section class="section" id="levels">
   <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128200;</span> Level Scaling</h2>
-  <p class="section-desc">Optional per-game difficulty progression via <code>LevelManager</code>.</p>
+  <p class="section-desc">Per-game difficulty progression &mdash; auto-generated, fully editable in the Toolset.</p>
 
   <h3>How it works</h3>
   <p><code>LevelManager.GetDifficultyForCurrent(gameId)</code> returns a bag of scaling multipliers indexed by key. Games read e.g. <code>diff.Get("difficulty", 1f)</code> and use it to ramp score targets, time budgets, AI depth, etc.</p>
@@ -1474,6 +1475,19 @@ _scoreTargetForRound = <span class="tp">Mathf</span>.<span class="fn">RoundToInt
 _timeLeft = <span class="tp">Mathf</span>.<span class="fn">Max</span>(<span class="num">20f</span>, _settings.RoundSeconds / <span class="tp">Mathf</span>.<span class="fn">Sqrt</span>(k));</code></pre>
 
   <p>Level state is persisted, so <code>LevelManager.GetCurrent(gameId)</code> remembers where the player left off across sessions. Use <code>LevelManager.Advance(gameId)</code> on win, <code>LevelManager.Reset(gameId)</code> on loss (or never, depending on your design).</p>
+
+  <h3>Editing levels in the Toolset</h3>
+  <p>Out of the box every game gets a 30-level curve from a built-in formula (difficulty ramps gently from level 1). You don't have to leave it at that &mdash; <strong>each game's Toolset tab now has a Levels editor</strong> under its <em>Level / authoring tools</em> section, where you can:</p>
+  <ul>
+    <li><strong>Regenerate</strong> the whole curve &mdash; set a level count, a start and end difficulty, and an optional random jitter, then hit <em>Regenerate levels</em>.</li>
+    <li><strong>Hand-edit any level</strong> &mdash; rename it and set its exact difficulty multiplier in the scrollable per-level list.</li>
+  </ul>
+  <p>The first time you open a game's Levels editor it creates a <code>LevelSet</code> asset at <code>Resources/Config/Levels/&lt;gameId&gt;.asset</code>. When that asset exists it overrides the built-in formula &mdash; <code>LevelSpecRegistry</code> resolves levels in the order: explicitly-coded <code>ILevelSpec</code> &rarr; <code>LevelSet</code> asset &rarr; the default formula. Because the asset lives under <code>Resources/</code>, your edited curve is loaded by the game at runtime, in both the editor and a built game.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div>No <code>LevelSet</code> asset, no change in behaviour &mdash; the formula curve is the default. Create one only for the games whose progression you want to hand-tune.</div>
+  </div>
 </section>
 
 <!-- ============================================ -->
