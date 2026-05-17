@@ -1435,7 +1435,7 @@ AchievementManager.<span class="fn">IncrementProgress</span>(Id, <span class="st
   </div>
 
   <h3>Applying a custom sprite</h3>
-  <p>Every game reads its reskin via <code>ReskinManager.GetSprite(gameId, slotKey, fallback)</code>. The <strong>Skin Toggle Pill</strong> in each game's top-left lets the player flip between default and custom art at runtime &mdash; and the choice is persisted (<code>PlayerPrefs</code>), so a player who picks the custom skin still has it after relaunching.</p>
+  <p>Every game reads its reskin via <code>ReskinManager.GetSprite(gameId, slotKey, fallback)</code>. Once a game has custom art in any slot it uses that art <strong>by default</strong> &mdash; no toggle needed. The <strong>Skin Toggle Pill</strong> in each game's top-left still lets the player flip between custom and default art at runtime, and any explicit choice they make is persisted (<code>PlayerPrefs</code>) across relaunches.</p>
   <pre><span class="lang-tag">C#</span><code><span class="cm">// Inside a game's spawn / styling code</span>
 <span class="kw">var</span> custom = ReskinManager.<span class="fn">GetSprite</span>(Id, <span class="str">"bubble"</span>, <span class="kw">null</span>);
 <span class="kw">var</span> sprite = custom != <span class="kw">null</span> ? custom : SpriteFactory.Circle;</code></pre>
@@ -1687,7 +1687,7 @@ ctx.Events.<span class="fn">Subscribe</span>&lt;<span class="kw">int</span>&gt;(
   <details>
     <summary>Reskin sprites don't apply</summary>
     <div class="details-body">
-      <p>Three things: (1) the image must be imported into a slot via <strong>Tools &rarr; Pocket MiniGames &rarr; Reskin Editor</strong> &mdash; it lands under <code>Resources/Reskin/&lt;gameId&gt;/</code>; (2) reskin has to be <em>active</em> &mdash; toggle the skin pill in the game's top-left, or call <code>ReskinManager.SetReskinActive(gameId, true)</code>; (3) the skin pill stays greyed out (<code>Skin: &mdash;</code>) until at least one slot has custom art &mdash; that's expected, not a bug.</p>
+      <p>Two things: (1) the image must be imported into a slot via <strong>Tools &rarr; Pocket MiniGames &rarr; Reskin Editor</strong> &mdash; it lands under <code>Resources/Reskin/&lt;gameId&gt;/</code>, and once it's there the game uses it by default; (2) the skin pill stays greyed out (<code>Skin: &mdash;</code>) until at least one slot has custom art &mdash; that's expected, not a bug. If you previously toggled the pill to <em>Default</em> for that game, that choice is remembered &mdash; toggle it back to <em>Custom</em>.</p>
     </div>
   </details>
 
