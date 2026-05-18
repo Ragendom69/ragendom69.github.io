@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls Out - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #d35400;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #d35400;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .feature-card h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Balls Out</h1>
+        <p class="subtitle">A Colour-Match Conveyor Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a colour-match conveyor puzzle. You are expected to customise, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Balls Out is a colour-match conveyor puzzle. Players tap any unblocked coloured box on the grid to send it flying onto a dock; rotating conveyors then funnel matching coloured beads into the docked boxes until each one fills to 100% and explodes in a particle burst. The game features a fully-rotating bead conveyor, hidden grid boxes revealed only when their neighbours complete, three in-game boosters with first-use tutorial popups, a built-in level editor, an automatic level generator, and post-processing polish out of the box.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Tap-to-Send Conveyor Puzzles</h4>
+                    <p>Intuitive one-tap controls &mdash; tap any unblocked box to send it to the dock, then watch the rotating bead conveyor feed it. Hidden boxes reveal as their neighbours clear.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>Full Unity Editor window for designing levels &mdash; a colour-swatch palette, a drag-to-paint grid (Y-flipped so you see the player's orientation), live conveyor colour strips, and per-level dock &amp; booster budgets.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate hundreds of playable levels with a concave difficulty curve, configurable colour count, grid width &amp; height ranges, dock count, hidden-box probability, and conveyor channel length. Cancellable mid-batch with a progress bar.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Booster System</h4>
+                    <p>Three in-game boosters &mdash; Shuffle Beads, Shuffle Baskets, and Picker &mdash; with first-use tutorial popups and per-level unlocks. Counts are level-driven via the LevelData schema.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>500 Levels Included</h4>
+                    <p>Designed to ship with 500 pre-generated levels on a progressive difficulty curve. Hand-tuned starter levels (1-5) ramp the player into the mechanic; the generator handles the rest. Generate more at any time.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Production Settings Out-of-the-Box</h4>
+                    <p>Portrait-locked, 1080&times;1920 reference canvas, Linear colour space, both input handlers enabled. WebGL canvas pre-set to 900&times;1800 with compression disabled for itch.io / Asset Store hosting compatibility.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP 17.0.4+)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Active Input Handling set to <strong>Both</strong> (legacy mouse raycasts + new Input System for keyboard hotkeys)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the Balls Out package into your Unity project.</li>
+                <li>Ensure the project is set to use the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>).</li>
+                <li>Open the game scene at <code>Assets/Balls Out/Scenes/GameNew.unity</code> &mdash; the HUD, win/lose panels, booster popups, managers, and post-processing are already built and wired into it.</li>
+                <li>(Optional) Generate a fresh batch of levels via <code>Tools &gt; Balls Out &gt; Auto Level Generator</code>, or hand-author them in <code>Tools &gt; Balls Out &gt; Level Editor</code>.</li>
+                <li>Press Play to test Level 1.</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, tap any unblocked box on the grid &mdash; it flies up and lands in an empty dock. The rotating conveyor then funnels matching-colour beads into it until the box completes at 100%, vanishing in a particle burst. Boxes neighbouring a cleared box become tappable (or have their hidden colour revealed). Clear every box on the grid to win and the next level loads automatically.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <p>The package ships as a single top-level <code>Balls Out/</code> folder. All game-specific assets, shared UI prefabs, scripts, and editor tooling live under this one folder so the Asset Store single-folder publishing rule is honoured.</p>
+
+            <div class="folder-structure">
+<span class="folder">Balls Out/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; 27 .png booster icons + radial shine decorations (subsumed from the shared UI package)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; All sound effects (.wav): Blocked, Pop, Success, Switch, Fail, LevelClear, LevelFail, SnakeExit</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; Shared ScriptableObject assets (ColorData, fallback LevelData)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Documentation.html</span> <span class="comment">&mdash; This file</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUI-README.md</span> <span class="comment">&mdash; Archived notes on the shared UI scripts</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span> <span class="comment">&mdash; Editor-only scripts (namespaces: BallsOut.EditorTools, HypercasualGameEngine, NewestDevUI.EditorTools)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (colour palette, drag-paint grid, conveyor strips)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Append-mode batch generator with concave difficulty curve</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BallsOutWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on first project open</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">NewestDevUIWelcomePopup.cs</span> <span class="comment">&mdash; First-import popup for the UI pack</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns and fixes Active Input Handling if New-only</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">HC-PostProcessing-Volume.asset</span> <span class="comment">&mdash; Shared HC URP VolumeProfile (Bloom, Tonemapping, Colour Adjustments, Vignette)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Gameplay prefabs + shared UI prefabs</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Bead.prefab / BeadRow.prefab / Box.prefab / Dock.prefab / MatchFx.prefab</span> <span class="comment">&mdash; Gameplay</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameHUD_Panel.prefab / LevelClearedPanel.prefab / GameOverPanel.prefab</span> <span class="comment">&mdash; HUD + win/lose</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Popup_Powerup_Picker.prefab / DeveloperModeButton.prefab</span> <span class="comment">&mdash; Booster popups, dev panel</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">BoosterManager.prefab / LoseWinPanelManager.prefab</span> <span class="comment">&mdash; Manager root GameObjects</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; 500 level JSON files (Level_1.json ... Level_500.json) once the generator runs</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Samples/</span> <span class="comment">&mdash; Optional LevelManager.cs / SoundManager.cs stubs (rename .cs.txt &rarr; .cs to use)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; All runtime scripts (namespaces: BallsOut.Scripts, HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">BallsOutGameManager.cs</span> <span class="comment">&mdash; Top-level orchestrator, arrow-key nav, win/lose choke point</span>
+    &#9500;&#9472;&#9472; <span class="file">GameLevel.cs / InputManager.cs</span> <span class="comment">&mdash; Gameplay loop + tap input</span>
+    &#9500;&#9472;&#9472; <span class="file">Bead.cs / BeadRow.cs / Box.cs / Dock.cs</span> <span class="comment">&mdash; Component data carriers</span>
+    &#9500;&#9472;&#9472; <span class="file">ColorData.cs / LevelData.cs</span> <span class="comment">&mdash; ScriptableObject palette + level schema</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON level loader; namespaced PlayerPrefs key</span>
+    &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Singleton audio facade (pools + booster + level-clear/fail)</span>
+    &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs / BoosterManager.cs</span> <span class="comment">&mdash; Win/lose orchestration, 3-booster state machine</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs / DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel + Shift+U/W/L/R hotkeys</span>
+    &#9500;&#9472;&#9472; <span class="file">RotateClockwiseZ.cs / BoosterPopupIconMirror.cs</span> <span class="comment">&mdash; Win-screen rotation + popup-icon mirroring</span>
+    &#9492;&#9472;&#9472; <span class="file">BoosterFeedback.cs</span> <span class="comment">&mdash; Lazy-instantiates a centred TMP label overlay for the Picker booster's PICK! activation feedback</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Loop</h3>
+            <p>Each level lays out a vertical grid of coloured boxes. Only boxes on the bottom row (y=0) start tappable. Tap any tappable box and it launches off the grid in a smooth arc onto an empty dock at the bottom of the screen. Once docked, the box waits for the rotating conveyor of beads to feed it &mdash; whenever the lead bead of the main conveyor row matches the docked box's colour, beads stream into the box and the fill counter ticks up. When a box fills to 100% it explodes in a particle burst, freeing its dock and revealing (or releasing) the four neighbour boxes around its original grid position. Clear every box on the grid to win.</p>
+
+            <h3>Hidden Boxes</h3>
+            <p>Boxes marked <code>isHidden = true</code> in the level data are spawned with a placeholder dark material and a muted UI tint; their real colour stays hidden until a neighbour box clears &mdash; or a booster reaches them &mdash; at which point the box plays a gradual reveal: a scale &ldquo;pop&rdquo; plus a colour fade-in from black to its true colour. This creates a satisfying chain-reveal as the player works upward through the grid.</p>
+
+            <h3>Win &amp; Lose</h3>
+            <p>Win condition: every box on the grid has completed. The Game Manager fires <code>SoundManager.Instance.PlayLevelClear()</code> exactly once and the Level Cleared Panel appears with the level number. Lose condition: there is intentionally no lose condition by default in the shipping template &mdash; the player cannot fail Level 1 by misclick, only by running out of conveyor beads, which the generator's channel-length padding prevents. Wire <code>BallsOutGameManager.Instance.TriggerLose()</code> from your gameplay layer if you want a move-limit or time-limit variant.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS REFERENCE ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <h3>Core Gameplay (Balls Out/Scripts/)</h3>
+            <table>
+                <tr><th>Script</th><th>Responsibility</th></tr>
+                <tr><td><code>BallsOutGameManager</code></td><td>Top-level orchestrator. State machine (Playing / Won / Lost). [DefaultExecutionOrder(-100)] so its Awake populates the HUD CurrentLevelText before any other MonoBehaviour. Owns arrow-key level navigation; routes win/lose through itself before forwarding to LoseWinPanelManager so PlayLevelClear / PlayLevelFail fires exactly once.</td></tr>
+                <tr><td><code>GameLevel</code></td><td>Spawns the dock slots (per-level count), the box grid, and the rotating bead conveyors; runs <code>LoopConveyor()</code> every <code>durationConveyor</code> seconds to advance beads and dispense matched colours into docked boxes; animates fill / complete / release transitions and the booster effects.</td></tr>
+                <tr><td><code>InputManager</code></td><td>New Input System tap / touch raycast onto boxes. Calls <code>SoundManager.PlayTap()</code> on a valid tap, <code>PlayBlocked()</code> on a tap that did nothing.</td></tr>
+                <tr><td><code>Box / Bead / BeadRow / Dock</code></td><td>Lightweight data-holding MonoBehaviours; no behaviour beyond serialised Inspector references.</td></tr>
+            </table>
+
+            <h3>Engine / Shared (Balls Out/Scripts/, namespace HypercasualGameEngine)</h3>
+            <table>
+                <tr><th>Script</th><th>Responsibility</th></tr>
+                <tr><td><code>LevelManager</code></td><td>Static JSON loader for <code>Resources/Levels/Level_&lt;N&gt;.json</code>. <code>CurrentLevelIndex</code> persists via PlayerPrefs key <code>"Balls Out_CurrentLevel"</code>. <code>GetCurrentLevel()</code> returns a runtime ScriptableObject built via <code>JsonUtility.FromJsonOverwrite</code> and flagged <code>HideFlags.HideAndDontSave</code> so it survives domain reloads without leaking into project assets.</td></tr>
+                <tr><td><code>SoundManager</code></td><td>Single-source-of-truth singleton audio facade. One <code>AudioSource</code>, <code>[Range(0,1)]</code> masterVolume, one <code>Play&lt;Event&gt;()</code> per event. Random pools for Pop, Success, Switch, Fail clips. Booster SFX methods (<code>PlayBlocked</code>, <code>PlayBoosterShuffle</code>, <code>PlayBoosterUnlock</code>) called from the BoosterManager.</td></tr>
+                <tr><td><code>LevelData</code></td><td>Runtime ScriptableObject schema: bead colour lists for the three conveyor channels, the grid layout &amp; width, the three booster int counts, and the dock count.</td></tr>
+                <tr><td><code>ColorData</code></td><td>ScriptableObject palette mapping <code>TypeColor</code> &rarr; <code>Material</code> &amp; UI <code>Color</code>.</td></tr>
+            </table>
+
+            <h3>UI / Boosters / Dev Mode (NewestDevUI &mdash; shared package)</h3>
+            <table>
+                <tr><th>Script</th><th>Responsibility</th></tr>
+                <tr><td><code>LoseWinPanelManager</code></td><td>Win / Lose UI orchestration. Auto-finds <code>winLevelText</code>, writes <code>"LEVEL N"</code> using the level the player just cleared (1-based), re-wires Continue / Retry buttons on every show. <code>LoadNextLevel</code> calls <code>LevelManager.AdvanceLevel()</code> before reloading the scene (pitfall #2 fix is built in).</td></tr>
+                <tr><td><code>BoosterManager</code></td><td>3-booster state machine, level-gated. First-use tutorial popups fire BEFORE the can-effect-run gate (pitfall #31 fix). Self-heals if hooks are lost. Counts are read from <code>LevelData.shuffleBoosterCount / bombBoosterCount / unlockBoosterCount</code>.</td></tr>
+                <tr><td><code>DeveloperSettingsController</code></td><td>Shift+U / Shift+W / Shift+L / Shift+R hotkeys for unlock-and-refill boosters, trigger win, trigger lose, reload level. Wired to dev-panel buttons. Ad debug controls compile-guarded by <code>RAGENDOM_ADS</code>.</td></tr>
+                <tr><td><code>DeveloperModeButton</code></td><td>Toggles the developer settings panel. Auto-finds child named <code>DeveloperSettingsPanel</code> if not assigned.</td></tr>
+                <tr><td><code>RotateClockwiseZ</code></td><td>Rotates the win-screen radial shine sprites around their local Z. Uses <code>unscaledDeltaTime</code> so the animation stays platform-equal regardless of gameplay <code>Time.timeScale</code>.</td></tr>
+                <tr><td><code>BoosterPopupIconMirror</code></td><td>On enable, mirrors the source <code>Booster-Button-N</code>'s sprite onto the popup's <code>TopIcon</code> so the tutorial icon always matches the booster the player just tapped.</td></tr>
+                <tr><td><code>BoosterFeedback</code></td><td>Lazy-instantiates a centred TMP label overlay (own sub-Canvas at <code>sortingOrder = 50</code>) and animates a scale-in / hold / fade-out. Only the Picker booster uses it (the green PICK! label); Shuffle Beads and Shuffle Baskets rely purely on their in-world animations &mdash; the bead recolour sweep and the boxes physically swirling between cells.</td></tr>
+            </table>
+
+            <h3>Editor Tooling (Balls Out/Editor/)</h3>
+            <table>
+                <tr><th>Script</th><th>Responsibility</th></tr>
+                <tr><td><code>LevelEditorWindow</code></td><td>Two-pane visual editor: level list with Add / Duplicate / Delete(confirm) / ▲ / ▼ / Save All / Reload on the left; on the right a level-settings box (grid width, dock count, booster counts), a colour palette + paint-mode toggles, a drag-paintable grid canvas (Y flipped visually), and the three conveyor channels rendered as live, click-editable colour strips. Save All renumbers and re-writes every level so deletions never leave gaps.</td></tr>
+                <tr><td><code>AutoLevelGeneratorWindow</code></td><td>Append-mode batch generator. Concave difficulty curve reaches max by level ~12 regardless of total count. Cancellable progress bar. <code>GC.Collect()</code> every ~50 levels for memory hygiene. Red Delete-All button with explicit confirm step.</td></tr>
+                <tr><td><code>BallsOutWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> first-open popup. Buttons open the documentation, the GameNew scene, the Level Editor, and the Auto Level Generator.</td></tr>
+                <tr><td><code>NewestDevUIWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> first-import popup for the UI pack. Links to the README and the sample stubs folder.</td></tr>
+                <tr><td><code>InputSystemCheck</code></td><td>Verbatim from the shared HC Engine repo. Blocks Play mode if Active Input Handling is set to <code>New only</code>, offers a one-click Fix &amp; Restart.</td></tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+            <p>Open via <code>Tools &gt; Balls Out &gt; Level Editor</code>. The window has two panes:</p>
+
+            <h3>Left pane &mdash; Level list</h3>
+            <ul>
+                <li>Click any <code>Level N</code> entry to load it into the right pane.</li>
+                <li>▲ / ▼ reorders the selected level (and renumbers everything on save).</li>
+                <li><strong>Add</strong> creates a blank level at the bottom.</li>
+                <li><strong>Duplicate</strong> deep-copies the selected level via JsonUtility round-trip.</li>
+                <li><strong>Delete</strong> shows an explicit confirmation step; deletion renumbers on the next Save All.</li>
+                <li><strong>Save All</strong> (green) re-writes every <code>Level_&lt;N&gt;.json</code> from scratch with the current in-memory list. Orphan files beyond the current count are deleted with their <code>.meta</code> pair so the renumbering is consistent.</li>
+                <li><strong>Reload</strong> drops any unsaved edits and re-reads from disk.</li>
+            </ul>
+
+            <h3>Right pane &mdash; Level details</h3>
+            <ul>
+                <li><strong>Level Settings</strong> &mdash; Grid Width, Docks (3&ndash;5 dock slots), and the three Booster Counts (Shuffle Beads / Shuffle Baskets / Picker). All read from <code>LevelData</code> at load.</li>
+                <li><strong>Colour palette</strong> &mdash; a row of clickable colour swatches; the selected colour is the one painted onto the grid and conveyor strips.</li>
+                <li><strong>Paint mode</strong> &mdash; Place (drops / recolours a box at the cell), Erase (removes a box), Hidden (toggles a box's hidden flag). The active mode button is highlighted.</li>
+                <li><strong>Grid canvas</strong> &mdash; click or <em>drag</em> to paint. The Y axis is FLIPPED VISUALLY so y=0 sits at the bottom, exactly the way the player sees the board. Row / column indices are labelled; empty cells show a faint dot, hidden boxes a dark <code>?</code>.</li>
+                <li><strong>Conveyor channels</strong> &mdash; main / left / right, each drawn as a live colour strip. Left-click a swatch to recolour it, right-click to remove it; the <code>+1 / +10 / &minus;1 / Clear</code> buttons bulk-edit the queue.</li>
+            </ul>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Auto Level Generator</h2>
+            <p>Open via <code>Tools &gt; Balls Out &gt; Auto Level Generator</code>. Append-mode &mdash; existing levels on disk are never overwritten; new levels begin at <code>Level_&lt;existing + 1&gt;.json</code>.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr><th>Setting</th><th>Default</th><th>Purpose</th></tr>
+                <tr><td>Count</td><td>500</td><td>How many levels to append in this batch.</td></tr>
+                <tr><td>Seed</td><td>12345</td><td>Deterministic seeding. Re-run with the same seed + same existing-count and you get byte-identical levels.</td></tr>
+                <tr><td>Min / Max Grid Width</td><td>3 &mdash; 4</td><td>Board width scales with difficulty across the batch.</td></tr>
+                <tr><td>Min / Max Grid Height</td><td>1 &mdash; 5</td><td>Grid height scales with difficulty across the batch.</td></tr>
+                <tr><td>Min / Max Colours</td><td>1 &mdash; 6</td><td>Palette size scales with difficulty.</td></tr>
+                <tr><td>Bead Row Count</td><td>24</td><td>Matches the scene's conveyor row count. Channel lists are padded to at least this length.</td></tr>
+                <tr><td>Channel Length</td><td>80</td><td>Entries per left / right / main conveyor list. Each entry feeds 5 beads; 100 beads complete a box, so 20 entries per box per channel is the rough requirement, padded for safety.</td></tr>
+                <tr><td>Hidden Chance Min / Max</td><td>0 &mdash; 0.45</td><td>Probability a non-bottom box is hidden, scaled with difficulty.</td></tr>
+                <tr><td>Default Shuffle Beads / Shuffle Baskets / Picker</td><td>2 / 2 / 2</td><td>Per-level booster budget floor. The generated value is the higher of this and the difficulty ramp.</td></tr>
+                <tr><td>Dock Count Min / Max</td><td>3 &mdash; 5</td><td>Number of dock slots. Level 1 is always the minimum; later levels skew toward the max, and level 6+ never uses the minimum.</td></tr>
+            </table>
+
+            <h3>Difficulty Curve</h3>
+            <p>Concave ramp reaching max difficulty by level ~12 regardless of total batch size. Early levels are tiny single-colour grids the player can clear in a few seconds, so the early game never feels punishing. Difficulty has &plusmn;7% jitter so the curve doesn't feel sterile.</p>
+
+            <h3>Danger zone</h3>
+            <p>The red <strong>Delete ALL existing levels</strong> button requires a two-step confirm. It removes every <code>Level_&lt;N&gt;.json</code> on disk along with its <code>.meta</code> pair, then refreshes the AssetDatabase.</p>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+            <p>Three boosters, level-gated, each with a one-time tutorial popup keyed by PlayerPrefs. The shared <code>BoosterManager</code> handles counts, unlocks, SFX, and popups; the actual effects are game-specific methods on <code>GameLevel</code>.</p>
+
+            <table>
+                <tr><th>Index</th><th>Name</th><th>Default unlock level (0-based)</th><th>Effect</th></tr>
+                <tr><td>1</td><td>Shuffle Beads</td><td>0</td><td>Instant. Randomises the colour of every bead currently on the three conveyor rings. Each bead briefly scale-pulses so the player sees the recolouring sweep across the conveyor. Implemented in <code>GameLevel.ShuffleConveyorBeads()</code>.</td></tr>
+                <tr><td>2</td><td>Shuffle Baskets</td><td>1</td><td>Instant. Fisher-Yates permutes every box that is not yet docked across each other's grid cells &mdash; each box visibly slides along a curved, arced, staggered path to its new cell (no snap-swap). Tappability follows the cell; a hidden box that lands in a clickable cell is revealed on the spot. Implemented in <code>GameLevel.ShuffleBoxes()</code>.</td></tr>
+                <tr><td>3</td><td>Picker</td><td>2</td><td>Two-step targeted booster: the first click arms targeting (the Picker button's Bg pulses green) and every locked grid box starts flashing; tapping one makes it skip the neighbour-release queue and fly straight to a dock (revealing it if hidden). A second Picker-button click before tapping a box cancels targeting. Implemented in <code>GameLevel.PickerFillBox()</code>.</td></tr>
+            </table>
+
+            <h3>On-screen feedback</h3>
+            <p>The Picker booster shows a centred green <code>"PICK!"</code> TMP label via <code>BoosterFeedback.cs</code> &mdash; lazily spawned under the active Canvas with <code>overrideSorting = true</code>, <code>sortingOrder = 50</code> so it renders above the gameplay HUD and popups; it scales in, holds, and fades out over ~0.7 s. Shuffle Beads and Shuffle Baskets show no label &mdash; their in-world animations (the conveyor recolour sweep and the boxes physically swirling between cells) carry all the feedback the player needs.</p>
+
+            <h3>Tutorial popups</h3>
+            <p>Each booster's first click pops the Booster-Popup-N overlay with the booster's icon. The popup auto-dismisses when the player taps Continue. The popup fires <em>before</em> the can-effect-run gate, so a booster always shows its tutorial on the first tap even if its effect would be a no-op. Reset all popups with the developer-mode <strong>Reset Popup Prefs</strong> button.</p>
+
+            <h3>PlayerPrefs keys (per-game prefixed &mdash; pitfall #16)</h3>
+            <table>
+                <tr><th>Key</th><th>Purpose</th></tr>
+                <tr><td><code>Balls Out_CurrentLevel</code></td><td>The 0-based level index the player is on. Stamped by <code>LevelManager.AdvanceLevel()</code>.</td></tr>
+                <tr><td><code>BoosterPopupShown_Shuffle</code></td><td>Tutorial popup gate for Shuffle Beads. 0 = not shown yet.</td></tr>
+                <tr><td><code>BoosterPopupShown_ShuffleBaskets</code></td><td>Tutorial popup gate for Shuffle Baskets.</td></tr>
+                <tr><td><code>BoosterPopupShown_Picker</code></td><td>Tutorial popup gate for Picker.</td></tr>
+            </table>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization</h2>
+
+            <h3>Add a new colour</h3>
+            <ol>
+                <li>Extend the <code>TypeColor</code> enum in <code>Assets/Balls Out/Scripts/LevelData.cs</code> with a new entry at the END (appending preserves serialised enum int values in existing level JSONs).</li>
+                <li>Open the <code>ColorData</code> ScriptableObject under <code>Assets/Balls Out/Datas/ColorData.asset</code> and add a new <code>ColorDataItem</code> entry mapping the new <code>TypeColor</code> to a <code>Material</code> and a UI <code>Color</code>.</li>
+                <li>Re-import the project; existing levels keep working, new levels can now use the added colour.</li>
+            </ol>
+
+            <h3>Tune the conveyor pacing</h3>
+            <p>On the <code>GameLevel</code> component in the scene: <code>durationConveyor</code> controls how often the main conveyor row advances (scene-default <strong>0.1111 s</strong> &mdash; the script-default <code>0.5 s</code> divided by the 1.8&times; speed-up the production tune dialled in); <code>durationFillBeadToBox</code> controls the bead-to-box flight time; <code>durationMoveToDestroy</code> controls the box-completion animation; <code>durationFillBoxToDock</code> controls the box-to-dock launch arc.</p>
+
+            <h3>Replace booster effects</h3>
+            <p>The boosters' effects are game-specific methods on <code>GameLevel</code>: <code>ShuffleConveyorBeads()</code> (Shuffle Beads), <code>ShuffleBoxes()</code> (Shuffle Baskets), and <code>PickerFillBox(Box)</code> (Picker). <code>BoosterManager</code> owns the count / SFX / popup bookkeeping and the Picker's targeting flag; it locates the scene's <code>GameLevel</code> and forwards to those methods. To change a booster's behaviour, edit the corresponding <code>GameLevel</code> method directly. To add a new booster, follow the <code>OnBoosterNClicked</code> / <code>PopupKeyN</code> pattern in <code>BoosterManager.cs</code> and add a 4th <code>Booster-Button-N</code> child + <code>Booster-Popup-N</code> in the HUD prefab.</p>
+
+            <h3>Adjust the per-level booster ramp</h3>
+            <p>Each generated level's booster budget is <code>max(default, ramp)</code> &mdash; the difficulty ramp adds +1 from level 10 and +2 from level 50, and the Default Shuffle Beads / Shuffle Baskets / Picker fields (2 / 2 / 2 out of the box) set the floor. With the default 2s, every level gets at least 2 of each. The logic lives in <code>AutoLevelGeneratorWindow.BuildLevel</code>. To override a single level, use the Level Editor &rarr; right-pane <strong>Booster Counts</strong> fields and click Save All.</p>
+
+            <h3>Audio palette</h3>
+            <p>SoundManager's clip arrays are picked round-robin / random. Drop additional <code>Pop&lt;N&gt;.wav</code> / <code>Success&lt;N&gt;.wav</code> / <code>Switch&lt;N&gt;.wav</code> / <code>Fail&lt;N&gt;.wav</code> files into <code>Assets/Balls Out/Audio/</code> and assign them to the matching array on the <code>SoundManager</code> component in the scene.</p>
+
+            <h3>Re-skin the HUD</h3>
+            <p>Every HUD widget is a prefab in <code>Balls Out/Prefabs/</code>. Edit the prefab assets directly &mdash; the changes propagate to the prefab instances already placed in the GameNew scene.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr><th>Symptom</th><th>Likely Cause &amp; Fix</th></tr>
+                <tr><td>Level 1 plays correctly, but Level 2 silently doesn't load on Continue.</td><td>The cached LevelData ScriptableObject got destroyed by the scene reload &mdash; check that LevelData is created with <code>HideFlags.HideAndDontSave</code> (pitfall #1). LevelManager's <code>GetCurrentLevel</code> self-heals when the cached instance is null.</td></tr>
+                <tr><td>Pressing Play crashes with an Input System error.</td><td>Active Input Handling is set to "New only". Open <code>Edit &gt; Project Settings &gt; Player &gt; Active Input Handling</code> and set it to <strong>Both</strong>, then restart Unity. InputSystemCheck warns and offers a one-click fix on project load.</td></tr>
+                <tr><td>Booster button shows the right count but tapping does nothing.</td><td>Either the scene is missing the <code>BoosterManager</code> prefab, or it is present but its <code>Init(LevelData)</code> wasn't called &mdash; check <code>BallsOutGameManager</code> runs at <code>DefaultExecutionOrder(-100)</code> and calls <code>BoosterManager.Instance.Init</code> in <strong>Start</strong>, not Awake (BoosterManager's Awake hasn't run yet at order -100).</td></tr>
+                <tr><td>Picker button click does nothing visible.</td><td>Picker is a two-step booster &mdash; the first click <strong>arms</strong> targeting (the button's Bg pulses green and the locked grid boxes flash). The booster is only consumed when you tap a locked box afterwards. A second Picker-button click before tapping a box cancels targeting without consuming.</td></tr>
+                <tr><td>Boxes complete but the win panel never appears.</td><td>Confirm there is exactly one <code>BallsOutGameManager</code> in the scene and that <code>countBox</code> on <code>GameLevel</code> matches <code>levelData.beadGrids.Count</code>. Win is routed via <code>BallsOutGameManager.TriggerWin</code> &mdash; calling <code>LoseWinPanelManager.ShowWin</code> directly bypasses <code>PlayLevelClear</code>.</td></tr>
+                <tr><td>Levels have no boosters, or the wrong dock count.</td><td>Level JSONs generated before these fields existed won't carry them. Re-generate via <code>Tools &gt; Balls Out &gt; Auto Level Generator</code>, or set the values per-level in the Level Editor (Booster Counts + Docks) and click Save All.</td></tr>
+            </table>
+
+            <h3>Resetting Progress</h3>
+            <p>The dev panel's <strong>Reset Popup Prefs</strong> button clears the tutorial popup gates. To reset the level index, call <code>HypercasualGameEngine.LevelManager.ResetProgress()</code> from a debug button or <code>PlayerPrefs.DeleteAll()</code> from the Unity console while in Play mode.</p>
+        </section>
+
+        <div class="footer">
+            <p>Balls Out &mdash; Unity Template &mdash; Built on the HyperCasual Game Engine</p>
+            <p>&copy; 2026 Ragendom</p>
+        </div>
+    </div>
+</body>
+</html>
