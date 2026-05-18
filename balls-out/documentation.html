@@ -372,11 +372,10 @@
 &#9474;   &#9500;&#9472;&#9472; <span class="file">Documentation.html</span> <span class="comment">&mdash; This file</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUI-README.md</span> <span class="comment">&mdash; Archived notes on the shared UI scripts</span>
 &#9474;
-&#9500;&#9472;&#9472; <span class="folder">Editor/</span> <span class="comment">&mdash; Editor-only scripts (namespaces: BallsOut.EditorTools, HypercasualGameEngine, NewestDevUI.EditorTools)</span>
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span> <span class="comment">&mdash; Editor-only scripts (namespaces: BallsOut.EditorTools, HypercasualGameEngine)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (colour palette, drag-paint grid, conveyor strips)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Append-mode batch generator with concave difficulty curve</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">BallsOutWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on first project open</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">NewestDevUIWelcomePopup.cs</span> <span class="comment">&mdash; First-import popup for the UI pack</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns and fixes Active Input Handling if New-only</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span>
@@ -463,8 +462,7 @@
                 <tr><th>Script</th><th>Responsibility</th></tr>
                 <tr><td><code>LevelEditorWindow</code></td><td>Two-pane visual editor: level list with Add / Duplicate / Delete(confirm) / ▲ / ▼ / Save All / Reload on the left; on the right a level-settings box (grid width, dock count, booster counts), a colour palette + paint-mode toggles, a drag-paintable grid canvas (Y flipped visually), and the three conveyor channels rendered as live, click-editable colour strips. Save All renumbers and re-writes every level so deletions never leave gaps.</td></tr>
                 <tr><td><code>AutoLevelGeneratorWindow</code></td><td>Append-mode batch generator. Concave difficulty curve reaches max by level ~12 regardless of total count. Cancellable progress bar. <code>GC.Collect()</code> every ~50 levels for memory hygiene. Red Delete-All button with explicit confirm step.</td></tr>
-                <tr><td><code>BallsOutWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> first-open popup. Buttons open the documentation, the GameNew scene, the Level Editor, and the Auto Level Generator.</td></tr>
-                <tr><td><code>NewestDevUIWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> first-import popup for the UI pack. Links to the README and the sample stubs folder.</td></tr>
+                <tr><td><code>BallsOutWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> first-open popup. Buttons open the documentation, the GameNew scene, the Level Editor, and the Auto Level Generator; includes an Asset Store review link.</td></tr>
                 <tr><td><code>InputSystemCheck</code></td><td>Verbatim from the shared HC Engine repo. Blocks Play mode if Active Input Handling is set to <code>New only</code>, offers a one-click Fix &amp; Restart.</td></tr>
             </table>
         </section>
