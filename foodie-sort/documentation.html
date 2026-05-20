@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodieSort - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #d35400;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #d35400;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .feature-card h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>FoodieSort</h1>
+        <p class="subtitle">A Drag-to-Match Food-Tray Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 0.1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a drag-to-match food-tray puzzle. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>FoodieSort is a drag-to-match food-tray puzzle where players slide foods from one tray's ready row to another to assemble matching trios. Each food line carries a small queue of upcoming turns; clearing a line's three ready slots animates the foods together, removes them, and promotes the next waiting turn. Win by clearing every line; lose if every ready slot fills up with no room left to drop. The game ships with three boosters, per-level progression via <code>PlayerPrefs</code>, a visual level editor, an automatic level generator, an in-game developer mode panel, and a one-click setup wizard.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Drag-to-Match Puzzles</h4>
+                    <p>Touch or click a food in any line's ready row and drag it to another line. When all three ready slots on a line share the same food type, the line auto-completes with a star burst.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>A full Unity Editor window with a visual grid painter, per-line turn editor, paint-mode toggles (None / Place / Erase), and per-level booster counts + time-limit fields.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate hundreds of fresh levels with a concave difficulty curve. Append-only &mdash; never overwrites hand-tuned levels. Every generated turn carries exactly one gap slot so the player can always make a move.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Three Boosters</h4>
+                    <p>Shuffle (randomizes the next queued turn on a random line), Plate Clear (removes a stuck line's ready row), and Extra Slot (forces a free refill turn on a random line). Each booster has a one-time tutorial popup.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>One-Click Setup Wizard</h4>
+                    <p>Run <code>Tools &gt; FoodieSort &gt; Setup Wizard</code> once and the project builds the canonical HUD from the shipped prefabs, wires every audio clip in <code>Audio/</code>, and applies every required Player + Quality Setting in one pass.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>JSON Levels</h4>
+                    <p>Levels ship as plain JSON under <code>Resources/Levels/</code>. Regenerate or extend at any time with the Auto Level Generator; hand-tune the first five with the Level Editor for the best first-run experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP) 17.0.4</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package &mdash; Active Input Handling set to <strong>Both</strong> (the bundled <code>InputSystemCheck</code> warns and offers a one-click fix if it isn't)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the FoodieSort package into your Unity project</li>
+                <li>Ensure the project is set to use the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>)</li>
+                <li>Open the game scene at <code>Assets/FoodieSort/Scenes/GameNew.unity</code></li>
+                <li>Run <code>Tools &gt; FoodieSort &gt; Setup Wizard</code> once &mdash; click <strong>&#9654; Run All Steps</strong>. It builds the HUD from the canonical prefabs in <code>Prefabs/</code>, wires every <code>AudioClip</code> in <code>Audio/</code>, and applies every Player + Quality Setting</li>
+                <li>Press Play to test the first level</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, drag any food from a line's ready row onto another line's ready row. When all three slots on a line share the same food, the line bursts and clears. Clear every line to win &mdash; the next level loads automatically after a short delay. Press the <strong>Right Arrow</strong> key during gameplay to skip ahead and inspect later levels; press the gear-icon Developer Mode button (top-left) to open the dev panel.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <div class="folder-structure">
+<span class="folder">FoodieSort/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span> <span class="comment">&mdash; Materials, textures (subsumed shared package textures land here)</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Textures/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; 60+ WAV SFX auto-wired by the Setup Wizard</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; ScriptableObject configuration (FoodData + per-food sprite sets)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">FoodieSortSetupWizard.cs</span> <span class="comment">&mdash; Idempotent scene + settings bring-up</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">FoodieSortWelcomePopup.cs</span> <span class="comment">&mdash; First-open welcome + review CTA</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns / blocks Play mode if Input Handling is "New only"</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span> <span class="comment">&mdash; HC URP volume profile (per-game GUID)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Gameplay prefabs + canonical UI prefabs</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Food.prefab, TrayTemp.prefab, Trigger.prefab, Partical.prefab</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameHUD_Panel.prefab</span> <span class="comment">&mdash; Bottom holder + 3 booster buttons + level text</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelClearedPanel.prefab</span> <span class="comment">&mdash; Win screen (trophy + Continue)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameOverPanel.prefab</span> <span class="comment">&mdash; Lose screen (skull + Retry)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Popup_Powerup_Picker.prefab</span> <span class="comment">&mdash; First-use booster tutorial popup</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">DeveloperModeButton.prefab</span> <span class="comment">&mdash; Dev panel toggle button + DeveloperSettingsPanel child</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; JSON levels (Level_1.json, Level_2.json, &hellip;)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; All runtime scripts</span>
+    &#9500;&#9472;&#9472; <span class="file">FoodieSortGameManager.cs</span> <span class="comment">&mdash; Scene orchestrator + arrow-key level nav</span>
+    &#9500;&#9472;&#9472; <span class="file">GameLevel.cs</span> <span class="comment">&mdash; Bootstrap that pulls the current level from LevelManager</span>
+    &#9500;&#9472;&#9472; <span class="file">GridManager.cs</span> <span class="comment">&mdash; Line layout, drag handling, match detection, win/lose</span>
+    &#9500;&#9472;&#9472; <span class="file">InputManager.cs</span> <span class="comment">&mdash; Touch / mouse drag handling for foods</span>
+    &#9500;&#9472;&#9472; <span class="file">Food.cs, FoodData.cs</span> <span class="comment">&mdash; Per-food component + sprite-set ScriptableObject</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Runtime level descriptor (POCO; serialized to JSON)</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + level progression</span>
+    &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Singleton audio (HypercasualGameEngine namespace)</span>
+    &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; Shuffle, Plate Clear, Extra Slot (HypercasualGameEngine namespace)</span>
+    &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Win/Lose orchestrator + Next Level wiring</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs</span> <span class="comment">&mdash; Toggle the DeveloperSettingsPanel</span>
+    &#9492;&#9472;&#9472; <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel actions + Shift+combo hotkeys</span>
+            </div>
+            <p style="margin-top: 14px;"><strong>Single-folder publishing:</strong> the entire game ships from <code>Assets/FoodieSort/</code>. There is no sibling <code>Boosters-UI-DevSettings/</code> or <code>Hypercasual Game Engine/</code> folder &mdash; both legacy folders have been subsumed into <code>FoodieSort/</code> with all prefab and script GUIDs preserved.</p>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level lays out a set of <strong>food lines</strong> on a small grid. Every line owns three <em>ready</em> slots and a queue of <em>turns</em> waiting in the wings. Each turn delivers up to three foods into the ready row when the previous turn clears. The player drags foods between lines to assemble matching trios. When a line's three ready slots all share the same <code>TypeFood</code>, the line plays a satisfaction animation, fires <code>PlayFoodMatch</code>, and the next turn promotes into ready.</p>
+
+            <ul>
+                <li><strong>Drag to match</strong> &mdash; Touch or click a food in any line's ready row and drag it onto another line; the food snaps into the first empty ready slot of the destination line</li>
+                <li><strong>Per-turn gap invariant</strong> &mdash; Every turn ships with exactly one <code>None</code> / gap slot at a random position, so the ready row is never pre-filled at level start (pitfall #29)</li>
+                <li><strong>Match completion</strong> &mdash; Three ready slots sharing the same <code>TypeFood</code> auto-completes the line, animates the foods together, and promotes the next waiting turn</li>
+                <li><strong>Win</strong> &mdash; All food lines emptied of ready foods. <code>FoodieSortGameManager.TriggerWin()</code> fires <code>SoundManager.Instance.PlayLevelClear()</code> and shows the <code>LevelClearedPanel</code> (trophy + Continue)</li>
+                <li><strong>Lose</strong> &mdash; Every ready slot across every line filled with no matching trios available. Drag onto a filled slot &rarr; the drop is rejected and <code>PlayBlocked</code> fires</li>
+                <li><strong>Progression</strong> &mdash; On win, <code>LevelManager.AdvanceLevel()</code> runs before the scene reloads; on lose, the same level reloads. Progress persists under <code>PlayerPrefs</code> key <code>FoodieSort_CurrentLevel</code></li>
+            </ul>
+
+            <h3>Food Palette</h3>
+            <p>23 food types are defined in <code>TypeFood</code> (in <code>LevelData.cs</code>) with a matching color per food in <code>FoodColors</code>. A small representative sample:</p>
+            <table>
+                <tr><th>Type</th><th>Color</th><th>Approx. RGB</th></tr>
+                <tr><td><code>Meet</code></td><td><span class="color-swatch" style="background:#C8503C;"></span> Reddish brown</td><td>(200, 80, 60)</td></tr>
+                <tr><td><code>Fish</code></td><td><span class="color-swatch" style="background:#64B4DC;"></span> Sea blue</td><td>(100, 180, 220)</td></tr>
+                <tr><td><code>Cake</code></td><td><span class="color-swatch" style="background:#FFB4C8;"></span> Pink</td><td>(255, 180, 200)</td></tr>
+                <tr><td><code>Avocado</code></td><td><span class="color-swatch" style="background:#50A050;"></span> Green</td><td>(80, 160, 80)</td></tr>
+                <tr><td><code>Cheese</code></td><td><span class="color-swatch" style="background:#FFD250;"></span> Yellow</td><td>(255, 210, 80)</td></tr>
+                <tr><td><code>Grapes</code></td><td><span class="color-swatch" style="background:#823CA0;"></span> Purple</td><td>(130, 60, 160)</td></tr>
+            </table>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; Every food line emptied of ready foods. <code>FoodieSortGameManager</code> is the single choke point that plays <code>PlayLevelClear</code> and shows <code>LevelClearedPanel</code> &mdash; never call <code>LoseWinPanelManager.ShowWin()</code> directly from gameplay (pitfall #10).</li>
+                <li><strong>Lose</strong> &mdash; All ready slots filled across all lines; no matches possible. Triggers <code>FoodieSortGameManager.TriggerLose()</code> which plays <code>PlayLevelFail</code> and shows <code>GameOverPanel</code> (skull + Retry).</li>
+            </ul>
+
+            <h3>Animations &amp; Feedback</h3>
+            <p>Foods scale up briefly when picked up (drives <code>PlayFoodTap</code>), fly along an arc when placed (<code>PlayFoodPlace</code>), and burst together with a particle effect when a line completes (<code>PlayFoodMatch</code>). The <code>Partical.prefab</code> (intentional spelling kept for backwards-compat with existing references) handles the particle burst.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Runtime scripts use the <code>FoodieSort.Scripts</code> namespace. Editor scripts use <code>FoodieSort.Editor</code>. Shared engine helpers (<code>SoundManager</code>, <code>BoosterManager</code>, <code>LoseWinPanelManager</code>, <code>DeveloperSettingsController</code>, <code>DeveloperModeButton</code>) live under <code>HypercasualGameEngine</code>.</p>
+
+            <h3>Core Scripts</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr>
+                    <td><code>FoodieSortGameManager</code></td>
+                    <td>Scene orchestrator. <code>[DefaultExecutionOrder(-100)]</code> so <code>Awake</code> runs before every other MonoBehaviour. Auto-creates missing infrastructure (EventSystem, SoundManager, BoosterManager) using <code>FindFirstObjectByType&lt;T&gt;()</code> &mdash; never <code>T.Instance == null</code> guards (pitfall #15). Routes <code>TriggerWin</code> / <code>TriggerLose</code> through <code>SoundManager</code> + <code>LoseWinPanelManager</code>. Hosts the <code>&larr;/&rarr;</code> arrow-key level nav (pitfall #12 &mdash; lives here, not on <code>DeveloperSettingsController</code>).</td>
+                </tr>
+                <tr>
+                    <td><code>GameLevel</code></td>
+                    <td>Bootstrap MonoBehaviour. Pulls <code>LevelManager.GetCurrentLevel()</code> in <code>Awake</code> and hands it to <code>GridManager.Initialize</code>. Fails loudly with a <code>Debug.LogError</code> when the manager returns null &mdash; never silently falls back to an Inspector-assigned asset (pitfall #13).</td>
+                </tr>
+                <tr>
+                    <td><code>GridManager</code></td>
+                    <td>Owns the live food-line layout, drag-and-drop placement, match detection, and win/lose detection. Routes win/lose through <code>FoodieSortGameManager.TriggerWin/Lose</code> &mdash; never directly through <code>LoseWinPanelManager</code> (pitfall #10).</td>
+                </tr>
+                <tr>
+                    <td><code>InputManager</code></td>
+                    <td>Tap/drag handling. Raycasts to pick a food, tracks the drag, snaps to the destination line on release. Fires <code>PlayFoodTap</code> on pick-up.</td>
+                </tr>
+                <tr>
+                    <td><code>Food</code> / <code>FoodData</code></td>
+                    <td>Per-food MonoBehaviour and the sprite-set ScriptableObject lookup.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelData</code></td>
+                    <td><code>[Serializable]</code> POCO &mdash; <strong>not</strong> a ScriptableObject &mdash; serialized to JSON. Contains <code>gridWidth</code>, <code>gridHeight</code>, <code>timeLimit</code>, a list of <code>FoodLineData</code> (each with a grid position + list of three-slot turns), and the three booster <code>*Count</code> + <code>*UnlockLevel</code> fields. Because it's a POCO, <code>Resources.UnloadUnusedAssets</code> doesn't sweep it &mdash; no <code>HideFlags</code> needed (the pitfall #1 trap only applies to runtime ScriptableObjects).</td>
+                </tr>
+                <tr>
+                    <td><code>LevelManager</code></td>
+                    <td>Static JSON loader. Editor reads from the hard-coded path <code>Assets/FoodieSort/Resources/Levels/</code>; built players use a strict sequential <code>Resources.Load&lt;TextAsset&gt;("Levels/Level_" + i)</code> loop. PlayerPrefs key: <code>FoodieSort_CurrentLevel</code> (game-prefixed per pitfall #16). Exposes <code>GetCurrentLevel</code>, <code>AdvanceLevel</code>, <code>GoToLevel</code>, <code>GoToPreviousLevel</code>, <code>ForceReload</code>, plus editor-only <code>SaveLevel</code> / <code>LoadAllLevelsFromDisk</code> / <code>GetExistingLevelCount</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperModeButton</code></td>
+                    <td>Toggles the <code>DeveloperSettingsPanel</code> child visible/invisible. Auto-finds the panel child if no Inspector reference is assigned. Field name is <code>developerSettingsPanel</code> (pitfall #28: the SetupWizard wires this via <code>SerializedObject.FindProperty("developerSettingsPanel")</code>).</td>
+                </tr>
+            </table>
+
+            <h3>Engine Scripts (HypercasualGameEngine namespace)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr>
+                    <td><code>SoundManager</code></td>
+                    <td>Singleton with one <code>AudioSource</code>. Master-volume slider plus one <code>PlayX()</code> per gameplay event: <code>PlayLevelClear</code> (alias <code>PlayLevelWin</code>), <code>PlayLevelFail</code>, <code>PlayBlocked</code>, <code>PlayFoodTap/Place/Match</code>, <code>PlayShuffle/PlateClear/ExtraSlot</code>, <code>PlayBoosterUse</code>, <code>PlayButtonClick</code>. Four random-pick variant pools (<code>successClips</code>, <code>failClips</code>, <code>popClips</code>, <code>switchClips</code>) seed the moment-to-moment SFX so the same clip never plays twice in a row.</td>
+                </tr>
+                <tr>
+                    <td><code>BoosterManager</code></td>
+                    <td>Single source of truth for the three booster counts (pitfall #23). Finds <code>Booster-Button-1/2/3</code> + <code>Booster-Popup-1/2/3</code> via an inactive-aware scan (<code>Resources.FindObjectsOfTypeAll&lt;Transform&gt;</code> filtered by <code>scene.IsValid()</code> + <code>hideFlags == None</code>) so initially-inactive popups are still discoverable (pitfall #19). <code>TryShowBoosterPopup</code> fires <strong>before</strong> any can-run gate so the tutorial popup always reaches the player on first click (pitfall #31), and wires <code>MainPanel/ButtonContinue.onClick</code> to dismiss the popup since the shared prefab ships with an empty listener list. <code>U</code> hotkey reads both legacy <code>Input</code> and the new <code>Keyboard.current</code> (pitfall #26) and is self-healing (re-runs <code>HookUpExistingBoosters</code> / <code>FindBoosterPopups</code> if refs are stale).</td>
+                </tr>
+                <tr>
+                    <td><code>LoseWinPanelManager</code></td>
+                    <td>Lives on its own GameObject (separate from either panel) so deactivating a panel doesn't hide the manager. <code>winPanel</code> &rarr; <code>LevelClearedPanel</code> scene instance, <code>losePanel</code> &rarr; <code>GameOverPanel</code> &mdash; two SEPARATE prefabs, not nested children of a monolithic container. <code>ShowWin</code> / <code>ShowLose</code> re-attach button listeners on every show (pitfall #30 listener variant); both click handlers are <code>public</code> so Inspector-wired persistent OnClicks can also reach them, and each emits a <code>Debug.Log</code>. <code>LoadNextLevel()</code> calls <code>LevelManager.AdvanceLevel()</code> before <code>SceneManager.LoadScene</code> (pitfall #2 fix).</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperSettingsController</code></td>
+                    <td>Dev-panel actions: next/previous/reload level, trigger win/lose, unlock + refill boosters, reset popup-shown PlayerPrefs, ad-panel toggles. <code>Shift+U/W/L/R</code> hotkeys handled in <code>Update()</code> (Shift combos only &mdash; bare arrow keys live on <code>FoodieSortGameManager</code> per pitfall #12). Cross-namespace calls (e.g. <code>LevelManager.AdvanceLevel</code>) are reached via the <code>using FoodieSort.Scripts;</code> at the top of the file (pitfall #13).</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperModeButton</code></td>
+                    <td>Same script as listed under Core &mdash; lives in <code>HypercasualGameEngine</code> namespace post-subsume.</td>
+                </tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr>
+                    <td><code>FoodieSortSetupWizard</code></td>
+                    <td><code>Tools &gt; FoodieSort &gt; Setup Wizard</code>. Idempotent end-to-end project bring-up. Step 3 instantiates the canonical UI prefabs from <code>Assets/FoodieSort/Prefabs/</code> via <code>PrefabUtility.InstantiatePrefab</code> &mdash; never <code>new GameObject(...)</code> an equivalent tree (pitfalls #25/#30). Detects procedural leftovers via <code>PrefabUtility.IsPartOfPrefabInstance</code> and rebuilds them from the prefab. If any canonical prefab or the <code>Audio/</code> folder is missing, logs <code>ERR</code> and refuses to mark the step <code>OK</code> &mdash; never silently falls back. Win/Lose Canvas sort orders are Inspector-authored; the wizard touches popup (sort 20) and dev-panel (sort 30) sort orders only.</td>
+                </tr>
+                <tr>
+                    <td><code>FoodieSortWelcomePopup</code></td>
+                    <td><code>[InitializeOnLoad]</code>. Welcome popup shown once per Unity session on project open with two CTAs: &ldquo;Run Setup Wizard&rdquo; and &ldquo;Open Documentation&rdquo;. Permanently dismissable via <code>EditorPrefs</code>. Reopenable at <code>Tools &gt; FoodieSort &gt; Welcome</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelEditorWindow</code></td>
+                    <td><code>Tools &gt; FoodieSort &gt; Level Editor</code>. Two-pane visual editor &mdash; see Level Editor section below.</td>
+                </tr>
+                <tr>
+                    <td><code>AutoLevelGeneratorWindow</code></td>
+                    <td><code>Tools &gt; FoodieSort &gt; Auto Level Generator</code>. Batch generator &mdash; see Auto Level Generator section below.</td>
+                </tr>
+                <tr>
+                    <td><code>InputSystemCheck</code></td>
+                    <td><code>[InitializeOnLoad]</code> guard. Warns &mdash; and blocks Play mode &mdash; when <code>Active Input Handling</code> is set to "New only". Offers a one-click "Fix &amp; Restart" that flips the setting to "Both" and reopens the project. Verbatim copy of the canonical <code>InputSystemCheck.cs</code> from the HypercasualGameEngine &mdash; do not rewrite.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+
+            <h3>Opening the Level Editor</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; FoodieSort &gt; Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder (&#9650;/&#9660;), and delete (with confirm) levels in the left panel</li>
+                <li><strong>Save All / Reload</strong> &mdash; Green Save All button writes every level back to disk as JSON; Reload re-reads from disk with a confirm prompt</li>
+                <li><strong>Grid Painter</strong> &mdash; Click cells on the Y-flipped grid canvas to place food lines or erase</li>
+                <li><strong>Paint Modes</strong> &mdash; Select a mode from the toolbar: None, Place, Erase</li>
+                <li><strong>Per-Line Detail Editor</strong> &mdash; Edit every turn's three slot foods (or set a slot to <code>None</code> for the gap)</li>
+                <li><strong>Per-Level Settings</strong> &mdash; Grid dimensions, time limit, three booster counts, three booster unlock levels</li>
+            </ul>
+
+            <h3>Paint Modes</h3>
+            <table>
+                <tr><th>Mode</th><th>Left Click</th></tr>
+                <tr><td><strong>None</strong></td><td>No painting &mdash; click cells to inspect</td></tr>
+                <tr><td><strong>Place</strong></td><td>Place a new food line at the clicked cell. Click an occupied cell to select that line for editing in the right panel.</td></tr>
+                <tr><td><strong>Erase</strong></td><td>Remove the food line at the clicked cell.</td></tr>
+            </table>
+
+            <h3>Level Storage</h3>
+            <p>All levels are stored as individual JSON files in <code>Assets/FoodieSort/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, &hellip; The runtime loader reads from this hard-coded path in the Editor and via strict sequential <code>Resources.Load&lt;TextAsset&gt;("Levels/Level_" + i)</code> in built players (pitfalls #9 / #11 &mdash; never let multiple <code>Resources/Levels</code> folders silently merge).</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Automatic Level Generator</h2>
+
+            <p>The Automatic Level Generator is an Editor tool that batch-generates playable food-line levels. It controls grid size, food-line count, turn count, food-type variety, time budget, and per-level booster counts. Generated levels respect the per-turn gap invariant (pitfall #29) so the player can always make a move at level start.</p>
+
+            <h3>Opening the Tool</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; FoodieSort &gt; Auto Level Generator</code>. This opens a settings window where you can configure all parameters before generating.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr><th>Setting</th><th>Description</th></tr>
+                <tr><td><strong>Levels to Generate</strong></td><td>How many new level files to create. New levels are appended after existing ones (never overwrites).</td></tr>
+                <tr><td><strong>Grid Size (Min &amp; Max)</strong></td><td>Range for the grid columns / rows. Early levels lean toward the minimum, harder levels toward the maximum.</td></tr>
+                <tr><td><strong>Food Lines (Min &amp; Max)</strong></td><td>Range for the number of food lines per level.</td></tr>
+                <tr><td><strong>Turns per Line (Min &amp; Max)</strong></td><td>Range for how many turns each line carries in its waiting queue.</td></tr>
+                <tr><td><strong>Food Types Used (Min &amp; Max)</strong></td><td>Range for how many of the 23 food types are sampled per level.</td></tr>
+                <tr><td><strong>Time Limit (Easy / Hard)</strong></td><td>Seconds of countdown budget; lerps from the easy value at level 0 to the hard value at the last generated level.</td></tr>
+                <tr><td><strong>Easy Match Chance (Easy / Hard)</strong></td><td>Probability that a non-anchor turn ships as a matching pair. Drops as difficulty rises so harder levels feel more random.</td></tr>
+                <tr><td><strong>Boosters per Level</strong></td><td>Per-booster count + unlock level written into every generated level's JSON.</td></tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Configure settings</strong> &mdash; adjust all parameters in the Editor window</li>
+                <li><strong>Click &ldquo;Generate Levels&rdquo;</strong> &mdash; the tool detects existing levels and appends new ones</li>
+                <li><strong>For each level</strong>, the generator:
+                    <ul>
+                        <li>Lerps grid size, line count, turn count, and food-type count along the difficulty curve with &plusmn;7% jitter</li>
+                        <li>Pre-assigns one distinct &ldquo;home type&rdquo; per line so different lines have different turn-0 anchor pairs</li>
+                        <li>Pre-assigns distinct gap indices per line via round-robin so the gap isn't always in the same slot</li>
+                        <li>Builds turn 0 and turn 1 of each line as <code>[home, home, gap]</code> so the player can read each line's intent at a glance</li>
+                        <li>For turns 2+, picks each turn's matching probability from the difficulty curve and ensures the non-gap slots either form a matching pair or two distinct types</li>
+                        <li>Writes the JSON level file to <code>Resources/Levels/Level_N.json</code></li>
+                        <li>Forces <code>GC.Collect()</code> every 50 levels to keep the editor responsive</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="important-notice">
+                <h3>Initial-State Playability Invariant (pitfall #29)</h3>
+                <p>Every generated turn carries <strong>exactly one <code>None</code> / gap slot</strong>. There is no &ldquo;force one fully-matching turn per line&rdquo; post-process &mdash; that pattern auto-solves the first row on the first drop, ending the level before the player has played it. With the gap invariant the player creates matches organically by dragging into the gap.</p>
+            </div>
+
+            <div class="important-notice">
+                <h3>Non-Destructive</h3>
+                <p>The generator <strong>never overwrites</strong> existing level files. It always starts numbering from the next available index (e.g., if <code>Level_30</code> exists, new levels start from <code>Level_31</code>). Use the red &ldquo;Delete All Levels&rdquo; button at the bottom of the window if you want to start fresh.</p>
+            </div>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+
+            <p>The game includes three booster abilities that players can activate during gameplay. Each booster has a configurable number of uses per level (set in the level JSON) and a one-time tutorial popup keyed in <code>PlayerPrefs</code>.</p>
+
+            <table>
+                <tr><th>Booster</th><th>Effect</th><th>Activation</th></tr>
+                <tr>
+                    <td><strong>Shuffle</strong></td>
+                    <td>Fisher-Yates shuffles the three slots of the next queued turn on a random food line. Useful when the next turn would over-fill a line.</td>
+                    <td>Tap the Shuffle button (<code>Booster-Button-1</code>). Default unlock: level 1. Default count: 3.</td>
+                </tr>
+                <tr>
+                    <td><strong>Plate Clear</strong></td>
+                    <td>Finds the first line with any filled ready slots, destroys those foods, and promotes the next waiting turn so the line can keep playing.</td>
+                    <td>Tap the Plate Clear button (<code>Booster-Button-2</code>). Default unlock: level 2. Default count: 3.</td>
+                </tr>
+                <tr>
+                    <td><strong>Extra Slot</strong></td>
+                    <td>Forces an immediate refill (<code>ApplyFoodIntoLine</code>) on a random line &mdash; effectively a free extra turn.</td>
+                    <td>Tap the Extra Slot button (<code>Booster-Button-3</code>). Default unlock: level 3. Default count: 3.</td>
+                </tr>
+            </table>
+
+            <h3>Booster Buttons</h3>
+            <p>Booster buttons live in the scene under <code>GameHUD_Panel/BottomHolder</code>. Each button has:</p>
+            <ul>
+                <li>A central <strong>icon Image</strong> (the booster art)</li>
+                <li>A small <strong>background badge</strong> (<code>Bg</code>) sitting in the bottom-right corner</li>
+                <li>A <strong>use-count badge</strong> (<code>PowerUpCountText</code>) that shows the remaining count when unlocked, or <code>"lvl N"</code> while still locked</li>
+                <li><strong>Lock by level</strong> &mdash; the unlock levels come from <code>LevelData</code> and default to 0/1/2 (0-based). Adjust per-level in the Level Editor.</li>
+                <li><strong>First-use popup</strong> &mdash; the scene carries three inactive <code>Booster-Popup-1/2/3</code> GameObjects (instances of <code>Popup_Powerup_Picker.prefab</code>) with their own <code>Canvas overrideSorting=true sortOrder=20</code> + <code>GraphicRaycaster</code> so they always render above the HUD (pitfall #27). Keys are stored in <code>PlayerPrefs</code> (<code>BoosterPopupShown_Shuffle</code>, <code>BoosterPopupShown_PlateClear</code>, <code>BoosterPopupShown_ExtraSlot</code>).</li>
+            </ul>
+
+            <h3>Tutorial-Popup Visibility Rule (pitfall #31)</h3>
+            <p><code>TryShowBoosterPopup</code> fires <strong>before</strong> any can-run gate &mdash; the popup is educational content and must reach the player on first click regardless of board state. The <code>MainPanel/ButtonContinue</code> child of the popup ships with an empty <code>onClick</code> list, so <code>BoosterManager</code> wires it to <code>popup.SetActive(false)</code> at show-time; without that, the popup would block input forever.</p>
+
+            <h3>Cheat Mode</h3>
+            <p>Press <strong>U</strong> during gameplay to unlock and refill all boosters &mdash; the handler reads both legacy <code>Input.GetKeyDown</code> and the new <code>Keyboard.current.uKey.wasPressedThisFrame</code> (pitfall #26) and is self-healing (re-runs <code>HookUpExistingBoosters</code> / <code>FindBoosterPopups</code> if refs are stale). Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> to jump to the next / previous level. Both shortcuts live on <code>FoodieSortGameManager.Update()</code> (not <code>DeveloperSettingsController</code>) so they fire even when the dev panel is closed (pitfall #12).</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization Guide</h2>
+
+            <h3>Adding New Food Types</h3>
+            <p>To add a new food type:</p>
+            <ol>
+                <li>Open <code>LevelData.cs</code> and add a new entry to the <code>TypeFood</code> enum:
+                    <div class="code-block">
+<span class="keyword">public enum</span> <span class="class">TypeFood</span>
+{
+    None,
+    Meet,
+    Fish,
+    <span class="comment">// &hellip; existing entries &hellip;</span>
+    <span class="comment">// Add your custom food:</span>
+    Sushi
+}
+                    </div>
+                </li>
+                <li>In the same file, add the food's color to the <code>FoodColors</code> dictionary:
+                    <div class="code-block">
+{ <span class="class">TypeFood</span>.Sushi, <span class="keyword">new</span> <span class="class">Color32</span>(220, 50, 80, 255) },
+                    </div>
+                </li>
+                <li>Add the food's sprite to the <code>FoodData</code> ScriptableObject in <code>Datas/Food/</code></li>
+                <li>Regenerate or hand-author a level that uses the new type</li>
+            </ol>
+            <p>New foods are automatically available in the Level Editor, the Auto Level Generator, and at runtime.</p>
+
+            <h3>Adjusting Grid Visuals</h3>
+            <p>The grid layout is controlled by <code>GridManager.cs</code>. Key Inspector properties:</p>
+            <ul>
+                <li><code>gapRow</code> / <code>gapColumn</code> &mdash; Spacing between grid cells</li>
+                <li><code>gapFoodInLineReady</code> / <code>gapFoodInLineWaiting</code> &mdash; Spacing between the three foods within a line</li>
+                <li><code>scaleFoodReady</code> / <code>scaleFoodWaiting</code> &mdash; Visual scale of foods in the ready vs. waiting rows</li>
+                <li><code>trayTempPrefab</code>, <code>foodPrefab</code>, <code>boxCollider2DPrefab</code> &mdash; Per-line visual prefabs</li>
+                <li><code>particleSystemComplete</code> &mdash; The burst VFX played when a line completes</li>
+            </ul>
+
+            <h3>Audio</h3>
+            <p>Audio lives on a single <code>SoundManager</code> singleton. The Setup Wizard auto-wires every clip in <code>Assets/FoodieSort/Audio/</code> by canonical filename (<code>LevelClear</code>, <code>LevelFail</code>, <code>Blocked</code>, <code>Switch24/25/38</code>, <code>Pop26/30</code>, <code>Success5</code>, etc.) and seeds the four random-pick variant pools by prefix. Replace any clip on the <code>SoundManager</code> GameObject in the scene to retheme a specific event. Add a new clip field + matching <code>PlayX()</code> method if you introduce a new gameplay event.</p>
+
+            <h3>Adding New Boosters</h3>
+            <p>New boosters can be added by following the existing pattern in <code>BoosterManager.cs</code>:</p>
+            <ol>
+                <li>Add a count field to <code>LevelData</code> (e.g. <code>public int myBoosterCount = 3;</code>) and an unlock-level field</li>
+                <li>Add a fourth named child <code>Booster-Button-4</code> to the <code>GameHUD_Panel/BottomHolder</code> hierarchy with the same <code>Image</code> + <code>Bg</code> + <code>PowerUpCountText</code> children as the existing buttons</li>
+                <li>Wire it up in <code>HookUpExistingBoosters()</code> with the same <code>FindInactiveByName</code> + button-listener pattern</li>
+                <li>Implement the booster logic in a new <code>OnBooster4Clicked()</code> with <code>TryShowBoosterPopup</code> as the FIRST line (pitfall #31)</li>
+                <li>Add a fourth <code>Booster-Popup-4</code> popup with <code>Canvas overrideSorting=true sortOrder=20</code></li>
+                <li>Update <code>UpdateBoosterUI()</code> to draw the new button's lock / unlock / count display</li>
+            </ol>
+
+            <h3>JSON Level Format</h3>
+            <p>Each level is a JSON file with the following structure:</p>
+            <div class="code-block">
+{
+    <span class="string">"gridWidth"</span>: 3,
+    <span class="string">"gridHeight"</span>: 3,
+    <span class="string">"timeLimit"</span>: 120.0,
+    <span class="string">"foodLines"</span>: [
+        {
+            <span class="string">"gridPosition"</span>: { <span class="string">"x"</span>: 0, <span class="string">"y"</span>: 0 },
+            <span class="string">"turns"</span>: [
+                { <span class="string">"typeFoods"</span>: [1, 1, 0] },   <span class="comment">// Meet, Meet, gap</span>
+                { <span class="string">"typeFoods"</span>: [0, 1, 1] }    <span class="comment">// gap, Meet, Meet</span>
+            ]
+        }
+    ],
+    <span class="string">"shuffleBoosterCount"</span>: 3,
+    <span class="string">"plateClearBoosterCount"</span>: 3,
+    <span class="string">"extraSlotBoosterCount"</span>: 3,
+    <span class="string">"shuffleUnlockLevel"</span>: 0,
+    <span class="string">"plateClearUnlockLevel"</span>: 1,
+    <span class="string">"extraSlotUnlockLevel"</span>: 2
+}
+            </div>
+            <p>The <code>foodLines</code> array describes every food line on the grid. Each line has a <code>gridPosition</code> (where it sits) and a list of <code>turns</code>; each turn has three <code>typeFoods</code> (int values from the <code>TypeFood</code> enum &mdash; <code>0</code> = <code>None</code> = the gap). Per the pitfall #29 invariant, every turn must contain exactly one <code>0</code>.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr><th>Issue</th><th>Solution</th></tr>
+                <tr>
+                    <td>No levels load / empty scene at Play</td>
+                    <td>Ensure JSON level files exist in <code>Assets/FoodieSort/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. Use the Auto Level Generator to create levels if the folder is empty.</td>
+                </tr>
+                <tr>
+                    <td>Pink / magenta materials on objects</td>
+                    <td>The project requires URP. Go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned. Check that the <code>Settings/</code> folder contains valid URP assets.</td>
+                </tr>
+                <tr>
+                    <td>HUD looks wrong / missing booster buttons</td>
+                    <td>The wizard's HUD step refuses to procedurally fall back when the canonical prefabs are missing (pitfall #30). Check the Console for <code>ERR &lt;prefab&gt; missing at Assets/FoodieSort/Prefabs/&hellip;</code>. Re-import the canonical prefab pack and re-run <code>Tools &gt; FoodieSort &gt; Setup Wizard</code> step 3.</td>
+                </tr>
+                <tr>
+                    <td>SoundManager has empty clip fields</td>
+                    <td>The wizard's audio step also refuses to silently pass when the <code>Audio/</code> folder is empty (pitfall #30 audio variant). Re-import the audio library, then re-run step 4.</td>
+                </tr>
+                <tr>
+                    <td>Booster buttons don't respond</td>
+                    <td>Ensure the <code>GameHUD_Panel/BottomHolder</code> hierarchy contains children named <code>Booster-Button-1</code>, <code>Booster-Button-2</code>, and <code>Booster-Button-3</code>. Each needs a <code>Button</code> component. If you added a <code>Canvas</code> for sorting order, you must also add a <code>GraphicRaycaster</code>.</td>
+                </tr>
+                <tr>
+                    <td>First-use booster popups never show</td>
+                    <td>The popups <code>Booster-Popup-1/2/3</code> must exist in the scene with <code>m_IsActive: 0</code>. <code>GameObject.Find</code> skips inactive objects, so <code>BoosterManager</code> uses an inactive-aware scan (pitfall #19) &mdash; if you renamed the popups, restore the literal names. To replay the tutorial, click &ldquo;Reset Booster Popups&rdquo; on the Developer Settings panel.</td>
+                </tr>
+                <tr>
+                    <td>Continue / Retry button visible but does nothing</td>
+                    <td><code>LoseWinPanelManager.ShowWin</code>/<code>ShowLose</code> re-attach the button listeners on every show (pitfall #30 listener variant). If the click still doesn't fire, check the Console for the <code>[LoseWinPanelManager] LoadNextLevel</code> / <code>OnRetryClicked</code> log lines &mdash; absence means the click never reached the handler. Verify the Inspector-wired <code>winPanel</code> / <code>losePanel</code> fields point at <code>LevelClearedPanel</code> / <code>GameOverPanel</code> and not at the legacy monolithic <code>LoseWinPanel</code> container.</td>
+                </tr>
+                <tr>
+                    <td>Win panel renders behind the HUD</td>
+                    <td>The win/lose Canvas <code>sortingOrder</code> is <strong>Inspector-authored</strong>, not wizard-set. Select <code>LevelClearedPanel</code> and <code>GameOverPanel</code> in the scene, set their <code>Canvas.overrideSorting = true</code> and <code>sortingOrder = 10</code> (or higher than the root Canvas).</td>
+                </tr>
+                <tr>
+                    <td>Level Editor shows empty grid</td>
+                    <td>Click &ldquo;Reload from Disk&rdquo; in the Level Editor window, or ensure the <code>Resources/Levels/</code> folder exists and contains valid JSON files.</td>
+                </tr>
+                <tr>
+                    <td>Want ad-test buttons on the dev panel</td>
+                    <td>The shipped <code>DeveloperSettingsController</code> matches the canonical from <code>12-developer-mode.md</code> and does not include ad-test handlers (which would require the Ragendom Monetization module). To add them: import the Ragendom Monetization package, then re-add the <code>showBannerButton</code> / <code>showInterstitialButton</code> / <code>showRewardedButton</code> field declarations and the matching <code>Ragendom.AdsManager.*</code> handlers per the richer shared variant documented in <code>12-developer-mode.md § Pre-existing shared package</code>.</td>
+                </tr>
+            </table>
+
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the <strong>Developer Settings Panel</strong> (gear icon, top-left) in Play mode to quickly navigate levels, trigger win/lose, unlock boosters, and reset popups</li>
+                <li>Press <strong>Right Arrow</strong> / <strong>Left Arrow</strong> during gameplay to jump to the next / previous level</li>
+                <li>Press <strong>U</strong> to unlock and refill all boosters for testing</li>
+                <li>Press <strong>Shift+W</strong> / <strong>Shift+L</strong> to trigger the win / lose panel manually; <strong>Shift+R</strong> to reload the current level</li>
+                <li>Run <code>Tools &gt; FoodieSort &gt; Setup Wizard</code> whenever you import the package into a fresh project &mdash; it catches the common misconfigurations in one pass</li>
+                <li>The <strong>Auto Level Generator</strong> is the fastest way to populate your game with content &mdash; generate 100+ levels in seconds and then hand-tune Levels 1&ndash;5 in the Level Editor</li>
+                <li>Back up your <code>Resources/Levels/</code> folder regularly</li>
+            </ul>
+
+            <h3>Contact Us</h3>
+            <p>If you get stuck or have any issues, feel free to reach out to us at <a href="mailto:ragendom@gmail.com" style="color: #d35400; font-weight: bold;">ragendom@gmail.com</a>. We are happy to help!</p>
+
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>FoodieSort &mdash; A Drag-to-Match Food-Tray Puzzle Template for Unity</p>
+        <p>&copy; 2026 Ragendom &mdash; Built with the HyperCasual Game Engine</p>
+    </div>
+</body>
+</html>
