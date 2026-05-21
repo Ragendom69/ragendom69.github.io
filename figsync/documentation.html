@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FigSync - Documentation</title>
+<style>
+:root {
+  --bg: #0D0B1A;
+  --bg-card: #161230;
+  --bg-card-hover: #1E1840;
+  --bg-code: #1A1535;
+  --bg-sidebar: #100D20;
+  --text: #e2e2ea;
+  --text-dim: #9088b0;
+  --text-code: #c8c8d8;
+  --accent: #9333EA;
+  --accent-light: #A855F7;
+  --accent-glow: rgba(147,51,234,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #EC4899;
+  --pink-dim: rgba(236,72,153,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #818cf8;
+  --blue-dim: rgba(129,140,248,0.12);
+  --border: #2D2550;
+  --border-light: #3D3560;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,11,26,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #9333EA, #EC4899);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #A855F7 40%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(147,51,234,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(129,140,248,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 4px; }
+
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.mini-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  padding: 0;
+}
+
+.mini-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+pre .lang-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-family: var(--font);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.kw { color: #C084FC; }
+.str { color: #c3e88d; }
+.cm { color: #6B5F8A; font-style: italic; }
+.fn { color: #818cf8; }
+.tp { color: #ffcb6b; }
+.num { color: #f78c6c; }
+.op { color: #A78BFA; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(147,51,234,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:hover { color: var(--accent-light); }
+
+details .details-body { padding: 0 20px 18px; }
+details .details-body p:first-child { margin-top: 0; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout > div { flex: 1; }
+.callout p { margin-bottom: 6px; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(129,140,248,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+.tag-info { background: var(--blue-dim); color: var(--blue); }
+
+/* ---- ERROR CODE BLOCK ---- */
+.error-code {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.error-code.auto-retry { border-left-color: var(--yellow); }
+.error-code-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.error-code-head code {
+  background: var(--pink-dim);
+  color: var(--pink);
+  font-weight: 700;
+}
+.error-code.auto-retry .error-code-head code {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+.error-code .meaning { color: var(--text-dim); font-size: 13.5px; margin: 0 0 6px; }
+.error-code .action { color: var(--text); font-size: 13.5px; margin: 0; }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); text-decoration: none; }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <a href="#overview" class="header-logo">
+    <div class="dot">F</div>
+    <span>FigSync</span>
+  </a>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0.0 &middot; Unity 2021.3+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
+    <a href="#plugin"><span class="nav-icon">&#128268;</span> Figma Plugin</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Workflow</div>
+    <a href="#how-it-works"><span class="nav-icon">&#9881;</span> How It Works</a>
+    <a href="#authentication"><span class="nav-icon">&#128274;</span> Authentication</a>
+    <a href="#hub"><span class="nav-icon">&#127760;</span> The Hub Window</a>
+    <a href="#diff"><span class="nav-icon">&#128269;</span> Diff &amp; Re-sync</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Features</div>
+    <a href="#auto-layout"><span class="nav-icon">&#128208;</span> Auto-Layout</a>
+    <a href="#constraints"><span class="nav-icon">&#128279;</span> Constraints</a>
+    <a href="#gradients"><span class="nav-icon">&#127752;</span> Gradients</a>
+    <a href="#rounded"><span class="nav-icon">&#9711;</span> Rounded Corners</a>
+    <a href="#shadows"><span class="nav-icon">&#9728;</span> Shadows &amp; Blur</a>
+    <a href="#text"><span class="nav-icon">&#9999;</span> Text &amp; Fonts</a>
+    <a href="#sprites"><span class="nav-icon">&#127912;</span> Sprites &amp; Atlases</a>
+    <a href="#figjam"><span class="nav-icon">&#9728;&#65039;</span> FigJam Support</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#settings"><span class="nav-icon">&#128295;</span> Settings</a>
+    <a href="#limitations"><span class="nav-icon">&#9888;</span> Known Limitations</a>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero" id="overview">
+  <h1>FigSync</h1>
+  <p>The Figma layout bridge for Unity. Paste a Figma URL. Press <strong>Sync</strong>. Your design lands in the scene as a real UGUI Canvas &mdash; with the right anchors, the right fonts, the right gradients, and the right rounded corners. Keep designing in Figma, keep editing in Unity. Re-sync any time.</p>
+  <div class="hero-badges">
+    <span class="badge badge-purple">Unity 2021.3+</span>
+    <span class="badge badge-green">UGUI / Canvas</span>
+    <span class="badge badge-yellow">URP / Built-in</span>
+    <span class="badge badge-pink">Editor Tool</span>
+    <span class="badge badge-blue">Figma &amp; FigJam</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Two paths to a sync.</strong> Either authenticate against Figma's REST API directly (Personal Access Token or OAuth), or install the bundled <strong>FigSyncExporter</strong> Figma plugin and push from Figma to Unity over a local bridge. The local bridge supports FigJam files and offline sync; the REST path is one-click after activation.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Edits survive re-sync.</strong> When you re-sync a file, FigSync hashes every node and reuses scene GameObjects whose hash matches. Your wired references, added components, and child edits stay intact &mdash; only changed nodes are redrawn.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#quickstart"><h4>&#9889; Quick Start</h4><p>Open Hub, paste URL, click Sync. First sync usually under 60&nbsp;s for a typical screen.</p></a>
+    <a class="mini-card" href="#authentication"><h4>&#128274; Authentication</h4><p>Personal Access Token, OAuth, or the offline Figma plugin. Pick one.</p></a>
+    <a class="mini-card" href="#how-it-works"><h4>&#9881; How It Works</h4><p>A 27-step deterministic pipeline. Nodes &rarr; FlatList &rarr; classify &rarr; draw &rarr; finalise.</p></a>
+    <a class="mini-card" href="#auto-layout"><h4>&#128208; Auto-Layout</h4><p>Figma H/V/Grid auto-layout maps to UGUI LayoutGroup + ContentSizeFitter.</p></a>
+    <a class="mini-card" href="#gradients"><h4>&#127752; Gradients</h4><p>Linear, Radial, Angular, Diamond &mdash; rendered procedurally in a single SDF shader.</p></a>
+    <a class="mini-card" href="#figjam"><h4>&#9728;&#65039; FigJam Support</h4><p>Stickies, connectors, shape-with-text. Plus the signature dotted canvas backdrop.</p></a>
+  </div>
+
+  <p>This document covers the full FigSync workflow. Start with <a href="#installation">Installation</a> and <a href="#quickstart">Quick Start</a>; go deep on <a href="#how-it-works">How It Works</a> for the pipeline detail; reach <a href="#troubleshooting">Troubleshooting</a> when something doesn't import the way you expect.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             INSTALLATION                     -->
+<!-- ============================================ -->
+<section class="section" id="installation">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Installation</h2>
+  <p class="section-desc">Import once. The Hub window lights up from the menu.</p>
+
+  <h3>From the Unity Asset Store</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open Package Manager</strong><br>In Unity 2021.3 or later, open <code>Window &rarr; Package Manager</code> and switch the dropdown to <strong>My Assets</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Find FigSync, click Download then Import</strong><br>Accept the import dialog with everything checked. The package lands at <code>Assets/FigSync/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wait for compile</strong><br>Unity recompiles editor scripts. First-time compile takes ~30&nbsp;s; later imports are faster.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the Hub</strong><br><code>Tools &rarr; FigSync</code>. Everything you need &mdash; URL, sync, settings, status &mdash; is in one window.</div></div>
+  </div>
+
+  <h3>Prerequisites</h3>
+  <p>FigSync uses Unity packages that ship with a default Unity 2021.3+ install:</p>
+  <ul>
+    <li><code>com.unity.ugui</code> (the Canvas / UGUI runtime).</li>
+    <li><code>com.unity.textmeshpro</code> &ge; 3.0 (text rendering &mdash; TMP Essential Resources required).</li>
+    <li><code>com.unity.nuget.newtonsoft-json</code> &ge; 3.2.1 (JSON serialisation).</li>
+  </ul>
+  <p>If TMP Essential Resources isn't imported yet, the first sync will surface a one-time warning. Run <code>Window &rarr; TextMeshPro &rarr; Import TMP Essential Resources</code> and re-sync.</p>
+
+  <h3>What gets installed</h3>
+  <pre><code><span class="kw">Assets/FigSync/</span>
+  Editor/                     <span class="cm">// Pipeline, drawers, settings, hub window</span>
+    Bridge/                   <span class="cm">// Local HTTP bridge for the Figma plugin</span>
+    Drawers/                  <span class="cm">// One drawer per Unity UGUI component</span>
+    Hub/                      <span class="cm">// Tools &rarr; FigSync window + settings store</span>
+    Pipeline/                 <span class="cm">// Numbered Step01..Step26 deterministic flow</span>
+    Settings/                 <span class="cm">// Per-tab settings UI (UI Toolkit)</span>
+    Web/                      <span class="cm">// Figma REST + Google Fonts clients</span>
+  Runtime/                    <span class="cm">// Shaders, helper components, ScriptableObjects</span>
+    Components/               <span class="cm">// FigSyncSyncHelper, dropshadow, blur, etc.</span>
+    Shaders/                  <span class="cm">// SDF rounded-corner + gradient</span>
+  Generated/                  <span class="cm">// Per-sync output: sprites, fonts, snapshot, report</span>
+  Documentation/              <span class="cm">// You are here</span><span class="lang-tag">Project</span></code></pre>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>The <code>Generated/</code> folder is yours.</strong> FigSync writes downloaded sprites, fonts, and the diff snapshot here. It's safe to re-sync anytime; the folder is rebuilt deterministically.</div>
+  </div>
+
+</section>
+
+<!-- ============================================ -->
+<!--             FIGMA PLUGIN                     -->
+<!-- ============================================ -->
+<section class="section" id="plugin">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128268;</span> Figma Plugin (Optional)</h2>
+  <p class="section-desc">The fastest path for FigJam files, complex frames, or offline sync.</p>
+
+  <p>FigSync ships with a Figma plugin called <strong>FigSyncExporter</strong>. Installed in Figma, it captures the full plugin-API node tree (which is richer than REST), bundles every fill image and pre-rendered vector raster, and pushes the result to Unity over a local HTTP bridge. The Unity Hub picks up the push automatically &mdash; no copy/paste of node ids.</p>
+
+  <h3>Why use the plugin path</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-title">&#9728;&#65039; FigJam support</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Stickies, connectors, shape-with-text only appear in the plugin's node tree &mdash; FigJam files won't import via REST.</p></div>
+    <div class="card"><div class="card-title">&#9889; One-click push</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Hit <strong>Export</strong> in Figma; Unity starts the sync. No token, no URL paste, no API rate limit.</p></div>
+    <div class="card"><div class="card-title">&#128193; Offline iteration</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Each push saves a <code>.figsync.zip</code> bundle locally; you can re-sync from disk later without Figma being open.</p></div>
+    <div class="card"><div class="card-title">&#128202; Richer geometry</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Plugin API exposes <code>fillGeometry</code> path data on every vector node; REST is occasionally sparser.</p></div>
+  </div>
+
+  <h3>Install the plugin</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>In Figma, open the Plugins menu</strong><br><code>Menu &rarr; Plugins &rarr; Development &rarr; Import plugin from manifest...</code></div></div>
+    <div class="step"><div class="step-content"><strong>Point at the bundled manifest</strong><br>Navigate to <code>Assets/FigSync/Documentation/Plugin/manifest.json</code> inside your Unity project. Open it.</div></div>
+    <div class="step"><div class="step-content"><strong>Verify the bridge is running</strong><br>In Unity, open <code>Tools &rarr; FigSync &rarr; Settings &rarr; Auth</code>. The status pill should read <strong>Bridge: listening</strong> on <code>127.0.0.1:8473</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Push from Figma</strong><br>Open the FigSyncExporter plugin from your Plugins menu, choose scope (Current page / All pages), click <strong>Export</strong>. Unity receives the bundle and starts a sync.</div></div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>The bridge is loopback-only.</strong> The HTTP listener binds to <code>127.0.0.1</code> and accepts only CORS requests originating from Figma's domains. No external network traffic.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             QUICK START                      -->
+<!-- ============================================ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">Zero to a synced Canvas in about a minute.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open the Hub</strong><br>Menu: <code>Tools &rarr; FigSync</code>. The window has tabs for <strong>Source</strong>, <strong>Settings</strong>, and <strong>Status</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Pick an authentication method</strong><br>Either paste a <a href="#authentication">Personal Access Token</a> in <strong>Settings &rarr; Auth</strong>, or install the <a href="#plugin">Figma plugin</a> for one-click push. (You can do both; the plugin path wins when both are configured.)</div></div>
+    <div class="step"><div class="step-content"><strong>Paste a Figma URL</strong><br>Copy any frame URL from Figma (right-click frame &rarr; Copy link). Paste into the <strong>Source URL</strong> field in the Hub.</div></div>
+    <div class="step"><div class="step-content"><strong>Click Sync</strong><br>The pipeline runs 27 deterministic steps. Status updates per step. First sync takes ~10-90&nbsp;s depending on sprite count.</div></div>
+    <div class="step"><div class="step-content"><strong>Inspect the scene</strong><br>A <strong>FigSync Canvas</strong> GameObject appears in the active scene. Frames live under <strong>FigSync Canvas / FigSync Import / Page 1 / &lt;Frame&gt;</strong>. Game view shows the design rendered.</div></div>
+    <div class="step"><div class="step-content"><strong>Edit, re-sync, repeat</strong><br>Tweak Figma, click Sync again. FigSync diffs against the previous run; only changed nodes redraw. Your wired references and added components are preserved.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>The <strong>Diff Window</strong> shows what changed before any scene mutation.</strong> If a re-sync would touch a frame you're mid-editing, untick that frame in the diff window to defer it. The deferred frame stays untouched; the rest of the page syncs as usual.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             HOW IT WORKS                     -->
+<!-- ============================================ -->
+<section class="section" id="how-it-works">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> How It Works</h2>
+  <p class="section-desc">A 27-step deterministic pipeline, runnable resumable cancellable.</p>
+
+  <div class="flow">
+    <span class="flow-node">Source</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Flatten</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Tag &amp; Classify</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Hash &amp; Diff</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Draw</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Sprites &amp; Fonts</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Finalise</span>
+  </div>
+
+  <p>Each sync runs as a sequence of named steps. Steps log their start and finish to the Console (look for the <code>[FigSync]</code> prefix); the Hub window mirrors the same status as a per-step progress strip. A failed step stops the pipeline early; the scene either keeps the prior state intact (if the failure happened pre-Draw) or surfaces the partial result with a HelpBox explaining where it broke.</p>
+
+  <h3>Steps, in order</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Step</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>DownloadNodes</code></td><td>Loads the Figma node tree from REST, the plugin bundle, or local cache.</td></tr>
+      <tr><td><code>WrapInPage</code></td><td>Ensures the document root is wrapped in a CANVAS / PAGE node for uniform traversal.</td></tr>
+      <tr><td><code>ClearCaches</code></td><td>Resets per-sync sidecars (UnchangedNodeIds, DeferredNodeIds, external-children rescue map).</td></tr>
+      <tr><td><code>Flatten</code></td><td>Walks the tree depth-first; produces a FlatList of <code>NodeAux</code> entries with parent/depth indices.</td></tr>
+      <tr><td><code>Tag</code></td><td>Tags each node by FigmaType + manual sidecar markers (Frame, Text, Image, Vector, Mask, Shadow, Page, etc.).</td></tr>
+      <tr><td><code>ClassifyImages</code></td><td>Decides which nodes route through the PNG raster path vs the procedural draw path.</td></tr>
+      <tr><td><code>PropagateInsideDownloadable</code></td><td>Marks descendants of a Downloadable parent so they aren't drawn separately.</td></tr>
+      <tr><td><code>Hash</code></td><td>Computes a 128-bit content hash per node (visual properties + children) using xxHash3.</td></tr>
+      <tr><td><code>NameFolders / NameFiles / NameStylesheetClasses</code></td><td>Resolves Figma names through the sanitiser into Unity-safe folder, file, and class names.</td></tr>
+      <tr><td><code>PickRootFrames</code></td><td>Identifies top-level frames worth surfacing in the diff window.</td></tr>
+      <tr><td><code>ShowDiffWindow</code></td><td>If a prior snapshot exists, compute the diff and prompt the user to confirm or defer roots.</td></tr>
+      <tr><td><code>LoadPrefabMatches</code></td><td>Wires Figma node ids back to existing scene GameObjects with matching <code>FigSyncSyncHelper</code> stamps.</td></tr>
+      <tr><td><code>DrawHierarchy</code></td><td>The main draw pass. One GameObject per Figma node; one drawer per tag.</td></tr>
+      <tr><td><code>RePickRootFrames / CountTags / SpritePaths</code></td><td>Post-Draw planning for sprite IO.</td></tr>
+      <tr><td><code>DownloadSprites / FlushSprites</code></td><td>Pulls /v1/images PNGs (or reads them from the plugin bundle); writes them to <code>Generated/</code>.</td></tr>
+      <tr><td><code>GenerateSprites / SliceSprites / ColorizeSprites</code></td><td>Procedural sprite synthesis for nodes that don't need raster (white quads, solid fills).</td></tr>
+      <tr><td><code>DedupeSprites</code></td><td>Hash-merges visually identical sprite outputs so the project doesn't double-store them.</td></tr>
+      <tr><td><code>DownloadFonts</code></td><td>Resolves font families through Google Fonts (Webfonts API or fontsource fallback), bakes TMP <code>_SDF</code> assets.</td></tr>
+      <tr><td><code>FrameworkFinalise</code></td><td>Per-backend post-pass: rounded corners, shadows, layout drivers, text binding, FigJam canvas dots.</td></tr>
+      <tr><td><code>DiagnosticReport</code></td><td>Writes <code>_figsync_report.json</code> (telemetry) and <code>_figsync_snapshot.json</code> (hash snapshot for next-run diff).</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>What happens at Draw time</h3>
+  <p>The Draw step iterates the FlatList. Each entry is either reused, deferred, or freshly drawn:</p>
+  <ul>
+    <li><strong>Reused</strong> &mdash; node's hash matches the prior snapshot AND a scene GameObject with the matching <code>FigSyncSyncHelper.NodeId</code> still exists. Re-parented under its updated parent; no children re-created.</li>
+    <li><strong>Deferred</strong> &mdash; user unticked the root in the diff window. Same as Reused (preserve existing scene state), but new descendants under that root are skipped entirely.</li>
+    <li><strong>Drawn fresh</strong> &mdash; the right drawer is resolved by tag (Image, Text, Vector, Button, Toggle, etc.), instantiates a GameObject, sets RectTransform, applies fill + text + auto-layout, stamps a <code>FigSyncSyncHelper</code> with the node id and hash.</li>
+  </ul>
+
+  <h3>What happens at Finalise time</h3>
+  <p>After every node has a GameObject, a per-backend Finalise pass runs second-pass work that needs the full hierarchy in place:</p>
+  <ul>
+    <li>Bind TMP fonts to text components from the per-family <code>_SDF.asset</code>.</li>
+    <li>Add <code>FigSyncRoundedCorner</code> on every node with non-zero corner radius. The component encodes radius + stroke + shadow into vertex uv channels so a single SDF shader draws them all.</li>
+    <li>Attach <code>FigSyncDropShadow</code> on every node with a DropShadow effect; <code>FigSyncBackgroundBlurCompositor</code> on every node with BackgroundBlur.</li>
+    <li>Apply auto-layout drivers (LayoutGroup + ContentSizeFitter + spacer injection for SPACE_BETWEEN).</li>
+    <li>If the source is FigJam, inject the dotted canvas backdrop as the first sibling under each page.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--             AUTHENTICATION                   -->
+<!-- ============================================ -->
+<section class="section" id="authentication">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Authentication</h2>
+  <p class="section-desc">Three options. Pick one. Or two.</p>
+
+  <h3>Option 1 &mdash; Personal Access Token</h3>
+  <p>Simplest path. Generate a token at <a href="https://www.figma.com/settings" target="_blank" rel="noopener">figma.com/settings</a> (Personal access tokens section), paste it into <code>Tools &rarr; FigSync &rarr; Settings &rarr; Auth &rarr; Personal Access Token</code>. The token stays in <code>EditorPrefs</code> (base64-obfuscated, never written to assets) and is sent only over HTTPS to Figma's REST API.</p>
+
+  <h3>Option 2 &mdash; OAuth</h3>
+  <p>Click <strong>Sign in with Figma</strong> in the Auth tab. A browser tab opens Figma's consent screen; after approval Figma redirects to a one-shot local listener on <code>127.0.0.1</code> with the auth code. FigSync exchanges that for an access + refresh token pair and stores both in <code>EditorPrefs</code> (same obfuscation as the PAT). Refresh tokens rotate automatically; expired tokens trigger a transparent refresh on next call.</p>
+
+  <h3>Option 3 &mdash; The Figma plugin</h3>
+  <p>No tokens needed. <a href="#plugin">Install the plugin</a> in Figma and push directly. The plugin reads node data using its own Figma plugin sandbox permissions; FigSync receives an HTTPS-style ZIP bundle over a loopback port. No credentials leave your machine.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>&nbsp;</th><th>Token</th><th>OAuth</th><th>Plugin</th></tr></thead>
+    <tbody>
+      <tr><td>Setup time</td><td>30 s</td><td>1 min (browser hop)</td><td>2 min (plugin install)</td></tr>
+      <tr><td>Re-auth needed</td><td>Never (until you revoke)</td><td>Refresh auto-rotates</td><td>Never</td></tr>
+      <tr><td>FigJam files</td><td>No (REST limitation)</td><td>No (REST limitation)</td><td>Yes</td></tr>
+      <tr><td>Offline sync</td><td>No</td><td>No</td><td>Yes (saved ZIPs)</td></tr>
+      <tr><td>Rate limited</td><td>Yes (Figma policy)</td><td>Yes (Figma policy)</td><td>No</td></tr>
+      <tr><td>What's stored</td><td>One token in EditorPrefs</td><td>Access + refresh tokens in EditorPrefs</td><td>Nothing</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>You can combine paths.</strong> Keep a token configured as a fallback while using the plugin as your daily driver. FigSync prefers the plugin bundle when one is freshly pushed, falls back to REST when a URL is pasted directly.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             THE HUB WINDOW                   -->
+<!-- ============================================ -->
+<section class="section" id="hub">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127760;</span> The Hub Window</h2>
+  <p class="section-desc">One window, every control. <code>Tools &rarr; FigSync</code>.</p>
+
+  <h3>Source tab</h3>
+  <p>The everyday surface. Paste a Figma URL, choose the source mode (Live URL, Offline ZIP, Bridge push), and click <strong>Sync</strong>. A status strip across the top of the window mirrors what's happening behind the scenes &mdash; current step, elapsed time, last warning. A right-side panel shows the last sync's diagnostic summary (node count, sprite count, fonts bound, missing fonts, anything that went sideways).</p>
+
+  <h3>Settings tabs</h3>
+  <p>Each tab edits one slice of the <code>FigSyncProjectSettings</code> ScriptableObject (lives at <code>Assets/FigSync/FigSyncProjectSettings.asset</code>; commit it). Changes apply on next sync.</p>
+  <ul>
+    <li><strong>Auth</strong> &mdash; Personal Access Token, OAuth sign-in, Google Fonts API key, bridge port.</li>
+    <li><strong>Main Settings</strong> &mdash; output folder, backend (UGUI), root canvas reference, debug verbosity.</li>
+    <li><strong>Buttons</strong> &mdash; how Figma "Button" tags map to UGUI Button vs ToggleButton vs custom prefabs.</li>
+    <li><strong>Images &amp; Sprites</strong> &mdash; sprite atlas mode, dedup threshold, slicing rules.</li>
+    <li><strong>Text &amp; Fonts</strong> &mdash; font family overrides, locale, TMP atlas resolution.</li>
+    <li><strong>Localisation</strong> &mdash; bind keys for Unity Localization or I2 Localization packages.</li>
+    <li><strong>Import Events</strong> &mdash; per-frame Pre/PostImport ScriptableObject callbacks.</li>
+    <li><strong>Prefab Creator</strong> &mdash; turn synced frames into prefabs automatically.</li>
+    <li><strong>Shadows</strong> &mdash; DropShadow / InnerShadow rendering quality, BG blur toggle.</li>
+    <li><strong>Debug</strong> &mdash; verbose logging, diagnostic reports, snapshot management.</li>
+    <li><strong>Codegen</strong> &mdash; emit per-frame C# reference classes alongside the synced GameObjects.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--             DIFF & RE-SYNC                   -->
+<!-- ============================================ -->
+<section class="section" id="diff">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128269;</span> Diff &amp; Re-sync</h2>
+  <p class="section-desc">Re-sync without losing the work you did between syncs.</p>
+
+  <p>After every successful sync FigSync writes a <strong>hash snapshot</strong> of the node tree to <code>Generated/_figsync_snapshot.json</code>. On the next sync, the pipeline diffs the incoming nodes against that snapshot before any scene mutation. The result is a per-root summary of what would change.</p>
+
+  <h3>The diff window</h3>
+  <p>When there's at least one change, the diff window opens before <code>DrawHierarchy</code>:</p>
+  <ul>
+    <li><strong>Per-root summary chips</strong> &mdash; <code>+added ~modified &minus;removed</code> counts at the page level.</li>
+    <li><strong>Foldable groups</strong> &mdash; one per root frame, with per-node entries inside. Click to expand a group.</li>
+    <li><strong>Per-root <em>Apply</em> toggles</strong> &mdash; untick a root to defer it. Deferred roots aren't touched this sync; their previously-drawn GameObjects stay exactly as you left them.</li>
+    <li><strong>Continue / Cancel</strong> &mdash; Continue applies everything not deferred; Cancel aborts the sync with the scene unchanged.</li>
+  </ul>
+
+  <h3>What "preserve" means at the GameObject level</h3>
+  <p>Three cases survive a re-sync identically:</p>
+  <div class="card-grid">
+    <div class="card"><div class="card-title">&#128221; Inspector edits</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Material overrides, animation triggers, references wired in the inspector &mdash; persisted on the unchanged GameObjects.</p></div>
+    <div class="card"><div class="card-title">&#128218; Added components</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Anything you've added &mdash; controllers, behaviours, audio sources &mdash; stays attached to the same GameObject across syncs.</p></div>
+    <div class="card"><div class="card-title">&#128203; Added children</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Non-FigSync children dropped under a synced GameObject are rescued and re-parented to the freshly-drawn replacement if the parent's hash changed.</p></div>
+  </div>
+
+  <h3>First sync, no snapshot</h3>
+  <p>The diff window is skipped on first sync &mdash; nothing to compare against. The pipeline writes a snapshot at the end. Every sync from the second onwards benefits from the diff path.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                AUTO-LAYOUT                   -->
+<!-- ============================================ -->
+<section class="section" id="auto-layout">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128208;</span> Auto-Layout</h2>
+  <p class="section-desc">Figma's auto-layout maps to UGUI LayoutGroup + ContentSizeFitter end-to-end.</p>
+
+  <p>A Figma frame with auto-layout becomes a Unity GameObject with the matching <code>HorizontalLayoutGroup</code>, <code>VerticalLayoutGroup</code>, or <code>GridLayoutGroup</code>, plus a <code>ContentSizeFitter</code> when the sizing mode is "Hug contents". Children flow in the same direction, with the same padding, gap, and primary/counter alignment.</p>
+
+  <h3>What's wired</h3>
+  <ul>
+    <li><strong>Direction</strong> (Horizontal / Vertical / Grid) &mdash; chooses the LayoutGroup component.</li>
+    <li><strong>Padding &amp; gap</strong> (the four sides + itemSpacing) &mdash; LayoutGroup <code>padding</code> + <code>spacing</code>.</li>
+    <li><strong>Primary alignment</strong> (Start / Center / End / Space Between) &mdash; LayoutGroup <code>childAlignment</code>; SPACE_BETWEEN uses injected invisible <code>FigSyncLayoutSpacer</code> children for the slack.</li>
+    <li><strong>Counter alignment</strong> &mdash; aligns the off-axis children to start/centre/end of the cross axis.</li>
+    <li><strong>Sizing</strong> (Fixed / Hug contents / Fill container) &mdash; combination of <code>ContentSizeFitter</code> + <code>LayoutElement</code>.</li>
+    <li><strong>ABSOLUTE children</strong> (a child of an auto-layout frame with "absolute position" toggled in Figma) get a <code>LayoutElement.ignoreLayout</code> so they keep their baked anchored position instead of flowing.</li>
+  </ul>
+
+  <h3>What's not wired</h3>
+  <p>See the dedicated <a href="#limitations">Known Limitations</a> for the specifics:</p>
+  <ul>
+    <li>Auto-layout <strong>Wrap</strong> mode falls through to free-position layout.</li>
+    <li><strong>Grid</strong> with non-uniform tracks (per-cell column / row sizes) flattens to uniform cells.</li>
+    <li><strong>Constraints on flow children</strong> are intentionally ignored; the LayoutGroup owns placement.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--             CONSTRAINTS                      -->
+<!-- ============================================ -->
+<section class="section" id="constraints">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128279;</span> Constraints (Anchors)</h2>
+  <p class="section-desc">Figma per-axis constraints drive UGUI anchors so layouts respond to Canvas resize.</p>
+
+  <p>Every Figma child carries a per-axis constraint (Min / Max / Center / Stretch / Scale). FigSync maps them onto the child's <code>anchorMin</code> / <code>anchorMax</code> + <code>offsetMin</code> / <code>offsetMax</code> so the child reacts the right way when its parent rect changes size.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Figma constraint</th><th>Horizontal effect</th><th>Vertical effect</th><th>Unity anchors</th></tr></thead>
+    <tbody>
+      <tr><td><code>Min</code></td><td>Pinned to left</td><td>Pinned to top</td><td>(0,1) &mdash; (0,1)</td></tr>
+      <tr><td><code>Max</code></td><td>Pinned to right</td><td>Pinned to bottom</td><td>(1,0) &mdash; (1,0)</td></tr>
+      <tr><td><code>Center</code></td><td>Centered horizontally</td><td>Centered vertically</td><td>(0.5,0.5) &mdash; (0.5,0.5)</td></tr>
+      <tr><td><code>Stretch</code></td><td>Resizes with parent (L/R)</td><td>Resizes with parent (T/B)</td><td>(0,*) &mdash; (1,*)</td></tr>
+      <tr><td><code>Scale</code></td><td>Scales proportionally</td><td>Scales proportionally</td><td>(0,0) &mdash; (1,1)</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Re-sizing the root Canvas at runtime should re-flow the design exactly the way it would in Figma's preview.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                GRADIENTS                     -->
+<!-- ============================================ -->
+<section class="section" id="gradients">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127752;</span> Gradients</h2>
+  <p class="section-desc">Four gradient kinds, rendered procedurally in one SDF shader.</p>
+
+  <p>FigSync renders Figma gradients on the GPU instead of baking them to a texture. Four kinds are supported: <code>GRADIENT_LINEAR</code>, <code>GRADIENT_RADIAL</code>, <code>GRADIENT_ANGULAR</code>, and <code>GRADIENT_DIAMOND</code> &mdash; the full set Figma can author. Multi-stop ramps up to 4 stops render natively; 5+ stop ramps collapse to first + last + two middle stops (see <a href="#limitations">Known Limitations</a>).</p>
+
+  <h3>How gradients render</h3>
+  <p>The same <code>FigSync/RoundedCorner</code> SDF shader that handles rounded corners also handles gradients. The two are composed at the fragment level: gradient sampled first, alpha multiplied by the corner SDF, output to screen. One Image + one Material per node, no extra draw call.</p>
+
+  <h3>What's preserved</h3>
+  <ul>
+    <li><strong>Gradient handles</strong> &mdash; the start/end points (Linear), centre + radius (Radial), centre + rotation (Angular), centre + width/height (Diamond) are passed as material uniforms.</li>
+    <li><strong>Per-stop colours &amp; alpha</strong> &mdash; encoded in the four-stop ramp uniform.</li>
+    <li><strong>Gradient on top of a stroke</strong> &mdash; works the same way; stroke renders at the SDF edge band.</li>
+    <li><strong>Gradient on a rotated rect</strong> &mdash; rotation is baked into the rect's local coords; the gradient stays aligned to Figma's intent.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--           ROUNDED CORNERS                    -->
+<!-- ============================================ -->
+<section class="section" id="rounded">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9711;</span> Rounded Corners</h2>
+  <p class="section-desc">SDF rounded corners with per-corner radii, stroke band, drop shadow, inner shadow.</p>
+
+  <p>Nodes with a non-zero corner radius receive a <code>FigSyncRoundedCorner</code> runtime component (built on Unity's <code>BaseMeshEffect</code>). The component encodes the corner radii, stroke width, drop-shadow offset, and inner-shadow offset into the mesh's UV channels &mdash; one shader draws every effect against the SDF distance field, no extra GameObjects or quads.</p>
+
+  <h3>What's encoded</h3>
+  <ul>
+    <li><strong>Per-corner radii</strong> &mdash; Figma's <code>rectangleCornerRadii</code> are read directly; uniform <code>cornerRadius</code> sets all four equal.</li>
+    <li><strong>Stroke band</strong> &mdash; stroke weight + alignment (Inside / Center / Outside) drives the SDF outline thickness.</li>
+    <li><strong>Drop shadow</strong> &mdash; up to four stacked drop shadows (Figma allows arbitrary; we render the first four). Offset, blur, spread, colour per layer.</li>
+    <li><strong>Inner shadow</strong> &mdash; up to four stacked inner shadows.</li>
+    <li><strong>Gradient fill</strong> &mdash; composed at the same fragment stage (see <a href="#gradients">Gradients</a>).</li>
+  </ul>
+
+  <h3>Why an SDF shader instead of PNG raster</h3>
+  <p>SDF stays crisp at any scale &mdash; rounded buttons look right at 0.5x and 4x zoom alike. PNG raster would force a fixed-resolution bake that aliases under scale. The SDF path also unifies stroke + corner + shadow into a single draw call, so a screen with 50 rounded panels is 50 draw calls, not 200.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             SHADOWS & BLUR                   -->
+<!-- ============================================ -->
+<section class="section" id="shadows">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9728;</span> Shadows &amp; BackgroundBlur</h2>
+  <p class="section-desc">Drop shadow, inner shadow, layer blur, and Figma's signature glass effect.</p>
+
+  <h3>Drop &amp; inner shadow</h3>
+  <p>Up to four stacked drop shadows and four stacked inner shadows per node, all rendered against the same SDF. No extra GameObjects, no overlay quads &mdash; just additional uniforms on the shared material. Stacking is preserved: Figma's first shadow is the topmost layer.</p>
+
+  <h3>Layer blur</h3>
+  <p>A Figma <code>LayerBlur</code> effect on a leaf node renders procedurally by widening the SDF edge. On a node with children, the procedural path can't blur the descendants &mdash; FigSync routes the whole subtree to the PNG raster path where Figma bakes the blur server-side, then displays the result as a Unity sprite.</p>
+
+  <h3>Background blur (the glass effect)</h3>
+  <p>A Figma <code>BackgroundBlur</code> blurs whatever sits behind the consumer node &mdash; the iOS-style frosted-glass look. FigSync ships a procedural backdrop:</p>
+  <ul>
+    <li>A <code>FigSyncBackgroundBlurCompositor</code> snapshots the Canvas's Render Camera into a RenderTexture once per frame.</li>
+    <li>Each consumer node samples that RT through a Gaussian blur kernel matching the radius from Figma.</li>
+    <li>The consumer's own fill (a semi-transparent tint) composites over the blurred sample.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>Background blur requires a Camera-mode Canvas.</strong> Screen Space - Overlay canvases don't go through Unity's camera-render path, so the compositor has nothing to snapshot. Switch the canvas to <strong>Screen Space - Camera</strong> with a Render Camera assigned and the compositor picks up the change on its next tick. Scene view can show smeared sampling for the same reason; verify in Game view.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             TEXT & FONTS                     -->
+<!-- ============================================ -->
+<section class="section" id="text">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#9999;</span> Text &amp; Fonts</h2>
+  <p class="section-desc">TMP with automatic font download. Mixed inline styles. Locale-aware.</p>
+
+  <h3>Text rendering</h3>
+  <p>Every Figma <code>TEXT</code> node becomes a Unity <code>TextMeshProUGUI</code>. Size, alignment, line height, letter spacing, and colour map directly. Multi-line text wrap respects the bbox width; single-line bbox-height nodes get <code>NoWrap</code> so labels overflow horizontally instead of stacking.</p>
+
+  <h3>Automatic font download</h3>
+  <p>The <code>DownloadFonts</code> step resolves every font family used in the file through:</p>
+  <ol>
+    <li>Your Google Fonts API key, if you've set one in <strong>Settings &rarr; Auth</strong> (returns TTFs from gstatic.com directly).</li>
+    <li>The public Google Fonts CSS endpoint as fallback.</li>
+    <li>The Fontsource CDN for variable fonts Google ships only as WOFF2.</li>
+    <li>The Adobe Edge font index for non-Google families.</li>
+  </ol>
+  <p>Each resolved TTF is imported as a Unity <code>Font</code> and baked into a TMP <code>_SDF.asset</code> at <code>Generated/Fonts/&lt;Family&gt;-&lt;Weight&gt;.asset</code>. On subsequent syncs the baked asset is reused &mdash; no re-download.</p>
+
+  <h3>Fonts that didn't resolve</h3>
+  <p>For proprietary families (Whyte, Figma Hand, custom) or Google variable fonts that don't ship a TTF download path (Inter, Newsreader), the import surfaces a one-shot dialog at the end of the sync listing what to drop in. Save the TTFs to <code>Assets/FigSync/Generated/Fonts/</code> using the convention <code>&lt;Family&gt;-&lt;weight&gt;.ttf</code> (e.g. <code>Inter-400.ttf</code>); the next sync auto-binds them to every matching text component.</p>
+
+  <h3>Mixed inline styles</h3>
+  <p>A single Figma text node can mix weights, italics, underlines, and strikethroughs per character. FigSync reads the per-segment styling and emits TMP rich-text tags (<code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;u&gt;</code>, <code>&lt;s&gt;</code>) for the segments that diverge from the node-level base style. Cross-family inline segments keep their weight + italic but render in the base family asset (see <a href="#limitations">Known Limitations</a> for the TMP atlas reason).</p>
+</section>
+
+<!-- ============================================ -->
+<!--             SPRITES & ATLASES                -->
+<!-- ============================================ -->
+<section class="section" id="sprites">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127912;</span> Sprites &amp; Atlases</h2>
+  <p class="section-desc">Auto-classified, auto-deduped, auto-sliced.</p>
+
+  <p>Some nodes can't be drawn procedurally &mdash; complex vector icons, photo fills, baked illustrations. For those, FigSync pulls a PNG from Figma's <code>/v1/images</code> endpoint (or reads the pre-rendered PNG from the plugin bundle), saves it under <code>Generated/&lt;FolderName&gt;/&lt;NodeName&gt;.png</code>, and binds it as an <code>Image.sprite</code>.</p>
+
+  <h3>How classification works</h3>
+  <p>The <code>ClassifyImages</code> step decides per-node whether to route to the raster path:</p>
+  <ul>
+    <li><strong>Photos &amp; complex vectors</strong> &mdash; raster.</li>
+    <li><strong>Pure solid / gradient rectangles</strong> &mdash; procedural.</li>
+    <li><strong>Vector paths with simple fills</strong> &mdash; meshed via <code>FigSyncVectorGraphic</code> (triangulated on the CPU, drawn as a UGUI graphic).</li>
+    <li><strong>Nodes inside a baked parent</strong> &mdash; suppressed; the parent's PNG already contains them.</li>
+  </ul>
+
+  <h3>Dedup</h3>
+  <p>The <code>DedupeSprites</code> step hashes every freshly-written PNG; duplicates (same pixel content) collapse to a single asset on disk with the other nodes pointing at it via reference. Cuts asset count and binary size sharply on screens with repeated iconography.</p>
+
+  <h3>Slicing</h3>
+  <p>The <code>SliceSprites</code> step looks for the manual sidecar convention &mdash; a node named <code>BG/9slice</code> or with a tag suffix &mdash; and writes 9-slice border data into the sprite asset's <code>border</code> field so UGUI Image rendering with type Sliced reuses the same texture across multiple sizes.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             FIGJAM SUPPORT                   -->
+<!-- ============================================ -->
+<section class="section" id="figjam">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9728;&#65039;</span> FigJam Support</h2>
+  <p class="section-desc">Stickies, connectors, shape-with-text, and the signature dotted canvas.</p>
+
+  <p>FigJam files are first-class. The pipeline auto-detects FigJam at the editor level (the <code>editorType</code> field in <code>meta.json</code>, with a node-type heuristic fallback for older exports) and switches on FigJam-specific rendering paths.</p>
+
+  <h3>What's rendered natively</h3>
+  <ul>
+    <li><strong>Sticky notes</strong> &mdash; baked from Figma's <code>/v1/images</code> PNG so the body + text + colour render as one sprite.</li>
+    <li><strong>Connectors</strong> (the no/yes/etc. arrows) &mdash; same path, baked PNG.</li>
+    <li><strong>Shape-with-text</strong> (Buy ice cream / Has ice cream? / etc.) &mdash; baked PNG with the inset text included.</li>
+    <li><strong>Sections</strong> &mdash; treated as plain frames.</li>
+  </ul>
+
+  <h3>The dotted canvas backdrop</h3>
+  <p>FigJam's signature dotted-grid canvas isn't a Figma node &mdash; it's painted by FigJam itself behind whatever's on the page. Frames that look "white on left, dotted on right" actually have a transparent right half with the canvas dots showing through. FigSync detects FigJam files and injects a <code>_FigJamCanvasDots</code> Image as the lowest sibling under each page. The tile is 24&times;24 px, opaque, with a soft grey dot &mdash; matches FigJam's rendered look in side-by-side comparisons.</p>
+
+  <h3>Inline icons over text</h3>
+  <p>FigJam tutorial frames often place an icon (<code>.key</code> / <code>ctrl</code> / <code>esc</code>) <strong>over</strong> a run of whitespace inside a text node ("Press&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and drag"). Figma renders the space narrow enough to fit the icon; TMP renders it wider and forces an early wrap. FigSync rewrites runs of 3+ consecutive spaces as <code>&lt;space=Npx&gt;</code> TMP tags so the line wraps where Figma intends it to.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                 SETTINGS                     -->
+<!-- ============================================ -->
+<section class="section" id="settings">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128295;</span> Settings</h2>
+  <p class="section-desc">One ScriptableObject. Safe to commit.</p>
+
+  <p>Settings live as a ScriptableObject at <code>Assets/FigSync/FigSyncProjectSettings.asset</code>. Edit through the Hub window's tab views, or select the asset and use the Inspector.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Output Folder</code></td><td><code>Assets/FigSync/Generated</code></td><td>Where sprites, fonts, snapshots, and reports land. Must be inside <code>Assets/</code>.</td></tr>
+      <tr><td><code>Backend</code></td><td><code>UGUI</code></td><td>Target framework. UGUI is the shipping backend.</td></tr>
+      <tr><td><code>Force Refresh</code></td><td><code>false</code></td><td>Skips the 24h REST cache for the next sync. Use when Figma was edited very recently and you don't want a stale node tree.</td></tr>
+      <tr><td><code>Bridge Port</code></td><td><code>8473</code></td><td>Local HTTP port the Figma plugin pushes to. Change only on collision; tell the plugin to match.</td></tr>
+      <tr><td><code>Render Mode</code></td><td><code>Screen Space - Camera</code></td><td>Default Canvas render mode for new imports. Switch to World Space for VR/AR or 3D-anchored UI.</td></tr>
+      <tr><td><code>Debug Verbosity</code></td><td><code>Info</code></td><td>Console log level &mdash; Silent / Errors / Warnings / Info / Verbose. Verbose prints per-node decisions.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Tokens (Personal Access Token, OAuth refresh, Google Fonts API key) are stored separately in <code>EditorPrefs</code> with base64-XOR obfuscation. They never write to assets or version control.</p>
+</section>
+
+<!-- ============================================ -->
+<!--          KNOWN LIMITATIONS                  -->
+<!-- ============================================ -->
+<section class="section" id="limitations">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9888;</span> Known Limitations</h2>
+  <p class="section-desc">What FigSync doesn't fully render, why, and how to work around it.</p>
+
+  <details>
+    <summary>Gradients &mdash; capped at 4 stops</summary>
+    <div class="details-body">
+      <p>The SDF shader carries a 4-stop ramp uniform. Figma ramps with 5+ stops are flattened to first + last + two middle stops by <code>FigmaJsonDeserialiser.AppendStop</code>. Rare in practice.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Gradients &mdash; angular 2-stop seam</summary>
+    <div class="details-body">
+      <p><code>frac()</code> produces a hard edge at the axis direction for 2-stop angular ramps. Designers can hide this by adding a 3rd wrap-around stop whose colour matches the first stop at position 1.0.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Auto-layout &mdash; Wrap mode not implemented</summary>
+    <div class="details-body">
+      <p>Figma's <code>HORIZONTAL</code>, <code>VERTICAL</code>, and <code>GRID</code> auto-layout modes are wired end-to-end. <code>WRAP</code> (a horizontal layout that wraps to a new row when it overflows) falls through to free-position layout. Designs using wrap render with baked positions and won't reflow.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Auto-layout &mdash; Grid is uniform cells only</summary>
+    <div class="details-body">
+      <p>UGUI's <code>GridLayoutGroup</code> requires one <code>cellSize</code> for every cell. Figma's auto-grid model supports variable column widths and row heights ("track sizing"); FigSync flattens that to equal cells derived from frame size minus padding/gaps. Visually correct when the designer used "fill" track sizing across the board; non-uniform tracks lose their per-cell sizes.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Auto-layout &mdash; SPACE_BETWEEN uses injected spacers</summary>
+    <div class="details-body">
+      <p>UGUI's LayoutGroup has no native SPACE_BETWEEN, so FigSync inserts invisible <code>LayoutElement</code> GameObjects (marked <code>FigSyncLayoutSpacer</code>) between every adjacent pair of children. They absorb the leftover slack equally &mdash; visually the same as Figma's SPACE_BETWEEN. Side effect: N-1 extra GameObjects per SPACE_BETWEEN frame.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Auto-layout &mdash; constraints on flow children are ignored</summary>
+    <div class="details-body">
+      <p>When a child sits inside an auto-layout FRAME and isn't marked ABSOLUTE-positioned, its Figma constraints (Stretch / Center / Pin) don't drive its anchors &mdash; the parent's LayoutGroup owns placement. The child still resizes correctly when the LayoutGroup re-flows; it just can't independently stretch to parent edges the way a free-position child can. Designers who need that behaviour should toggle the child to "absolute position" in Figma.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Gradients &mdash; runtime Image.color.a tween ignored</summary>
+    <div class="details-body">
+      <p>Gradient sampling uses per-stop alpha as the output alpha, so per-stop fades work, but a runtime <code>Image.color.a</code> tween on the Graphic itself doesn't dim the gradient. Designers who want a runtime fade should add a transparent stop to the ramp (or animate a CanvasGroup parent).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Effects &mdash; LayerBlur on a frame with children falls back to PNG</summary>
+    <div class="details-body">
+      <p><code>LayerBlur</code> on a leaf node renders procedurally via SDF-edge widening. On a node with children, the procedural path can't blur the children, so the classifier routes the whole subtree to the Downloadable PNG path where Figma bakes the blur server-side. Slightly heavier on import, indistinguishable at runtime.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Mixed inline text &mdash; segment can't override base style downward</summary>
+    <div class="details-body">
+      <p>TMP's rich-text grammar has <code>&lt;b&gt;</code> / <code>&lt;i&gt;</code> / <code>&lt;u&gt;</code> / <code>&lt;s&gt;</code> to <em>turn flags on</em>, but no inline "force off" counterpart. If the node-level base style is bold and a segment is regular, the regular segment still renders bold. Pick the lightest weight as the base style and let segments add emphasis.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Mixed inline text &mdash; cross-family segments stay on the base family</summary>
+    <div class="details-body">
+      <p>TMP's <code>&lt;font="X"&gt;</code> tag only resolves under <code>Resources/Fonts &amp; Materials/</code>. FigSync writes baked atlases under the per-import output folder. The segment's weight + italic carry through (synth-bold / synth-italic from the base font); only the family doesn't switch. <code>DownloadFonts</code> still pulls the segment-specific TTF + .asset, so a future <code>TMP_StyleSheet</code> integration could close this gap.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>BackgroundBlur &mdash; Scene view shows smeared sample</summary>
+    <div class="details-body">
+      <p>The compositor's RenderTexture is filled by the Canvas's Render Camera. In Game view the rendering camera and the source camera match, so UVs line up. In Scene view the editor camera is rendering the consumer but the RT was filled by the source camera &mdash; UVs land on unrelated pixels and "smear" as the editor camera moves. Verify the look in Game view, not Scene view.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>BackgroundBlur &mdash; Overlay canvas not supported</summary>
+    <div class="details-body">
+      <p>Screen Space - Overlay bypasses Unity's camera-render pipeline, so there's no <code>Camera.Render</code> hook to snapshot canvas content. Switch the canvas to Screen Space - Camera and assign a Render Camera. The compositor picks up the change on its next tick.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Strokes &mdash; image-fill strokes don't render</summary>
+    <div class="details-body">
+      <p>The procedural path renders solid + gradient strokes. Image-fill strokes are not represented in the SDF shader and silently disappear. Rare; designers typically use solid colours for strokes.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Effects &mdash; inner shadow caps at 4 layers</summary>
+    <div class="details-body">
+      <p>Figma allows arbitrary stacked inner shadows; FigSync renders the first 4. Real designs with 5+ stacked inner shadows are essentially nonexistent.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Render pipelines &mdash; HDRP untested</summary>
+    <div class="details-body">
+      <p>Shaders are written in Built-in HLSL and ship URP-tested. HDRP variants haven't been validated end-to-end. The BackgroundBlur compositor specifically needs URP's render-graph to accept the depth-buffered RT.</p>
+    </div>
+  </details>
+
+  <p>This is the single source of truth for FigSync's known trade-offs. If you hit something not listed here, mail <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a> with a minimal repro.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             TROUBLESHOOTING                  -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Common failure modes, what they mean, how to recover.</p>
+
+  <h3>Sync errors</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>403 Forbidden from Figma</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">Your Personal Access Token doesn't have access to the file, or the token was revoked.</p>
+    <p class="action"><strong>What to do:</strong> In Figma, confirm you have at least view permission on the file. Generate a fresh token in <a href="https://www.figma.com/settings" target="_blank" rel="noopener">figma.com/settings</a> and paste it into <strong>Settings &rarr; Auth</strong>.</p>
+  </div>
+
+  <div class="error-code auto-retry">
+    <div class="error-code-head"><code>429 Rate Limited</code><span class="tag tag-platform">Auto-retry</span></div>
+    <p class="meaning">Too many Figma API requests in a short window.</p>
+    <p class="action"><strong>What to do:</strong> The pipeline waits the cooldown Figma returns in the <code>Retry-After</code> header and resumes automatically. If it keeps tripping, prefer the <a href="#plugin">Figma plugin</a> path &mdash; the plugin bundle isn't rate-limited.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>Bridge: port already in use</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">Another process is holding port 8473 (or your configured Bridge Port).</p>
+    <p class="action"><strong>What to do:</strong> Either close the offending process, or change Bridge Port in <strong>Settings &rarr; Auth</strong> and re-import the plugin manifest in Figma so they agree.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>TMP Essential Resources missing</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">The Text rendering relies on TMP's default fallback assets, which aren't in the project yet.</p>
+    <p class="action"><strong>What to do:</strong> Run <code>Window &rarr; TextMeshPro &rarr; Import TMP Essential Resources</code>, accept the import dialog, re-sync.</p>
+  </div>
+
+  <h3>Common issues</h3>
+
+  <details>
+    <summary>The whole canvas is white / nothing renders</summary>
+    <div class="details-body">
+      <p>The most common cause is that the Canvas's Render Camera was deleted between syncs. Check <code>FigSync Canvas</code> in the scene &mdash; its Canvas component should have <strong>Render Mode = Screen Space - Camera</strong> with a non-null Render Camera. Re-assign and the design appears.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Fonts are wrong / Inter when I asked for Roboto</summary>
+    <div class="details-body">
+      <p>Most often: the font wasn't on Google Fonts, fontsource, or any of the public CDNs. The diagnostic dialog at the end of the sync lists exactly which families didn't resolve. Drop the .ttf files into <code>Assets/FigSync/Generated/Fonts/</code> as <code>&lt;Family&gt;-&lt;weight&gt;.ttf</code> and re-sync.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>An icon appears blurry / pixelated</summary>
+    <div class="details-body">
+      <p>The node was routed to the PNG raster path and rendered at a smaller-than-display resolution. Try resizing the source frame in Figma (Figma's <code>/v1/images</code> renders at the frame's <code>absoluteRenderBounds</code>), or convert the node to a Vector if Figma can express it that way &mdash; vector nodes mesh procedurally and stay crisp at any scale.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>A shadow / corner radius is missing on one node</summary>
+    <div class="details-body">
+      <p>The node was probably classified Downloadable (raster path), in which case Figma's PNG already contains the shadow/corner baked in. If the PNG is missing the effect, check the effect's <em>Visible</em> toggle in Figma &mdash; FigSync respects it. For procedural-path nodes (solid colour frames), inspect the GameObject's <code>FigSyncRoundedCorner</code> and confirm the radii are non-zero.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Re-sync overwrote my edits</summary>
+    <div class="details-body">
+      <p>FigSync preserves edits on nodes whose hash didn't change. If a node's content changed in Figma, its hash changes, and the GameObject is rebuilt &mdash; that's the intended behaviour. To prevent that for a specific frame, untick it in the <a href="#diff">Diff Window</a> before clicking Continue; the frame stays as-is until you re-include it.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Sync hangs at DownloadFonts</summary>
+    <div class="details-body">
+      <p>Google Fonts or fontsource is unreachable, or your network is filtering them. Sync can complete without fonts &mdash; the import surfaces a <em>Missing fonts</em> dialog and you can drop TTFs in manually. If you're behind a corporate proxy, set the Google Fonts API key in <strong>Settings &rarr; Auth</strong> to use the Webfonts Developer API instead of the public CSS endpoint.</p>
+    </div>
+  </details>
+
+  <h3>Enable verbose logging when in doubt</h3>
+  <p>Set <strong>Debug Verbosity = Verbose</strong> in <strong>Settings &rarr; Debug</strong> and re-sync. Every step logs its inputs, decisions, and counts to the Console with the <code>[FigSync]</code> prefix. The diagnostic report at <code>Generated/_figsync_report.json</code> also captures the full per-node decision trace.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                  FAQ                         -->
+<!-- ============================================ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Quick answers to the questions that come up most.</p>
+
+  <details open>
+    <summary>Does FigSync work with FigJam?</summary>
+    <div class="details-body">
+      <p>Yes, through the <a href="#plugin">Figma plugin</a> path. FigJam-only node types (Sticky, ShapeWithText, Connector) aren't exposed by Figma's public REST API, so the plugin is required for FigJam files. Plain Figma Design files work over both paths.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does it work offline?</summary>
+    <div class="details-body">
+      <p>Yes, after the first sync. Each plugin push saves a <code>.figsync.zip</code> bundle under <code>Library/FigSync/Bridge/</code>; you can re-sync from that bundle without Figma open. The REST path requires internet to fetch the latest node tree (a 24-hour cache softens that).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I use the synced UI in builds (mobile / WebGL / console)?</summary>
+    <div class="details-body">
+      <p>Yes. The output is a plain Unity UGUI Canvas &mdash; sprites are <code>.png</code> assets, fonts are TMP <code>_SDF.asset</code>, layout is LayoutGroup + ContentSizeFitter. Nothing in the runtime is editor-only. FigSync's own runtime components (rounded corner, drop shadow, blur compositor) are plain MonoBehaviours that work in any build target.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does it support HDRP?</summary>
+    <div class="details-body">
+      <p>The UGUI canvas itself works on any pipeline. The shipping shaders target Built-in / URP and haven't been end-to-end-tested on HDRP. BackgroundBlur specifically needs URP's render-graph; on Built-in it works without the depth buffer. We'd love HDRP reports if you hit issues.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What about other UI frameworks (UI Toolkit etc.)?</summary>
+    <div class="details-body">
+      <p>UGUI is the shipping backend in v1.0. Other UI frameworks (UI Toolkit and similar) aren't supported today.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What happens to my scene if a sync fails halfway?</summary>
+    <div class="details-body">
+      <p>Steps before Draw are read-only &mdash; if they fail, the scene is untouched. Once Draw starts, the prior snapshot is loaded; if a step fails mid-Draw, the scene shows whatever was drawn up to that point, with a HelpBox naming the failing step. The hash snapshot is only written on full success, so the next sync diffs against the last <strong>known-good</strong> state &mdash; mid-failure runs don't poison the diff baseline.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can two designers work on the same file?</summary>
+    <div class="details-body">
+      <p>Yes &mdash; both sync the same URL. Each sync writes deterministically (same node id &rarr; same GameObject name &rarr; same file path), so a teammate pulling your branch and re-syncing produces the same scene. Commit the <code>Generated/</code> folder if you want the sprites + fonts to ship with the repo; or treat it as a build artifact and re-sync on first checkout.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>How big is the runtime overhead?</summary>
+    <div class="details-body">
+      <p>The synced Canvas is a plain UGUI Canvas. <code>FigSyncRoundedCorner</code> is a <code>BaseMeshEffect</code> that adds &lt;0.1 ms per canvas rebuild for typical screens. <code>FigSyncBackgroundBlurCompositor</code> samples one RenderTexture per consumer per frame &mdash; cheap on desktop, noticeable on mobile if you have 10+ blurred panels visible at once. Drop shadows are mesh-vertex effects, not extra draw calls.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>How do I roll back a bad sync?</summary>
+    <div class="details-body">
+      <p>Ctrl-Z. Every sync wraps its scene mutations in a single Undo group, so one undo reverts the entire sync. The Generated/ folder is also versionable &mdash; if you commit it, <code>git revert</code> rolls back the sprite/font side too.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>My team has multiple developers. Do we each need a license?</summary>
+    <div class="details-body">
+      <p>Yes. Per Unity Asset Store policy, each seat that uses the asset needs its own license.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--                SUPPORT                       -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128236;</span> Support</h2>
+  <p class="section-desc">Need help? Reach out.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">Bug reports, feature requests, licensing questions &mdash; reach out and we'll get back to you.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Check the <a href="#troubleshooting">Troubleshooting</a> section</li>
+        <li>Skim <a href="#limitations">Known Limitations</a></li>
+        <li>Set <strong>Debug Verbosity = Verbose</strong> and re-sync to capture context</li>
+        <li>Open <code>Generated/_figsync_report.json</code> &mdash; the failure is usually visible there</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful info to include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Unity version (e.g. <code>2022.3.30f1</code>)</li>
+        <li>FigSync version (<strong>v1.0.0</strong>)</li>
+        <li>Render pipeline (Built-in / URP / HDRP)</li>
+        <li>Auth path (Token / OAuth / Plugin)</li>
+        <li>Steps to reproduce + Console output</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Refunds within 14 days</strong> are handled by Unity directly via the <a href="https://assetstore.unity.com/help" target="_blank" rel="noopener">Asset Store FAQ</a>.</div>
+  </div>
+
+  <div class="card" style="text-align:center;padding:32px 24px;margin-top:20px;background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(244,114,182,0.08));border:1px solid var(--accent-glow);">
+    <div style="font-size:40px;margin-bottom:8px;">&#11088;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Enjoying FigSync?</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 20px;">A short Asset Store review helps other developers discover FigSync and keeps the updates flowing. It only takes 30 seconds.</p>
+    <a href="https://u3d.as/1oGH" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#11088; Leave a Review on the Asset Store
+    </a>
+    <p style="color:var(--text-dim);font-size:12px;margin-top:14px;"><a href="https://u3d.as/1oGH" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;">u3d.as/1oGH</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>FigSync v1.0.0 &middot; Built for Unity 2021.3+</p>
+  <p style="margin-top:8px;">Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a> &middot; Asset Store: <a href="https://u3d.as/1oGH" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">u3d.as/1oGH</a></p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section, .hero').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const h1 = s.querySelector('h1');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const id = s.id || (s.parentElement && s.parentElement.id) || '';
+  if (!id) return;
+  sections.push({
+    id: id,
+    title: h2 ? h2.textContent.trim() : (h1 ? h1.textContent.trim() : ''),
+    desc: desc ? desc.textContent.trim() : '',
+    content: s.textContent.toLowerCase(),
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// Active sidebar link via IntersectionObserver
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section[id], .hero[id]').forEach(s => observer.observe(s));
+
+// Close mobile sidebar on nav click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
