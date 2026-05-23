@@ -125,17 +125,15 @@
                 <li>Universal Render Pipeline (URP 17.0.4+)</li>
                 <li>TextMesh Pro (included with Unity)</li>
                 <li>Input System package (the template uses both legacy and the new Input System)</li>
-                <li><strong>NewestDevUI</strong> package (canonical UI / booster / dev-mode scaffolding &mdash; see the Folder Structure note below)</li>
             </ul>
 
             <h3>Installation</h3>
             <ol>
                 <li>Create a new Unity 6 project with the URP template, or open an existing URP project.</li>
-                <li>Import the <strong>Color Pixel Crush</strong> package. Confirm <code>Assets/ColorPixelCrush/</code> contains Scripts, Editor, Prefabs, Resources/Levels, Scenes/GameNew.unity, Audio, Documentation, and PostProcessing subfolders. The canonical HUD / Win-Lose / Booster / Developer-mode prefabs and scripts ship inside this single folder.</li>
-                <li>Open <code>Tools &gt; NewestDevUI &gt; Setup Wizard</code> and click <strong>&#9654; Run All Steps</strong>. This builds the Canvas, <code>GameHUD_Panel</code>, <code>LevelClearedPanel</code>, <code>GameOverPanel</code>, three Booster popups, the Developer-mode button, and instantiates the <code>BoosterManager</code> and <code>LoseWinPanelManager</code> prefabs into the active scene.</li>
-                <li>Open <code>Tools &gt; ColorPixelCrush &gt; Setup Wizard</code> and click <strong>&#9654; Run All Steps</strong>. This opens <code>GameNew.unity</code>, sets <code>EditorBuildSettings</code>, creates the <code>SoundManager</code> GameObject (if missing), auto-wires every audio clip in <code>Audio/</code> by name pattern, retargets the scene's <code>Volume.sharedProfile</code> to the HC post-processing volume, and audits player settings.</li>
-                <li>If you do not yet have levels on disk, open <code>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</code>, set count to 500, and click <strong>Generate</strong>.</li>
-                <li>Press Play to test the first level.</li>
+                <li>Import the <strong>Color Pixel Crush</strong> package. <code>Assets/ColorPixelCrush/</code> contains Scripts, Editor, Prefabs, Resources/Levels, Scenes/GameNew.unity, Audio, Documentation, and PostProcessing.</li>
+                <li>Open <code>Assets/ColorPixelCrush/Scenes/GameNew.unity</code> (the only scene). It ships <strong>fully set up</strong> &mdash; HUD, win/lose panels, the three boosters, the SoundManager, and post-processing are already wired and ready to play.</li>
+                <li>Press <strong>Play</strong> to test. The package already includes 500 levels under <code>Resources/Levels/</code>.</li>
+                <li>To make more levels use <code>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</code> (Procedural or Image mode); to edit them use <code>Tools &gt; ColorPixelCrush &gt; Level Editor</code>.</li>
             </ol>
 
             <h3>Quick Test</h3>
@@ -146,7 +144,7 @@
         <section id="folder-structure" class="section">
             <h2>Folder Structure</h2>
 
-            <p>This package ships as a <strong>single top-level folder</strong>, <code>ColorPixelCrush/</code>, containing everything &mdash; game-specific scripts and content plus the canonical UI / booster / developer-mode scaffolding (originally distributed as the <em>NewestDevUI</em> package, now folded in for single-folder Asset-Store publishing). Its scripts live in <code>Scripts/</code> (namespace <code>HypercasualGameEngine</code>), its prefabs in <code>Prefabs/</code>, its editor wizards in <code>Editor/</code>, its icons in <code>Textures/</code>, and stub references in <code>Samples/</code>.</p>
+            <p>This package ships as a <strong>single top-level folder</strong>, <code>ColorPixelCrush/</code>, containing everything &mdash; game-specific scripts and content plus the canonical UI / booster / developer-mode scaffolding (originally distributed as the <em>NewestDevUI</em> package, now folded in for single-folder Asset-Store publishing). Its scripts live in <code>Scripts/</code> (namespace <code>HypercasualGameEngine</code>), its prefabs in <code>Prefabs/</code>, its editor tools in <code>Editor/</code>, its icons in <code>Textures/</code>, and stub references in <code>Samples/</code>.</p>
 
             <div class="folder-structure">
 <span class="folder">ColorPixelCrush/</span>
@@ -160,13 +158,11 @@
 &#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUI-README.md</span> <span class="comment">&mdash; Shared UI-package reference (folded in)</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Editor/</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorPixelCrushSetupWizard.cs</span> <span class="comment">&mdash; Idempotent scene / settings check</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorPixelCrushWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (image import, palette, walls, validation)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Batch level generator (Procedural + Image modes)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorPixelCrushWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup (docs + Asset Store review)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Input Handling is not set to Both</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">NewestDevUISetupWizard.cs</span> <span class="comment">&mdash; Tools &gt; NewestDevUI &gt; Setup Wizard (builds the UI stack)</span>
-&#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUIWelcomePopup.cs</span> <span class="comment">&mdash; UI-scaffolding welcome popup</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">SceneCleaner.cs</span> <span class="comment">&mdash; One-click "remove missing scripts" cleanup</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Cannon / pixel / dock / conveyor materials</span>
 &#9474;
@@ -303,10 +299,10 @@
             <h3>Editor Tools (Assets/ColorPixelCrush/Editor/)</h3>
             <table>
                 <tr><th>Script</th><th>Description</th></tr>
-                <tr><td><code>LevelEditorWindow</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Level Editor</strong>. Two-pane visual editor; paints fill wall and cannon grid; saves JSON to <code>Resources/Levels/Level_N.json</code>.</td></tr>
-                <tr><td><code>AutoLevelGeneratorWindow</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</strong>. Append-mode, cancellable, 500 by default, seed control, red Delete-All.</td></tr>
-                <tr><td><code>ColorPixelCrushSetupWizard</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Setup Wizard</strong>. Idempotent. Creates the <code>SoundManager</code> GameObject when missing (does, doesn't just report); auto-wires audio by name pattern; retargets the Volume profile via <code>SerializedObject</code>; audits PlayerSettings.</td></tr>
-                <tr><td><code>ColorPixelCrushWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> welcome window with buttons for both setup wizards, the Level Editor, the Auto Level Generator, and the documentation.</td></tr>
+                <tr><td><code>LevelEditorWindow</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Level Editor</strong>. Two-pane editor: drag-drop a reference image to build a level, edit the per-level palette live, paint fill/cannon/wall cells, live completability validation + a Randomize-Shooters fix. Saves JSON to <code>Resources/Levels/Level_N.json</code>.</td></tr>
+                <tr><td><code>AutoLevelGeneratorWindow</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</strong>. Procedural + Image modes, append-mode, cancellable, 500 by default, seed control, ramping walls/mystery, red Delete-All.</td></tr>
+                <tr><td><code>ColorPixelCrushWelcomePopup</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Welcome</strong>. Auto-opens once per session (with a &ldquo;don't show on startup again&rdquo; opt-out); buttons for the documentation, the Level Editor, the Auto Level Generator, and an Asset Store review link.</td></tr>
+                <tr><td><code>InputSystemCheck</code> · <code>SceneCleaner</code></td><td>Editor safety helpers: input-handling warning, and a one-click &ldquo;remove missing scripts&rdquo; scene cleanup.</td></tr>
             </table>
         </section>
 
@@ -356,7 +352,7 @@
             <p>The 10 fixed colours map <code>TypeColor</code> &rarr; materials in <code>ColorData.asset</code> (Inspector-editable). Add more by extending the <code>TypeColor</code> enum in <code>LevelData.cs</code> and adding a material + mapping. Image-based levels ignore the fixed palette &mdash; they tint at runtime from each level's own <code>palette</code>, generated by Image mode. To re-roll an image's colours, regenerate that level (the K-means seed changes per generation).</p>
 
             <h3>Replace SFX</h3>
-            <p>Drop new clips into <code>Assets/ColorPixelCrush/Audio/</code> using canonical names (<code>LevelClear</code>, <code>LevelFail</code>, <code>Blocked</code>, <code>Success*</code>, <code>Fail*</code>, <code>Pop*</code>, <code>Switch*</code>). Re-run <strong>Tools &gt; ColorPixelCrush &gt; Setup Wizard</strong> to auto-wire them onto the SoundManager (only null fields are populated, so existing wires are preserved).</p>
+            <p>Drop new clips into <code>Assets/ColorPixelCrush/Audio/</code> and assign them on the <code>SoundManager</code> GameObject in <code>GameNew.unity</code> (Inspector fields for <code>LevelClear</code>, <code>LevelFail</code>, <code>Blocked</code>, <code>Success*</code>, <code>Fail*</code>, <code>Pop*</code>, <code>Switch*</code>). The clips ship pre-wired, so you only touch the fields you replace.</p>
 
             <h3>Replace Splash Screen / Icons</h3>
             <p><code>Edit &gt; Project Settings &gt; Player</code>. The template ships with Unity's default splash logo; swap for your own artwork before release. Bundle Version starts at <code>0.1.0</code>; bump per release.</p>
@@ -365,7 +361,7 @@
             <p>The <code>PixelOutline</code> shader exposes <code>_OutlineColor</code> and <code>_OutlineWidth</code>. The shared material is created at runtime by <code>OutlineController</code>; edit the defaults in that script or create a <code>Material</code> instance and assign it per object.</p>
 
             <h3>Post-Processing</h3>
-            <p>The scene's Global Volume references <code>Assets/ColorPixelCrush/PostProcessing/HC-PostProcessing-Volume.asset</code> at weight <code>0.8</code>. To change the look, edit the <code>VolumeProfile</code> directly; to re-weight, change the <code>weight</code> property on the Volume component in the scene (or re-run the setup wizard, which enforces <code>0.8</code>).</p>
+            <p>The scene's Global Volume references <code>Assets/ColorPixelCrush/PostProcessing/HC-PostProcessing-Volume.asset</code> at weight <code>0.8</code>. To change the look, edit the <code>VolumeProfile</code> directly; to re-weight, change the <code>weight</code> property on the Volume component in the scene.</p>
         </section>
 
         <!-- ==================== SUPPORT ==================== -->
