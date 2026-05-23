@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyper Chess - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #856404;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #d35400;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #f1fa8c;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #d35400;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #f1fa8c;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .feature-card h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Hyper Chess</h1>
+        <p class="subtitle">A Mate-in-N Chess Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a mate-in-N chess puzzle game. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Hyper Chess is a bite-sized chess puzzle game. Each level is a small board seeded with a few pieces; the player taps a white piece and slides it to deliver <strong>checkmate within the allotted number of moves</strong>. Levels are verified solvable by a built-in forced-mate solver, so every shipped puzzle has a guaranteed mate. The game ships with a per-level move budget, three boosters, a visual level editor, a batch automatic level generator, an outline highlight on selectable pieces, and a starter pack of generated JSON levels.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Mate-in-N Puzzles</h4>
+                    <p>Tap a piece, then a highlighted destination to move it. Deliver checkmate before the move counter runs out. Standard chess movement for Queen, Rook, Bishop, Knight, Pawn, and King.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>A full Unity Editor window with a visual board painter, per-cell piece placement, board-shape (hole) painting, and per-level move count + booster fields.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate hundreds of forced-mate puzzles with a concave difficulty curve, ±jitter, board-size and piece-count ramps, and constraint relaxation. Append-only &mdash; never overwrites hand-tuned levels.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Three Boosters</h4>
+                    <p>Level-gated boosters (Shuffle, Bomb, Unlock) with first-use tutorial popups, provided by the shared NewestDevUI UI/booster package.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Forced-Mate Solver</h4>
+                    <p>A minimax mate-verifier guarantees every generated puzzle has a forced checkmate at the target depth &mdash; no luck-based or unsolvable levels ship.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>JSON Levels + Starter Pack</h4>
+                    <p>Levels ship as plain JSON under <code>Resources/Levels/</code>. Regenerate or extend at any time with the Auto Level Generator.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package (the template uses both legacy and the new Input System &mdash; Active Input Handling must be <strong>Both</strong>)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the <strong>Hyper Chess</strong> package into your Unity project</li>
+                <li>Ensure the project uses the Universal Render Pipeline (check <code>Edit &gt; Project Settings &gt; Graphics</code>)</li>
+                <li>Open the game scene at <code>Assets/Hyper Chess/Scenes/GameNew.unity</code></li>
+                <li>Press Play &mdash; the scene ships fully set up: the HUD, win/lose panels, boosters, audio, and post-processing are already wired</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, tap a white piece &mdash; its legal destination cells highlight. Tap a highlighted cell to move. When your move delivers checkmate to the black king, the level is won, the win panel appears, and the next level loads automatically. If you run out of moves without mating, the lose panel appears and the level can be retried.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <div class="folder-structure">
+<span class="folder">Hyper Chess/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span> <span class="comment">&mdash; Shared materials (board, pieces)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; Sound effects (move, capture, blocked, level clear/fail, boosters)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; Reserved for ScriptableObject data (runtime uses JSON)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PuzzleEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (Tools/Hyper Chess/Level Editor)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Batch forced-mate level generator</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PuzzleGenerator.cs</span> <span class="comment">&mdash; Minimax forced-mate puzzle solver</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">HyperChessWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Input Handling is not set to Both</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span> <span class="comment">&mdash; HC-PostProcessing-Volume URP profile</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Game-specific prefabs</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; JSON levels (Level_1.json, Level_2.json, &hellip;)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ChessPieces.fbx</span> <span class="comment">&mdash; Piece meshes loaded by name</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">OutlineOnly.shader</span> <span class="comment">&mdash; Position-based inverted-hull outline (Resources = strip-safe)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; Runtime scripts (namespace: HypercasualGameEngine.Chess)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BoardManager.cs</span> <span class="comment">&mdash; Board build, tile + piece spawn, mesh/material setup, outline</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ChessPiece.cs</span> <span class="comment">&mdash; Piece base + Queen/Bishop/King/Rook/Knight/Pawn move rules</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ChessSimulator.cs</span> <span class="comment">&mdash; Pure board simulation (legal moves, check, clone)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameManager.cs</span> <span class="comment">&mdash; Scene orchestrator, selection, win/lose, dev hotkeys</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + level progression</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PuzzleData.cs</span> <span class="comment">&mdash; Level schema (rows, cols, moves, pieces, boosters)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Tile.cs</span> <span class="comment">&mdash; Board cell visual / highlight</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AddDropShadow.cs</span> <span class="comment">&mdash; Soft drop shadow under each piece</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Camera preset swap</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Single-AudioSource SFX player</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="comment">(sibling) </span><span class="folder">NewestDevUI/</span> <span class="comment">&mdash; Shared HUD / win-lose / booster / dev-mode package</span>
+    &#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; BoosterManager, LoseWinPanelManager, RotateClockwiseZ, &hellip;</span>
+    &#9492;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; BoosterManager + LoseWinPanelManager (HUD / win-lose / popup prefabs ship in the shared UI package)</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level displays a small board (with optional inactive &ldquo;hole&rdquo; cells), a handful of pieces, and a move counter. White moves first; the goal is to checkmate the black king within <code>movesLeft</code> moves. Tapping a white piece highlights its legal destinations; tapping a destination performs the move. Captures remove the enemy piece. Black responds with the solver's best defensive reply, so the player must find the forced mating line.</p>
+
+            <ul>
+                <li><strong>Tap to select</strong> &mdash; Tap a white piece to highlight its legal moves on the board tiles</li>
+                <li><strong>Tap to move</strong> &mdash; Tap a highlighted destination cell to slide the piece there; captures are automatic</li>
+                <li><strong>Legal moves only</strong> &mdash; Move generation respects piece rules and active (non-hole) cells via <code>ChessPiece.GetAvailableMoves</code></li>
+                <li><strong>Move budget</strong> &mdash; Each level carries a <code>movesLeft</code> count; running out without delivering mate loses the level</li>
+                <li><strong>Checkmate detection</strong> &mdash; <code>ChessSimulator</code> evaluates check / checkmate / stalemate on the (possibly non-rectangular) board</li>
+                <li><strong>Progression</strong> &mdash; On win, <code>LevelManager.AdvanceLevel()</code> runs before the scene reloads; on lose, the same level reloads</li>
+            </ul>
+
+            <h3>Pieces</h3>
+            <table>
+                <tr>
+                    <th>Piece</th>
+                    <th>Enum value</th>
+                    <th>Movement</th>
+                </tr>
+                <tr><td><code>Queen</code></td><td>0</td><td>Any number of cells orthogonally or diagonally</td></tr>
+                <tr><td><code>Bishop</code></td><td>1</td><td>Any number of cells diagonally</td></tr>
+                <tr><td><code>King</code></td><td>2</td><td>One cell in any direction</td></tr>
+                <tr><td><code>Rook</code></td><td>3</td><td>Any number of cells orthogonally</td></tr>
+                <tr><td><code>Knight</code></td><td>4</td><td>L-shaped jumps (2+1)</td></tr>
+                <tr><td><code>Pawn</code></td><td>5</td><td>Forward one cell; captures diagonally</td></tr>
+            </table>
+            <p>Piece <strong>color</strong> is serialised as <code>0 = White</code>, <code>1 = Black</code>.</p>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; The black king is checkmated within the move budget. <code>GameManager</code> routes through its win path (firing <code>SoundManager.Instance.PlayLevelClear()</code>) and shows the win panel; the level index advances and the next level loads.</li>
+                <li><strong>Lose</strong> &mdash; The move budget reaches 0 without checkmate (or the position becomes unwinnable). The lose panel appears and the Retry button reloads the current level.</li>
+            </ul>
+
+            <h3>Visual Feedback</h3>
+            <p>Selectable pieces use a position-based inverted-hull outline (<code>OutlineOnly.shader</code>, loaded from <code>Resources/</code> so it survives WebGL / IL2CPP shader stripping). Each piece also gets a soft drop shadow via <code>AddDropShadow</code>. Piece moves are eased with a short <code>SmoothMove</code> coroutine. A URP post-processing volume (Bloom, Color Adjustments, Tonemapping, Vignette) gives the consistent HyperCasual look.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Game-specific runtime scripts use the <code>HypercasualGameEngine.Chess</code> namespace. Shared UI / booster / win-lose / dev-mode scripts ship in the <strong>NewestDevUI</strong> package under the <code>HypercasualGameEngine</code> namespace.</p>
+
+            <h3>Core Scripts (Hyper Chess)</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>BoardManager</code></td>
+                    <td>Builds the board from the level's <code>rows</code>/<code>cols</code>/<code>layout</code>, spawns tiles and pieces, loads piece meshes from <code>Resources/ChessPieces.fbx</code>, applies white/black materials, and attaches the outline child + drop shadow. Exposes world-position helpers and the live <code>ChessPiece[,]</code> board state.</td>
+                </tr>
+                <tr>
+                    <td><code>ChessPiece</code></td>
+                    <td>Base piece component plus the <code>Queen</code>, <code>Bishop</code>, <code>King</code>, <code>Rook</code>, <code>Knight</code>, and <code>Pawn</code> subclasses. Each implements <code>GetAvailableMovesFrom</code> against the active-cell grid; <code>SmoothMove</code> eases the transform to the target.</td>
+                </tr>
+                <tr>
+                    <td><code>ChessSimulator</code></td>
+                    <td>Pure (no-GameObject) board model: <code>SimPiece</code> struct, legal-move generation, <code>IsSimInCheck</code>, and <code>CloneSim</code>. Used by both the runtime win/lose checks and the editor forced-mate solver.</td>
+                </tr>
+                <tr>
+                    <td><code>GameManager</code></td>
+                    <td>Scene orchestrator (<code>[DefaultExecutionOrder(-100)]</code>). Loads the current level via <code>LevelManager</code>, builds the board, handles piece selection + movement, evaluates win/lose, drives dev hotkeys, and routes the end-game to the win/lose panel.</td>
+                </tr>
+                <tr>
+                    <td><code>LevelManager</code></td>
+                    <td>Static loader. Reads <code>Resources/Levels/*.json</code> into a sorted list, tracks the current index under <code>PlayerPrefs</code> key <code>Hyper Chess_CurrentLevel</code>, and exposes <code>GetCurrentLevel</code>, <code>AdvanceLevel</code>, <code>GoToPreviousLevel</code>, <code>ForceReload</code>, plus editor-only disk-write helpers used by the Level Editor and generator.</td>
+                </tr>
+                <tr>
+                    <td><code>PuzzleData</code></td>
+                    <td>Serialisable level schema: <code>levelName</code>, <code>rows</code>, <code>cols</code>, <code>movesLeft</code>, a list of <code>PiecePlacement</code> (type/color/row/col), an optional <code>layout</code> bool list for board holes, and the three booster-count fields read by <code>BoosterManager.Init</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>Tile</code></td>
+                    <td>Single board cell. Stores its grid coordinate + base color and toggles a highlight when its cell is a legal destination for the selected piece.</td>
+                </tr>
+                <tr>
+                    <td><code>AddDropShadow</code></td>
+                    <td>Spawns a flattened unlit cylinder under each piece as a soft contact shadow.</td>
+                </tr>
+                <tr>
+                    <td><code>SoundManager</code></td>
+                    <td>Single-<code>AudioSource</code> SFX player with a master-volume slider. Exposes <code>PlaySelect</code>, <code>PlayMove</code>, <code>PlayCapture</code>, <code>PlayLevelClear</code>, <code>PlayLevelFail</code>, and the four booster methods (<code>PlayBlocked</code>, <code>PlayBoosterShuffle</code>, <code>PlayBoosterBomb</code>, <code>PlayBoosterUnlock</code>) required by NewestDevUI.</td>
+                </tr>
+                <tr>
+                    <td><code>CameraSwitcher</code></td>
+                    <td>Swaps camera presets / framing.</td>
+                </tr>
+            </table>
+
+            <h3>Shared Scripts (NewestDevUI namespace)</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>BoosterManager</code></td>
+                    <td>Owns the three booster buttons. Reads counts from the level via <code>Init(LevelData)</code> (aliased to <code>PuzzleData</code>), binds <code>Booster-Button-1/2/3</code> by name, shows a first-use tutorial popup <em>before</em> the can-run gate, and decrements counts + plays SFX when an effect fires.</td>
+                </tr>
+                <tr>
+                    <td><code>LoseWinPanelManager</code></td>
+                    <td>Owns the win / lose panels. <code>ShowWin()</code> writes the &ldquo;LEVEL N&rdquo; text and re-wires buttons; <code>LoadNextLevel()</code> calls <code>LevelManager.AdvanceLevel()</code> before reloading the scene so progression sticks.</td>
+                </tr>
+                <tr>
+                    <td><code>DeveloperSettingsController</code> / <code>DeveloperModeButton</code></td>
+                    <td>Developer panel + toggle button: next/previous level, trigger win/lose, unlock &amp; refill boosters, reset tutorial popups, with Shift+U/W/L/R hotkeys.</td>
+                </tr>
+                <tr>
+                    <td><code>RotateClockwiseZ</code>, <code>BoosterPopupIconMirror</code></td>
+                    <td>Small helpers for the win-screen radial shine and for mirroring a booster button's icon onto its popup.</td>
+                </tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr>
+                    <th>Script</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>PuzzleEditorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Hyper Chess &gt; Level Editor</code>). Left panel: level list (add / duplicate / reorder / delete-with-confirm / save-all / reload). Right panel: piece / layout / generate paint modes, board canvas, per-level rows/cols/moves and per-level fields.</td>
+                </tr>
+                <tr>
+                    <td><code>AutoLevelGeneratorWindow</code></td>
+                    <td>Unity Editor window (<code>Tools &gt; Hyper Chess &gt; Auto Level Generator</code>). Batch-generates forced-mate levels with a concave difficulty curve, jitter, append mode, one cancelable progress bar, constraint relaxation, and a red Delete-All.</td>
+                </tr>
+                <tr>
+                    <td><code>PuzzleGenerator</code></td>
+                    <td>The forced-mate solver. Places random pieces under the configured constraints and runs a minimax mate-verifier to guarantee a checkmate exists at the target depth before accepting a position.</td>
+                </tr>
+                <tr>
+                    <td><code>HyperChessWelcomePopup</code></td>
+                    <td>Welcome window shown once per session on project open (reopenable at <code>Tools &gt; Hyper Chess &gt; Welcome</code>). Hosts buttons for the documentation, the level tools (Level Editor, Auto Level Generator), and an Asset Store review link.</td>
+                </tr>
+                <tr>
+                    <td><code>InputSystemCheck</code></td>
+                    <td>Editor-time diagnostic that warns (and offers to fix) if Active Input Handling is set to &ldquo;New only&rdquo; &mdash; the template relies on the legacy <code>Input</code> class, so it requires <strong>Both</strong>.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+
+            <h3>Opening the Level Editor</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Hyper Chess &gt; Level Editor</code>. This opens a dedicated Editor window &mdash; no need to enter Play mode.</p>
+
+            <h3>Features</h3>
+            <ul>
+                <li><strong>Level List</strong> &mdash; Browse, add, duplicate, reorder, and delete levels (with confirmation) in the left panel</li>
+                <li><strong>Board Painter</strong> &mdash; Click cells on the board to place / erase pieces or toggle board holes</li>
+                <li><strong>Paint Modes</strong> &mdash; <code>Piece</code> (place a chosen piece + color), <code>Layout</code> (toggle active / hole cells), and <code>Generate</code> (seed the board from the forced-mate solver)</li>
+                <li><strong>Per-level Settings</strong> &mdash; Rows, columns, move budget, and the three booster counts</li>
+                <li><strong>Save / Reload</strong> &mdash; Save all levels to disk as JSON, or reload from disk</li>
+            </ul>
+
+            <h3>Level Storage</h3>
+            <p>All levels are stored as individual JSON files in <code>Assets/Hyper Chess/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, &hellip; The runtime loader uses <code>Resources.LoadAll&lt;TextAsset&gt;("Levels")</code> and sorts by the trailing number in each filename.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Automatic Level Generator</h2>
+
+            <p>The Automatic Level Generator batch-creates playable mate-in-N puzzles. Every generated level is verified by the minimax forced-mate solver, so each shipped puzzle has a guaranteed checkmate at its target depth.</p>
+
+            <h3>Opening the Tool</h3>
+            <p>In the Unity menu bar, go to <code>Tools &gt; Hyper Chess &gt; Auto Level Generator</code>.</p>
+
+            <h3>Settings</h3>
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Levels to Generate</strong></td>
+                    <td>How many new level files to create. New levels are appended after existing ones (never overwrites).</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramp to max by level</strong></td>
+                    <td>The level number by which the difficulty curve reaches its maximum (concave ease-out). Defaults to 12.</td>
+                </tr>
+                <tr>
+                    <td><strong>Max mate-in-N</strong></td>
+                    <td>Hardest puzzle depth the curve climbs to (1&ndash;6; default 4). Higher depths take longer to solve and lean more on constraint relaxation.</td>
+                </tr>
+                <tr>
+                    <td><strong>Difficulty jitter</strong></td>
+                    <td>Random &plusmn; variation applied to the curve so consecutive levels feel less uniform.</td>
+                </tr>
+                <tr>
+                    <td><strong>Rows / Cols / White pieces (early &amp; late)</strong></td>
+                    <td>Board-size and white-piece-count ranges; early levels lean toward the minimums, harder levels toward the maximums.</td>
+                </tr>
+                <tr>
+                    <td><strong>Max attempts / level</strong></td>
+                    <td>Solver attempt cap per slot before constraint relaxation kicks in.</td>
+                </tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Configure settings</strong> &mdash; adjust parameters in the Editor window</li>
+                <li><strong>Click &ldquo;Generate N Levels (append)&rdquo;</strong> &mdash; the tool detects existing levels and appends new ones</li>
+                <li><strong>For each level</strong>, the generator computes a difficulty value from the level's position on the curve (plus jitter), maps it to a mate depth + board size + piece counts, then asks <code>PuzzleGenerator</code> for a verified forced-mate position. If a hard slot can't be solved, it relaxes the constraints (lower depth, fewer pieces, smaller board) so every slot fills, then writes <code>Resources/Levels/Level_N.json</code>.</li>
+            </ol>
+
+            <div class="important-notice">
+                <h3>Non-Destructive</h3>
+                <p>The generator <strong>never overwrites</strong> existing level files. It always starts numbering from the next available index (e.g., if <code>Level_30</code> exists, new levels start from <code>Level_31</code>). Use the &ldquo;Delete ALL Levels&rdquo; button if you want to start fresh.</p>
+            </div>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+
+            <p>The game includes three booster slots, provided and managed by the shared NewestDevUI <code>BoosterManager</code>. Each booster has a configurable number of uses per level (set in the level JSON), an unlock level, and an optional first-use tutorial popup.</p>
+
+            <table>
+                <tr>
+                    <th>Booster</th>
+                    <th>Slot</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><strong>Shuffle</strong></td>
+                    <td><code>Booster-Button-1</code></td>
+                    <td>Driven by <code>PuzzleData.shuffleBoosterCount</code>. Unlocks at level 1 by default.</td>
+                </tr>
+                <tr>
+                    <td><strong>Bomb</strong></td>
+                    <td><code>Booster-Button-2</code></td>
+                    <td>Driven by <code>PuzzleData.bombBoosterCount</code>. Unlocks at level 2 by default.</td>
+                </tr>
+                <tr>
+                    <td><strong>Unlock</strong></td>
+                    <td><code>Booster-Button-3</code></td>
+                    <td>Driven by <code>PuzzleData.unlockBoosterCount</code>. Unlocks at level 3 by default.</td>
+                </tr>
+            </table>
+
+            <h3>Booster Buttons</h3>
+            <p>Booster buttons live in the scene under <code>GameHUD_Panel/BottomHolder</code>. Each button has a background overlay (<code>Bg</code>), a use-count badge (<code>PowerUpCountText</code>) showing remaining uses or the unlock level (<code>&quot;lvl N&quot;</code>) while locked, and a first-use popup. Popup keys are stored in <code>PlayerPrefs</code> (<code>BoosterPopupShown_Shuffle</code>, <code>BoosterPopupShown_Bomb</code>, <code>BoosterPopupShown_Unlock</code>).</p>
+
+            <div class="important-notice">
+                <h3>Booster effects are stubs</h3>
+                <p>NewestDevUI ships <code>BoosterManager</code> with placeholder <code>ApplyShuffle</code> / <code>ApplyBomb</code> / <code>ApplyUnlock</code> effect methods that log + play SFX. Wire them to your own chess-side effects (e.g. reshuffle the pieces, remove a defender, reveal the solution move) to give the boosters real gameplay impact.</p>
+            </div>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization Guide</h2>
+
+            <h3>Adding / Editing Levels</h3>
+            <p>Use the Level Editor for hand-authoring and the Auto Level Generator for bulk content. The recommended flow is to batch-generate the bulk of the levels, then hand-tune Levels 1&ndash;5 in the Level Editor for a gentle on-ramp.</p>
+
+            <h3>Piece Visuals</h3>
+            <p>Piece meshes are loaded from <code>Resources/ChessPieces.fbx</code> by name (queen, king, bishop, knight/horse, rook, pawn). White and black materials are created in <code>BoardManager.LoadMeshes</code>. Replace the FBX (keeping the per-piece mesh names) or tweak the material colors to retheme.</p>
+
+            <h3>Outline Highlight</h3>
+            <p>Selectable pieces use <code>Resources/OutlineOnly.shader</code> &mdash; a position-based inverted-hull outline that ships identical visuals on Editor, WebGL, and Android. Adjust <code>BoardManager.OutlineWidthFactor</code> (a fraction of the mesh height) to make the silhouette thicker or thinner.</p>
+
+            <h3>Audio</h3>
+            <p>Audio lives on a single <code>SoundManager</code> singleton. Drop new clips onto the <code>SoundManager</code> GameObject in the scene (clips live in <code>Assets/Hyper Chess/Audio/</code>). Add a new clip field + matching <code>PlayX()</code> method if you introduce a new gameplay event.</p>
+
+            <h3>JSON Level Format</h3>
+            <p>Each level is a JSON file with the following structure:</p>
+            <div class="code-block">
+{
+    <span class="string">"levelName"</span>: <span class="string">"Level 1"</span>,
+    <span class="string">"rows"</span>: 4,
+    <span class="string">"cols"</span>: 3,
+    <span class="string">"movesLeft"</span>: 2,
+    <span class="string">"shuffleBoosterCount"</span>: 0,
+    <span class="string">"bombBoosterCount"</span>: 0,
+    <span class="string">"unlockBoosterCount"</span>: 0,
+    <span class="string">"pieces"</span>: [
+        { <span class="string">"type"</span>: 2, <span class="string">"color"</span>: 1, <span class="string">"row"</span>: 0, <span class="string">"col"</span>: 1 },   <span class="comment">// King,  Black</span>
+        { <span class="string">"type"</span>: 0, <span class="string">"color"</span>: 0, <span class="string">"row"</span>: 3, <span class="string">"col"</span>: 0 }    <span class="comment">// Queen, White</span>
+    ],
+    <span class="string">"layout"</span>: []
+}
+            </div>
+            <p><code>type</code> is the <code>PieceType</code> enum value (<code>0</code>=Queen, <code>1</code>=Bishop, <code>2</code>=King, <code>3</code>=Rook, <code>4</code>=Knight, <code>5</code>=Pawn) and <code>color</code> is <code>0</code>=White / <code>1</code>=Black. <code>layout</code> is an optional row-major <code>bool</code> array of length <code>rows&times;cols</code> marking active (<code>true</code>) vs hole (<code>false</code>) cells; an empty / omitted list means a full rectangle. Grid coordinates are zero-indexed with <code>(0,0)</code> at the top-left.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+
+            <h3>Common Issues</h3>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>No levels load / empty board appears</td>
+                    <td>Ensure JSON level files exist in <code>Assets/Hyper Chess/Resources/Levels/</code> with the naming convention <code>Level_1.json</code>, <code>Level_2.json</code>, etc. Use the Auto Level Generator to create levels if the folder is empty.</td>
+                </tr>
+                <tr>
+                    <td>Pink / magenta materials on objects</td>
+                    <td>The project requires URP. Go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned, and that the <code>Settings/</code> folder contains valid URP assets.</td>
+                </tr>
+                <tr>
+                    <td>Outline / highlight not visible</td>
+                    <td>The outline shader must live under a <code>Resources/</code> folder (<code>Assets/Hyper Chess/Resources/OutlineOnly.shader</code>) so it survives shader stripping in builds. If the silhouette is too thin, raise <code>BoardManager.OutlineWidthFactor</code>.</td>
+                </tr>
+                <tr>
+                    <td>HUD / win-lose panels / boosters missing</td>
+                    <td>The scene ships with the full UI already built. If you deleted part of it, re-import the package to restore <code>Assets/Hyper Chess/Scenes/GameNew.unity</code>.</td>
+                </tr>
+                <tr>
+                    <td>Booster buttons don't respond</td>
+                    <td>Ensure <code>GameHUD_Panel/BottomHolder</code> contains children named <code>Booster-Button-1</code>, <code>Booster-Button-2</code>, <code>Booster-Button-3</code>, each with a <code>Button</code> component. If you added a <code>Canvas</code> for sorting, also add a <code>GraphicRaycaster</code>.</td>
+                </tr>
+                <tr>
+                    <td>First-use booster popups never show</td>
+                    <td>The popups <code>Booster-Popup-1/2/3</code> must exist in the scene (inactive). <code>BoosterManager</code> uses an inactive-aware scan, so don't rename them. To replay the tutorial, click &ldquo;Reset Booster Popups&rdquo; on the Developer Settings panel.</td>
+                </tr>
+                <tr>
+                    <td>No sound</td>
+                    <td>Select the <code>SoundManager</code> GameObject in the scene and confirm its clip fields are assigned (clips live in <code>Assets/Hyper Chess/Audio/</code>) and that master volume is above 0.</td>
+                </tr>
+                <tr>
+                    <td>Level 2 never loads after a win (only Level 1 repeats)</td>
+                    <td>Progression runs through <code>LevelManager.AdvanceLevel()</code> inside <code>LoseWinPanelManager.LoadNextLevel()</code>. Ensure the win panel's Continue button is wired (it ships wired in the scene) and that runtime <code>PuzzleData</code> uses <code>HideFlags.HideAndDontSave</code> if you create it in code.</td>
+                </tr>
+            </table>
+
+            <h3>Tips</h3>
+            <ul>
+                <li>Use the <strong>Developer Settings Panel</strong> in Play mode to quickly navigate levels, trigger win / lose, and unlock / refill boosters</li>
+                <li>The <strong>Auto Level Generator</strong> is the fastest way to populate the game &mdash; generate hundreds of verified mate puzzles, then hand-tune Levels 1&ndash;5 in the Level Editor</li>
+                <li><strong>Max mate-in-N</strong> defaults to 4; lower it to 2 for much faster generation if you don't need deep mates</li>
+                <li>The scene ships fully wired &mdash; just open <code>GameNew.unity</code> and press Play; no setup step is required</li>
+                <li>Back up your <code>Resources/Levels/</code> folder regularly</li>
+            </ul>
+
+            <h3>Contact Us</h3>
+            <p>If you get stuck or have any issues, feel free to reach out to us at <a href="mailto:ragendom@gmail.com" style="color: #d35400; font-weight: bold;">ragendom@gmail.com</a>. We are happy to help!</p>
+
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Hyper Chess &mdash; A Mate-in-N Chess Puzzle Template for Unity</p>
+        <p>&copy; 2026 &mdash; Built with the HyperCasual Game Engine</p>
+    </div>
+</body>
+</html>
