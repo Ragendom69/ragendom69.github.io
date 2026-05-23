@@ -358,13 +358,16 @@
             <div class="folder-structure">
 <span class="folder">Hyper Chess/</span>
 &#9474;
-&#9500;&#9472;&#9472; <span class="folder">Art/</span> <span class="comment">&mdash; Shared materials (board, pieces)</span>
+&#9500;&#9472;&#9472; <span class="folder">Art/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; board / piece materials + booster &amp; UI icons</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; Sound effects (move, capture, blocked, level clear/fail, boosters)</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; Reserved for ScriptableObject data (runtime uses JSON)</span>
 &#9474;
-&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Documentation.html</span> <span class="comment">&mdash; this file</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUI-README.md</span> <span class="comment">&mdash; shared UI package notes</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Editor/</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">PuzzleEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (Tools/Hyper Chess/Level Editor)</span>
@@ -375,31 +378,35 @@
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span> <span class="comment">&mdash; HC-PostProcessing-Volume URP profile</span>
 &#9474;
-&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Game-specific prefabs</span>
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; GameHUD_Panel, LevelClearedPanel, GameOverPanel, Popup_Powerup_Picker, DeveloperModeButton, BoosterManager, LoseWinPanelManager</span>
 &#9474;
 &#9500;&#9472;&#9472; <span class="folder">Resources/</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; JSON levels (Level_1.json, Level_2.json, &hellip;)</span>
 &#9474;   &#9500;&#9472;&#9472; <span class="file">ChessPieces.fbx</span> <span class="comment">&mdash; Piece meshes loaded by name</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="file">OutlineOnly.shader</span> <span class="comment">&mdash; Position-based inverted-hull outline (Resources = strip-safe)</span>
 &#9474;
+&#9500;&#9472;&#9472; <span class="folder">Samples/</span> <span class="comment">&mdash; LevelManager / SoundManager reference stubs</span>
+&#9474;
 &#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
 &#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
 &#9474;
-&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; Runtime scripts (namespace: HypercasualGameEngine.Chess)</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">BoardManager.cs</span> <span class="comment">&mdash; Board build, tile + piece spawn, mesh/material setup, outline</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">ChessPiece.cs</span> <span class="comment">&mdash; Piece base + Queen/Bishop/King/Rook/Knight/Pawn move rules</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">ChessSimulator.cs</span> <span class="comment">&mdash; Pure board simulation (legal moves, check, clone)</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">GameManager.cs</span> <span class="comment">&mdash; Scene orchestrator, selection, win/lose, dev hotkeys</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + level progression</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">PuzzleData.cs</span> <span class="comment">&mdash; Level schema (rows, cols, moves, pieces, boosters)</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">Tile.cs</span> <span class="comment">&mdash; Board cell visual / highlight</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">AddDropShadow.cs</span> <span class="comment">&mdash; Soft drop shadow under each piece</span>
-&#9474;   &#9500;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Camera preset swap</span>
-&#9474;   &#9492;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Single-AudioSource SFX player</span>
-&#9474;
-&#9492;&#9472;&#9472; <span class="comment">(sibling) </span><span class="folder">NewestDevUI/</span> <span class="comment">&mdash; Shared HUD / win-lose / booster / dev-mode package</span>
-    &#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; BoosterManager, LoseWinPanelManager, RotateClockwiseZ, &hellip;</span>
-    &#9492;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; BoosterManager + LoseWinPanelManager (HUD / win-lose / popup prefabs ship in the shared UI package)</span>
+&#9492;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; Runtime scripts (namespaces HypercasualGameEngine.Chess + HypercasualGameEngine)</span>
+    &#9500;&#9472;&#9472; <span class="file">BoardManager.cs</span> <span class="comment">&mdash; Board build, tile + piece spawn, mesh/material setup, outline</span>
+    &#9500;&#9472;&#9472; <span class="file">ChessPiece.cs</span> <span class="comment">&mdash; Piece base + Queen/Bishop/King/Rook/Knight/Pawn move rules</span>
+    &#9500;&#9472;&#9472; <span class="file">ChessSimulator.cs</span> <span class="comment">&mdash; Pure board simulation (legal moves, check, clone)</span>
+    &#9500;&#9472;&#9472; <span class="file">GameManager.cs</span> <span class="comment">&mdash; Scene orchestrator, selection, win/lose, dev hotkeys</span>
+    &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + level progression</span>
+    &#9500;&#9472;&#9472; <span class="file">PuzzleData.cs</span> <span class="comment">&mdash; Level schema (rows, cols, moves, pieces, boosters)</span>
+    &#9500;&#9472;&#9472; <span class="file">Tile.cs</span> <span class="comment">&mdash; Board cell visual / highlight</span>
+    &#9500;&#9472;&#9472; <span class="file">AddDropShadow.cs</span> <span class="comment">&mdash; Soft drop shadow under each piece</span>
+    &#9500;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Camera preset swap</span>
+    &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Single-AudioSource SFX player</span>
+    &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; Booster row, counts, first-use popups</span>
+    &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Win / Lose panels + next-level flow</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Dev panel (level nav, win/lose, booster debug)</span>
+    &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs</span> <span class="comment">&mdash; Toggles the dev panel</span>
+    &#9500;&#9472;&#9472; <span class="file">RotateClockwiseZ.cs</span> <span class="comment">&mdash; Win-screen radial shine</span>
+    &#9492;&#9472;&#9472; <span class="file">BoosterPopupIconMirror.cs</span> <span class="comment">&mdash; Mirrors a booster icon onto its popup</span>
             </div>
         </section>
 
