@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Pixel Crush - Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .header { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); color: white; padding: 60px 20px; text-align: center; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header .subtitle { font-size: 1.2rem; opacity: 0.9; }
+        .header .version { margin-top: 15px; font-size: 0.9rem; opacity: 0.8; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .important-notice { background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); border-left: 4px solid #ffc107; padding: 20px; margin-bottom: 40px; border-radius: 0 8px 8px 0; }
+        .important-notice h3 { color: #856404; margin-bottom: 10px; }
+        .important-notice p { color: #856404; }
+        .section { background: white; border-radius: 8px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .section h2 { color: #d35400; border-bottom: 2px solid #e67e22; padding-bottom: 10px; margin-bottom: 20px; }
+        .section h3 { color: #444; margin: 20px 0 10px 0; }
+        .folder-structure { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; overflow-x: auto; white-space: pre; line-height: 1.5; }
+        .folder-structure .folder { color: #f1fa8c; }
+        .folder-structure .file { color: #8be9fd; }
+        .folder-structure .comment { color: #6272a4; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #d35400; color: white; }
+        tr:hover { background: #f5f5f5; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9em; }
+        .code-block { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; overflow-x: auto; margin: 15px 0; }
+        .code-block .keyword { color: #ff79c6; }
+        .code-block .class { color: #8be9fd; }
+        .code-block .string { color: #f1fa8c; }
+        .code-block .comment { color: #6272a4; }
+        ul { margin: 15px 0; padding-left: 25px; }
+        li { margin: 8px 0; }
+        ol { margin: 15px 0; padding-left: 25px; }
+        ol li { margin: 8px 0; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 20px 0; }
+        .feature-card { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #e67e22; }
+        .feature-card h4 { color: #d35400; margin-bottom: 10px; }
+        .nav { background: white; padding: 15px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nav ul { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; gap: 15px; }
+        .nav a { color: #d35400; text-decoration: none; padding: 8px 15px; border-radius: 4px; transition: background 0.3s; }
+        .nav a:hover { background: #e67e22; color: white; }
+        .color-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 3px; vertical-align: middle; margin-right: 6px; border: 1px solid #ccc; }
+        .footer { text-align: center; padding: 30px; color: #666; background: white; margin-top: 40px; }
+        @media (max-width: 768px) { .header h1 { font-size: 1.8rem; } .nav ul { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Color Pixel Crush</h1>
+        <p class="subtitle">A Tap-Cannon Colour-Matching Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a tap-cannon colour-matching hypercasual game. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Color Pixel Crush is a tap-cannon colour-matching puzzle where players tap cannons in a small tap-out grid to fire them onto a dock conveyor; docked cannons then fire bullets at a larger wall of coloured pixels. When a cannon's colour matches a pixel it destroys that pixel and counts down. Drain every pixel before any dock stalls to win the level. Cannons are only tappable when they have a clear path out (highlighted with an outline; blocked ones desaturate), and levels add <strong>wall obstacles</strong> and <strong>mystery (hidden-colour) cannons</strong> for depth. The game ships with three working boosters, a visual JSON-backed level editor, and an automatic level generator that can build levels procedurally <em>or from real images</em> &mdash; turning any picture into a playable colour-matching level.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Tap &amp; Fire Cannons</h4>
+                    <p>Tap a cannon in the tap-out grid to send it sliding onto the conveyor. Once docked, it auto-raycasts its coloured bullet at the pixel wall and drains same-colour pixels until its ammo runs out.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Conveyor-Driven Dock Queue</h4>
+                    <p>Dock tiles cycle along a conveyor belt so cannons keep moving into and out of firing position. Timing matters &mdash; pick the right cannon for the column that needs draining next.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Level Editor</h4>
+                    <p>A two-pane Unity Editor window with ▲/▼ reorder, Add / Duplicate / Delete(confirm), green Save All, paint modes for both the fill wall and the cannon grid, and per-level booster counts.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Two modes &mdash; <strong>Procedural</strong> (concave difficulty curve, seed, &plusmn;7% jitter) and <strong>Image</strong> (quantizes any image into a level via K-means). Both ramp wall obstacles &amp; mystery cannons with difficulty. Append-only, cancellable, red Delete-All. Default: 500 levels.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Three Boosters</h4>
+                    <p><strong>Block Shuffle</strong> (rearranges the picture blocks), <strong>Magic Select</strong> (pull out a blocked cannon), and <strong>Cannon Shuffle</strong> (reshuffle the cannon grid). Gated per-level, each with a one-time tutorial popup on first click.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>JSON Levels + Starter Pack</h4>
+                    <p>Levels ship as plain JSON under <code>Resources/Levels/Level_N.json</code>. The Level Editor saves, reorders, and reloads them; the generator batches 500+ in minutes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP 17.0.4+)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package (the template uses both legacy and the new Input System)</li>
+                <li><strong>NewestDevUI</strong> package (canonical UI / booster / dev-mode scaffolding &mdash; see the Folder Structure note below)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Create a new Unity 6 project with the URP template, or open an existing URP project.</li>
+                <li>Import the <strong>Color Pixel Crush</strong> package. Confirm <code>Assets/ColorPixelCrush/</code> contains Scripts, Editor, Prefabs, Resources/Levels, Scenes/GameNew.unity, Audio, Documentation, and PostProcessing subfolders. The canonical HUD / Win-Lose / Booster / Developer-mode prefabs and scripts ship inside this single folder.</li>
+                <li>Open <code>Tools &gt; NewestDevUI &gt; Setup Wizard</code> and click <strong>&#9654; Run All Steps</strong>. This builds the Canvas, <code>GameHUD_Panel</code>, <code>LevelClearedPanel</code>, <code>GameOverPanel</code>, three Booster popups, the Developer-mode button, and instantiates the <code>BoosterManager</code> and <code>LoseWinPanelManager</code> prefabs into the active scene.</li>
+                <li>Open <code>Tools &gt; ColorPixelCrush &gt; Setup Wizard</code> and click <strong>&#9654; Run All Steps</strong>. This opens <code>GameNew.unity</code>, sets <code>EditorBuildSettings</code>, creates the <code>SoundManager</code> GameObject (if missing), auto-wires every audio clip in <code>Audio/</code> by name pattern, retargets the scene's <code>Volume.sharedProfile</code> to the HC post-processing volume, and audits player settings.</li>
+                <li>If you do not yet have levels on disk, open <code>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</code>, set count to 500, and click <strong>Generate</strong>.</li>
+                <li>Press Play to test the first level.</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, tap a cannon on the bottom tap-out grid; it slides onto the conveyor and docks. Docked cannons auto-fire same-colour bullets at the pixel wall. When every pixel is cleared, <code>SoundManager.Instance.PlayLevelClear()</code> fires and the next level loads automatically after the win panel is shown. If a dock stalls with unmatchable colours, the lose panel appears. Arrow-Left / Arrow-Right jump between levels in the Editor for quick iteration.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <p>This package ships as a <strong>single top-level folder</strong>, <code>ColorPixelCrush/</code>, containing everything &mdash; game-specific scripts and content plus the canonical UI / booster / developer-mode scaffolding (originally distributed as the <em>NewestDevUI</em> package, now folded in for single-folder Asset-Store publishing). Its scripts live in <code>Scripts/</code> (namespace <code>HypercasualGameEngine</code>), its prefabs in <code>Prefabs/</code>, its editor wizards in <code>Editor/</code>, its icons in <code>Textures/</code>, and stub references in <code>Samples/</code>.</p>
+
+            <div class="folder-structure">
+<span class="folder">ColorPixelCrush/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; SFX clips (LevelClear, LevelFail, Blocked, Success/Fail/Pop/Switch pools)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; Legacy ScriptableObject assets (runtime uses JSON under Resources/Levels/)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Documentation.html</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUI-README.md</span> <span class="comment">&mdash; Shared UI-package reference (folded in)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorPixelCrushSetupWizard.cs</span> <span class="comment">&mdash; Idempotent scene / settings check</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorPixelCrushWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Input Handling is not set to Both</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">NewestDevUISetupWizard.cs</span> <span class="comment">&mdash; Tools &gt; NewestDevUI &gt; Setup Wizard (builds the UI stack)</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">NewestDevUIWelcomePopup.cs</span> <span class="comment">&mdash; UI-scaffolding welcome popup</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Cannon / pixel / dock / conveyor materials</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Models/</span> <span class="comment">&mdash; Cannon, pedestal, wall, and dock meshes</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">HC-PostProcessing-Volume.asset</span> <span class="comment">&mdash; Shared HC URP profile</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">HC-PostProcessing-Volume.asset.meta</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Gameplay: Cannon, Dock, DockTemp, FillItem, Pedestal, Wall, conveyor-arrow, Smoke, Particle System; UI (folded in): GameHUD_Panel, LevelClearedPanel, GameOverPanel, Popup_Powerup_Picker, DeveloperModeButton, BoosterManager, LoseWinPanelManager</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">PixelOutline.shader</span> <span class="comment">&mdash; Position-based inverted-hull outline (WebGL / IL2CPP safe)</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; JSON levels (Level_1.json, Level_2.json, &hellip;)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; Runtime scripts (namespaces: ColorPixelCrush.Scripts + HypercasualGameEngine)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Cannon.cs</span> <span class="comment">&mdash; Cannon entity (colour, ammo, raycast, linerenderer)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Dock.cs</span> <span class="comment">&mdash; Dock tile (cannon slot, number label)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">FillItem.cs</span> <span class="comment">&mdash; Pixel cell on the fill wall</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">FLS.cs</span> <span class="comment">&mdash; Path-finding helper (shortest path to bottom)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameLevel.cs</span> <span class="comment">&mdash; Grid init, conveyor loop, fire/destroy animations, win/lose detection</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">InputManager.cs</span> <span class="comment">&mdash; Touch / mouse tap routing to Cannon.MoveOut</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorData.cs</span> <span class="comment">&mdash; Colour &rarr; material + bullet-material mapping (ScriptableObject)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Serialisable level descriptor + three booster counts</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelDataEditor.cs</span> <span class="comment">&mdash; Custom editor for in-Inspector painting</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + PREFS_KEY ColorPixelCrush_CurrentLevel</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; Singleton audio hub with booster Play methods</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorPixelCrushGameManager.cs</span> <span class="comment">&mdash; [DefaultExecutionOrder(-100)] state machine + TriggerWin/Lose</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">OutlineController.cs</span> <span class="comment">&mdash; Per-object outline toggle, shared material</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; Shared UI: 3-booster logic + popup-before-can-gate (HypercasualGameEngine)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Shared UI: win/lose panels + button re-wire on show</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">DeveloperModeButton.cs</span> / <span class="file">DeveloperSettingsController.cs</span> <span class="comment">&mdash; Shared dev-mode panel + hotkeys</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">BoosterPopupIconMirror.cs</span> / <span class="file">RotateClockwiseZ.cs</span> <span class="comment">&mdash; Shared UI helpers</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Samples/</span> <span class="comment">&mdash; LevelManager / SoundManager stub references (.cs.txt)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; Background art, icon art, and 27 booster / decoration icons (folded in)</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">ColorPixelCrushGameAssets/</span> <span class="comment">&mdash; Additional art assets</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Every level carries a <strong>tap-out grid</strong> of cannons and a <strong>fill wall</strong> of coloured pixels. The player taps a cannon; if it can reach the bottom row via <code>FLS.FindShortestPathToBottom</code> it slides off the grid and lands on the nearest empty dock on the conveyor. Docked cannons raycast their bullet toward the wall; every frame a matching-colour <code>FillItem</code> sits in the bullet's path it is destroyed and the cannon's ammo decrements by one. When a cannon's ammo hits zero it is destroyed, a light particle bursts, and its dock frees up.</p>
+
+            <ul>
+                <li><strong>Clickable feedback</strong> &mdash; Only cannons with a clear path to the exit edge (BFS via <code>FLS.FindShortestPathToBottom</code>) are tappable. Clickable cannons get a crisp <strong>outline</strong>; non-clickable ones <strong>desaturate</strong> toward grey, so it's always obvious what you can tap.</li>
+                <li><strong>Wall obstacles</strong> &mdash; Levels can place impassable wall cells in the tap-out grid (<code>LevelData.wallCells</code>). Cannons must path <em>around</em> them, so walls shape which cannons are reachable.</li>
+                <li><strong>Mystery cannons</strong> &mdash; A cannon flagged <code>isMystery</code> hides its colour behind a grey body with a &ldquo;?&rdquo; and is not clickable until an <em>adjacent cannon is removed</em>, which reveals its true colour.</li>
+                <li><strong>Conveyor loop</strong> &mdash; Docks cycle along the conveyor belt every <code>durationInLoop</code> seconds; arrows visualise direction</li>
+                <li><strong>Raycast fire</strong> &mdash; Docked cannons check <code>Physics.Raycast</code> forward; only same-colour <code>FillItem</code> hits count</li>
+                <li><strong>Grid gravity</strong> &mdash; When a pixel is destroyed, the pixels above fall down via <code>MoveFillItem</code> coroutines</li>
+                <li><strong>Win</strong> &mdash; All fill pixels cleared &rarr; <code>GameLevel.WinGame()</code> &rarr; <code>ColorPixelCrushGameManager.TriggerWin()</code> (plays the win SFX, then shows the panel)</li>
+                <li><strong>Lose</strong> &mdash; Every docked cannon's colour has no reachable pixel on the wall for one full second &rarr; <code>GameLevel.LoseGame()</code> &rarr; <code>TriggerLose()</code></li>
+            </ul>
+
+            <h3>Colour Palette</h3>
+            <p>Procedural and hand-made levels use <strong>10 fixed colours</strong> from the <code>TypeColor</code> enum, each mapped to a material in <code>ColorData.asset</code>:</p>
+            <table>
+                <tr><th>Key</th><th>Colour</th><th>Key</th><th>Colour</th></tr>
+                <tr>
+                    <td><code>Yellow</code></td><td><span class="color-swatch" style="background:#F2D933;"></span> Yellow</td>
+                    <td><code>Blue</code></td><td><span class="color-swatch" style="background:#2E73ED;"></span> Blue</td>
+                </tr>
+                <tr>
+                    <td><code>Orange</code></td><td><span class="color-swatch" style="background:#F28C26;"></span> Orange</td>
+                    <td><code>Purple</code></td><td><span class="color-swatch" style="background:#9E42DB;"></span> Purple</td>
+                </tr>
+                <tr>
+                    <td><code>Brown</code></td><td><span class="color-swatch" style="background:#8C5933;"></span> Brown</td>
+                    <td><code>Pink</code></td><td><span class="color-swatch" style="background:#F575B8;"></span> Pink</td>
+                </tr>
+                <tr>
+                    <td><code>Red</code></td><td><span class="color-swatch" style="background:#E62E2E;"></span> Red</td>
+                    <td><code>Cyan</code></td><td><span class="color-swatch" style="background:#29D1DB;"></span> Cyan</td>
+                </tr>
+                <tr>
+                    <td><code>Green</code></td><td><span class="color-swatch" style="background:#33BD52;"></span> Green</td>
+                    <td><code>Magenta</code></td><td><span class="color-swatch" style="background:#EB2E9E;"></span> Magenta</td>
+                </tr>
+            </table>
+            <p><strong>Image-based levels carry their own palette.</strong> When the Auto Level Generator runs in Image mode, each level stores a per-level RGB palette (the dominant colours extracted from the source image) in <code>LevelData.palette</code>; at runtime the fill blocks and cannons are tinted to those exact colours, so the level reproduces the original picture. Levels with an empty palette fall back to the fixed 10 colours above.</p>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; Every pixel in <code>fillGrid</code> is destroyed. Star particles burst on the wall, <code>SoundManager.Instance.PlayLevelClear()</code> fires, the level index advances via <code>LevelManager.AdvanceLevel()</code>, and the next level loads automatically.</li>
+                <li><strong>Lose</strong> &mdash; <code>CheckLose</code> finds no path from any docked cannon to a matching pixel for one full second. The Retry button reloads the current level.</li>
+            </ul>
+
+            <h3>Animations &amp; Feedback</h3>
+            <p>Cannons bob on fire (<code>AnimationFireCannon</code>), arc-and-scale to zero on completion (<code>AnimationDestroyCannon</code>), and conveyor docks use <code>Vector3.Lerp</code> coroutines for smooth motion. Pixels fade to white before destruction (<code>AnimationDestroyFillItem</code>). Light and smoke particle systems accompany destroy events. No DOTween dependency &mdash; every animation is a hand-written coroutine.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Game-specific runtime scripts use the <code>ColorPixelCrush.Scripts</code> namespace. Editor tools live under <code>ColorPixelCrush.EditorTools</code>. Shared engine / UI scripts (<code>LevelManager</code>, <code>SoundManager</code>, <code>ColorPixelCrushGameManager</code>, <code>LoseWinPanelManager</code>, <code>BoosterManager</code>, <code>DeveloperModeButton</code>, <code>DeveloperSettingsController</code>, <code>InputSystemCheck</code>) live under <code>HypercasualGameEngine</code>.</p>
+
+            <h3>Core Game Scripts (Assets/ColorPixelCrush/Scripts/)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>GameLevel</code></td><td>Scene-level gameplay controller. Builds the fill and tap-out grids from <code>LevelData</code>, runs the conveyor loop coroutine, handles cannon tap/slide/dock motion, fires raycasts on behalf of docked cannons, and triggers <code>WinGame/LoseGame</code>.</td></tr>
+                <tr><td><code>Cannon</code></td><td>Cannon entity. Holds <code>typeColor</code>, <code>amount</code>, line renderer, and two mesh renderers. <code>CheckRayCast()</code> is the auto-fire loop. <code>CanTap</code> drives the clickable outline + colour fade; <code>SetupMystery</code>/<code>Reveal</code> handle hidden-colour cannons; <code>SetMagicCandidate</code> drives the Magic-booster pulse.</td></tr>
+                <tr><td><code>Dock</code></td><td>Dock tile. Holds the <code>Cannon</code> slot reference and its number label.</td></tr>
+                <tr><td><code>FillItem</code></td><td>Pixel cell on the fill wall. Carries <code>typeColor</code>, <code>IsFilled</code>, and the MeshRenderer used for the destroy-fade animation.</td></tr>
+                <tr><td><code>FLS</code></td><td>Floodfill / shortest-path helper. <code>FindShortestPathToBottom</code> answers whether a tapped cannon can exit the tap-out grid.</td></tr>
+                <tr><td><code>InputManager</code></td><td>Touch / mouse raycast handler. Picks cannons whose <code>CanTap</code> is true and forwards to <code>GameLevel.MoveCannonOutOfTapOutGrid</code>.</td></tr>
+                <tr><td><code>ColorData</code></td><td>ScriptableObject mapping <code>TypeColor</code> values to pixel materials and cannon bullet materials.</td></tr>
+                <tr><td><code>LevelData</code></td><td>Serialisable level descriptor. Fields: grid sizes, <code>cannonDatas</code> (incl. <code>isMystery</code>), <code>fillDatas</code>, the three booster counts, plus <code>palette</code> (per-level image colours) and <code>wallCells</code> (wall obstacles).</td></tr>
+                <tr><td><code>ImageQuantizer</code></td><td>Static K-means++ utility that turns a source image into a grid of palette indices + a dominant-colour palette. Used by the Auto Level Generator's Image mode to build levels from real pictures.</td></tr>
+                <tr><td><code>OutlineController</code></td><td>Reference implementation of the position-based inverted-hull outline (the same pattern <code>Cannon</code> uses for its clickable highlight). Loads <code>PixelOutline</code> via <code>Resources.Load</code> so it survives WebGL / IL2CPP shader stripping.</td></tr>
+            </table>
+
+            <h3>Engine Scripts (namespace HypercasualGameEngine)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>LevelManager</code></td><td>Static loader. Editor reads Level_N.json directly from <code>Assets/ColorPixelCrush/Resources/Levels/</code>; runtime uses <code>Resources.Load&lt;TextAsset&gt;</code>. Tracks progression under <code>PlayerPrefs</code> key <code>ColorPixelCrush_CurrentLevel</code>.</td></tr>
+                <tr><td><code>SoundManager</code></td><td>Singleton audio hub. One <code>AudioSource</code>, <code>masterVolume</code>, <code>Play*</code> methods including the four required by NewestDevUI's <code>BoosterManager</code>: <code>PlayBlocked</code>, <code>PlayBoosterShuffle</code>, <code>PlayBoosterBomb</code>, <code>PlayBoosterUnlock</code>.</td></tr>
+                <tr><td><code>ColorPixelCrushGameManager</code></td><td><code>[DefaultExecutionOrder(-100)]</code> scene orchestrator. Replaces <code>GameLevel.levelData</code> with the JSON-loaded level before <code>GameLevel.Start</code> runs (so GameLevel needs no edits), initialises <code>BoosterManager</code>, owns the arrow-key dev navigation, and routes win/lose through <code>TriggerWin/TriggerLose</code> so <code>PlayLevelClear/Fail</code> fires exactly once.</td></tr>
+                <tr><td><code>LoseWinPanelManager</code></td><td>Ships in NewestDevUI. Owns the Win / Lose panels; <code>LoadNextLevel()</code> calls <code>LevelManager.AdvanceLevel()</code> before <code>SceneManager.LoadScene</code> so progression sticks.</td></tr>
+                <tr><td><code>BoosterManager</code></td><td>Three boosters &mdash; Block Shuffle, Magic Select, Cannon Shuffle &mdash; with per-level unlock gates, popup-before-can-gate (pitfall #31), and first-use tutorial popups keyed in <code>PlayerPrefs</code>. Effects call into <code>GameLevel</code> (<code>ShuffleFillBlocks</code> / <code>SetMagicMode</code> / <code>ShuffleCannons</code>).</td></tr>
+                <tr><td><code>DeveloperModeButton</code> / <code>DeveloperSettingsController</code></td><td>Ships in NewestDevUI. In-game dev panel with Shift+U/W/L/R hotkeys.</td></tr>
+                <tr><td><code>InputSystemCheck</code></td><td><code>[InitializeOnLoad]</code> editor warning; blocks Play if Active Input Handling is set to &ldquo;Input System (New)&rdquo; only.</td></tr>
+            </table>
+
+            <h3>Editor Tools (Assets/ColorPixelCrush/Editor/)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>LevelEditorWindow</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Level Editor</strong>. Two-pane visual editor; paints fill wall and cannon grid; saves JSON to <code>Resources/Levels/Level_N.json</code>.</td></tr>
+                <tr><td><code>AutoLevelGeneratorWindow</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</strong>. Append-mode, cancellable, 500 by default, seed control, red Delete-All.</td></tr>
+                <tr><td><code>ColorPixelCrushSetupWizard</code></td><td><strong>Tools &gt; ColorPixelCrush &gt; Setup Wizard</strong>. Idempotent. Creates the <code>SoundManager</code> GameObject when missing (does, doesn't just report); auto-wires audio by name pattern; retargets the Volume profile via <code>SerializedObject</code>; audits PlayerSettings.</td></tr>
+                <tr><td><code>ColorPixelCrushWelcomePopup</code></td><td><code>[InitializeOnLoad]</code> welcome window with buttons for both setup wizards, the Level Editor, the Auto Level Generator, and the documentation.</td></tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+            <p>Open with <strong>Tools &gt; ColorPixelCrush &gt; Level Editor</strong>. The left pane lists every <code>Level_N.json</code> on disk with ▲/▼ reorder, Add, Duplicate, Delete(confirm), green <strong>Save All</strong>, and Reload. The right pane edits the selected level's grid dimensions, booster counts, fill grid, and cannon grid.</p>
+            <p>Each grid is Y-flipped visually so row 0 draws at the top. Click a cell in Colour-paint mode to stamp the current colour; None-mode clears. In the cannon grid the amount label appears on each cannon.</p>
+            <p>Save All writes every entry's JSON to disk and clears the &ldquo;*&rdquo; dirty marker. Delete removes the JSON and renames the remaining files so there are never gaps in the sequence.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Auto Level Generator</h2>
+            <p>Open with <strong>Tools &gt; ColorPixelCrush &gt; Auto Level Generator</strong>. Pick a <strong>Mode</strong> at the top, set the count/seed/sizes, and Generate. The generator <em>appends</em> &mdash; it never overwrites an existing <code>Level_N.json</code>. The red <strong>Delete ALL levels</strong> button (with confirm) clears <code>Resources/Levels/</code> for a clean rebuild.</p>
+
+            <h3>Procedural mode</h3>
+            <p>Carves a random multi-colour blob into the fill grid. The difficulty curve is concave: <code>t = clamp((oneBased - 1) / 12, 0, 1)</code>, then raised to <code>0.55</code>, so it reaches <em>80%+ difficulty by level ~12</em> regardless of total count. The colour palette grows with difficulty (1 colour &rarr; up to all 10), and &plusmn;7% jitter keeps consecutive levels from feeling templated.</p>
+
+            <h3>Image mode &mdash; turn pictures into levels</h3>
+            <p>Drop <code>.png</code>/<code>.jpg</code> images into <code>Assets/ColorPixelCrush/Resources/AutomaticLevelGeneratorImages/</code>, set Mode = <strong>Image</strong>, and Generate. Each level picks one image (cycling) and runs it through <code>ImageQuantizer</code> (K-means++): the image becomes the fill-grid picture and its dominant colours become the level's <code>palette</code>. The result is a playable level that <em>reproduces the original image</em>. Grid size and colour count both ramp with difficulty.</p>
+
+            <h3>Obstacles &amp; solvability</h3>
+            <p>Both modes ramp <strong>wall obstacles</strong> and <strong>mystery cannons</strong> with difficulty (tunable via the Wall ratio / Mystery ratio sliders). Cannon placement guarantees every colour's total cannon ammo equals its pixel count on the wall, so the per-colour supply always matches demand. Mystery cannons are only placed where a neighbour can reveal them, and exit-edge cannons stay non-mystery so the level always has a clickable starting move &mdash; every generated level is structurally solvable.</p>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+            <p>Three fully-implemented boosters, gated per-level. Counts come from <code>LevelData.shuffleBoosterCount</code> / <code>bombBoosterCount</code> / <code>unlockBoosterCount</code> (the field names are historical; the effects below are what they drive). The first click of each booster shows a one-time tutorial popup (<code>Popup_Powerup_Picker</code> prefab); the popup fires <strong>before</strong> any can-run check so the player always sees it on first click regardless of board state (pitfall #31).</p>
+            <ul>
+                <li><strong>Booster 1 &mdash; Block Shuffle</strong> (unlocks level 1): reshuffles the colours among the unfilled <em>picture blocks</em> (the obstacles) with a pop animation, bringing fresh colours to the bottom row when you're stuck. Permuting colours keeps each colour's count identical, so the level stays solvable. &rarr; <code>GameLevel.ShuffleFillBlocks()</code>.</li>
+                <li><strong>Booster 2 &mdash; Magic Select</strong> (unlocks level 2): arms a mode where every cannon is outlined and the non-clickable ones pulse; tap any <em>blocked</em> cannon to pull it onto the conveyor anyway. The charge is spent only on the actual pull. &rarr; <code>GameLevel.SetMagicMode()</code> + <code>InputManager</code>.</li>
+                <li><strong>Booster 3 &mdash; Cannon Shuffle</strong> (unlocks level 3): all cannons fly to new grid cells (arc animation), changing which ones have a clear path out. &rarr; <code>GameLevel.ShuffleCannons()</code>.</li>
+            </ul>
+            <p>Unlock levels are zero-based on <code>BoosterManager.booster1/2/3UnlockLevel</code>; the HUD shows <code>lvl N</code> on buttons that are not yet unlocked, and clickable cannons fade/outline so the boosters' effects are easy to read. The <code>BoosterPopupShown_*</code> PlayerPrefs keys persist the &ldquo;already saw the popup&rdquo; state across sessions.</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization</h2>
+
+            <h3>Tune / Replace Booster Effects</h3>
+            <p>The booster effects live on the gameplay layer in <code>GameLevel.cs</code> &mdash; <code>ShuffleFillBlocks()</code> (Block Shuffle), <code>SetMagicMode()</code> (Magic Select, with the pull handled in <code>InputManager</code>), and <code>ShuffleCannons()</code> (Cannon Shuffle). <code>BoosterManager.OnBooster1/2/3Clicked</code> call into them. To change a booster, edit the matching <code>GameLevel</code> method; to swap which booster does what, re-point the calls in <code>BoosterManager</code>.</p>
+
+            <h3>Change Colour Palette</h3>
+            <p>The 10 fixed colours map <code>TypeColor</code> &rarr; materials in <code>ColorData.asset</code> (Inspector-editable). Add more by extending the <code>TypeColor</code> enum in <code>LevelData.cs</code> and adding a material + mapping. Image-based levels ignore the fixed palette &mdash; they tint at runtime from each level's own <code>palette</code>, generated by Image mode. To re-roll an image's colours, regenerate that level (the K-means seed changes per generation).</p>
+
+            <h3>Replace SFX</h3>
+            <p>Drop new clips into <code>Assets/ColorPixelCrush/Audio/</code> using canonical names (<code>LevelClear</code>, <code>LevelFail</code>, <code>Blocked</code>, <code>Success*</code>, <code>Fail*</code>, <code>Pop*</code>, <code>Switch*</code>). Re-run <strong>Tools &gt; ColorPixelCrush &gt; Setup Wizard</strong> to auto-wire them onto the SoundManager (only null fields are populated, so existing wires are preserved).</p>
+
+            <h3>Replace Splash Screen / Icons</h3>
+            <p><code>Edit &gt; Project Settings &gt; Player</code>. The template ships with Unity's default splash logo; swap for your own artwork before release. Bundle Version starts at <code>0.1.0</code>; bump per release.</p>
+
+            <h3>Outline Width / Colour</h3>
+            <p>The <code>PixelOutline</code> shader exposes <code>_OutlineColor</code> and <code>_OutlineWidth</code>. The shared material is created at runtime by <code>OutlineController</code>; edit the defaults in that script or create a <code>Material</code> instance and assign it per object.</p>
+
+            <h3>Post-Processing</h3>
+            <p>The scene's Global Volume references <code>Assets/ColorPixelCrush/PostProcessing/HC-PostProcessing-Volume.asset</code> at weight <code>0.8</code>. To change the look, edit the <code>VolumeProfile</code> directly; to re-weight, change the <code>weight</code> property on the Volume component in the scene (or re-run the setup wizard, which enforces <code>0.8</code>).</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+            <p>Questions, bug reports, or feature requests? Email <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a> &mdash; we're happy to help.</p>
+            <p>For updates and more hypercasual templates, visit the <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer">HyperCasual Game Engine</a> listing on the Unity Asset Store. The engine's <code>InputSystemCheck</code>, <code>LoseWinPanelManager</code>, and <code>DeveloperSettingsController</code> ship identically across every template in the catalog &mdash; bug fixes there propagate to every game.</p>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Color Pixel Crush &mdash; Part of the HyperCasual Game Engine template catalog by Ragendom.</p>
+    </div>
+</body>
+</html>
