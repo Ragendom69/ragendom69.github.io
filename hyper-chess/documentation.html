@@ -724,7 +724,7 @@
                 </tr>
                 <tr>
                     <td>Pink / magenta materials on objects</td>
-                    <td>The project requires URP. Go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned, and that the <code>Settings/</code> folder contains valid URP assets.</td>
+                    <td>The project requires URP &mdash; go to <code>Edit &gt; Project Settings &gt; Graphics</code> and ensure a URP Render Pipeline Asset is assigned (valid assets live in <code>Settings/</code>). If objects look correct in the Editor but turn pink only in a <strong>build</strong> (WebGL / Android), a runtime-created material's shader was stripped: add <code>Universal Render Pipeline/Lit</code> and <code>Universal Render Pipeline/Unlit</code> to <code>Project Settings &gt; Graphics &gt; Always Included Shaders</code>.</td>
                 </tr>
                 <tr>
                     <td>Outline / highlight not visible</td>
