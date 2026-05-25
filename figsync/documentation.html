@@ -851,7 +851,7 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>Why use the plugin path</h3>
   <div class="card-grid">
     <div class="card"><div class="card-title">&#9728;&#65039; FigJam support</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Stickies, connectors, shape-with-text only appear in the plugin's node tree &mdash; FigJam files won't import via REST.</p></div>
-    <div class="card"><div class="card-title">&#9889; One-click push</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Hit <strong>Export</strong> in Figma; Unity starts the sync. No token, no URL paste, no API rate limit.</p></div>
+    <div class="card"><div class="card-title">&#9889; One-click push</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Hit <strong>Send to Unity</strong> in Figma; Unity starts the sync. No personal-access token to create and no URL to paste &mdash; you push straight from the file you're designing.</p></div>
     <div class="card"><div class="card-title">&#128193; Offline iteration</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Each push saves a <code>.figsync.zip</code> bundle locally; you can re-sync from disk later without Figma being open.</p></div>
     <div class="card"><div class="card-title">&#128202; Richer geometry</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Plugin API exposes <code>fillGeometry</code> path data on every vector node; REST is occasionally sparser.</p></div>
   </div>
@@ -859,7 +859,7 @@ details .details-body p:first-child { margin-top: 0; }
   <h3>Install the plugin</h3>
   <div class="steps">
     <div class="step"><div class="step-content"><strong>In Figma, open the Plugins menu</strong><br><code>Menu &rarr; Plugins &rarr; Development &rarr; Import plugin from manifest...</code></div></div>
-    <div class="step"><div class="step-content"><strong>Point at the bundled manifest</strong><br>Navigate to <code>Assets/FigSync/Documentation/Plugin/manifest.json</code> inside your Unity project. Open it.</div></div>
+    <div class="step"><div class="step-content"><strong>Point at the bundled manifest</strong><br>In Unity, run <code>Tools &rarr; FigSync &rarr; Open Figma Plugin Folder</code> (or browse to <code>Assets/FigSync/FigmaPlugin/</code>), then select <code>manifest.json</code>. Tip: <code>Tools &rarr; FigSync &rarr; Set Up Figma Bridge…</code> walks you through this with live connection status.</div></div>
     <div class="step"><div class="step-content"><strong>Verify the bridge is running</strong><br>In Unity, open <code>Tools &rarr; FigSync &rarr; Settings &rarr; Auth</code>. The status pill should read <strong>Bridge: listening</strong> on <code>127.0.0.1:8473</code>.</div></div>
     <div class="step"><div class="step-content"><strong>Push from Figma</strong><br>Open the FigSyncExporter plugin from your Plugins menu, choose scope (Current page / All pages), click <strong>Export</strong>. Unity receives the bundle and starts a sync.</div></div>
   </div>
@@ -1408,7 +1408,7 @@ details .details-body p:first-child { margin-top: 0; }
   <div class="error-code auto-retry">
     <div class="error-code-head"><code>429 Rate Limited</code><span class="tag tag-platform">Auto-retry</span></div>
     <p class="meaning">Too many Figma API requests in a short window.</p>
-    <p class="action"><strong>What to do:</strong> The pipeline waits the cooldown Figma returns in the <code>Retry-After</code> header and resumes automatically. If it keeps tripping, prefer the <a href="#plugin">Figma plugin</a> path &mdash; the plugin bundle isn't rate-limited.</p>
+    <p class="action"><strong>What to do:</strong> The pipeline waits the cooldown Figma returns in the <code>Retry-After</code> header and resumes automatically. If it keeps tripping, wait for the cooldown to clear, or use the <a href="#plugin">Figma plugin</a> path, which exports directly from the file you're working on (no token or URL needed).</p>
   </div>
 
   <div class="error-code">
