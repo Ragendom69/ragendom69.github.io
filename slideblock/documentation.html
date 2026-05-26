@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlideBlock - Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #eef2f9;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: 1.2rem; opacity: 0.92; }
+        .header .version { margin-top: 15px; font-size: 0.9rem; opacity: 0.8; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+        .important-notice {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+        .important-notice h3 { color: #1e3a8a; margin-bottom: 10px; }
+        .important-notice p { color: #1e3a8a; }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 6px rgba(30,58,138,0.08);
+        }
+        .section h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section h3 { color: #334155; margin: 22px 0 10px 0; }
+
+        .folder-structure {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+        .folder-structure .folder { color: #7dd3fc; }
+        .folder-structure .file { color: #93c5fd; }
+        .folder-structure .comment { color: #64748b; }
+
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #1e40af; color: white; }
+        tr:hover { background: #f1f5f9; }
+
+        code {
+            background: #e8eefb;
+            color: #1e3a8a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre;
+        }
+        .code-block .keyword { color: #c084fc; }
+        .code-block .class { color: #7dd3fc; }
+        .code-block .string { color: #86efac; }
+        .code-block .comment { color: #64748b; }
+
+        ul, ol { margin: 15px 0; padding-left: 25px; }
+        li { margin: 8px 0; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .feature-card h4 { color: #1e40af; margin-bottom: 10px; }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 6px rgba(30,58,138,0.08);
+        }
+        .nav ul { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; gap: 12px; }
+        .nav a {
+            color: #1e40af;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .nav a:hover { background: #3b82f6; color: white; }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px; height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .footer { text-align: center; padding: 30px; color: #64748b; background: white; margin-top: 40px; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .nav ul { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SlideBlock</h1>
+        <p class="subtitle">A Color-Block Sliding Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://u3d.as/1nLT" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#mystery">Mystery Blocks</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>SlideBlock is designed as a <strong>template and starting point</strong> for your own game. It ships with the core systems, architecture, and tools needed to build a color-block sliding puzzle &mdash; gameplay, a visual level editor, an automatic level generator, a 500-level starter pack, mystery blocks, and three boosters. You are expected to customize, extend, and re-skin it to create your unique game. This is a foundation for developers to build on, not a finished, ready-to-publish product.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>SlideBlock is a one-tap color-matching puzzle. Colored blocks queue up on a row of posts at the bottom of the screen (the &ldquo;shooters&rdquo;). The player taps a shooter to slide it up into its column; when a block lands against blocks of the same color, the connected group clears. Clear the board before the columns jam to win. The game ships with a difficulty curve that grows the board from 3 to 5 columns and the palette from 3 to 5 colors, gravity-settled level layouts, hidden &ldquo;mystery&rdquo; shooters and obstacles, a disco wildcard, three boosters, a visual level editor, an automatic level generator, and 500 ready-made JSON levels.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>One-Tap Color Matching</h4>
+                    <p>Tap a shooter on a post and it slides up its column. When it meets a same-colored block, the whole connected group flood-fill clears with a particle burst. Simple to learn, satisfying to chain.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Growing Board (3&ndash;5 Columns)</h4>
+                    <p>Early levels use 3 columns; the board widens to 4 and then 5 as the player progresses. The grid, tray walls, and posts all re-center automatically to the active column count.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Five Colors + Disco Wildcard</h4>
+                    <p>Pink, Yellow, Blue, Green and Purple, plus a <strong>disco wildcard</strong> that can be cleared by any color and detonates a big chain. The active palette grows from 3 to 5 colors with difficulty.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Mystery Shooters &amp; Obstacles</h4>
+                    <p>Mystery shooters spawn with their color hidden under a &ldquo;?&rdquo; and only become draggable once the rest of the batch is fired. Mystery obstacles stay hidden and indestructible until gravity drops them to the bottom row &mdash; then they reveal with a pop and color transition.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Gravity-Settled Levels</h4>
+                    <p>Pre-placed obstacles are generated as if gravity already ran: every column is a contiguous bottom-up stack with no floating gaps. The board reads as a complete, settled tray from the very first frame.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Three Boosters</h4>
+                    <p>Shuffle Obstacles (the board visibly reshuffles), Disco (explode obstacles and pop disco wildcards in their place), and Rainbow Shooter (turn a shooter into a color-cycling cube that clears any color).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Visual Level Editor</h4>
+                    <p>A Unity Editor window for hand-authoring levels: paint colored obstacles (and mystery obstacles) onto the grid, set per-column shooter queues, and tick individual queue blocks as mystery shooters.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate levels with a built-in difficulty curve: column count, palette size, queue length, stack height, wildcard density and mystery frequency all scale with the level number. Append-only and one-click clearable.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>JSON Levels + Starter Pack</h4>
+                    <p>500 levels ship as plain JSON under <code>Resources/Levels/</code>. Regenerate or extend any time with the Auto Level Generator.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package &mdash; set <code>Active Input Handling</code> to <strong>Both</strong> (Project Settings &gt; Player)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the SlideBlock package into your Unity project.</li>
+                <li>Ensure the project uses the Universal Render Pipeline (<code>Edit &gt; Project Settings &gt; Graphics</code>).</li>
+                <li>Open the game scene at <code>Assets/SlideBlock/Scenes/GameNew.unity</code>.</li>
+                <li>Press Play to test the first level. To author or batch-create levels, use <code>Tools &gt; SlideBlock &gt; Level Editor</code> or <code>Tools &gt; SlideBlock &gt; Auto Level Generator</code>.</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>In Play mode, tap the front block on any post. It slides up its column and snaps to the landing row. If it touches a connected group of its own color, that group clears and the blocks above settle down under gravity. Clear the board to advance; the next level loads automatically. If a column fills with no possible match, the lose panel appears.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+            <p>Everything ships under a single root folder, <code>Assets/SlideBlock/</code>, for clean import and removal.</p>
+
+            <div class="folder-structure">
+<span class="folder">SlideBlock/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; Sound effects (tap, place, match, blocked, pops, win, fail)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; ColorData (TypeColor &rarr; material) + sample LevelData asset</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer (paint obstacles, queues, mystery)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator + difficulty curve</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SlideBlockSetupWizard.cs</span> <span class="comment">&mdash; One-time project setup helper</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SlideBlockProductionFinish.cs</span> <span class="comment">&mdash; One-shot production-finish (settings, scene, post-FX)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SlideBlockWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Active Input Handling is not Both</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Block colors (pink/yellow/blue/green/purple), tile, wall, arrow, FX</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Models/</span> <span class="comment">&mdash; Source 3D meshes (Cubes.fbx, ground.fbx, rounded-corner.fbx)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span> <span class="comment">&mdash; HC post-processing volume profile</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Block, Pedestal, Arrow, Trail, Particle_Boom, LoseWinPanel + UI panels (GameHUD_Panel, GameOverPanel, LevelClearedPanel, BoosterManager, Popup_Powerup_Picker)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; 500 JSON levels (Level_1.json, Level_2.json, &hellip;)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; All runtime scripts (namespace: SlideBlock / SlideBlock.Scripts)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameLevel.cs</span> <span class="comment">&mdash; Board, shooters, matching, gravity, boosters, mystery</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Block.cs</span> <span class="comment">&mdash; Block entity (color, renderers, CanTap, mystery, rainbow)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Level model + TypeColor enum</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorData.cs</span> <span class="comment">&mdash; TypeColor &rarr; Material lookup</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">InputManager.cs</span> <span class="comment">&mdash; Touch / mouse drag handling</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; JSON loader + level progression</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SlideBlockGameManager.cs</span> <span class="comment">&mdash; Scene orchestrator, win/lose, boosters</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; SFX one-shots + variant pools</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Camera helper</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BoosterManager.cs</span> <span class="comment">&mdash; HUD booster row (shuffle / disco / rainbow)</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">LoseWinPanelManager.cs</span> <span class="comment">&mdash; Win / lose panels (+ DeveloperSettings, &hellip;)</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; Booster icons, HUD art, disco-ball &amp; triangle sprites</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Loop</h3>
+            <p>The board has a row of <strong>posts</strong> (3&ndash;5, depending on the level). Each post holds a queue of colored blocks; the front one is the active <strong>shooter</strong>. Tapping a shooter slides it up into its column toward the landing row. When the shooter meets a connected group of its own color, a flood-fill clear removes the whole group with a particle burst, and the blocks above settle down under gravity to fill the gaps. The next shooter in that column then becomes active.</p>
+
+            <ul>
+                <li><strong>Tap to fire</strong> &mdash; <code>InputManager</code> raycasts the tapped block; if it is the active, tappable shooter it slides up its column to the landing row.</li>
+                <li><strong>Flood-fill match</strong> &mdash; <code>GameLevel.GetBlockMapping</code> walks the connected same-color neighbours from the landing cell; two or more clears them, otherwise the shooter stays.</li>
+                <li><strong>Gravity refill</strong> &mdash; after a clear, remaining blocks fall to the lowest free cell and the grid tops up so the board stays full and gravity-settled.</li>
+                <li><strong>Disco wildcard</strong> &mdash; a wildcard block at the foot of a column can be fired into by <em>any</em> color and detonates a large chain (see below).</li>
+                <li><strong>Growing board</strong> &mdash; the column count ramps 3 &rarr; 4 &rarr; 5 with the level; the grid, posts and tray walls re-center to the active count.</li>
+                <li><strong>Win</strong> &mdash; the board is cleared with all queued shooters spent. <strong>Lose</strong> &mdash; a column jams with no available match.</li>
+            </ul>
+
+            <h3>Block Colors</h3>
+            <p>Five real colors plus the disco wildcard, defined in <code>TypeColor</code> (<code>LevelData.cs</code>) and mapped to materials in <code>ColorData.asset</code>. The active palette grows from 3 to 5 colors with difficulty (the wildcard is in addition).</p>
+            <table>
+                <tr><th>TypeColor</th><th>Color</th><th>Approx. RGB</th></tr>
+                <tr><td><code>Pink</code></td><td><span class="color-swatch" style="background:#ff55d0;"></span> Pink</td><td>(1.00, 0.33, 0.81)</td></tr>
+                <tr><td><code>Yellow</code></td><td><span class="color-swatch" style="background:#ffe14d;"></span> Yellow</td><td>(1.00, 0.88, 0.30)</td></tr>
+                <tr><td><code>Blue</code></td><td><span class="color-swatch" style="background:#3278f2;"></span> Blue</td><td>(0.20, 0.47, 0.95)</td></tr>
+                <tr><td><code>Green</code></td><td><span class="color-swatch" style="background:#4cc95a;"></span> Green</td><td>(0.30, 0.79, 0.35)</td></tr>
+                <tr><td><code>Purple</code></td><td><span class="color-swatch" style="background:#9c5ae2;"></span> Purple</td><td>(0.61, 0.35, 0.89)</td></tr>
+                <tr><td><code>Color</code></td><td><span class="color-swatch" style="background:linear-gradient(135deg,#ff55d0,#3278f2,#4cc95a);"></span> Disco wildcard</td><td>sprite-rendered (no fixed color)</td></tr>
+            </table>
+            <p><strong>Note:</strong> <code>Color</code> is the wildcard and must always remain the <em>last</em> entry of the enum &mdash; code uses <code>(int)TypeColor.Color</code> as the count of real colors. Every real color a level uses needs a material entry in <code>ColorData</code>.</p>
+
+            <h3>The Disco Wildcard</h3>
+            <p>A disco block (<code>TypeColor.Color</code>, rendered via its sprite) sits in the grid like any obstacle but can be cleared by a shooter of <em>any</em> color. When a shooter lands against a disco at the foot of its column, <code>ClearAllBlockMappingTypeColor</code> shakes and detonates every block of the shooter's color plus every disco on the board &mdash; one move can clear a large part of the grid. The cascade plays a layered burst of pop SFX so the size of the clear is audible.</p>
+        </section>
+
+        <!-- ==================== MYSTERY BLOCKS ==================== -->
+        <section id="mystery" class="section">
+            <h2>Mystery Blocks</h2>
+            <p>Mystery blocks hide their color behind a grey tint and a floating &ldquo;?&rdquo; label, and reveal with a pop + grey&rarr;color transition. They come in two flavours, both authorable in the editor and generated on a difficulty curve (rare on early levels).</p>
+
+            <h3>Mystery Shooter</h3>
+            <ul>
+                <li>Spawns on its post hidden and <strong>not draggable</strong>.</li>
+                <li>Becomes draggable and reveals its color once <em>every other</em> shooter in the current batch has been fired.</li>
+                <li>Tapping it while still locked plays a blocked sound and a small wiggle as feedback.</li>
+            </ul>
+
+            <h3>Mystery Obstacle</h3>
+            <ul>
+                <li>Spawns in the grid hidden and <strong>indestructible</strong> &mdash; it is skipped by all matching, the disco cascade, and the bomb logic.</li>
+                <li>Reveals (and becomes destroyable) only once gravity drops it to the bottom row (<code>y&nbsp;=&nbsp;0</code>).</li>
+            </ul>
+            <p>Both use a reveal animation driven by a <code>MaterialPropertyBlock</code> color lerp and an ease-out-back scale pop. An optional <code>mysteryMaterial</code> on <code>GameLevel</code> overrides the default grey look.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+            <p>Runtime scripts use the <code>SlideBlock</code> / <code>SlideBlock.Scripts</code> namespaces. Editor tools use <code>SlideBlock.EditorTools</code>. Shared engine helpers (<code>SoundManager</code>, <code>LevelManager</code>, <code>BoosterManager</code>, <code>LoseWinPanelManager</code>) live under <code>HypercasualGameEngine</code>.</p>
+
+            <h3>Core Scripts</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>GameLevel.cs</code></td><td>The heart of the game: builds the board from <code>LevelData</code>, spawns shooters and obstacles, handles tap-to-fire, flood-fill matching, gravity refill, the disco cascade, mystery reveal, the adaptive tray walls, and the booster effects.</td></tr>
+                <tr><td><code>Block.cs</code></td><td>A single block: <code>typeColor</code>, mesh/sprite renderers, <code>CanTap</code>, <code>isMystery</code>, <code>isRainbow</code>, and a hide-above-Z visibility mask for blocks spawned above the tray.</td></tr>
+                <tr><td><code>LevelData.cs</code></td><td>The level model (grid size, <code>colorCount</code>, per-column queues with mystery flags, pre-placed grid obstacles with mystery flags, booster counts) and the <code>TypeColor</code> enum.</td></tr>
+                <tr><td><code>ColorData.cs</code></td><td>ScriptableObject mapping each <code>TypeColor</code> to a material.</td></tr>
+                <tr><td><code>InputManager.cs</code></td><td>Touch / mouse drag handling; routes taps on locked mystery shooters to the wiggle feedback.</td></tr>
+                <tr><td><code>LevelManager.cs</code></td><td>Static JSON level loader and progression (current index, advance, reload). Loads from <code>Resources/Levels/</code>.</td></tr>
+                <tr><td><code>SlideBlockGameManager.cs</code></td><td>Scene orchestrator: win/lose routing and the three booster entry points.</td></tr>
+                <tr><td><code>SoundManager.cs</code></td><td>SFX one-shots plus random variant pools (pops, success, fail, switch).</td></tr>
+            </table>
+
+            <h3>Editor Scripts</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>LevelEditorWindow.cs</code></td><td><code>Tools &gt; SlideBlock &gt; Level Editor</code> &mdash; paint colored / mystery obstacles, edit per-column queues, tick mystery shooters.</td></tr>
+                <tr><td><code>LevelGeneratorWindow.cs</code></td><td><code>Tools &gt; SlideBlock &gt; Auto Level Generator</code> &mdash; batch generation with the full difficulty curve.</td></tr>
+                <tr><td><code>SlideBlockSetupWizard.cs</code></td><td>One-time project setup helper.</td></tr>
+                <tr><td><code>SlideBlockProductionFinish.cs</code></td><td>One-shot production-finish: HARD player/build settings, build scene, post-processing retarget.</td></tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Visual Level Editor</h2>
+            <p>Open with <code>Tools &gt; SlideBlock &gt; Level Editor</code>. The editor lists every <code>Level_*.json</code> and lets you author them visually:</p>
+            <ul>
+                <li><strong>Grid canvas</strong> &mdash; click cells to place / erase pre-placed obstacles. The active <em>Color</em> picker chooses the obstacle color; tick <strong>Mystery (obstacle)</strong> to paint a hidden obstacle (drawn with a grey veil and a &ldquo;?&rdquo;).</li>
+                <li><strong>Column queues</strong> &mdash; set each column's shooter queue length and colors; tick the <strong>&ldquo;?&rdquo;</strong> under any queue block to make it a mystery shooter.</li>
+                <li><strong>Boosters &amp; grid size</strong> &mdash; per-level booster counts, unlock levels, and grid dimensions.</li>
+            </ul>
+            <p>Changes are written straight back to the JSON. Keep the column count within the number of posts in the scene (see Customization).</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Auto Level Generator</h2>
+            <p>Open with <code>Tools &gt; SlideBlock &gt; Auto Level Generator</code>. It batch-creates levels with a built-in difficulty curve keyed off the absolute level number, so progression stays consistent in append mode. Everything below scales with the level:</p>
+            <ul>
+                <li><strong>Column count</strong> &mdash; 3 columns (levels 1&ndash;6), 4 (7&ndash;14), 5 (15+).</li>
+                <li><strong>Color palette</strong> &mdash; 3 colors (1&ndash;5), 4 (6&ndash;11), 5 (12+).</li>
+                <li><strong>Queue length</strong> &mdash; grows toward the configured max; <strong>stack height</strong> of pre-placed obstacles grows too (always gravity-settled, no gaps).</li>
+                <li><strong>Wildcard density</strong> &mdash; chance a grid cell is a disco wildcard, ramping with difficulty.</li>
+                <li><strong>Mystery frequency</strong> &mdash; tweakable <em>Mystery Shooter Chance</em> and <em>Mystery Obstacle Chance</em> (max), ramped in over <em>Mystery Ramp Levels</em> so mystery is rare on early levels.</li>
+            </ul>
+            <p>Generation is <strong>append-only</strong> by default (never overwrites earlier levels); a danger-zone button deletes every <code>Level_*.json</code> in one click. The 500 starter levels were produced with this generator.</p>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+            <p>Three boosters are wired to the HUD booster row (<code>NewestDevUI</code> &rarr; <code>BoosterManager</code> &rarr; <code>SlideBlockGameManager</code>). Each carries a per-level charge count and unlocks at a configurable level.</p>
+            <table>
+                <tr><th>Booster</th><th>Effect</th></tr>
+                <tr><td><strong>Shuffle Obstacles</strong></td><td>Physically rearranges the visible obstacles &mdash; blocks keep their color and animate (with a hop) to a shuffled set of the same cells, so the board stays gravity-settled.</td></tr>
+                <tr><td><strong>Disco</strong></td><td>Explodes a fraction of the visible obstacles with colored particles, then pops a disco wildcard into each spot &mdash; primed for a big any-color chain.</td></tr>
+                <tr><td><strong>Rainbow Shooter</strong></td><td>Turns one active shooter into a color-cycling rainbow cube. It is draggable immediately and, when fired, adopts the color of whatever it lands against &mdash; so it clears any color.</td></tr>
+            </table>
+            <p>Booster counts and unlock levels are read from each level's data. In a development build you can refill / unlock everything for testing via the developer settings panel.</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization</h2>
+
+            <h3>Colors</h3>
+            <p>To add or recolor blocks, edit the materials under <code>Materials/Color/</code> and the <code>ColorData.asset</code> mapping (one entry per <code>TypeColor</code>). If you add a new color to the <code>TypeColor</code> enum, keep <code>Color</code> (the wildcard) as the last entry, and bump the generator's color ramp.</p>
+
+            <h3>Difficulty Curve</h3>
+            <p>The ramps live as small, readable helpers at the top of <code>LevelGeneratorWindow.cs</code> (<code>ColumnsForLevel</code>, <code>ColorsForLevel</code>, the mystery-chance helpers) and as the per-level cases in <code>MakeLevel</code>. Adjust them and re-generate. The mystery chances and ramp length are also exposed as fields in the generator window.</p>
+
+            <h3>Columns &amp; the Scene</h3>
+            <p>The number of playable columns is capped by the number of <strong>posts</strong> wired into <code>GameLevel.columnParents</code> in <code>GameNew.unity</code>. To support 5-column levels the scene must carry 5 posts; <code>GameLevel</code> re-centers and hides the active posts per level. The tray walls (<code>w-left</code> / <code>w-right</code> / <code>w-up</code>) auto-fit to the active column count.</p>
+
+            <h3>Boosters &amp; Audio</h3>
+            <p>Booster effects live on <code>SlideBlockGameManager</code> / <code>GameLevel</code>; rewire the three buttons in <code>BoosterManager</code> to taste. Assign SFX clips on the <code>SoundManager</code> component &mdash; in particular populate <code>popClips</code> so the disco cascade is audible.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+            <p>SlideBlock is a developer template. Before reaching out, please review this documentation and the inline comments in the scripts &mdash; the gameplay, generator, and booster systems are all commented.</p>
+            <p style="background:#dbeafe; border-left:4px solid #2563eb; padding:14px 18px; border-radius:0 6px 6px 0;">
+                <strong>Support &amp; contact:</strong> <a href="mailto:ragendom@gmail.com" style="color:#1e40af; font-weight:bold;">ragendom@gmail.com</a><br>
+                Questions, bug reports and feature requests are welcome &mdash; please include your Unity version and the steps to reproduce.
+            </p>
+            <ul>
+                <li>Confirm <code>Active Input Handling</code> is set to <strong>Both</strong> and URP is the active render pipeline.</li>
+                <li>Make sure the build scene is <code>Assets/SlideBlock/Scenes/GameNew.unity</code>.</li>
+                <li>If new colors render as broken blocks, check that every <code>TypeColor</code> the level uses has a material entry in <code>ColorData</code>.</li>
+            </ul>
+            <p>This asset was built with the HyperCasual Game Engine &mdash; check it out for more mobile puzzle templates and shared systems.</p>
+        </section>
+
+        <div class="footer">
+            <p>SlideBlock &mdash; Color-Block Sliding Puzzle Template</p>
+            <p>Made with the HyperCasual Game Engine</p>
+            <p>Support: <a href="mailto:ragendom@gmail.com" style="color:#1e40af;">ragendom@gmail.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
