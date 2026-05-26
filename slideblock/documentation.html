@@ -317,7 +317,7 @@
                 <li><strong>Gravity refill</strong> &mdash; after a clear, remaining blocks fall to the lowest free cell and the grid tops up so the board stays full and gravity-settled.</li>
                 <li><strong>Disco wildcard</strong> &mdash; a wildcard block at the foot of a column can be fired into by <em>any</em> color and detonates a large chain (see below).</li>
                 <li><strong>Growing board</strong> &mdash; the column count ramps 3 &rarr; 4 &rarr; 5 with the level; the grid, posts and tray walls re-center to the active count.</li>
-                <li><strong>Win</strong> &mdash; the board is cleared with all queued shooters spent. <strong>Lose</strong> &mdash; a column jams with no available match.</li>
+                <li><strong>Win</strong> &mdash; fire every queued shooter. The number to clear (<code>columns &times; queue length</code>) scales with the level, so the first levels clear fast and later ones need progressively more. A <strong>progress bar + count</strong> at the top of the screen shows shooters fired vs the total. <strong>Lose</strong> &mdash; a column jams with no available match.</li>
             </ul>
 
             <h3>Block Colors</h3>
