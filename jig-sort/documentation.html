@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jig Sort - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2e86c1 0%, #1b4f72 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #d6eaf8 0%, #aed6f1 100%);
+            border-left: 4px solid #2e86c1;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice h3 {
+            color: #1b4f72;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            color: #1b4f72;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #1b4f72;
+            border-bottom: 2px solid #2e86c1;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #444;
+            margin: 20px 0 10px 0;
+        }
+
+        .folder-structure {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .folder-structure .folder {
+            color: #85c1e9;
+        }
+
+        .folder-structure .file {
+            color: #8be9fd;
+        }
+
+        .folder-structure .comment {
+            color: #6272a4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #1b4f72;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .class {
+            color: #8be9fd;
+        }
+
+        .code-block .string {
+            color: #9ae6b4;
+        }
+
+        .code-block .comment {
+            color: #6272a4;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ol li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2e86c1;
+        }
+
+        .feature-card h4 {
+            color: #1b4f72;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #1b4f72;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #2e86c1;
+            color: white;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Jig Sort</h1>
+        <p class="subtitle">A Jigsaw Colour-Sorting Puzzle &mdash; Unity Template</p>
+        <p class="version">Version 0.1.0 | Unity 6+ | URP</p>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); padding: 18px 20px; text-align: center;">
+        <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1.05rem;">
+            &#127775; <strong>This asset was made with the HyperCasual Game Engine!</strong> &nbsp; Check it out &mdash; mobile puzzle templates &amp; more. Click here to learn more &#10132;
+        </a>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#folder-structure">Folder Structure</a></li>
+                <li><a href="#gameplay">Gameplay</a></li>
+                <li><a href="#scripts">Scripts</a></li>
+                <li><a href="#level-editor">Level Editor</a></li>
+                <li><a href="#auto-level-generator">Auto Level Generator</a></li>
+                <li><a href="#boosters">Boosters</a></li>
+                <li><a href="#customization">Customization</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </nav>
+
+        <div class="important-notice">
+            <h3>Important: Template / Starting Point</h3>
+            <p>This asset is designed as a <strong>template and starting point</strong> for your own game development. It provides the core systems, architecture, and tools needed to build a jigsaw colour-sorting puzzle game. You are expected to customize, extend, and modify this template to create your unique game. This is not a complete, ready-to-publish game &mdash; it's a foundation for developers to build upon.</p>
+        </div>
+
+        <div class="important-notice" style="border-left-color:#0d6efd; background:linear-gradient(135deg,#cfe2ff 0%,#9ec5fe 100%);">
+            <h3 style="color:#084298;">Single-Folder Layout</h3>
+            <p style="color:#084298;">Everything ships under one top-level folder, <code>Assets/Jig Sort/</code> (single-folder Asset Store publishing). The shared win / lose / booster / developer-mode UI stack (originally the "NewestDevUI" package) is folded into the game folder &mdash; its scripts live in <code>Scripts/</code>, prefabs in <code>Prefabs/</code>, and its setup wizard is at <code>Tools &rarr; NewestDevUI &rarr; Setup Wizard</code>. After importing, run <strong>that wizard first</strong> (it builds the UI into the scene), then <code>Tools &rarr; Jig Sort &rarr; Setup Wizard</code>.</p>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>Jig Sort is a relaxing jigsaw colour-sorting puzzle. Each level shows a vertical stack of empty colored boxes and a bottom tray of loose jigsaw-quadrant pieces. The player drags each quadrant into the box of its matching colour; when all four quadrants of a box are in place the picture snaps together, a glass cap sweeps over it, star particles burst, and the box clears. Complete every box to win. The game ships with three boosters, a visual level editor, an automatic level generator, and a starter pack of 500 hand-tuned / generated JSON levels.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Drag-to-Sort Jigsaw Puzzles</h4>
+                    <p>Drag colour-coded quadrant pieces from the tray into matching-colour boxes. Each box needs its four quadrants (top-left, top-right, bottom-left, bottom-right) before it completes &mdash; pieces only fit their own cell.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Solvable By Construction</h4>
+                    <p>Every level's tray is the exact complement of its boxes &mdash; never a missing or surplus piece. All boxes are visible at level start, so there is always a valid move and no dead ends.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Visual Level Editor</h4>
+                    <p>A full Unity Editor window with a level list, per-box colour selection, a <strong>per-box picture picker that shows the real target image split into its 4 jigsaw quadrants</strong>, mystery-box toggles, per-level booster counts, and one-click Save All / Reload.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Auto Level Generator</h4>
+                    <p>Batch-generate fresh levels with a fast concave difficulty curve, configurable box count, colour variety, random picture assignment, booster allowances, and a mystery-box difficulty ramp. Append-only &mdash; never overwrites hand-tuned levels.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Three Boosters</h4>
+                    <p><strong>Shuffle</strong> (re-randomise the whole tray incl. top/under), <strong>Magical Fill</strong> (pull a box's pieces in along curved trails), and <strong>Hint</strong> (animated ghost showing a valid move). Each is level-gated and shows a one-time tutorial popup on first use.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Mystery Boxes</h4>
+                    <p>Optional hidden boxes that show a greyed &ldquo;?&rdquo; and reject pieces until a set number of other boxes clear, then reveal their real colour + picture with a pop. Per-level in the editor; difficulty-ramped in the generator.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Stacked Tray Pieces</h4>
+                    <p>Some loose pieces spawn as a greyed piece tucked below + behind a front piece, locked until the front one is placed &mdash; then it surfaces to full colour with a pop and becomes draggable.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>JSON Levels + 500-Level Starter Pack</h4>
+                    <p>Levels ship as plain JSON under <code>Assets/Jig Sort/Resources/Levels/</code>. Regenerate or extend at any time with the Auto Level Generator.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GETTING STARTED ==================== -->
+        <section id="getting-started" class="section">
+            <h2>Getting Started</h2>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>Unity 6 or newer</li>
+                <li>Universal Render Pipeline (URP)</li>
+                <li>TextMesh Pro (included with Unity)</li>
+                <li>Input System package (the template uses both legacy and the new Input System)</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <ol>
+                <li>Import the <strong>Jig Sort</strong> package &mdash; one self-contained folder that includes the shared win / lose / booster / developer-mode UI stack (namespace <code>HypercasualGameEngine</code>).</li>
+                <li>Ensure the project uses the Universal Render Pipeline (<code>Edit &gt; Project Settings &gt; Graphics</code>).</li>
+                <li>Open the game scene at <code>Assets/Jig Sort/Scenes/GameNew.unity</code>.</li>
+                <li>Run <code>Tools &gt; NewestDevUI &gt; Setup Wizard</code> &rarr; <strong>Run All Steps</strong> &mdash; it builds the Canvas, HUD, win/lose panels, booster popups and developer-mode button into the scene.</li>
+                <li>Run <code>Tools &gt; Jig Sort &gt; Setup Wizard</code> &rarr; <strong>Run All Steps</strong> &mdash; it creates the SoundManager / GameManager, auto-wires audio, applies the Player &amp; Build settings, and retargets post-processing.</li>
+                <li>Press Play to test the first level.</li>
+            </ol>
+
+            <h3>Quick Test</h3>
+            <p>Once in Play mode, drag a tray piece onto its matching-colour box cell. When all four quadrants of a box sit in their cells, the picture assembles, <code>SoundManager.Instance.PlayLevelClear()</code>-adjacent feedback plays, and the box clears. Clear every box to win &mdash; the next level loads automatically. Press the <code>&rarr;</code> / <code>&larr;</code> arrow keys in Play mode to jump between levels for QA.</p>
+        </section>
+
+        <!-- ==================== FOLDER STRUCTURE ==================== -->
+        <section id="folder-structure" class="section">
+            <h2>Folder Structure</h2>
+
+            <p>During development the package is two top-level folders. The Jig Sort folder holds all game-specific content; NewestDevUI holds the shared UI stack (folded into Jig Sort before Asset Store publishing).</p>
+
+            <div class="folder-structure">
+<span class="folder">Jig Sort/</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Art/</span> <span class="comment">&mdash; Sprite artwork (jigsaw pieces, themed pictures, HUD)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Audio/</span> <span class="comment">&mdash; Sound effects (pickup, place, box complete, blocked, boosters, win, fail)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Datas/</span> <span class="comment">&mdash; BlockData / ColorData ScriptableObjects (sprite + colour mappings)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Documentation/</span> <span class="comment">&mdash; This documentation file</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelEditorWindow.cs</span> <span class="comment">&mdash; Visual level designer</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">AutoLevelGeneratorWindow.cs</span> <span class="comment">&mdash; Automatic batch level generator</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">JigSortSetupWizard.cs</span> <span class="comment">&mdash; Idempotent scene / settings / audio / post-processing wizard</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">JigSortWelcomePopup.cs</span> <span class="comment">&mdash; Welcome popup on project open</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BlockDataEditor.cs</span> <span class="comment">&mdash; Custom inspector for BlockData (3&times;3 cell painter)</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">InputSystemCheck.cs</span> <span class="comment">&mdash; Warns if Active Input Handling is not set to Both</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Materials/</span> <span class="comment">&mdash; Shared materials for pieces and FX</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; Block, BoxSprite, ImageComplete, glass, particle prefabs</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Resources/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BlockOutline.shader</span> <span class="comment">&mdash; 2D sprite outline (load-bearing location; survives stripping)</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="folder">Levels/</span> <span class="comment">&mdash; JSON levels (Level_1.json &hellip; Level_500.json)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scenes/</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">GameNew.unity</span> <span class="comment">&mdash; Main game scene (single playable scene)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; Runtime scripts (namespace JigSort.Scripts; LevelManager/SoundManager in HypercasualGameEngine)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">GameLevel.cs</span> <span class="comment">&mdash; Box + tray spawn, drag/place, completion, win/lose, boosters</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">InputManager.cs</span> <span class="comment">&mdash; Touch / mouse drag handling (new Input System)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Block.cs</span> <span class="comment">&mdash; A jigsaw quadrant piece (type, colour, grid cell, sprites)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">Box.cs</span> <span class="comment">&mdash; A colored 2&times;2 target box</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">BlockData.cs</span> <span class="comment">&mdash; Block-type &rarr; cell footprint + sprite mapping</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ColorData.cs</span> <span class="comment">&mdash; ColorType &rarr; colour + picture-sprite mapping</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">ImageComplete.cs</span> <span class="comment">&mdash; Completed-picture overlay</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelData.cs</span> <span class="comment">&mdash; Level schema (boxes, supply, 3 booster counts)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">LevelManager.cs</span> <span class="comment">&mdash; Static JSON loader + level progression (HypercasualGameEngine)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">SoundManager.cs</span> <span class="comment">&mdash; SFX singleton (HypercasualGameEngine)</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">JigSortGameManager.cs</span> <span class="comment">&mdash; Scene orchestrator + win/lose choke point + dev hotkeys</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="file">OutlineController.cs</span> <span class="comment">&mdash; Toggles the sprite outline on the dragged piece</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="file">CameraSwitcher.cs</span> <span class="comment">&mdash; Shared camera helper (HypercasualGameEngine)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">PostProcessing/</span> <span class="comment">&mdash; HC-PostProcessing-Volume.asset (shared URP profile, unique GUID)</span>
+&#9474;
+&#9500;&#9472;&#9472; <span class="folder">Sprites/</span> <span class="comment">&mdash; Block / quadrant sprite atlases</span>
+&#9474;
+&#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; Background and HUD textures</span>
+
+<span class="folder">NewestDevUI/</span> <span class="comment">&mdash; shared UI stack (folded into Jig Sort/ before Asset Store publish)</span>
+&#9500;&#9472;&#9472; <span class="folder">Editor/</span> <span class="comment">&mdash; NewestDevUI Setup Wizard + welcome popup</span>
+&#9500;&#9472;&#9472; <span class="folder">Scripts/</span> <span class="comment">&mdash; LoseWinPanelManager, BoosterManager, DeveloperModeButton, DeveloperSettingsController</span>
+&#9500;&#9472;&#9472; <span class="folder">Prefabs/</span> <span class="comment">&mdash; GameHUD_Panel, LevelClearedPanel, GameOverPanel, Popup_Powerup_Picker, DeveloperModeButton, &hellip;</span>
+&#9492;&#9472;&#9472; <span class="folder">Textures/</span> <span class="comment">&mdash; Booster icons + decorations</span>
+            </div>
+        </section>
+
+        <!-- ==================== GAMEPLAY ==================== -->
+        <section id="gameplay" class="section">
+            <h2>Gameplay</h2>
+
+            <h3>Core Mechanics</h3>
+            <p>Each level displays a vertical stack of empty colored 2&times;2 <strong>boxes</strong> down the centre, flanked by <strong>two side columns</strong> of loose jigsaw-quadrant pieces. The player drags a piece onto a box; it only fits the box of its own colour, and only the cell matching its quadrant (top-left, top-right, bottom-left, bottom-right). When all four quadrants of a box are placed, the picture assembles and the box clears.</p>
+
+            <ul>
+                <li><strong>Drag to place</strong> &mdash; Touch or click a piece and drag it to a box; on release it snaps into the matching cell if one is free, otherwise it returns (a Blocked sound plays)</li>
+                <li><strong>Four quadrants per box</strong> &mdash; Each box needs <code>typeIndex</code> 1&ndash;4 (cells (0,0), (1,0), (0,1), (1,1)) in its own colour</li>
+                <li><strong>Two side columns</strong> &mdash; Loose pieces sit in a left and a right column mirrored about the boxes; the dock supply is the exact 4-quadrant complement of every box, so every level is solvable</li>
+                <li><strong>Stacked pieces</strong> &mdash; Some pieces spawn greyed and tucked below + behind a front piece, locked until that front piece is placed, then they surface to full colour</li>
+                <li><strong>Mystery boxes</strong> &mdash; Optional hidden boxes show a greyed &ldquo;?&rdquo; and refuse pieces until a set number of other boxes clear, then reveal their colour + picture with a pop</li>
+                <li><strong>Box completion</strong> &mdash; When a box is full and single-coloured, a glass cap sweeps over the finished picture, particles burst, and the box clears (<code>CheckCompleteGrid</code> &rarr; <code>CompleteGrid</code>)</li>
+                <li><strong>Win</strong> &mdash; All boxes cleared. Win/lose is routed through <code>JigSortGameManager.TriggerWin()</code> so the clear sound fires exactly once before the panel shows</li>
+                <li><strong>Progression</strong> &mdash; On win, <code>LevelManager.AdvanceLevel()</code> runs before the scene reloads (driven by the NewestDevUI LoseWinPanelManager, or the built-in fallback)</li>
+            </ul>
+
+            <h3>Piece Colours</h3>
+            <p>Colours are defined by the <code>ColorType</code> enum (<code>LevelData.cs</code>) and mapped to RGB + picture sprites in the <code>ColorData</code> asset. A sample of the palette:</p>
+            <table>
+                <tr><th>Color Key</th><th>Color</th></tr>
+                <tr><td><code>Red</code></td><td><span class="color-swatch" style="background:#E64040;"></span> Red</td></tr>
+                <tr><td><code>Green</code></td><td><span class="color-swatch" style="background:#4DCC4D;"></span> Green</td></tr>
+                <tr><td><code>Blue</code></td><td><span class="color-swatch" style="background:#4D80F2;"></span> Blue</td></tr>
+                <tr><td><code>Yellow</code></td><td><span class="color-swatch" style="background:#F2E64D;"></span> Yellow</td></tr>
+                <tr><td><code>Orange</code></td><td><span class="color-swatch" style="background:#F29933;"></span> Orange</td></tr>
+                <tr><td><code>Pink</code></td><td><span class="color-swatch" style="background:#F299BF;"></span> Pink</td></tr>
+            </table>
+
+            <h3>Win &amp; Lose Conditions</h3>
+            <ul>
+                <li><strong>Win</strong> &mdash; Every box is completed. Star particles burst, the level-clear sound fires via <code>JigSortGameManager.TriggerWin()</code>, the level index advances, and the next level loads automatically.</li>
+                <li><strong>Lose</strong> &mdash; Optional; routed through <code>JigSortGameManager.TriggerLose()</code>. The base mechanic is non-failing (sorting puzzle), so a lose state can be wired to a move/time limit if desired.</li>
+            </ul>
+
+            <h3>Animations &amp; Feedback</h3>
+            <p>Pieces lerp to their target cells; the box pulses on each fill; a glass cap scales over the completed picture and star particles burst. The dragged piece shows a 2D sprite outline (<code>OutlineController</code> + <code>Resources/BlockOutline.shader</code>) and the target box highlights white while a piece hovers over it.</p>
+        </section>
+
+        <!-- ==================== SCRIPTS ==================== -->
+        <section id="scripts" class="section">
+            <h2>Scripts Reference</h2>
+
+            <p>Game-specific runtime scripts use the <code>JigSort.Scripts</code> namespace; editor scripts use <code>JigSort.Editor</code>. The static <code>LevelManager</code> and the <code>SoundManager</code> singleton live under <code>HypercasualGameEngine</code> so the shared NewestDevUI scripts resolve against them. The win/lose, booster, and developer-mode scripts are provided by the NewestDevUI package (also <code>HypercasualGameEngine</code>).</p>
+
+            <h3>Core Scripts (Jig Sort)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>GameLevel</code></td><td>Main gameplay controller. Pulls the current level from <code>LevelManager.GetCurrentLevel()</code> (no Inspector fallback), spawns the boxes and the data-driven tray supply, validates and animates drag-placement, detects box completion, routes win/lose through the GameManager, and implements the three booster effects (<code>ShuffleSupply</code>, <code>BombFillRandomBox</code>, <code>UnlockNextSupplyPiece</code>).</td></tr>
+                <tr><td><code>InputManager</code></td><td>Touch / mouse drag handling via the new Input System. Raycasts the Canvas to pick a tappable piece, tracks the drag with a ghost preview, fires the pickup SFX, applies the outline, and hands off to <code>GameLevel.DragBlockTo</code> on release.</td></tr>
+                <tr><td><code>Block</code></td><td>A jigsaw quadrant piece. Stores <code>typeIndex</code> (1&ndash;4), <code>blockType</code> (sprite), <code>colorType</code>, target <code>gridPosition</code>, the lock list (<code>blockReleases</code>), and rendering components.</td></tr>
+                <tr><td><code>Box</code></td><td>A colored 2&times;2 target box; holds its colour and the list of placed quadrants.</td></tr>
+                <tr><td><code>LevelData</code></td><td>Level schema (ScriptableObject, JSON-serialised). Contains the box columns, the tray <code>supply</code>, and the three booster counts (<code>shuffleBoosterCount</code>, <code>bombBoosterCount</code>, <code>unlockBoosterCount</code>). Runtime instances get <code>HideFlags.HideAndDontSave</code> to survive scene reloads.</td></tr>
+                <tr><td><code>JigSortGameManager</code></td><td>Scene orchestrator (<code>[DefaultExecutionOrder(-100)]</code>). Pre-warms the level cache, creates missing infrastructure with <code>FindFirstObjectByType</code>, owns the single <code>TriggerWin()</code> / <code>TriggerLose()</code> choke point (plays the clear/fail sound, flips state, then forwards to the panel), drives arrow-key dev level navigation, and forwards booster effects.</td></tr>
+                <tr><td><code>OutlineController</code></td><td>Toggles the sprite outline on the dragged piece using a single static shared material (zero per-frame GC); loads the shader from Resources first with a <code>Shader.Find</code> fallback.</td></tr>
+                <tr><td><code>BlockData</code> / <code>ColorData</code></td><td>ScriptableObject lookups: block-type &rarr; cell footprint + sprite, and ColorType &rarr; colour + picture sprite.</td></tr>
+            </table>
+
+            <h3>Engine Scripts (Jig Sort)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>LevelManager</code></td><td>Static loader (<code>HypercasualGameEngine</code>). Reads <code>Assets/Jig Sort/Resources/Levels/*.json</code> (editor: disk; player: <code>Resources.Load</code>), tracks the current level under <code>PlayerPrefs</code> key <code>Jig Sort_CurrentLevel</code>, and exposes <code>GetCurrentLevel</code>, <code>AdvanceLevel</code>, <code>GoToPreviousLevel</code>, <code>LevelCount</code>, <code>ForceReload</code>, plus editor-only disk-write helpers used by the level tools.</td></tr>
+                <tr><td><code>SoundManager</code></td><td>SFX singleton (<code>HypercasualGameEngine</code>). One 2D AudioSource, <code>masterVolume</code>, and one Play method per event &mdash; including the four NewestDevUI-required methods (<code>PlayBlocked</code>, <code>PlayBoosterShuffle</code>, <code>PlayBoosterBomb</code>, <code>PlayBoosterUnlock</code>).</td></tr>
+                <tr><td><code>CameraSwitcher</code></td><td>Shared camera helper carried over from the engine.</td></tr>
+            </table>
+
+            <h3>Editor Scripts (Jig Sort)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>LevelEditorWindow</code></td><td><code>Tools/Jig Sort/Level Editor</code> &mdash; two-pane level designer.</td></tr>
+                <tr><td><code>AutoLevelGeneratorWindow</code></td><td><code>Tools/Jig Sort/Auto Level Generator</code> &mdash; batch generator with a difficulty curve.</td></tr>
+                <tr><td><code>JigSortSetupWizard</code></td><td><code>Tools/Jig Sort/Setup Wizard</code> &mdash; idempotent scene / audio / settings / post-processing automation.</td></tr>
+                <tr><td><code>JigSortWelcomePopup</code></td><td><code>Tools/Jig Sort/Welcome</code> &mdash; first-open splash linking both wizards + tools.</td></tr>
+                <tr><td><code>InputSystemCheck</code></td><td>Warns if Active Input Handling is not set to Both.</td></tr>
+            </table>
+
+            <h3>Shared UI Scripts (NewestDevUI &mdash; namespace HypercasualGameEngine)</h3>
+            <table>
+                <tr><th>Script</th><th>Description</th></tr>
+                <tr><td><code>LoseWinPanelManager</code></td><td>Win / Lose panels, the winLevelText label, button re-wire on every show, and Next-Level progression (<code>AdvanceLevel</code> before scene reload).</td></tr>
+                <tr><td><code>BoosterManager</code></td><td>The three booster buttons, level-gated counts (<code>Init(LevelData)</code> reads the three counts), one-time tutorial popups (shown before the can-run gate), and SFX.</td></tr>
+                <tr><td><code>DeveloperModeButton</code> / <code>DeveloperSettingsController</code></td><td>Developer-mode panel with Shift+U/W/L/R hotkeys (ad-guarded).</td></tr>
+            </table>
+        </section>
+
+        <!-- ==================== LEVEL EDITOR ==================== -->
+        <section id="level-editor" class="section">
+            <h2>Level Editor</h2>
+            <p>Open it from <code>Tools &gt; Jig Sort &gt; Level Editor</code>. The window is split into two panes:</p>
+            <ul>
+                <li><strong>Left pane</strong> &mdash; the level list. Reorder with &#9650; / &#9660;, <code>+ Add Level</code>, <code>Duplicate Selected</code>, <code>Delete Selected</code> (with confirm), <code>Save All Levels</code> (green), and <code>Reload from Disk</code> (with confirm). A footer shows the total level count.</li>
+                <li><strong>Right pane</strong> &mdash; the selected level. Edit the three booster counts, add / remove boxes, choose each box's colour, and toggle pre-placed quadrants on a Y-flipped 2&times;2 grid canvas (top row is y = 1). The dock supply is auto-derived as the exact complement of the boxes and shown as a live count, so the level stays solvable.</li>
+            </ul>
+            <p>Levels are written to <code>Assets/Jig Sort/Resources/Levels/Level_N.json</code> on <em>Save All Levels</em>.</p>
+        </section>
+
+        <!-- ==================== AUTO LEVEL GENERATOR ==================== -->
+        <section id="auto-level-generator" class="section">
+            <h2>Auto Level Generator</h2>
+            <p>Open it from <code>Tools &gt; Jig Sort &gt; Auto Level Generator</code>. It appends new levels starting after the last existing one (never overwrites). Tunables:</p>
+            <ul>
+                <li><strong>Levels to Generate</strong> &mdash; default 500.</li>
+                <li><strong>Difficulty Ceiling Level</strong> &mdash; the level at which the curve hits maximum difficulty (default 12). The ramp is concave (square-root), so all content variety lands in the first dozen levels; later levels are seed-varied plays at max difficulty.</li>
+                <li><strong>Box count</strong> min / max &mdash; how many colored boxes per level.</li>
+                <li><strong>Distinct colours</strong> min / max &mdash; palette variety.</li>
+                <li><strong>Pre-placed per box (easy)</strong> &mdash; quadrants already in each box on easy levels (eases early levels; ramps to 0).</li>
+                <li><strong>Booster maxima</strong> &mdash; Shuffle / Bomb / Unlock counts at full difficulty.</li>
+            </ul>
+            <p>Every generated level is <strong>solvable by construction</strong>: each box gets one colour, the tray is the exact 4-quadrant complement of all boxes, and all boxes are visible at start &mdash; there is no luck-based generation and no "force a matching turn" post-process. A red <code>Delete All Levels</code> button (with confirm) clears the folder.</p>
+        </section>
+
+        <!-- ==================== BOOSTERS ==================== -->
+        <section id="boosters" class="section">
+            <h2>Boosters</h2>
+            <p>Three boosters, level-gated by the per-level counts in <code>LevelData</code>. The buttons, counts, and one-time tutorial popups are provided by the NewestDevUI <code>BoosterManager</code>; the effects are implemented game-side in <code>GameLevel</code> / <code>JigSortGameManager</code>.</p>
+            <table>
+                <tr><th>Booster</th><th>Effect</th><th>SoundManager method</th></tr>
+                <tr><td>Shuffle</td><td>Re-randomises <strong>all</strong> loose tray pieces — including their top/under stacking, so a hidden under-piece can surface and hide a different one. Pieces animate to their new slots.</td><td><code>PlayBoosterShuffle()</code></td></tr>
+                <tr><td>Magical Fill</td><td>Picks a random visible box and pulls its proper pieces in one after another along arced curves with fading trails, then completes it.</td><td><code>PlayBoosterBomb()</code></td></tr>
+                <tr><td>Hint</td><td>Flashes a movable piece and loops a translucent ghost of it gliding to its correct box, with a flashing target ghost left on the destination cell.</td><td><code>PlayBoosterUnlock()</code></td></tr>
+            </table>
+            <p>The one-time tutorial popup fires on the first click of each booster <em>before</em> any "can this run" gate, so the player always learns what a booster does. Popup state is persisted under <code>PlayerPrefs</code> keys <code>BoosterPopupShown_Shuffle/Bomb/Unlock</code>.</p>
+        </section>
+
+        <!-- ==================== CUSTOMIZATION ==================== -->
+        <section id="customization" class="section">
+            <h2>Customization</h2>
+            <h3>Change the artwork</h3>
+            <p>Swap the quadrant sprites in the <code>BlockData</code> asset and the per-colour picture sprites in the <code>ColorData</code> asset. The 13-colour <code>ColorType</code> palette can be re-tinted in <code>ColorData</code> without touching code.</p>
+            <h3>Puzzle pictures</h3>
+            <p>Drop your puzzle images (PNG) into <code>Assets/Jig Sort/PuzzleImages/</code>, then run <code>Tools &rarr; Jig Sort &rarr; Refresh Puzzle Images</code> &mdash; it imports them as sprites and builds <code>Resources/PuzzleImageData.asset</code>. The Auto Level Generator then assigns a random picture to each colour in every level (same-colour boxes share a picture); the four quadrants of a box assemble that image. If a level has no picture assigned for a colour, it falls back to the <code>ColorData</code> sprite. Tip: for the four quadrants to tile cleanly, give the images a consistent sprite size / Pixels-Per-Unit in the importer.</p>
+            <h3>Tune difficulty</h3>
+            <p>Use the Auto Level Generator's min/max ranges and difficulty ceiling, or hand-author levels in the Level Editor. Levels 1&ndash;5 are hand-tuned as a gentle on-ramp.</p>
+            <h3>Audio</h3>
+            <p>Drop your WAV clips into <code>Assets/Jig Sort/Audio/</code> (use names containing <code>LevelClear</code>, <code>LevelFail</code>, <code>Blocked</code>, <code>Pickup</code>, <code>Place</code>, <code>Complete</code>, <code>Shuffle</code>, <code>Bomb</code>, <code>Unlock</code>, or the <code>Success*</code>/<code>Fail*</code>/<code>Pop*</code>/<code>Switch*</code> pools) and run the Jig Sort Setup Wizard's "Auto-wire SoundManager clips" step.</p>
+            <h3>Post-processing</h3>
+            <p>The shared HC URP profile lives at <code>Assets/Jig Sort/PostProcessing/HC-PostProcessing-Volume.asset</code>. The Setup Wizard retargets the scene's Global Volume and the URP render-pipeline assets to it at weight 0.8.</p>
+        </section>
+
+        <!-- ==================== SUPPORT ==================== -->
+        <section id="support" class="section">
+            <h2>Support</h2>
+            <p>This template is part of the <a href="https://assetstore.unity.com/packages/templates/packs/hypercasual-game-engine-mobile-puzzle-templates-kit-133649" target="_blank" rel="noopener noreferrer">HyperCasual Game Engine &mdash; Mobile Puzzle Templates Kit</a>. For questions about the shared UI / booster / developer-mode stack, see <code>Assets/Jig Sort/Documentation/NewestDevUI-README.md</code>. For the game-specific systems, the in-line XML comments in each script under <code>Assets/Jig Sort/Scripts/</code> and <code>Assets/Jig Sort/Editor/</code> are the source of truth.</p>
+            <h3>Contact</h3>
+            <p>Questions, bug reports, or feature requests? Email <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>.</p>
+            <h3>Common Issues</h3>
+            <table>
+                <tr><th>Symptom</th><th>Cause / Fix</th></tr>
+                <tr><td>"No levels found" error on Play</td><td>The Levels folder is empty. Run <code>Tools &gt; Jig Sort &gt; Auto Level Generator</code> to generate levels.</td></tr>
+                <tr><td>No win/lose panel, no booster buttons</td><td>NewestDevUI isn't imported or its Setup Wizard hasn't run. Import it and run <code>Tools &gt; NewestDevUI &gt; Setup Wizard</code>, then re-run the Jig Sort Setup Wizard.</td></tr>
+                <tr><td>Game is silent</td><td>No audio clips in <code>Assets/Jig Sort/Audio/</code>. Import the SFX pack and re-run the Setup Wizard's audio step.</td></tr>
+                <tr><td>Magenta / pink screen</td><td>URP is not the active render pipeline. Check <code>Project Settings &gt; Graphics</code>.</td></tr>
+                <tr><td>Level 2 doesn't load after a win</td><td>A LevelData lost its <code>HideFlags.HideAndDontSave</code>. The shipped LevelManager sets it; don't remove it.</td></tr>
+            </table>
+        </section>
+
+        <div class="footer">
+            <p>Jig Sort &mdash; Jigsaw Colour-Sorting Puzzle Template</p>
+            <p>Made with the HyperCasual Game Engine &middot; Unity 6+ &middot; URP</p>
+        </div>
+    </div>
+</body>
+</html>
