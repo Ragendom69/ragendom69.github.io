@@ -309,7 +309,7 @@
             <h2>Gameplay</h2>
 
             <h3>Core Loop</h3>
-            <p>The board has a row of <strong>posts</strong> (3&ndash;5, depending on the level). Each post holds a queue of colored blocks; the front one is the active <strong>shooter</strong>. Tapping a shooter slides it up into its column toward the landing row. When the shooter meets a connected group of its own color, a flood-fill clear removes the whole group with a particle burst, and the blocks above settle down under gravity to fill the gaps. The next shooter in that column then becomes active.</p>
+            <p>The board has a row of <strong>posts</strong> (3&ndash;5, depending on the level). Each post holds a queue of colored blocks; the front one is the active <strong>shooter</strong>. Tapping a shooter slides it up into its column toward the landing row. When the shooter meets a connected group of its own color, a flood-fill clear removes the whole group with a particle burst, and the blocks above settle down under gravity to fill the gaps. Posts keep refilling with fresh shooters, so you never run out of ammo &mdash; the level is a race to <strong>clear N cubes</strong> before a column jams.</p>
 
             <ul>
                 <li><strong>Tap to fire</strong> &mdash; <code>InputManager</code> raycasts the tapped block; if it is the active, tappable shooter it slides up its column to the landing row.</li>
@@ -317,7 +317,7 @@
                 <li><strong>Gravity refill</strong> &mdash; after a clear, remaining blocks fall to the lowest free cell and the grid tops up so the board stays full and gravity-settled.</li>
                 <li><strong>Disco wildcard</strong> &mdash; a wildcard block at the foot of a column can be fired into by <em>any</em> color and detonates a large chain (see below).</li>
                 <li><strong>Growing board</strong> &mdash; the column count ramps 3 &rarr; 4 &rarr; 5 with the level; the grid, posts and tray walls re-center to the active count.</li>
-                <li><strong>Win</strong> &mdash; fire every queued shooter. The number to clear (<code>columns &times; queue length</code>) scales with the level, so the first levels clear fast and later ones need progressively more. A <strong>progress bar + count</strong> at the top of the screen shows shooters fired vs the total. <strong>Lose</strong> &mdash; a column jams with no available match.</li>
+                <li><strong>Win</strong> &mdash; destroy the level's <strong>clear target</strong> (<code>clearTarget</code>) number of cubes. The target scales with the level, so the first levels clear fast and later ones need progressively more. Every destroyed cube counts toward it &mdash; a normal match adds its group size and a <strong>disco adds the whole chain it detonates</strong>. A <strong>progress bar + count</strong> at the top of the screen shows cubes cleared vs the target. <strong>Lose</strong> &mdash; a column jams with no available match.</li>
             </ul>
 
             <h3>Block Colors</h3>
@@ -392,7 +392,7 @@
             <ul>
                 <li><strong>Grid canvas</strong> &mdash; click cells to place / erase pre-placed obstacles. The active <em>Color</em> picker chooses the obstacle color; tick <strong>Mystery (obstacle)</strong> to paint a hidden obstacle (drawn with a grey veil and a &ldquo;?&rdquo;).</li>
                 <li><strong>Column queues</strong> &mdash; set each column's shooter queue length and colors; tick the <strong>&ldquo;?&rdquo;</strong> under any queue block to make it a mystery shooter.</li>
-                <li><strong>Boosters &amp; grid size</strong> &mdash; per-level booster counts, unlock levels, and grid dimensions.</li>
+                <li><strong>Clear target, boosters &amp; grid size</strong> &mdash; the cubes-to-win <code>Clear Target</code>, per-level booster counts, unlock levels, and grid dimensions.</li>
             </ul>
             <p>Changes are written straight back to the JSON. Keep the column count within the number of posts in the scene (see Customization).</p>
         </section>
@@ -402,9 +402,10 @@
             <h2>Auto Level Generator</h2>
             <p>Open with <code>Tools &gt; SlideBlock &gt; Auto Level Generator</code>. It batch-creates levels with a built-in difficulty curve keyed off the absolute level number, so progression stays consistent in append mode. Everything below scales with the level:</p>
             <ul>
+                <li><strong>Clear target</strong> (<code>clearTarget</code>) &mdash; cubes to destroy to win; ramps from ~8 on level 1 to ~60 by level 30, so early levels are quick.</li>
                 <li><strong>Column count</strong> &mdash; 3 columns (levels 1&ndash;6), 4 (7&ndash;14), 5 (15+).</li>
                 <li><strong>Color palette</strong> &mdash; 3 colors (1&ndash;5), 4 (6&ndash;11), 5 (12+).</li>
-                <li><strong>Queue length</strong> &mdash; grows toward the configured max; <strong>stack height</strong> of pre-placed obstacles grows too (always gravity-settled, no gaps).</li>
+                <li><strong>Starting queue &amp; stack height</strong> &mdash; the seeded shooter queue length and the pre-placed obstacle stacks grow with difficulty (always gravity-settled, no gaps). Once the queue is spent, posts refill with fresh shooters.</li>
                 <li><strong>Wildcard density</strong> &mdash; chance a grid cell is a disco wildcard, ramping with difficulty.</li>
                 <li><strong>Mystery frequency</strong> &mdash; tweakable <em>Mystery Shooter Chance</em> and <em>Mystery Obstacle Chance</em> (max), ramped in over <em>Mystery Ramp Levels</em> so mystery is rare on early levels.</li>
             </ul>
