@@ -767,7 +767,7 @@ details .details-body p:first-child { margin-top: 0; }
     <a class="mini-card" href="#shapes"><h4>&#9733; SDF Shapes</h4><p>8 primitives, gradients, stroke, fill-amount, edge-collapse morph &mdash; all from one <code>FgShape</code>.</p></a>
     <a class="mini-card" href="#components"><h4>&#129513; 60+ Components</h4><p>Buttons to calendars, all token-themed and assembled from Forge primitives. One factory call each.</p></a>
     <a class="mini-card" href="#theming"><h4>&#127912; Design Tokens</h4><p>Typed tokens + modes. Call <code>FgTheme.SetMode("Dark")</code> and the whole UI restyles live.</p></a>
-    <a class="mini-card" href="#animation"><h4>&#10227; Zero-GC Tweens</h4><p>30 easing curves, sequences, spline paths, punch &amp; shake &mdash; a fluent DOTween-style API.</p></a>
+    <a class="mini-card" href="#animation"><h4>&#10227; Zero-GC Tweens</h4><p>30 easing curves, sequences, spline paths, punch &amp; shake &mdash; a fluent, chainable API.</p></a>
     <a class="mini-card" href="#data"><h4>&#128279; MVVM Binding</h4><p>Change an <code>FgObservable</code> once; every bound label, slider and list updates itself.</p></a>
     <a class="mini-card" href="#mcp"><h4>&#129302; AI Generation</h4><p>Describe a screen; the MCP tool layer assembles it from the same components you'd use by hand.</p></a>
   </div>
@@ -885,7 +885,7 @@ panel.<span class="fn">FgMoveAnchoredY</span>(<span class="num">0f</span>, <span
   </div>
 
   <h3>Design Canvas <span class="tag tag-info">Window &rarr; Forge Canvas</span></h3>
-  <p>The Design Canvas is a dockable, Figma-style authoring surface inside the Editor:</p>
+  <p>The Design Canvas is a dockable, drag-and-drop authoring surface inside the Editor:</p>
   <ul>
     <li><strong>Palette</strong> &mdash; one click spawns any shape or any of the 60+ components onto your scene.</li>
     <li><strong>Properties panel</strong> &mdash; edit the selected <code>FgShape</code> live: shape type, fill, gradient, stroke, corner radius.</li>
@@ -1090,7 +1090,7 @@ picker.Changed += c =&gt; <span class="tp">Debug</span>.<span class="fn">Log</sp
     <table>
       <thead><tr><th>Type</th><th>Use</th></tr></thead>
       <tbody>
-        <tr><td><code>FgMasonry</code></td><td>Pinterest-style shortest-column packing.</td></tr>
+        <tr><td><code>FgMasonry</code></td><td>Masonry layout &mdash; packs each item into the shortest column.</td></tr>
         <tr><td><code>FgRadialLayout</code></td><td>Arrange around a circle, arc or spiral; animated reflow.</td></tr>
         <tr><td><code>FgCurveLayout</code></td><td>Spread children along a Catmull-Rom spline.</td></tr>
         <tr><td><code>FgScrollSnap</code></td><td>Paged carousel snapping with an <code>OnPageChanged</code> event.</td></tr>
@@ -1178,7 +1178,7 @@ volume.Value = <span class="num">0.8f</span>;   <span class="cm">// label AND sl
 <!-- ============================================ -->
 <section class="section" id="animation">
   <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#10227;</span> Animation &amp; Tweens</h2>
-  <p class="section-desc">A pooled, zero-GC tween engine with a fluent DOTween-style API. <code>Forge.Interactions</code>.</p>
+  <p class="section-desc">A pooled, zero-GC tween engine with a fluent, chainable API. <code>Forge.Interactions</code>.</p>
 
   <h3>Tweens</h3>
   <p><code>FgTween</code> animates floats, vectors, colors and curves with 30 easing functions (<code>FgEase</code>: Quad/Cubic/Quart/Quint/Sine/Expo/Circ/Back/Elastic/Bounce, each In/Out/InOut). Tweens are chainable, can loop / ping-pong, run on unscaled time, and be killed by id.</p>
@@ -1196,7 +1196,7 @@ group.<span class="fn">FgFade</span>(<span class="num">1f</span>, <span class="n
 
   <h3>Sequences, punch, shake &amp; paths</h3>
   <ul>
-    <li><code>FgSequence</code> &mdash; <code>Append</code> / <code>Join</code> (parallel) / <code>AppendInterval</code> / <code>AppendCallback</code>, DOTween-Sequence parity.</li>
+    <li><code>FgSequence</code> &mdash; <code>Append</code> / <code>Join</code> (parallel) / <code>AppendInterval</code> / <code>AppendCallback</code> &mdash; a full sequence timeline.</li>
     <li><code>Punch</code> and <code>Shake</code> for snappy feedback.</li>
     <li><code>FgPathAnchored(waypoints, &hellip;)</code> &mdash; move along a Catmull-Rom or linear spline.</li>
   </ul>
@@ -1312,7 +1312,7 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
   <p><code>Tools &rarr; Forge &rarr; Build Demo Scene</code> generates a guided, sidebar-navigated tour of <strong>49 interactive sections</strong> &mdash; shapes, gradients, shadows, filters, glass, soft masks, text effects, theming, localization, layout, every component, animation, lists of 10,000 rows, data binding and more. The content is generated at runtime, so it builds to a tiny, fast WebGL player; every page is hands-on (drag, type, tweak sliders).</p>
 
   <h3>Forge Studio</h3>
-  <p><code>Tools &rarr; Forge &rarr; Build Studio Scene</code> builds <strong>Forge Studio</strong> &mdash; an in-play "Figma-clone" playground that ships <em>inside your build</em>: a tool palette, a center artboard, and a right-hand inspector. Add shapes and components, select and drag them, resize via corner handles, edit fill / corner-radius / stroke live, duplicate, delete, and toggle Dark mode. It's built from the same factories your game uses.</p>
+  <p><code>Tools &rarr; Forge &rarr; Build Studio Scene</code> builds <strong>Forge Studio</strong> &mdash; an in-play visual design playground that ships <em>inside your build</em>: a tool palette, a center artboard, and a right-hand inspector. Add shapes and components, select and drag them, resize via corner handles, edit fill / corner-radius / stroke live, duplicate, delete, and toggle Dark mode. It's built from the same factories your game uses.</p>
 
   <h3>Kitchen-sink sample</h3>
   <p><code>Tools &rarr; Forge &rarr; Build Kitchen-Sink Demo</code> creates <code>Assets/Forge/Samples/ForgeKitchenSink.unity</code> &mdash; a dense single-scene showcase of shapes, gradients, morph, glass, shadows, tabs and dropdowns.</p>
@@ -1434,8 +1434,8 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
   <p class="section-desc">Quick answers.</p>
 
   <details>
-    <summary>Is Forge a Figma importer?</summary>
-    <div class="details-body"><p>No. Forge is a UGUI design &amp; build toolkit &mdash; you create UI with code, the Design Canvas, or the AI layer. It doesn't import Figma files.</p></div>
+    <summary>Is Forge a design-file importer?</summary>
+    <div class="details-body"><p>No. Forge is a UGUI design &amp; build toolkit &mdash; you create UI in code, on the Design Canvas, or through the AI layer. It doesn't import external design files.</p></div>
   </details>
 
   <details>
