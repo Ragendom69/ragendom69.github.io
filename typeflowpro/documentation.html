@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeFlow Pro - Documentation</title>
+<style>
+:root {
+  --bg: #0D0B1A;
+  --bg-card: #161230;
+  --bg-card-hover: #1E1840;
+  --bg-code: #1A1535;
+  --bg-sidebar: #100D20;
+  --text: #e2e2ea;
+  --text-dim: #9088b0;
+  --text-code: #c8c8d8;
+  --accent: #9333EA;
+  --accent-light: #A855F7;
+  --accent-glow: rgba(147,51,234,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #EC4899;
+  --pink-dim: rgba(236,72,153,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #818cf8;
+  --blue-dim: rgba(129,140,248,0.12);
+  --border: #2D2550;
+  --border-light: #3D3560;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,11,26,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #9333EA, #EC4899);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #A855F7 40%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(147,51,234,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(129,140,248,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 4px; }
+
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.mini-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  padding: 0;
+}
+
+.mini-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+pre .lang-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-family: var(--font);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.kw { color: #C084FC; }
+.str { color: #c3e88d; }
+.cm { color: #6B5F8A; font-style: italic; }
+.fn { color: #818cf8; }
+.tp { color: #ffcb6b; }
+.num { color: #f78c6c; }
+.op { color: #A78BFA; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(147,51,234,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:hover { color: var(--accent-light); }
+
+details .details-body { padding: 0 20px 18px; }
+details .details-body p:first-child { margin-top: 0; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout > div { flex: 1; }
+.callout p { margin-bottom: 6px; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(129,140,248,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+.tag-info { background: var(--blue-dim); color: var(--blue); }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); text-decoration: none; }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <a href="#overview" class="header-logo">
+    <div class="dot">T</div>
+    <span>TypeFlow Pro</span>
+  </a>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v4.0 &middot; Unity 2021.3+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
+    <a href="#quickstart-tmp"><span class="nav-icon">&#9889;</span> Quick Start: Arabic on TMP</a>
+    <a href="#quickstart-kiln"><span class="nav-icon">&#128293;</span> Quick Start: Kiln Engine</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Tier 1 &mdash; TextMeshPro</div>
+    <a href="#how-it-works"><span class="nav-icon">&#9881;</span> How It Works</a>
+    <a href="#typeflow-text"><span class="nav-icon">&#128221;</span> TypeFlow Text</a>
+    <a href="#typeflow-animator"><span class="nav-icon">&#127916;</span> TypeFlow Animator</a>
+    <a href="#animation-tags"><span class="nav-icon">&#10024;</span> Animation Tags</a>
+    <a href="#rtl-digits"><span class="nav-icon">&#128260;</span> RTL, Alignment &amp; Digits</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Tier 2 &mdash; Kiln Engine</div>
+    <a href="#kiln-text"><span class="nav-icon">&#128293;</span> Kiln Text</a>
+    <a href="#scripts-fonts"><span class="nav-icon">&#127760;</span> Scripts &amp; Fonts</a>
+    <a href="#rich-text"><span class="nav-icon">&#127912;</span> Families, Links &amp; Effects</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Concepts</div>
+    <a href="#architecture"><span class="nav-icon">&#127959;</span> Two-Tier Architecture</a>
+    <a href="#conformance"><span class="nav-icon">&#9989;</span> Unicode Conformance</a>
+    <a href="#editor-tools"><span class="nav-icon">&#128295;</span> Editor Tools</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#api"><span class="nav-icon">&#128217;</span> Scripting API</a>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero" id="overview">
+  <h1>TypeFlow Pro</h1>
+  <p>Correct, animated Arabic / Hebrew / right-to-left text for TextMeshPro &mdash; plus a pure-C# OpenType engine for the scripts, fonts and effects TMP's atlas can't reach. No migration, no native binaries.</p>
+  <div class="hero-badges">
+    <span class="badge badge-purple">Unity 2021.3+</span>
+    <span class="badge badge-green">Pure C# &middot; No native code</span>
+    <span class="badge badge-yellow">TextMeshPro</span>
+    <span class="badge badge-pink">RTL / Arabic / Hebrew</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Two tiers, one package.</strong> <strong>Tier&nbsp;1</strong> enhances the TextMeshPro you already use &mdash; add one component for correct shaping, BiDi and animation, with zero migration. <strong>Tier&nbsp;2</strong> ("Kiln") is a standalone pure-C# OpenType renderer for scripts, variable fonts, color emoji and effects TMP can't express.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#9989;</span>
+    <div><strong>Proven correctness.</strong> Measured against the <em>official</em> Unicode conformance suites and locked by regression-floored tests &mdash; not a single hand-waved aggregate. See <a href="#conformance">Unicode Conformance</a>.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#quickstart-tmp"><h4>&#9889; Arabic in 10 seconds</h4><p>Add <strong>TypeFlow Text</strong> to a TMP object &mdash; correct joining and RTL order, instantly.</p></a>
+    <a class="mini-card" href="#typeflow-animator"><h4>&#127916; RTL-aware animation</h4><p>A typewriter that reveals in logical reading order, plus 20 built-in behaviors, per-word appearances and dialogue actions.</p></a>
+    <a class="mini-card" href="#kiln-text"><h4>&#128293; Kiln engine</h4><p>Pure-C# OpenType: GSUB/GPOS, variable fonts, color emoji, SDF/MSDF &mdash; no TextMeshPro.</p></a>
+    <a class="mini-card" href="#conformance"><h4>&#9989; 100% conformance</h4><p>Grapheme, word and sentence segmentation at 100% on the official Unicode suites.</p></a>
+    <a class="mini-card" href="#rich-text"><h4>&#127912; Families &amp; links</h4><p>Font families with faux-bold/italic, clickable <code>&lt;link&gt;</code> regions, gradients.</p></a>
+    <a class="mini-card" href="#installation"><h4>&#10515; Drop-in install</h4><p>Import, run Setup, add a component. Remove it and you're back to vanilla TMP.</p></a>
+  </div>
+
+  <p>This guide covers both tiers. Tier-1 (TextMeshPro) topics come first; the pure-C# <a href="#kiln-text">Kiln engine</a> follows; shared <a href="#architecture">concepts</a> and <a href="#troubleshooting">reference</a> are at the end.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             INSTALLATION                     -->
+<!-- ============================================ -->
+<section class="section" id="installation">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Installation</h2>
+  <p class="section-desc">Import once, run the Setup wizard, add a component.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import from the Asset Store</strong><br>In <code>Window &rarr; Package Manager &rarr; My Assets</code>, download and import TypeFlow Pro. It lands at <code>Assets/TypeFlowPro/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Import TMP Essentials</strong><br><code>Window &rarr; TextMeshPro &rarr; Import TMP Essential Resources</code> (needed for the Tier-1 TextMeshPro path).</div></div>
+    <div class="step"><div class="step-content"><strong>Run the Setup wizard</strong><br><code>Tools &rarr; TypeFlow Pro &rarr; Setup</code> &mdash; it verifies TMP and helps you build an Arabic-capable font atlas (it lists the presentation-form ranges to include).</div></div>
+    <div class="step"><div class="step-content"><strong>Add a component</strong><br><strong>TypeFlow Text</strong> on a TMP object for the Tier-1 path, or <strong>Kiln Text</strong> for the standalone Tier-2 renderer.</div></div>
+  </div>
+
+  <h3>Requirements</h3>
+  <ul>
+    <li>Unity <strong>2021.3</strong> or newer (developed on Unity 6000.0).</li>
+    <li><strong>TextMeshPro</strong> (<code>com.unity.textmeshpro</code>) for the Tier-1 path.</li>
+    <li>An Arabic-capable font with presentation forms for Tier-1 (e.g. <em>Noto Naskh Arabic</em>, <em>Amiri</em>, <em>Cairo</em>, <em>Dubai</em>). A bundled SIL OFL font (<strong>Amiri</strong>) is included for the demo.</li>
+  </ul>
+
+  <h3>What gets installed</h3>
+  <pre><code><span class="kw">Assets/TypeFlowPro/</span>
+  Runtime/        <span class="cm">// Unicode (BiDi, segmentation, layout), Fonts (shaping/render),</span>
+                  <span class="cm">//   Core (pipeline + TypeFlowText), Kiln (Tier-2), TypeFlow (animation)</span>
+  Editor/         <span class="cm">// Setup Wizard, Font Diagnostics, Conformance Runner, inspectors</span>
+  Demos/          <span class="cm">// bundled Amiri font + a guided, interactive showcase scene</span>
+                  <span class="cm">//   (every feature, page by page) you can open and play</span>
+  Documentation/  <span class="cm">// You are here</span>
+  Tests/          <span class="cm">// EditMode + PlayMode (run headless via Unity -runTests)</span><span class="lang-tag">Project</span></code></pre>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Zero lock-in.</strong> TypeFlow Text is an <code>ITextPreprocessor</code> &mdash; disable or remove the component and your text reverts to plain TextMeshPro. Nothing is rewritten on disk.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--          QUICK START - TMP                   -->
+<!-- ============================================ -->
+<section class="section" id="quickstart-tmp">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9889;</span> Quick Start: Arabic on TextMeshPro</h2>
+  <p class="section-desc">Correct, joined, right-to-left Arabic on your existing TMP objects &mdash; in about ten seconds.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Add a TextMeshPro object</strong><br>A <em>TextMeshPro - Text (UI)</em> or <em>TextMeshPro (3D)</em>, as usual. Assign an Arabic-capable font asset.</div></div>
+    <div class="step"><div class="step-content"><strong>Add the TypeFlow Text component</strong><br><code>Add Component &rarr; TypeFlow Pro &rarr; TypeFlow Text</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Type Arabic into the TMP text field</strong><br>That's it &mdash; letters join, the line orders right-to-left, and mixed numbers/English are placed correctly.</div></div>
+    <div class="step"><div class="step-content"><strong>(Optional) Animate it</strong><br>Add <strong>TypeFlow Animator</strong> and enable the typewriter &mdash; it reveals in logical reading order, correct even for RTL.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Set the direction explicitly if you know it.</strong> <code>BaseDirection.Auto</code> uses the UAX&nbsp;#9 first-strong rule; set <code>RightToLeft</code> or <code>LeftToRight</code> for a fixed layout.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--          QUICK START - KILN                  -->
+<!-- ============================================ -->
+<section class="section" id="quickstart-kiln">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#128293;</span> Quick Start: Kiln Engine (Tier 2)</h2>
+  <p class="section-desc">Render any font with its own OpenType tables &mdash; no TextMeshPro, no native code.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import a font as bytes</strong><br>Drop a <code>.ttf</code>/<code>.otf</code> into your project and rename the extension to <code>.bytes</code> (so Unity imports it as a <code>TextAsset</code>).</div></div>
+    <div class="step"><div class="step-content"><strong>Add a Kiln Text component</strong><br><code>Add Component &rarr; TypeFlow Pro &rarr; Kiln Text (Tier 2)</code> on an empty GameObject (it adds a MeshFilter + MeshRenderer).</div></div>
+    <div class="step"><div class="step-content"><strong>Assign the font + type text</strong><br>Drag the <code>.bytes</code> font into the Font slot and set the text. Kiln shapes it with the font's GSUB/GPOS, rasterizes glyphs to its SDF atlas, and draws with the KilnSDF shader.</div></div>
+    <div class="step"><div class="step-content"><strong>(Optional) Wrap &amp; align</strong><br>Set <em>Max Width</em> (&gt; 0 enables word wrap) and the alignment. See <a href="#kiln-text">Kiln Text</a> for all fields.</div></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>When to use Kiln vs. Tier 1.</strong> Use Tier 1 for normal Arabic/Hebrew/RTL UI on TextMeshPro. Reach for Kiln when you need scripts, variable-font axes, or color emoji that TMP's pre-baked atlas can't express.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             HOW IT WORKS                     -->
+<!-- ============================================ -->
+<section class="section" id="how-it-works">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> How It Works (Tier 1)</h2>
+  <p class="section-desc">A string becomes correct, animated RTL text in one preprocessing pass.</p>
+
+  <div class="flow">
+    <span class="flow-node">Source text</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Strip anim tags</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Arabic shaping</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">BiDi (UAX #9)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Mirror</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">TMP renders</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Animator</span>
+  </div>
+
+  <ol>
+    <li><code>TfpTagParser</code> strips TypeFlow Pro's own animation tags (keeping TextMeshPro markup).</li>
+    <li><code>ArabicShaper</code> applies logical-order contextual joining + lam-alef ligatures.</li>
+    <li><code>Bidi.Resolve</code> computes UAX&nbsp;#9 embedding levels and the visual order.</li>
+    <li>Mirroring (rule L4) produces the visual string and a <strong>VisualToSource cluster map</strong>.</li>
+    <li>TextMeshPro renders the visual string with its own atlas and shaders.</li>
+    <li><code>TypeFlowAnimator</code> reveals/animates the TMP mesh, using the cluster map so the typewriter follows <em>logical</em> reading order (correct for RTL).</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>It's a preprocessor.</strong> TypeFlow Text implements <code>TMPro.ITextPreprocessor</code>, so TMP calls it automatically before layout. There is no second mesh, no extra draw call, and no per-frame allocation in steady state.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             TYPEFLOW TEXT                    -->
+<!-- ============================================ -->
+<section class="section" id="typeflow-text">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128221;</span> TypeFlow Text</h2>
+  <p class="section-desc"><code>TypeFlowPro.TypeFlowText</code> &mdash; the Tier-1 component. Add it to any object with a <code>TMP_Text</code>.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>BaseDirection BaseDirection</code></td><td>Paragraph direction: <code>Auto</code> (UAX&nbsp;#9 first-strong), <code>LeftToRight</code>, or <code>RightToLeft</code>. Setter re-processes.</td></tr>
+      <tr><td><code>bool EnableArabicShaping</code></td><td>Toggle contextual joining + lam-alef ligatures. Setter re-processes.</td></tr>
+      <tr><td><code>byte LastParagraphLevel</code></td><td>0 = LTR, 1 = RTL of the last preprocess.</td></tr>
+      <tr><td><code>ProcessedText LastProcessed</code></td><td>Visual string + cluster map of the last preprocess.</td></tr>
+      <tr><td><code>ParsedText LastParsed</code></td><td>Stripped animation data of the last preprocess.</td></tr>
+      <tr><td><code>event Action TextProcessed</code></td><td>Raised after each preprocess.</td></tr>
+      <tr><td><code>string PreprocessText(string)</code></td><td><code>ITextPreprocessor</code> entry point (called by TMP).</td></tr>
+      <tr><td><code>void Refresh()</code></td><td>Force TMP to re-run preprocessing.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Auto-flip alignment (so RTL text right-aligns automatically) is a serialized option on the component.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           TYPEFLOW ANIMATOR                  -->
+<!-- ============================================ -->
+<section class="section" id="typeflow-animator">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127916;</span> TypeFlow Animator</h2>
+  <p class="section-desc"><code>TypeFlowPro.TypeFlow.TypeFlowAnimator</code> &mdash; the animation driver. Add it alongside TypeFlow Text.</p>
+
+  <h3>Typewriter</h3>
+  <p>Enable the typewriter to reveal text character-by-character. Because reveal follows the cluster map, Arabic appears right-to-left in the correct order, not backwards. Configure characters-per-second, play-on-enable, and a punctuation pause.</p>
+
+  <h3>Control &amp; events</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Play() / Pause() / Skip() / Restart()</code> (alias <code>Replay()</code>)</td><td>Typewriter control.</td></tr>
+      <tr><td><code>SetTextAndPlay(string)</code></td><td>Set the label's text (TFP tags allowed) and restart the reveal from the top.</td></tr>
+      <tr><td><code>Continue()</code></td><td>Release a <code>&lt;waitinput&gt;</code> hold so the typewriter resumes (call on player input).</td></tr>
+      <tr><td><code>PlayOut()</code></td><td>Play the disappearance (exit) animation.</td></tr>
+      <tr><td><code>SetTypewriterSound(AudioSource, AudioClip[], volume, pitchJitter, everyN)</code></td><td>Wire a per-character click sound at runtime (random clip + pitch jitter; skip whitespace).</td></tr>
+      <tr><td><code>bool IsPlaying / IsComplete / IsWaitingForInput</code></td><td>Current state.</td></tr>
+      <tr><td><code>float Progress / int VisibleCharacters</code></td><td>Reveal progress (0..1) and the count of revealed characters — for progress bars / gating.</td></tr>
+      <tr><td><code>event Action&lt;int&gt; CharacterRevealed</code></td><td>Fires with the logical index as each character appears.</td></tr>
+      <tr><td><code>event Action&lt;int&gt; WordRevealed</code></td><td>Fires with the word index as each whole word finishes revealing.</td></tr>
+      <tr><td><code>event Action WaitingForInput</code></td><td>Fires once when the typewriter parks at a <code>&lt;waitinput&gt;</code>; call <code>Continue()</code> to resume.</td></tr>
+      <tr><td><code>event Action&lt;string&gt; EventTriggered</code></td><td>Fires when a <code>&lt;event=name&gt;</code> tag is reached.</td></tr>
+      <tr><td><code>event Action TypewriterCompleted</code></td><td>Fires when the reveal finishes.</td></tr>
+      <tr><td><code>event Action HiddenOut</code></td><td>Fires when a <code>PlayOut()</code> disappearance finishes.</td></tr>
+    </tbody>
+  </table></div>
+
+  <pre><code><span class="kw">var</span> anim = GetComponent&lt;<span class="tp">TypeFlowAnimator</span>&gt;();
+anim.WordRevealed   += w =&gt; { <span class="cm">/* sync a voice clip per word */</span> };
+anim.EventTriggered += name =&gt; { <span class="cm">/* react to &lt;event=name&gt; */</span> };
+anim.WaitingForInput += () =&gt; ShowContinuePrompt();   <span class="cm">// parked at &lt;waitinput&gt;</span>
+anim.TypewriterCompleted += () =&gt; AdvanceDialogue();
+
+anim.SetTextAndPlay(<span class="st">"Hello &lt;wave&gt;world&lt;/wave&gt;!&lt;waitinput&gt; Ready?"</span>);
+<span class="kw">if</span> (Input.GetMouseButtonDown(0)) anim.Continue();      <span class="cm">// release the wait</span>
+progressBar.fillAmount = anim.Progress;                <span class="cm">// 0..1</span>
+anim.Skip();   <span class="cm">// reveal everything now</span><span class="lang-tag">C#</span></code></pre>
+
+  <h3>Common recipes</h3>
+
+  <p><strong>Dialogue box that waits for input.</strong> Use <code>&lt;waitinput&gt;</code> between sentences and call <code>Continue()</code> on a click; <code>WaitingForInput</code> tells you when to show a prompt.</p>
+  <pre><code>anim.WaitingForInput += () =&gt; prompt.SetActive(<span class="kw">true</span>);
+anim.SetTextAndPlay(<span class="st">"Hello, traveler!&lt;waitinput&gt; The road is dangerous.&lt;waitinput&gt; Continue?"</span>);
+
+<span class="kw">void</span> Update() {
+    <span class="kw">if</span> (anim.IsWaitingForInput &amp;&amp; Input.GetMouseButtonDown(0)) {
+        prompt.SetActive(<span class="kw">false</span>);
+        anim.Continue();
+    }
+}<span class="lang-tag">C#</span></code></pre>
+
+  <p><strong>Word-by-word voice / SFX sync.</strong> Reveal whole words and react per word.</p>
+  <pre><code>anim.Reveal = <span class="tp">TypeFlowAnimator</span>.RevealUnit.Word;
+anim.WordRevealed += wordIndex =&gt; PlayBlip(wordIndex);
+anim.Restart();<span class="lang-tag">C#</span></code></pre>
+
+  <p><strong>Animate shaped Arabic.</strong> Behaviors work on the RTL-shaped glyphs &mdash; just tag the text; the typewriter still reveals in correct logical order.</p>
+  <pre><code>arabicLabel.text = <span class="st">"&lt;wave&gt;&#1605;&#1585;&#1581;&#1576;&#1575;&lt;/wave&gt; &lt;rainbow&gt;&#1576;&#1575;&#1604;&#1593;&#1575;&#1604;&#1605;&lt;/rainbow&gt;"</span>;
+<span class="cm">// (TypeFlow Text handles shaping/BiDi; TypeFlow Animator animates the result)</span><span class="lang-tag">C#</span></code></pre>
+
+  <p><strong>Different entrance per word.</strong> Override the global entrance per span, optionally with its own timing.</p>
+  <pre><code>label.text = <span class="st">"&lt;appear=pop ease=back&gt;Bounce&lt;/appear&gt; &lt;appear=scale dur=0.8&gt;grow&lt;/appear&gt; in!"</span>;<span class="lang-tag">Text</span></code></pre>
+
+  <p><strong>Auto-hide toast (show &rarr; hold &rarr; vanish).</strong> Reveal, then play the disappearance after a delay.</p>
+  <pre><code>anim.Disappearance = <span class="tp">EntranceStyle</span>.FadeIn;   <span class="cm">// reversed for exit</span>
+anim.TypewriterCompleted += () =&gt; StartCoroutine(HideAfter(2f));
+anim.HiddenOut += () =&gt; gameObject.SetActive(<span class="kw">false</span>);
+anim.SetTextAndPlay(<span class="st">"Saved!"</span>);
+<span class="cm">// IEnumerator HideAfter(float s){ yield return new WaitForSeconds(s); anim.PlayOut(); }</span><span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--            ANIMATION TAGS                    -->
+<!-- ============================================ -->
+<section class="section" id="animation-tags">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#10024;</span> Animation Tags</h2>
+  <p class="section-desc">Inline tags drive per-character motion. They are parsed before TMP sees the text; any other <code>&lt;...&gt;</code> markup passes through to TextMeshPro.</p>
+
+  <pre><code>Hello &lt;wave&gt;world&lt;/wave&gt;! &lt;shake a=6 f=20&gt;Danger&lt;/shake&gt;
+&#1605;&#1585;&#1581;&#1576;&#1575; &lt;wave&gt;&#1576;&#1575;&#1604;&#1593;&#1575;&#1604;&#1605;&lt;/wave&gt;<span class="lang-tag">Text</span></code></pre>
+
+  <h3>Behavior tags <span style="font-weight:400;color:var(--text-dim)">&mdash; 20 built-in</span></h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tag</th><th>Effect</th><th>Channel</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;wave&gt;</code></td><td>Vertical sine wave (travelling per-character).</td><td>Position</td></tr>
+      <tr><td><code>&lt;bob&gt;</code></td><td>Vertical bob, all letters in unison.</td><td>Position</td></tr>
+      <tr><td><code>&lt;sway&gt;</code></td><td>Horizontal sway, in unison.</td><td>Position</td></tr>
+      <tr><td><code>&lt;slide&gt;</code></td><td>Horizontal travelling sway (per-character).</td><td>Position</td></tr>
+      <tr><td><code>&lt;float&gt;</code></td><td>Slow elliptical drift.</td><td>Position</td></tr>
+      <tr><td><code>&lt;bounce&gt;</code></td><td>Bounce (absolute-value sine).</td><td>Position</td></tr>
+      <tr><td><code>&lt;wobble&gt;</code></td><td>Circular sway.</td><td>Position</td></tr>
+      <tr><td><code>&lt;wiggle&gt;</code></td><td>Organic 2-D wander.</td><td>Position</td></tr>
+      <tr><td><code>&lt;shake&gt;</code></td><td>Energetic multi-sine shake.</td><td>Position</td></tr>
+      <tr><td><code>&lt;jitter&gt;</code></td><td>Per-step hashed noise.</td><td>Position</td></tr>
+      <tr><td><code>&lt;tremor&gt;</code></td><td>Subtle high-frequency rumble.</td><td>Position</td></tr>
+      <tr><td><code>&lt;swing&gt;</code></td><td>Rotate back &amp; forth, in unison.</td><td>Rotation</td></tr>
+      <tr><td><code>&lt;dangle&gt;</code></td><td>Travelling wave of rotation.</td><td>Rotation</td></tr>
+      <tr><td><code>&lt;pendulum&gt;</code></td><td>Gentle phased swing.</td><td>Rotation</td></tr>
+      <tr><td><code>&lt;spin&gt;</code></td><td>Continuous rotation (<code>a</code> &asymp; deg/sec).</td><td>Rotation</td></tr>
+      <tr><td><code>&lt;pulse&gt;</code></td><td>Scale in/out.</td><td>Scale</td></tr>
+      <tr><td><code>&lt;heartbeat&gt;</code></td><td>Sharp scale pulse (a living throb).</td><td>Scale</td></tr>
+      <tr><td><code>&lt;rainbow&gt;</code></td><td>Hue cycling.</td><td>Colour</td></tr>
+      <tr><td><code>&lt;fade&gt;</code></td><td>Alpha pulses up &amp; down.</td><td>Alpha</td></tr>
+      <tr><td><code>&lt;blink&gt;</code></td><td>Alpha toggles on/off.</td><td>Alpha</td></tr>
+    </tbody>
+  </table></div>
+  <p>Close any behavior with its matching tag, e.g. <code>&lt;wave&gt;&hellip;&lt;/wave&gt;</code>. Attributes: <code>a</code> = amplitude, <code>f</code> = frequency &mdash; e.g. <code>&lt;wave a=12 f=3&gt;</code>. Register your own tag in C# with <code>TfpEffects.Register("name", &hellip;)</code>, or with no code via a <em>Custom Effect</em> ScriptableObject (<code>Create &#9656; TypeFlow Pro &#9656; Custom Effect</code>) on a <code>TfpEffectRegistrar</code>.</p>
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#9989;</span>
+    <div><strong>Stack effects by nesting.</strong> Tags combine when nested &mdash; positional offsets add, scales multiply, rotations add, and colour/alpha effects chain. For example <code>&lt;wave&gt;&lt;rainbow&gt;hello&lt;/rainbow&gt;&lt;/wave&gt;</code> both waves <em>and</em> cycles colour. A global default effect (set on the component) applies to any untagged glyph and is replaced &mdash; not stacked &mdash; where you add an explicit tag.</div>
+  </div>
+
+  <h3>Appearance &amp; disappearance tags</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tag</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;appear=pop&gt;&hellip;&lt;/appear&gt;</code></td><td>Give this span its own entrance (<code>fade</code>, <code>pop</code>, <code>scale</code>, <code>slideup</code>/<code>down</code>/<code>left</code>/<code>right</code>, <code>rotate</code>), overriding the global entrance.</td></tr>
+      <tr><td><code>&lt;appear=pop dur=0.5 ease=back&gt;</code></td><td>Optionally give that span its own <b>duration</b> (<code>dur</code>/<code>d</code>, seconds) and <b>easing</b> (<code>ease</code>/<code>e</code>: <code>linear</code>, <code>back</code>, <code>bounce</code>, <code>elastic</code>, <code>sine</code>, <code>expo</code>, <code>cubic</code>, &hellip; with <code>in</code>/<code>out</code> variants). Omit either to inherit the component's global timing.</td></tr>
+      <tr><td><code>&lt;disappear=down dur=0.8&gt;&hellip;&lt;/disappear&gt;</code></td><td>Give this span its own exit (with optional <code>dur</code>/<code>ease</code> too), played by <code>PlayOut()</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Pacing &amp; dialogue tags</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tag</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;speed=0.5&gt;&hellip;&lt;/speed&gt;</code></td><td>Change reveal speed for the span.</td></tr>
+      <tr><td><code>&lt;pause=0.4&gt;</code></td><td>Hold the typewriter for N seconds.</td></tr>
+      <tr><td><code>&lt;waitfor=0.4&gt;</code></td><td>Timed hold (same as <code>pause</code>).</td></tr>
+      <tr><td><code>&lt;waitinput&gt;</code> / <code>&lt;waitfor&gt;</code></td><td>Halt the typewriter here until you call <code>Continue()</code> &mdash; perfect for dialogue boxes. Fires <code>WaitingForInput</code>.</td></tr>
+      <tr><td><code>&lt;event=name&gt;</code></td><td>Fire <code>TypeFlowAnimator.EventTriggered</code> with <code>name</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <pre><code><span class="cm">// A dialogue box that waits for the player between sentences</span>
+text.text = <span class="st">"Hello, traveler!&lt;waitinput&gt; The road ahead is dangerous.&lt;waitinput&gt; Continue?"</span>;
+anim.WaitingForInput += () =&gt; { <span class="cm">/* show a 'press to continue' prompt */</span> };
+<span class="cm">// on player input:</span> anim.Continue();<span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- ============================================ -->
+<!--           RTL / ALIGN / DIGITS               -->
+<!-- ============================================ -->
+<section class="section" id="rtl-digits">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128260;</span> RTL, Alignment &amp; Digits</h2>
+  <p class="section-desc">The details that make mixed-direction text look right.</p>
+
+  <h3>Bidirectional layout</h3>
+  <p>The full UAX&nbsp;#9 algorithm (including directional isolates) orders mixed Arabic/Hebrew/Latin/number runs correctly. Numbers and Latin words embedded in an RTL line stay left-to-right within the right-to-left flow.</p>
+
+  <h3>Alignment auto-flip</h3>
+  <p>With auto-flip enabled, a paragraph that resolves to RTL right-aligns automatically, matching reader expectation without you toggling alignment per string.</p>
+
+  <h3>Digit shaping</h3>
+  <p>Optional contextual digit shaping maps ASCII digits to Arabic-Indic or Eastern Arabic-Indic (Persian) forms based on context, so "2026" can render with native digits where appropriate. Kashida justification and Persian/Urdu presentation forms are also supported.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Markdown.</strong> TypeFlow Pro can convert a small Markdown subset to TMP rich text, so <code>**bold**</code> and <code>*italic*</code> work in your dialogue strings.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--               KILN TEXT                      -->
+<!-- ============================================ -->
+<section class="section" id="kiln-text">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--orange)">&#128293;</span> Kiln Text (Tier 2)</h2>
+  <p class="section-desc"><code>TypeFlowPro.Kiln.KilnText</code> &mdash; a world-space text renderer that shapes and draws a font entirely in C#.</p>
+
+  <p>Kiln parses a font's own tables (TrueType <strong>glyf</strong> and <strong>CFF/Type2</strong>), applies GSUB and GPOS, rasterizes glyphs to an SDF atlas, and draws them with a MeshRenderer + the KilnSDF shader &mdash; no TextMeshPro and no native code.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>Font Asset</td><td>A <code>.ttf</code>/<code>.otf</code> imported as bytes (rename to <code>.bytes</code>). Or call <code>SetFont(byte[])</code> at runtime.</td></tr>
+      <tr><td>Text</td><td>The string to render. Settable via the <code>Text</code> property.</td></tr>
+      <tr><td>Pixel Size / World Scale</td><td>Rasterization size and world-unit scale.</td></tr>
+      <tr><td>Color</td><td>Tint applied through the KilnSDF material.</td></tr>
+      <tr><td>Base Direction</td><td><code>Auto</code> / <code>LeftToRight</code> / <code>RightToLeft</code> &mdash; mixed-BiDi glyphs are reordered with the UAX&nbsp;#9 L2 rule.</td></tr>
+      <tr><td>Script</td><td><code>"auto"</code> (default) detects the script from the text and routes complex scripts (Devanagari, Thai, &hellip;) through the full reordering/feature shaper; Arabic/Hebrew/Latin use the Arabic shaper. Force a specific OpenType tag (<code>"arab"</code>, <code>"deva"</code>, <code>"thai"</code>, &hellip;) if you need to.</td></tr>
+      <tr><td>Max Width</td><td>World-unit line width. <code>0</code> = single line; <code>&gt; 0</code> enables word wrap (full UAX&nbsp;#14 line breaking).</td></tr>
+      <tr><td>Line Height Multiplier / Alignment</td><td>Multi-line spacing and Left/Center/Right/Justify alignment.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Complex scripts, color emoji &amp; variable fonts</h3>
+  <p>Feed Kiln the right font and it just works &mdash; the component detects the script and picks the shaper, composites COLR/CPAL color emoji as tinted SDF layers, and can interpolate a variable font's axes at runtime:</p>
+  <pre><code><span class="kw">var</span> kiln = GetComponent&lt;<span class="tp">KilnText</span>&gt;();
+
+<span class="cm">// Complex script: auto-detected, conjuncts/marks shaped from the font's GSUB/GPOS</span>
+kiln.SetFont(devanagariFont.bytes);
+kiln.Text = <span class="st">"&#2344;&#2350;&#2360;&#2381;&#2340;&#2375;"</span>;          <span class="cm">// the &#2360;&#2381;&#2340; conjunct forms (Script = "auto")</span>
+
+<span class="cm">// Color emoji: load a COLR/CPAL v0 font and type emoji &mdash; rendered in full colour</span>
+kiln.SetFont(emojiFont.bytes);
+kiln.Text = <span class="st">"&#128640;&#10084;&#127881;"</span>;
+
+<span class="cm">// Variable font: drive a weight (or any) axis live</span>
+kiln.SetFont(interVariable.bytes);
+<span class="kw">if</span> (kiln.HasVariableAxes) kiln.SetVariation(<span class="st">"wght"</span>, 700f);  <span class="cm">// re-interpolates &amp; re-rasterizes</span><span class="lang-tag">C#</span></code></pre>
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Bring your own font.</strong> The engine ships no emoji/CJK/Indic fonts &mdash; point Kiln at any font you have the rights to and it renders from that font's own tables. Color emoji need a <strong>COLR/CPAL&nbsp;v0</strong> font (e.g. OpenMoji, Twemoji Mozilla); bitmap emoji fonts (CBDT/sbix) are not used.</div>
+  </div>
+
+  <h3>Inline effects</h3>
+  <p>Kiln understands the same inline effect tags as the Tier-1 style parser, applied to the glyphs it shapes:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tag</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;gradient=RRGGBB,RRGGBB&gt;&hellip;&lt;/gradient&gt;</code></td><td><strong>Per-glyph</strong> vertical gradient (top colour, bottom colour) baked into the mesh vertex colours &mdash; works on shaped Arabic/complex text too.</td></tr>
+      <tr><td><code>&lt;outline=RRGGBB,width&gt;&hellip;&lt;/outline&gt;</code></td><td>Outline ring via the KilnSDF material (applied to the text run).</td></tr>
+      <tr><td><code>&lt;shadow=RRGGBB,dx,dy&gt;&hellip;&lt;/shadow&gt;</code></td><td>Drop shadow via the KilnSDF material (applied to the text run).</td></tr>
+    </tbody>
+  </table></div>
+  <p>Tags are stripped before shaping, so they never render as literal text. Example: <code>&lt;gradient=FF4040,FFD23E&gt;&#1587;&#1604;&#1575;&#1605;&lt;/gradient&gt;</code> renders joined Arabic with a red&rarr;gold vertical gradient on each letter.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Pure C#, AOT-safe.</strong> The Kiln engine compiles for IL2CPP &rarr; WebAssembly with zero native dependencies (both WebGL and Windows-IL2CPP builds are verified clean).</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--            SCRIPTS & FONTS                   -->
+<!-- ============================================ -->
+<section class="section" id="scripts-fonts">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127760;</span> Scripts &amp; Fonts</h2>
+  <p class="section-desc">What the engine shapes today, and the OpenType features behind it.</p>
+
+  <div class="card-grid">
+    <div class="card"><div class="card-title">&#127462; Arabic / Hebrew / Latin</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Contextual joining, ligatures, mark positioning, full BiDi.</p></div>
+    <div class="card"><div class="card-title">&#127464; CJK</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Han/Kana rendered from the font's own tables.</p></div>
+    <div class="card"><div class="card-title">&#128330; Devanagari</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Reordering + conjunct formation (e.g. &#2344;&#2350;&#2360;&#2381;&#2340;&#2375;).</p></div>
+    <div class="card"><div class="card-title">&#127481; Thai</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Consonants + above/below marks, with dictionary word-breaking.</p></div>
+  </div>
+
+  <h3>OpenType features supported</h3>
+  <ul>
+    <li><strong>GSUB:</strong> single, multiple, ligature, chaining-context, and extension lookups.</li>
+    <li><strong>GPOS:</strong> pair, mark-to-base, mark-to-mark, cursive, and extension lookups.</li>
+    <li><strong>Variable fonts:</strong> <code>fvar</code> axes + <code>gvar</code> deltas.</li>
+    <li><strong>Color:</strong> COLR/CPAL color glyphs (e.g. emoji) composited as tinted SDF layers.</li>
+    <li><strong>Outlines:</strong> TrueType <code>glyf</code> (incl. composites) and CFF/Type2; SDF + MSDF rasterization; multi-page atlas.</li>
+    <li><strong>Fallback:</strong> automatic per-codepoint font fallback across a chain.</li>
+    <li><strong>Collections:</strong> <code>.ttc</code> TrueType collections (by font index).</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>Scope.</strong> Latin, Arabic, Hebrew, CJK, Devanagari (conjuncts) and Thai are render-validated. <strong>Myanmar/Khmer</strong> cluster shaping is on the roadmap (they fall back rather than reorder).</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--        FAMILIES / LINKS / EFFECTS            -->
+<!-- ============================================ -->
+<section class="section" id="rich-text">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#127912;</span> Families, Links &amp; Effects</h2>
+  <p class="section-desc">Rich-text building blocks that work across both tiers.</p>
+
+  <h3>Font families</h3>
+  <p>Create a <strong>Font Family</strong> asset (<code>Assets &rarr; Create &rarr; TypeFlow Pro &rarr; Font Family</code>) holding Regular / Bold / Italic / Bold-Italic faces plus optional fallbacks. <code>&lt;b&gt;</code>/<code>&lt;i&gt;</code> then pick the correct face, with CSS-style graceful degradation (faux-bold / faux-italic when a face is missing).</p>
+  <pre><code><span class="cm">// Whole-text: set the right face + faux style for a bold/italic state</span>
+family.ApplyTo(myTmpText, bold: <span class="kw">true</span>, italic: <span class="kw">false</span>);
+
+<span class="cm">// Mixed text: rewrite &lt;b&gt;/&lt;i&gt; into per-run &lt;font&gt; spans</span>
+<span class="kw">string</span> markup = family.ToTmpMarkup(<span class="str">"plain &lt;b&gt;bold&lt;/b&gt; text"</span>);<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Clickable links</h3>
+  <p>The easiest path is the <strong>TypeFlow Clickable Text</strong> component (<code>Add Component &rarr; TypeFlow Pro &rarr; TypeFlow Clickable Text</code>) on any TextMeshPro label: set its <em>Source</em> to text with <code>&lt;link=id&gt;&hellip;&lt;/link&gt;</code> markup and wire <code>OnLinkClicked</code> in the inspector. It strips the link tags (other markup like <code>&lt;color&gt;</code> passes through), pushes the clean text to the label, and hit-tests clicks <em>and</em> hover for you.</p>
+  <pre><code><span class="kw">var</span> clickable = label.gameObject.AddComponent&lt;<span class="tp">TfpClickableText</span>&gt;();
+clickable.Source = <span class="st">"Visit the &lt;link=home&gt;home page&lt;/link&gt;."</span>;
+clickable.OnLinkClicked.AddListener(id =&gt; { <span class="cm">/* the user clicked link 'id' */</span> });
+clickable.LinkHovered += id =&gt; { <span class="cm">/* hovered link id, or null */</span> };<span class="lang-tag">C#</span></code></pre>
+  <p>Under the hood it uses the pure-geometry primitives, which you can also call directly (e.g. for a Kiln layout):</p>
+  <pre><code><span class="kw">string</span> clean = <span class="tp">LinkParser</span>.Parse(source, <span class="kw">out var</span> links);
+<span class="cm">// boxes from TextMeshPro (or your Kiln layout):</span>
+<span class="kw">var</span> boxes = <span class="tp">LinkHitTester</span>.BoxesFromTextMeshPro(tmpText);
+<span class="kw">string</span> id = <span class="tp">LinkHitTester</span>.GetLinkIdAt(localPoint, boxes, links);
+<span class="kw">if</span> (id != <span class="kw">null</span>) { <span class="cm">/* the user clicked link 'id' */</span> }<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Inline effect tags</h3>
+  <p><code>StyleTagParser</code> parses <code>&lt;gradient=RRGGBB,RRGGBB&gt;</code>, <code>&lt;outline=RRGGBB,width&gt;</code> and <code>&lt;shadow=RRGGBB,dx,dy&gt;</code> into style spans. The KilnSDF shader supports outline + shadow; gradients apply via vertex colors.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Roadmap.</strong> Per-span effect <em>mesh</em> rendering (mixing several gradient/outline/shadow spans within one string in the Tier-2 renderer) is being finished; the parsers and whole-object application ship today.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             ARCHITECTURE                     -->
+<!-- ============================================ -->
+<section class="section" id="architecture">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127959;</span> Two-Tier Architecture</h2>
+  <p class="section-desc">One package, two ways to put correct text on screen.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>&nbsp;</th><th>Tier 1 &mdash; TextMeshPro</th><th>Tier 2 &mdash; Kiln</th></tr></thead>
+    <tbody>
+      <tr><td>Renderer</td><td>TextMeshPro (its atlas + shaders)</td><td>Pure-C# OpenType engine + KilnSDF shader</td></tr>
+      <tr><td>Migration</td><td>None &mdash; add a component</td><td>New component (Kiln Text)</td></tr>
+      <tr><td>Best for</td><td>Arabic/Hebrew/RTL UI &amp; animation</td><td>Scripts/fonts/effects TMP can't express</td></tr>
+      <tr><td>Native code</td><td>None</td><td>None</td></tr>
+      <tr><td>Animation engine</td><td>Yes (typewriter + behaviors)</td><td>Shares the same building blocks</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>The two tiers share the same Unicode foundation (BiDi, segmentation, shaping) &mdash; a clip of Arabic text shapes identically whether TMP or Kiln renders it.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             CONFORMANCE                      -->
+<!-- ============================================ -->
+<section class="section" id="conformance">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9989;</span> Unicode Conformance</h2>
+  <p class="section-desc">Measured against the official Unicode test suites and enforced by regression-floored tests.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Official suite</th><th>Result</th><th>What it proves</th></tr></thead>
+    <tbody>
+      <tr><td>GraphemeBreakTest</td><td><strong>100%</strong></td><td>User-perceived character boundaries (emoji ZWJ, etc.).</td></tr>
+      <tr><td>WordBreakTest</td><td><strong>100%</strong></td><td>Word boundaries (incl. flag pairs, Hebrew quotes).</td></tr>
+      <tr><td>SentenceBreakTest</td><td><strong>100%</strong></td><td>Sentence boundaries.</td></tr>
+      <tr><td>BidiCharacterTest</td><td><strong>99.97%</strong></td><td>The bidirectional algorithm over 91,707 official cases.</td></tr>
+      <tr><td>LineBreakTest</td><td><strong>99.73%</strong></td><td>UAX&nbsp;#14 line-break opportunities.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Reproduce them yourself: run the <code>UnicodeConformanceTests</code> and <code>BidiCharacterConformanceTests</code> headlessly. Each test prints its pass rate and asserts a regression floor, so conformance can't silently slip.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             EDITOR TOOLS                     -->
+<!-- ============================================ -->
+<section class="section" id="editor-tools">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128295;</span> Editor Tools</h2>
+  <p class="section-desc">Under <code>Tools &rarr; TypeFlow Pro</code>.</p>
+
+  <div class="card-grid">
+    <div class="card"><div class="card-title">&#128295; Setup</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Verifies TextMeshPro and helps build an Arabic-capable atlas, listing the required Unicode ranges.</p></div>
+    <div class="card"><div class="card-title">&#128270; Font Diagnostics</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Scans a TMP font asset and reports missing Arabic base/presentation glyphs.</p></div>
+    <div class="card"><div class="card-title">&#9989; Conformance Runner</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Runs the bundled UAX&nbsp;#9 BiDi vectors and shows pass counts.</p></div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             SCRIPTING API                    -->
+<!-- ============================================ -->
+<section class="section" id="api">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128217;</span> Scripting API</h2>
+  <p class="section-desc">The stable public surface. Namespaces: <code>TypeFlowPro</code>, <code>TypeFlowPro.Unicode.BiDi</code>, <code>TypeFlowPro.Fonts.Shaping</code>, <code>TypeFlowPro.TypeFlow</code>.</p>
+
+  <h3>Common usage</h3>
+  <pre><code><span class="kw">using</span> TypeFlowPro;
+<span class="kw">using</span> TypeFlowPro.Unicode.BiDi;
+
+<span class="kw">var</span> tfp = GetComponent&lt;<span class="tp">TypeFlowText</span>&gt;();
+tfp.BaseDirection = <span class="tp">BaseDirection</span>.Auto;
+tfp.EnableArabicShaping = <span class="kw">true</span>;
+tfp.Refresh();<span class="lang-tag">C#</span></code></pre>
+
+  <h3>Pipeline &amp; BiDi (engine-level)</h3>
+  <pre><code><span class="cm">// One-shot processing without a component:</span>
+<span class="tp">ProcessedText</span> p = <span class="tp">TypeFlowProcessor</span>.Process(logical, <span class="tp">ShapeSettings</span>.Default);
+<span class="cm">// p.Visual, p.ParagraphLevel, p.VisualToSource, p.IsRightToLeft</span>
+
+<span class="cm">// Raw bidirectional resolution:</span>
+<span class="tp">BidiResult</span> b = <span class="tp">Bidi</span>.Resolve(text, <span class="tp">BaseDirection</span>.Auto);
+<span class="cm">// b.ParagraphLevel, b.Levels, b.VisualToLogical</span><span class="lang-tag">C#</span></code></pre>
+
+  <h3>Key types</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Type</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>TypeFlowProcessor.Process(string, ShapeSettings)</code></td><td>Logical &rarr; visual string + cluster map.</td></tr>
+      <tr><td><code>Bidi.Resolve(string|int[], BaseDirection)</code></td><td>UAX&nbsp;#9 levels + visual order.</td></tr>
+      <tr><td><code>ArabicShaper.Shape(int[])</code></td><td>Contextual joining &rarr; glyphs + source map.</td></tr>
+      <tr><td><code>TfpTagParser.Parse(string)</code></td><td>Clean text + animation spans/events/controls.</td></tr>
+      <tr><td><code>KilnText.SetFont / Text / Script / SetVariation(tag,value)</code></td><td>Tier-2 renderer: load a font, set text, force/auto a script, drive a variable-font axis (<code>HasVariableAxes</code> / <code>VariationAxes</code>).</td></tr>
+      <tr><td><code>TypeFlowProcessor.ProcessBatch(string[], ShapeSettings)</code></td><td>Shape many strings in parallel (multi-core, thread-safe, cache-free).</td></tr>
+      <tr><td><code>KashidaJustifier.InsertKashidas(int[] cps, int count)</code></td><td>Distribute Arabic tatweel elongations at the best joints for kashida justification.</td></tr>
+      <tr><td><code>FontFallback.SegmentRuns(int[] cps)</code></td><td>Resolve a mixed-script string into per-font runs across an ordered font chain.</td></tr>
+      <tr><td><code>RevealScheduler / TextBehaviors / AnimationMap</code></td><td>Animation building blocks.</td></tr>
+      <tr><td><code>FontFamily / FontFamilyResolver</code></td><td>Face selection + faux synthesis.</td></tr>
+      <tr><td><code>TfpClickableText</code></td><td>Drop-in clickable/interactive text component (click + hover on <code>&lt;link&gt;</code> regions).</td></tr>
+      <tr><td><code>LinkParser / LinkHitTester</code></td><td>Clickable-text parsing + hit-testing primitives (used by the component).</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--             TROUBLESHOOTING                  -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">The issues that come up most, and how to fix them.</p>
+
+  <details open>
+    <summary>Arabic shows as disconnected / boxed letters</summary>
+    <div class="details-body">
+      <p>The font atlas is missing Arabic <strong>presentation forms</strong>. Run <code>Tools &rarr; TypeFlow Pro &rarr; Setup</code> and rebuild the atlas with the presentation-form ranges it lists, using an Arabic-capable font (Noto Naskh Arabic, Amiri, Cairo, Dubai). Use <strong>Font Diagnostics</strong> to confirm the glyphs are present.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Arabic appears backwards</summary>
+    <div class="details-body">
+      <p>Make sure the <strong>TypeFlow Text</strong> component is actually on the object (the TMP field alone won't reorder). If direction detection is wrong for your data, set <code>BaseDirection</code> to <code>RightToLeft</code> explicitly instead of <code>Auto</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Mixed numbers/English sit in the wrong place</summary>
+    <div class="details-body">
+      <p>That ordering is governed by the bidirectional algorithm and is usually correct per UAX&nbsp;#9. If a specific string looks wrong, check whether you intended a fixed paragraph direction &mdash; setting <code>BaseDirection</code> explicitly removes the first-strong ambiguity.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>The typewriter reveals RTL text in the wrong order</summary>
+    <div class="details-body">
+      <p>Use <strong>TypeFlow Animator</strong> (not a generic typewriter asset). It reveals via the cluster map in logical reading order, which is correct for RTL. Generic per-glyph typewriters reveal in visual order and look backwards on Arabic.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Kiln Text renders nothing</summary>
+    <div class="details-body">
+      <p>Confirm the font is imported <strong>as bytes</strong> (extension renamed to <code>.bytes</code> so it's a <code>TextAsset</code>) and assigned to the Font slot, and that the GameObject has the MeshFilter + MeshRenderer the component requires. Check the Console for font-parse messages.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>A complex script doesn't shape correctly in Kiln</summary>
+    <div class="details-body">
+      <p>Latin, Arabic, Hebrew, CJK, Devanagari and Thai are validated; Myanmar/Khmer cluster reordering is not yet modeled. Also confirm the font actually contains the GSUB/GPOS features for that script &mdash; Kiln shapes from the font's own tables.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--                  FAQ                         -->
+<!-- ============================================ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Quick answers to the questions that come up most.</p>
+
+  <details open>
+    <summary>Do I have to migrate off TextMeshPro?</summary>
+    <div class="details-body">
+      <p>No. TypeFlow Text is an <code>ITextPreprocessor</code> &mdash; add it to your existing TMP objects and they start rendering correct Arabic/RTL. Remove it and you're back to vanilla TextMeshPro, with nothing rewritten.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does it use native plugins?</summary>
+    <div class="details-body">
+      <p>No. Everything is pure C#. It runs on every Unity target including WebGL and consoles, with no per-platform native libraries (both WebGL and Windows-IL2CPP builds are verified clean).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Which languages are supported?</summary>
+    <div class="details-body">
+      <p>Tier 1 (TextMeshPro): Arabic, Persian/Farsi, Urdu and other Arabic-script languages, plus Hebrew, with full BiDi for mixing them with Latin, numbers and punctuation. The Tier-2 Kiln engine additionally render-validates CJK, Devanagari (conjuncts) and Thai. Myanmar/Khmer cluster shaping is on the roadmap.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does the typewriter work in Arabic?</summary>
+    <div class="details-body">
+      <p>Yes &mdash; it reveals in logical reading order using the cluster map, so Arabic appears right-to-left in the correct order, not backwards. This is a common bug in animation assets; TypeFlow Pro handles it.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Do rich-text tags (&lt;color&gt;, &lt;b&gt;) still work?</summary>
+    <div class="details-body">
+      <p>Yes. TextMeshPro tags pass through untouched; only TypeFlow Pro's own animation tags are consumed. (Deep interaction of arbitrary TMP markup <em>inside</em> reordered RTL runs continues to be hardened.)</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What about performance?</summary>
+    <div class="details-body">
+      <p>Shaping is cached and only re-runs when the text changes; animation manipulates the existing TMP mesh with no per-frame allocations in steady state. No extra draw calls or materials. A multi-core batch API is included for processing many strings at once.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does it work at runtime / in builds?</summary>
+    <div class="details-body">
+      <p>Yes. Both tiers run at runtime on any Unity build target. There is no editor-only dependency for rendering.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--                SUPPORT                       -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128236;</span> Support</h2>
+  <p class="section-desc">Need help? We're here for you.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">Bug reports, feature requests, font/shaping questions &mdash; reach out and we'll get back to you.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Check the <a href="#troubleshooting">Troubleshooting</a> section</li>
+        <li>Run <strong>Font Diagnostics</strong> for missing-glyph issues</li>
+        <li>Confirm the <strong>TypeFlow Text</strong> component is on the object</li>
+        <li>Check the Console for parse/shaping messages</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful info to include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Unity version (e.g. <code>6000.0.30f1</code>)</li>
+        <li>TypeFlow Pro version (<strong>v4.0</strong>)</li>
+        <li>Render pipeline (Built-in / URP / HDRP)</li>
+        <li>The font you're using + a sample string</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:20px;">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Enjoying TypeFlow Pro?</strong> A review on the Unity Asset Store helps other developers discover the asset and helps us keep improving it. Thank you!</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>TypeFlow Pro v4.0 &middot; Built for Unity 2021.3+ &middot; Pure C#, no native binaries</p>
+  <p style="margin-top:8px;">Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section, .hero').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const h1 = s.querySelector('h1');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const id = s.id || (s.parentElement && s.parentElement.id) || '';
+  if (!id) return;
+  sections.push({
+    id: id,
+    title: h2 ? h2.textContent.trim() : (h1 ? h1.textContent.trim() : ''),
+    desc: desc ? desc.textContent.trim() : '',
+    content: s.textContent.toLowerCase(),
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// Active sidebar link via IntersectionObserver
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section[id], .hero[id]').forEach(s => observer.observe(s));
+
+// Close mobile sidebar on nav click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
