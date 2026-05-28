@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HueForge Studio - Documentation</title>
+<style>
+:root {
+  --bg: #14110B;
+  --bg-card: #1F1A12;
+  --bg-card-hover: #2A2317;
+  --bg-code: #1B1610;
+  --bg-sidebar: #110E09;
+  --text: #ece7df;
+  --text-dim: #ad9f88;
+  --text-code: #d8d0c2;
+  --accent: #E08D2A;
+  --accent-light: #F0A54A;
+  --accent-glow: rgba(224,141,42,0.15);
+  --green: #4FB477;
+  --green-dim: rgba(79,180,119,0.12);
+  --yellow: #E8B84B;
+  --yellow-dim: rgba(232,184,75,0.12);
+  --pink: #C8627E;
+  --pink-dim: rgba(200,98,126,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #5E8CA8;
+  --blue-dim: rgba(94,140,168,0.14);
+  --violet: #9B6FD4;
+  --violet-dim: rgba(155,111,212,0.14);
+  --border: #352B1D;
+  --border-light: #483B28;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; overflow-x: hidden; }
+
+::selection { background: var(--accent); color: #1a1409; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* HEADER */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+  background: rgba(20,17,11,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border); z-index: 100;
+  display: flex; align-items: center; padding: 0 32px; gap: 16px;
+}
+.header-logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; letter-spacing: -0.3px; white-space: nowrap; color: var(--text); text-decoration: none; }
+.header-logo .dot { width: 28px; height: 28px; background: linear-gradient(135deg, #E08D2A, #9B6FD4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #1a1409; }
+.header-search { flex: 1; max-width: 420px; margin-left: auto; position: relative; }
+.header-search input { width: 100%; padding: 8px 16px 8px 40px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 14px; font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.header-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.header-search input::placeholder { color: var(--text-dim); }
+.header-search .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 14px; pointer-events: none; }
+.header-version { font-size: 12px; color: var(--text-dim); background: var(--bg-card); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; }
+.menu-toggle { display: none; background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; padding: 4px; }
+
+/* SIDEBAR */
+.sidebar { position: fixed; top: var(--header-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--header-h)); background: var(--bg-sidebar); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 0; z-index: 90; transition: transform 0.3s ease; }
+.sidebar-group { margin-bottom: 8px; }
+.sidebar-group-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-dim); padding: 12px 24px 6px; }
+.sidebar a { display: flex; align-items: center; gap: 10px; padding: 7px 24px; color: var(--text-dim); text-decoration: none; font-size: 13.5px; transition: all 0.15s; border-left: 2px solid transparent; }
+.sidebar a:hover { color: var(--text); background: var(--accent-glow); }
+.sidebar a.active { color: var(--accent-light); background: var(--accent-glow); border-left-color: var(--accent); font-weight: 600; }
+.sidebar a .nav-icon { width: 20px; text-align: center; font-size: 14px; flex-shrink: 0; }
+
+/* MAIN */
+.main { margin-left: var(--sidebar-w); margin-top: var(--header-h); padding: 40px 48px 80px; max-width: 960px; }
+
+/* HERO */
+.hero { padding: 48px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+.hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #F0A54A 42%, #9B6FD4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: 17px; color: var(--text-dim); max-width: 660px; line-height: 1.7; }
+.hero-badges { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge-amber { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(224,141,42,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(79,180,119,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(232,184,75,0.25); }
+.badge-violet { background: var(--violet-dim); color: var(--violet); border: 1px solid rgba(155,111,212,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(94,140,168,0.25); }
+
+/* SECTIONS */
+.section { margin-bottom: 56px; scroll-margin-top: calc(var(--header-h) + 24px); }
+.section h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+.section h2 .section-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.section > .section-desc { color: var(--text-dim); margin-bottom: 28px; font-size: 15px; }
+h3 { font-size: 19px; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: var(--text); padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h4 { font-size: 15px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; color: var(--accent-light); }
+p { margin-bottom: 12px; }
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 4px; }
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* CARDS */
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; transition: border-color 0.2s; }
+.card:hover { border-color: var(--border-light); }
+.card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 16px; }
+.mini-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; transition: all 0.2s; text-decoration: none; display: block; color: inherit; }
+.mini-card:hover { border-color: var(--accent); background: var(--bg-card-hover); transform: translateY(-1px); text-decoration: none; }
+.mini-card h4 { margin: 0 0 4px; font-size: 14px; color: var(--text); border: none; padding: 0; }
+.mini-card p { font-size: 12.5px; color: var(--text-dim); margin: 0; line-height: 1.5; }
+
+/* CODE */
+pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 22px; overflow-x: auto; font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--text-code); margin-bottom: 16px; position: relative; }
+pre .lang-tag { position: absolute; top: 8px; right: 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); opacity: 0.6; font-family: var(--font); }
+code { font-family: var(--font-mono); font-size: 13px; background: var(--bg-code); padding: 2px 7px; border-radius: 4px; color: var(--accent-light); }
+pre code { background: none; padding: 0; color: inherit; }
+.kw { color: #E0A86A; }
+.str { color: #b7d98a; }
+.cm { color: #7d6f54; font-style: italic; }
+.fn { color: #6fa8c8; }
+.tp { color: #E8B84B; }
+.num { color: #e89a5a; }
+.op { color: #b89adf; }
+
+/* TABLES */
+.table-wrap { overflow-x: auto; margin-bottom: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+thead th { background: var(--bg-code); font-weight: 700; text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text-dim); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
+td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(224,141,42,0.04); }
+
+/* COLLAPSIBLE */
+details { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; transition: border-color 0.2s; }
+details[open] { border-color: var(--border-light); }
+summary { padding: 14px 20px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 10px; user-select: none; list-style: none; transition: color 0.15s; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: '\25B6'; font-size: 10px; color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+summary:hover { color: var(--accent-light); }
+details .details-body { padding: 0 20px 18px; }
+details .details-body p:first-child { margin-top: 0; }
+
+/* CALLOUT */
+.callout { border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 16px; font-size: 14px; display: flex; gap: 12px; align-items: flex-start; }
+.callout > div { flex: 1; }
+.callout p { margin-bottom: 6px; }
+.callout p:last-child { margin-bottom: 0; }
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(79,180,119,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(232,184,75,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(94,140,168,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(200,98,126,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* STEP LIST */
+.steps { counter-reset: step; margin-bottom: 16px; }
+.step { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); counter-increment: step; }
+.step:last-child { border-bottom: none; }
+.step::before { content: counter(step); width: 28px; height: 28px; background: var(--accent-glow); color: var(--accent-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* FLOW DIAGRAM */
+.flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin-bottom: 16px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow-x: auto; }
+.flow-node { padding: 8px 16px; background: var(--bg-code); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.flow-arrow { padding: 0 8px; color: var(--text-dim); font-size: 16px; }
+
+/* TAGS */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+.tag-info { background: var(--blue-dim); color: var(--blue); }
+
+/* ERROR CODE BLOCK */
+.error-code { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--pink); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 12px; }
+.error-code.auto-retry { border-left-color: var(--yellow); }
+.error-code-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.error-code-head code { background: var(--pink-dim); color: var(--pink); font-weight: 700; }
+.error-code.auto-retry .error-code-head code { background: var(--yellow-dim); color: var(--yellow); }
+.error-code .meaning { color: var(--text-dim); font-size: 13.5px; margin: 0 0 6px; }
+.error-code .action { color: var(--text); font-size: 13.5px; margin: 0; }
+
+/* SEARCH */
+.search-overlay { display: none; position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 95; }
+.search-results { display: none; position: fixed; top: calc(var(--header-h) + 8px); left: 50%; transform: translateX(-50%); width: 520px; max-width: calc(100vw - 32px); max-height: 60vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 96; padding: 8px; }
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+.search-item { display: block; padding: 10px 16px; border-radius: var(--radius-sm); text-decoration: none; color: var(--text); transition: background 0.1s; }
+.search-item:hover { background: var(--accent-glow); text-decoration: none; }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <a href="#overview" class="header-logo">
+    <div class="dot">H</div>
+    <span>HueForge Studio</span>
+  </a>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v2.0.0 &middot; Unity 2021.3+</span>
+</header>
+
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+    <a href="#requirements"><span class="nav-icon">&#9989;</span> Requirements</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Workspace</div>
+    <a href="#tab-paint"><span class="nav-icon">&#127912;</span> Paint</a>
+    <a href="#tab-palette"><span class="nav-icon">&#127752;</span> Palette</a>
+    <a href="#tab-inject"><span class="nav-icon">&#10515;</span> Inject</a>
+    <a href="#tab-repair"><span class="nav-icon">&#128296;</span> Repair</a>
+    <a href="#tab-batch"><span class="nav-icon">&#9783;</span> Batch</a>
+    <a href="#tab-history"><span class="nav-icon">&#8617;</span> History &amp; Undo</a>
+    <a href="#tab-settings"><span class="nav-icon">&#128295;</span> Settings</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Features</div>
+    <a href="#recolor-grab"><span class="nav-icon">&#127912;</span> Recolor &amp; Grab</a>
+    <a href="#groups"><span class="nav-icon">&#127918;</span> Color Groups &amp; Cleanup</a>
+    <a href="#gradients-patterns"><span class="nav-icon">&#127880;</span> Gradients &amp; Patterns</a>
+    <a href="#harmony"><span class="nav-icon">&#127752;</span> Colour Harmony</a>
+    <a href="#accessibility"><span class="nav-icon">&#9855;</span> Accessibility (WCAG)</a>
+    <a href="#ai"><span class="nav-icon">&#129302;</span> AI Generation</a>
+    <a href="#import-export"><span class="nav-icon">&#128228;</span> Import / Export</a>
+    <a href="#recipes"><span class="nav-icon">&#128221;</span> Recipes &amp; Automation</a>
+    <a href="#pipelines"><span class="nav-icon">&#128250;</span> Render Pipelines</a>
+    <a href="#extensions"><span class="nav-icon">&#129513;</span> Extensions</a>
+    <a href="#cli"><span class="nav-icon">&#128187;</span> Headless CLI / CI</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#asset-types"><span class="nav-icon">&#128193;</span> Asset Types</a>
+    <a href="#api"><span class="nav-icon">&#128218;</span> Scripting API</a>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <h1>HueForge Studio</h1>
+  <p>A non-destructive palette &amp; texture recoloring studio for Unity. Extract palettes, recolor by color group, paint solid / gradient / pattern fills, stack injection layers, repair and quantize textures, and batch-recolor entire projects &mdash; all from one docked editor window. Works fully offline; optional AI palette / texture generation uses your own API key.</p>
+  <div class="hero-badges">
+    <span class="badge badge-amber">Unity 2021.3+ / 6000.0</span>
+    <span class="badge badge-green">Built-in / URP / HDRP</span>
+    <span class="badge badge-violet">Sprites &amp; HD textures</span>
+    <span class="badge badge-blue">Editor tool &middot; offline</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>One window, eight tabs.</strong> Paint, Palette, Inject, Repair, Batch, History, Settings, and Help. Everything is non-destructive: edits are tracked in HueForge's own undo/redo history with file-backed snapshots, and you bring your own textures &mdash; HueForge writes back only when you apply.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>No backend, no account, no quota.</strong> HueForge runs entirely inside the Unity Editor. The only network features are <em>optional</em> AI palette / texture generation, which call <em>your own</em> Anthropic / OpenAI / HTTP endpoint using a key you enter in Settings. Everything else &mdash; grouping, painting, gradients, patterns, repair, batch, harmony, accessibility, import/export &mdash; works with no internet.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#quickstart"><h4>&#9889; Quick Start</h4><p>From a raw texture to a recolored result in under a minute.</p></a>
+    <a class="mini-card" href="#tab-palette"><h4>&#127752; Palette tab</h4><p>Harmony generation, WCAG contrast audit, and import/export in one place.</p></a>
+    <a class="mini-card" href="#groups"><h4>&#127918; Color Groups</h4><p>Union-find grouping, pixel parenting, GPU Voronoi, tiered auto-clean.</p></a>
+    <a class="mini-card" href="#ai"><h4>&#129302; AI Generation</h4><p>Claude / OpenAI palettes and HTTP / Replicate texture generation &mdash; your key.</p></a>
+    <a class="mini-card" href="#accessibility"><h4>&#9855; Accessibility</h4><p>WCAG contrast report plus a colour-blindness preview, built in.</p></a>
+    <a class="mini-card" href="#cli"><h4>&#128187; Headless CI</h4><p>Batch-mode palette-signature verification and recipe replay for pipelines.</p></a>
+  </div>
+
+  <p>This guide is organised as <a href="#installation">Getting Started</a>, a <a href="#tab-paint">Workspace</a> tour of every tab, deep-dives under <a href="#groups">Features</a>, and a <a href="#asset-types">Reference</a> section with asset types, the scripting API, troubleshooting, and FAQ.</p>
+
+  <h3>New in 2.0 &mdash; an all-in-one colour toolset</h3>
+  <p class="section-desc">Version 2.0 folds a whole product family into one asset (all reachable from the <strong>Palette</strong> tab and the <em>Tools &#9656; HueForge Studio</em> menu):</p>
+  <div class="card-grid">
+    <a class="mini-card" href="#tab-palette"><h4>&#128269; Grab Palette</h4><p>Extract a palette from any Texture / Sprite / Material / multi-selection (unique-frequency or K-means, merge near-duplicates).</p></a>
+    <a class="mini-card" href="#tab-palette"><h4>&#127912; HD Recolor</h4><p>Detail-preserving HSV recolor of full-detail / PBR textures &mdash; highlights &amp; shading survive. Saves a new texture.</p></a>
+    <a class="mini-card" href="#tab-palette"><h4>&#127922; Sprite Palette Swap</h4><p>Crisp 1:1 pixel-art palette swap onto a target palette (alpha-safe). Instant recolour variants.</p></a>
+    <a class="mini-card" href="#tab-palette"><h4>&#129513; Palette Fusion</h4><p>Fuse low-poly models into ONE shared lossless palette texture + material + fused prefabs &mdash; batching, fewer draw calls, smaller builds. Non-destructive.</p></a>
+    <a class="mini-card" href="#tab-palette"><h4>&#128396; Perceptual matching</h4><p>CIELAB &Delta;E colour distance picks the colour a human calls "nearest", not just the numerically closest.</p></a>
+  </div>
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Every 2.0 tool writes <strong>new</strong> assets (recolored textures, palettes, fused meshes/prefabs) under <code>Assets/HueForgeStudio/Generated/</code> &mdash; your source assets are never modified.</div>
+  </div>
+</section>
+
+<!-- INSTALLATION -->
+<section class="section" id="installation">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Installation</h2>
+  <p class="section-desc">Import the package and open the window. There is nothing to activate.</p>
+
+  <h3>From the Unity Asset Store</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open Package Manager</strong><br>In Unity 2021.3 LTS or newer (developed and tested on Unity 6000.0), open <code>Window &rarr; Package Manager</code> and switch the dropdown to <strong>My Assets</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Download, then Import</strong><br>Find HueForge Studio, click Download then Import. Accept the import dialog with everything checked. The package lands at <code>Assets/HueForgeStudio/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wait for compile</strong><br>Unity compiles the editor scripts. The first import takes a little longer while shaders and assemblies build.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the window</strong><br><code>Tools &rarr; HueForge Studio &rarr; Open Window</code>, or press <code>Alt+Shift+H</code>.</div></div>
+  </div>
+
+  <h3>What gets installed</h3>
+  <pre><code><span class="kw">Assets/HueForgeStudio/</span>
+  Runtime/                    <span class="cm">// pipeline-agnostic types, palette/pattern assets, colour math</span>
+  Editor/                     <span class="cm">// the window, tabs, operations, workers, IO, AI, CLI</span>
+    Window/Tabs/              <span class="cm">// Paint, Palette, Inject, Repair, Batch, History, Settings, Help</span>
+    Operations/               <span class="cm">// one class per non-destructive edit, history-aware</span>
+    Compute/                  <span class="cm">// System.Math workers (background-thread safe)</span>
+    Gpu/                      <span class="cm">// GPU Voronoi coagulation</span>
+    AI/                       <span class="cm">// Claude / OpenAI / HTTP / Replicate providers</span>
+    CLI/                      <span class="cm">// headless batch + verify entry points</span>
+  Shaders/                    <span class="cm">// preview blit shaders for BiRP / URP / HDRP + Voronoi</span>
+  Palettes/                   <span class="cm">// default output dir for palettes you create / import</span>
+  Documentation/              <span class="cm">// you are here</span><span class="lang-tag">Project</span></code></pre>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Generated output</strong> (recolored textures, exported palettes, AI results, per-asset controllers) is written under <code>Assets/HueForgeStudio/Generated/</code> and <code>Assets/HueForgeStudio/Palettes/</code> when you apply an action. HueForge never modifies a source asset until you click apply.</div>
+  </div>
+</section>
+
+<!-- QUICK START -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">Your first non-destructive recolor.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open the window</strong><br><code>Tools &rarr; HueForge Studio &rarr; Open Window</code> (or <code>Alt+Shift+H</code>).</div></div>
+    <div class="step"><div class="step-content"><strong>Drop a target onto the Paint tab</strong><br>Drag a Texture, Material, Sprite, GameObject, or Prefab onto the preview frame. HueForge resolves it to the main texture automatically.</div></div>
+    <div class="step"><div class="step-content"><strong>Group the palette</strong><br>Open the <strong>Color Groups</strong> panel and click <code>Group Palette</code>. Drag the Similarity slider to coarsen or refine groups.</div></div>
+    <div class="step"><div class="step-content"><strong>Pick a colour and a region</strong><br>Click a group swatch to make it the active colour. Define a region by Shift-dragging the preview, or type X / Y / W / H.</div></div>
+    <div class="step"><div class="step-content"><strong>Apply</strong><br>Click <code>Apply Solid</code> and watch the SceneView update live. Try <code>Gradient</code> or <code>Pattern</code> mode for richer fills.</div></div>
+    <div class="step"><div class="step-content"><strong>Undo freely</strong><br>Press <code>Ctrl+Z</code> or use the <strong>Undo / Redo / Reset</strong> buttons in the toolbar &mdash; HueForge keeps file-backed snapshots so you can always get back to the original.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Prefer rules over pixels?</strong> Jump to the <a href="#tab-palette">Palette tab</a> to generate a harmony palette from one base colour, then audit its contrast before you ever touch a texture.</div>
+  </div>
+</section>
+
+<!-- REQUIREMENTS -->
+<section class="section" id="requirements">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9989;</span> Requirements</h2>
+  <p class="section-desc">What HueForge needs from your project.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Requirement</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Unity version</td><td>2021.3 LTS or newer. Developed and verified on Unity <code>6000.0</code>.</td></tr>
+      <tr><td>Render pipeline</td><td>Built-in, URP, or HDRP &mdash; auto-detected via <code>PipelineProbe</code>. See <a href="#pipelines">Render Pipelines</a>.</td></tr>
+      <tr><td>Texture readability</td><td>HueForge handles read/write through editor asset I/O. Imported PNG/JPG writeback is supported; native <code>.asset</code> textures use Unity undo.</td></tr>
+      <tr><td>GPU compute (optional)</td><td>Voronoi coagulation uses a compute shader. If the platform lacks compute support, other grouping methods still work.</td></tr>
+      <tr><td>AI features (optional)</td><td>Internet + your own API key (Anthropic / OpenAI) or HTTP image endpoint. Not required for any core feature.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- PAINT TAB -->
+<section class="section" id="tab-paint">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127912;</span> Paint Tab</h2>
+  <p class="section-desc">Solid, gradient, and pattern fills over a texture region, plus the Color Groups workbench.</p>
+
+  <h3>Three paint modes</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-title">&#9632; Solid</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Fill the selected region with the active colour. The cleanest way to swap a single group's colour everywhere it appears.</p></div>
+    <div class="card"><div class="card-title">&#127912; Gradient</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Blend a multi-stop gradient across the region horizontally or vertically. Convert solids to gradients in place.</p></div>
+    <div class="card"><div class="card-title">&#9636; Pattern</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Stamp a texture or <code>PatternAsset</code> with tiling, rotation, offset, tileable wrap, and opacity &mdash; or generate one procedurally.</p></div>
+  </div>
+
+  <h3>Region selection</h3>
+  <p>Shift-drag on the preview to draw a rectangular region, or type explicit <code>X / Y / W / H</code> values. Zero-size clicks expand to the current brush size so a single click still paints. An eyedropper (<code>I</code>) samples a colour from the preview.</p>
+
+  <h3>Emission &amp; metallic companions</h3>
+  <p>Solid, gradient, and pattern fills each have emission and metallic/smoothness variants that write to the matching companion map (e.g. <code>_EmissionMap</code>, <code>_MetallicGlossMap</code>) resolved for the active render pipeline.</p>
+
+  <h3>On the same tab</h3>
+  <ul>
+    <li><strong>Color Groups</strong> workbench &mdash; group, parent orphans, coagulate, auto-clean, sort, diffuse. See <a href="#groups">Color Groups &amp; Cleanup</a>.</li>
+    <li><strong>A/B preview</strong> split-slider with BEFORE / AFTER labels.</li>
+    <li><strong>Colour-blindness simulator</strong> overlay (Protanopia / Deuteranopia / Tritanopia).</li>
+    <li><strong>Paint presets</strong> &mdash; save and reload mode + region + colour + gradient/pattern settings as a <code>HueForgePaintPreset</code>.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Drag a <code>PaletteAsset</code> (or a <code>.gpl</code> / <code>.ase</code> / <code>.png</code> palette file) straight onto the window to load it into the Color Groups panel.</div>
+  </div>
+</section>
+
+<!-- PALETTE TAB -->
+<section class="section" id="tab-palette">
+  <h2><span class="section-icon" style="background:var(--violet-dim);color:var(--violet)">&#127752;</span> Palette Tab</h2>
+  <p class="section-desc">A dedicated palette workspace: generate, audit, and exchange palettes inline.</p>
+
+  <p>The Palette tab (second tab, right after Paint) unifies three palette-centric tools. The same actions are also available as standalone wizards under the Tools menu.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Harmony generator</strong><br>Pick a base colour and a colour-wheel scheme, choose how many swatches you want, and watch the live preview. Click <strong>Generate &amp; Save Palette</strong> to write a <code>PaletteAsset</code> &mdash; it flows straight into the report and export fields below. See <a href="#harmony">Colour Harmony</a>.</div></div>
+    <div class="step"><div class="step-content"><strong>Accessibility (WCAG contrast)</strong><br>Assign a palette to see per-swatch text readability (contrast on white / black, recommended text colour, AA/AAA badge) and a list of any colour pairs too low-contrast to sit side by side. See <a href="#accessibility">Accessibility</a>.</div></div>
+    <div class="step"><div class="step-content"><strong>Import / Export</strong><br>Import <code>.gpl</code> / <code>.ase</code> / <code>.png</code> / hex lists into a <code>PaletteAsset</code>, or export any palette to GPL, ASE, PNG strip, hex/CSS list, or JSON. See <a href="#import-export">Import / Export</a>.</div></div>
+  </div>
+</section>
+
+<!-- INJECT TAB -->
+<section class="section" id="tab-inject">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Inject Tab</h2>
+  <p class="section-desc">Composite multiple textures into a region with blend modes.</p>
+  <p>Build a stack of injection layers &mdash; each layer is a source texture with a blend mode, opacity, and optional mask. Reorder layers, toggle them, and flatten the stack to a single result that writes back to the target. The layer setup is stored on a <code>HueForgePreset</code> so you can reuse a compositing recipe across assets.</p>
+  <div class="flow">
+    <span class="flow-node">Base texture</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Layer 1 (Multiply)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Layer 2 (Overlay + mask)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Flatten</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Write back</span>
+  </div>
+</section>
+
+<!-- REPAIR TAB -->
+<section class="section" id="tab-repair">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128296;</span> Repair Tab</h2>
+  <p class="section-desc">Clean up and constrain texture data.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Operation</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Posterize</td><td>Reduce each channel to N levels for a flat, banded look.</td></tr>
+      <tr><td>Quantize (K-means)</td><td>Cluster the region's colours into K representative colours.</td></tr>
+      <tr><td>Remove Anti-Aliasing</td><td>Collapse soft edge pixels whose local variance is below a threshold &mdash; crisp pixel-art edges.</td></tr>
+      <tr><td>Snap to Palette</td><td>Map every pixel to the nearest colour in a <code>PaletteAsset</code> (or a colour list).</td></tr>
+      <tr><td>Channel Clamp</td><td>Clamp R / G / B / A each to a min&ndash;max range.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Repair settings can be saved as a <code>HueForgeRepairPreset</code> and replayed via recipes or batch.</p>
+</section>
+
+<!-- BATCH TAB -->
+<section class="section" id="tab-batch">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9783;</span> Batch Tab</h2>
+  <p class="section-desc">Apply one preset to many assets, with a dry run and a revertable report.</p>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Create a batch work preset</strong><br>A <code>HueForgeBatchWorkPreset</code> picks exactly one mode &mdash; Paint, Inject, or Repair &mdash; and references one matching preset.</div></div>
+    <div class="step"><div class="step-content"><strong>Collect targets</strong><br>Add selected textures, or use the project-wide material search (with a shader column and an "Add matching textures" queue) to gather everything that shares a palette signature.</div></div>
+    <div class="step"><div class="step-content"><strong>Preview a dry run</strong><br>See exactly which assets would change before anything is written.</div></div>
+    <div class="step"><div class="step-content"><strong>Apply</strong><br>HueForge writes the changes and emits a CSV + JSON report of every asset touched.</div></div>
+    <div class="step"><div class="step-content"><strong>Revert if needed</strong><br>Revert the latest batch (or a named batch) from the report &mdash; the file-backed snapshots make it reversible.</div></div>
+  </div>
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>The same batch can run headlessly in CI &mdash; see <a href="#cli">Headless CLI / CI</a>.</div>
+  </div>
+</section>
+
+<!-- HISTORY TAB -->
+<section class="section" id="tab-history">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#8617;</span> History &amp; Undo</h2>
+  <p class="section-desc">Per-asset operation log with real undo, redo, and reset.</p>
+  <p>Every operation is recorded with a thumbnail. HueForge keeps file-backed snapshots under the project <code>Library/</code> (original, before, after) plus a persistent history cursor, so undo / redo / reset work even for imported PNG/JPG writeback &mdash; not just native texture assets.</p>
+  <ul>
+    <li><strong>Undo / Redo / Reset</strong> from the window toolbar; <code>Ctrl+Z</code> / <code>Ctrl+Y</code> bridge into HueForge history where possible.</li>
+    <li><strong>Reset</strong> restores the very first state HueForge captured for the active target.</li>
+    <li><strong>List or thumbnail-grid</strong> view of the snapshot history.</li>
+    <li><strong>Recipe capture</strong> &mdash; turn the last N history steps into a replayable <code>HueForgeRecipe</code>. See <a href="#recipes">Recipes</a>.</li>
+  </ul>
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div>Snapshots live in the project <code>Library/</code>, which is local and not normally version-controlled. If you delete <code>Library/</code>, older file-backed undo/reset snapshots are gone (your applied edits remain on the assets).</div>
+  </div>
+</section>
+
+<!-- SETTINGS TAB -->
+<section class="section" id="tab-settings">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128295;</span> Settings Tab</h2>
+  <p class="section-desc">Per-project defaults and optional AI provider configuration.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Setting</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>Default palette directory</td><td>Where new <code>PaletteAsset</code>s are created. Must be inside <code>Assets/</code>.</td></tr>
+      <tr><td>AI palette provider</td><td>Pick Claude or OpenAI as the active palette generator.</td></tr>
+      <tr><td>Anthropic / OpenAI API key</td><td>Your own key. Stored in <code>EditorPrefs</code> under the <code>HueForge.AI.*</code> namespace &mdash; never serialized into a scene or asset.</td></tr>
+      <tr><td>Claude / OpenAI model</td><td>Defaults: <code>claude-sonnet-4-6</code> and <code>gpt-4o-mini</code>.</td></tr>
+      <tr><td>HTTP image endpoint</td><td>URL + optional header for texture generation (raw PNG or auto1111-style base64 responses).</td></tr>
+      <tr><td>Replicate token / model</td><td>Optional Replicate texture generation.</td></tr>
+      <tr><td>Analyzer strictness</td><td>When strict, dead-pref-key warnings escalate to errors so CI can fail the build.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128274;</span>
+    <div>API keys are yours and stay on your machine. HueForge only contacts an AI endpoint when you explicitly click a Generate button, and sends only the prompt + parameters needed for that call.</div>
+  </div>
+</section>
+
+<!-- RECOLOR & GRAB -->
+<section class="section" id="recolor-grab">
+  <h2><span class="section-icon" style="background:var(--violet-dim);color:var(--violet)">&#127912;</span> Recolor &amp; Grab</h2>
+  <p class="section-desc">The all-in-one colour toolset: pull palettes from anything, recolor HD textures and sprites, and stylise &mdash; all non-destructive (a new asset is written; your source is never touched). Each tool is a one-click wizard under <em>Tools &#9656; HueForge Studio</em>.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Grab Palette</strong> &mdash; pull a palette from a Texture, Sprite (its atlas rect), Material, or a multi-selection. Three modes: <em>Unique-frequency</em> (with RGB near-duplicate merge), <em>Dominant K-means</em>, and <em>Perceptual merge</em> (collapses shades the eye reads as the same, by CIELAB &Delta;E). Saves a <code>PaletteAsset</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>HD Recolor</strong> &mdash; shift a colour group by an HSV delta so highlights, shadows and texture detail survive. Works on full-detail / non-palette / PBR textures, supports grey&rarr;colour, and a global hue-rotate that keeps colour relationships intact. Saves a recolored copy.</div></div>
+    <div class="step"><div class="step-content"><strong>Sprite Palette Swap</strong> &mdash; remap a sprite's own palette onto a target <code>PaletteAsset</code>: crisp 1:1 by frequency for pixel art, or flip on <em>Perceptual matching</em> (CIE76 / CIEDE2000) for anti-aliased and photographic sprites where the numerically-closest colour isn't the visual match. Alpha preserved.</div></div>
+    <div class="step"><div class="step-content"><strong>Gradient Map</strong> &mdash; remap a texture by brightness onto a 2&ndash;N colour ramp for an instant duotone / tritone / cinematic grade. Pick shadow, (optional) midtone and highlight stops; saves a new texture.</div></div>
+    <div class="step"><div class="step-content"><strong>Batch Recolor (Perceptual)</strong> &mdash; select any number of textures, pick one target palette, and recolor them all at once (perceptual swap), each saved as a new texture. A folder-scale workflow for theming a whole sprite set or texture pack in one click.</div></div>
+    <div class="step"><div class="step-content"><strong>Harmony Recolor (live)</strong> &mdash; generate a colour-wheel harmony palette from a single base colour and watch the texture recolor onto it in <em>real time</em> as you tweak the base hue, scheme and colour count. Save the copy when you like what you see.</div></div>
+    <div class="step"><div class="step-content"><strong>Palette Fusion (optimize)</strong> &mdash; fuse selected low-poly models onto ONE shared 1px-per-colour texture + ONE shared material with UV-remapped meshes and fused prefabs, so they batch together: fewer draw calls, smaller builds. Emits an optimization report. See the live calculator in the demo.</div></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Perceptual matching &mdash; CIE76 vs CIEDE2000.</strong> Both compare colours in CIELAB (how the eye perceives difference) rather than raw RGB. <strong>CIEDE2000</strong> is the modern industry-standard metric: it corrects CIE76's well-known errors around blues, greys and near-neutrals, so palette grabs and swaps group/snap colours the way a human would. It's the default where perceptual matching is offered &mdash; palette <strong>grab</strong>, sprite <strong>swap</strong>, colour <strong>grouping</strong>, and <strong>Repair &#9656; Quantize / Snap to Palette</strong> (with live preview) &mdash; switch to the faster CIE76 if you prefer. Try the live toggles in the demo's <em>Palette</em>, <em>Repair</em> and <em>Perceptual Match</em> chapters.</div>
+  </div>
+</section>
+
+<!-- COLOR GROUPS -->
+<section class="section" id="groups">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127918;</span> Color Groups &amp; Cleanup</h2>
+  <p class="section-desc">Turn a noisy texture into a small, editable palette of groups.</p>
+
+  <p>HueForge indexes a texture's unique colours and folds similar ones into <em>groups</em>. Recoloring a group recolors every pixel that belongs to it &mdash; one swap, many pixels. The workbench tools:</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Group Palette</td><td>Union-find grouping with path compression; each group gets a pixel-weighted representative colour. The Similarity slider sets the merge threshold.</td></tr>
+      <tr><td>Pixel Parenting</td><td>Reassigns orphan / anti-aliased pixels to a nearby group via iterative BFS, in <em>NeighborFrequency</em> or <em>ColorDelta</em> mode.</td></tr>
+      <tr><td>Coagulate Regions</td><td>GPU Voronoi coagulation (async <code>AsyncGPUReadback</code>, up to 4096 seeds) clusters scattered spots into coherent regions without freezing the editor.</td></tr>
+      <tr><td>Auto-Clean</td><td>Four tiers of speckle removal: <em>FrequencyClip</em>, <em>FrequencyVariance</em>, <em>FrequencyVoronoiGrid</em>, <em>FrequencyRatio</em>.</td></tr>
+      <tr><td>Diffusion Blend</td><td>Bleed one colour toward another within a tolerance, on a Linear or Exponential curve.</td></tr>
+      <tr><td>Palette Sort</td><td>Sort groups by hue-from-anchor or by pixel frequency.</td></tr>
+      <tr><td>Extract Palette</td><td>K-means quantize any source image into a saved <code>PaletteAsset</code>.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- GRADIENTS & PATTERNS -->
+<section class="section" id="gradients-patterns">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127880;</span> Gradients &amp; Patterns</h2>
+  <p class="section-desc">Richer fills than a flat colour.</p>
+  <h3>Gradients</h3>
+  <p>Define a multi-stop gradient and apply it across a region horizontally or vertically. Solid groups can be converted to gradients and back.</p>
+  <h3>Procedural pattern generators</h3>
+  <p>In Pattern mode, the <strong>Generate Procedural Pattern</strong> foldout offers thirteen generators that you can snap to the active palette or gradient:</p>
+  <div class="card-grid">
+    <div class="card"><p style="margin:0;font-size:13.5px;color:var(--text-dim);"><strong style="color:var(--text)">Noise &amp; cells:</strong> Perlin, Voronoi, Perlin-Voronoi, Cellular Automata (Conway).</p></div>
+    <div class="card"><p style="margin:0;font-size:13.5px;color:var(--text-dim);"><strong style="color:var(--text)">Structured &amp; tiling:</strong> Grid, Decorated Grid, Stripe, Bricks, Wood, Checkerboard.</p></div>
+    <div class="card"><p style="margin:0;font-size:13.5px;color:var(--text-dim);"><strong style="color:var(--text)">Dots &amp; marks:</strong> Dots, Hexagon, Crosshatch.</p></div>
+  </div>
+  <p>A generated pattern can be stamped immediately or saved as a <code>PatternAsset</code> (texture + tiling / rotation / offset / tileable / opacity) for reuse.</p>
+</section>
+
+<!-- HARMONY -->
+<section class="section" id="harmony">
+  <h2><span class="section-icon" style="background:var(--violet-dim);color:var(--violet)">&#127752;</span> Colour Harmony</h2>
+  <p class="section-desc">Rule-based palette generation from one base colour &mdash; deterministic, offline, free.</p>
+  <p>Open the <a href="#tab-palette">Palette tab</a> (or <code>Tools &rarr; HueForge Studio &rarr; Generate Harmony Palette...</code>), pick a base colour and a scheme, and HueForge builds a palette on the colour wheel. Six schemes:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Scheme</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Complementary</td><td>Base + the opposite hue (180&deg;).</td></tr>
+      <tr><td>Analogous</td><td>Neighbours spaced by an adjustable angle, centred on the base hue.</td></tr>
+      <tr><td>Triadic</td><td>Three hues evenly spaced (120&deg; apart).</td></tr>
+      <tr><td>Tetradic</td><td>Four hues at quarter-turns (90&deg;).</td></tr>
+      <tr><td>Split-Complementary</td><td>Base plus the two hues either side of its complement (150&deg; / 210&deg;).</td></tr>
+      <tr><td>Monochromatic</td><td>One hue, a dark&rarr;light value ramp.</td></tr>
+    </tbody>
+  </table></div>
+  <p>The colour math lives in <code>ColorHarmony</code> (runtime, unit-tested). Requesting more colours than a scheme's anchors pads with progressively value-varied repeats, so the count is always honoured and no swatch collapses to black.</p>
+  <pre><code><span class="cm">// Generate a 5-colour triadic palette from steel blue</span>
+<span class="tp">Color32</span>[] swatches = <span class="fn">ColorHarmony</span>.<span class="fn">Generate</span>(
+    <span class="kw">new</span> <span class="tp">Color32</span>(<span class="num">70</span>, <span class="num">130</span>, <span class="num">180</span>, <span class="num">255</span>),
+    <span class="tp">ColorHarmony.Scheme</span>.Triadic, count: <span class="num">5</span>);<span class="lang-tag">C#</span></code></pre>
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div>Harmony is the free, offline counterpart to <a href="#ai">AI palette generation</a> &mdash; reach for it when you want a structured palette and don't need a key or a prompt.</div>
+  </div>
+</section>
+
+<!-- ACCESSIBILITY -->
+<section class="section" id="accessibility">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#9855;</span> Accessibility (WCAG)</h2>
+  <p class="section-desc">Audit a palette's contrast before it ships in your UI.</p>
+  <p>The accessibility report (in the <a href="#tab-palette">Palette tab</a>, or <code>Tools &rarr; HueForge Studio &rarr; Palette Accessibility Report...</code>) uses gamma-correct sRGB relative luminance &mdash; the same formula accessibility tools use &mdash; to compute WCAG 2.1 contrast ratios.</p>
+  <ul>
+    <li><strong>Per-swatch readability</strong> &mdash; contrast against white and black text, which to use, and an AA / AAA / Fail badge.</li>
+    <li><strong>Low-contrast pairs</strong> &mdash; colour pairs too close to sit next to each other, with their ratio.</li>
+    <li><strong>Summary</strong> &mdash; minimum and average pairwise contrast across the palette.</li>
+    <li><strong>One-click auto-fix</strong> &mdash; choose an AA (4.5:1) or AAA (7:1) target and <em>Save text-safe copy</em>: every failing swatch is nudged in lightness (hue &amp; saturation preserved) until black or white text passes, written to a new palette so the original is untouched. <code>PaletteAccessibility.MakeTextSafe(colors, targetRatio)</code> exposes the same fix in script.</li>
+  </ul>
+  <pre><code><span class="tp">var</span> report = <span class="fn">PaletteAccessibility</span>.<span class="fn">Analyze</span>(colors, lowContrastThreshold: <span class="num">3.0</span>);
+<span class="tp">double</span> ratio = <span class="fn">PaletteAccessibility</span>.<span class="fn">ContrastRatio</span>(fg, bg);   <span class="cm">// 1..21</span>
+<span class="tp">var</span> level = <span class="fn">PaletteAccessibility</span>.<span class="fn">ClassifyText</span>(ratio);     <span class="cm">// Fail / AA / AAA</span><span class="lang-tag">C#</span></code></pre>
+  <p>Pair this with the Paint tab's <strong>colour-blindness simulator</strong> (Protanopia / Deuteranopia / Tritanopia) to check both contrast and colour-vision deficiency in one workflow.</p>
+</section>
+
+<!-- AI -->
+<section class="section" id="ai">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#129302;</span> AI Generation</h2>
+  <p class="section-desc">Optional palette-from-prompt and texture-from-prompt, using your own key.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div>AI features are the only online part of HueForge and are entirely optional. They call <em>your</em> provider with <em>your</em> key. No HueForge backend is involved, and nothing is sent unless you click a Generate button.</div>
+  </div>
+
+  <h3>AI palette from text</h3>
+  <p>In Settings, pick a provider and paste your key. Then in the Color Groups panel, open <strong>AI Palette</strong>, type a prompt, and click <strong>Generate Palette</strong>.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Provider</th><th>Default model</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Anthropic Claude</td><td><code>claude-sonnet-4-6</code></td><td>Tolerant JSON parsing (handles fenced code blocks, drops invalid hex).</td></tr>
+      <tr><td>OpenAI</td><td><code>gpt-4o-mini</code></td><td>ChatCompletions adapter.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>AI texture from an endpoint</h3>
+  <p>Configure an HTTP image URL (raw PNG bytes or an auto1111-style <code>{"images":["&lt;base64&gt;"]}</code> response) or a Replicate token. Click Generate; the PNG lands in <code>Assets/HueForgeStudio/Generated/</code> and auto-imports.</p>
+</section>
+
+<!-- IMPORT / EXPORT -->
+<section class="section" id="import-export">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128228;</span> Import / Export</h2>
+  <p class="section-desc">Move palettes between HueForge and the rest of your toolchain.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Format</th><th>Import</th><th>Export</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>GIMP <code>.gpl</code></td><td>&#10003;</td><td>&#10003;</td><td>Plain-text palette, widely supported.</td></tr>
+      <tr><td>Adobe <code>.ase</code></td><td>&#10003;</td><td>&#10003;</td><td>Swatch Exchange; exports round-trip through the importer.</td></tr>
+      <tr><td>PNG strip</td><td>&#10003;</td><td>&#10003;</td><td>One pixel (or cell) per colour.</td></tr>
+      <tr><td>Hex / CSS list</td><td>&#10003;</td><td>&#10003;</td><td>One <code>#RRGGBB</code> per line; accepts with or without <code>#</code>.</td></tr>
+      <tr><td>JSON</td><td>&ndash;</td><td>&#10003;</td><td>Palette metadata + per-colour hex and channels.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Use the <a href="#tab-palette">Palette tab</a>, or the menu shortcuts <code>Tools &rarr; HueForge Studio &rarr; Import Palette...</code> and <code>Export Palette...</code>.</p>
+  <pre><code><span class="fn">PaletteIO</span>.<span class="fn">ExportAse</span>(palette, <span class="str">"MyPalette.ase"</span>);
+<span class="fn">PaletteIO</span>.<span class="fn">ExportJson</span>(palette, <span class="str">"MyPalette.json"</span>);
+<span class="tp">var</span> colors = <span class="fn">PaletteIO</span>.<span class="fn">ParseHexList</span>(<span class="fn">File</span>.<span class="fn">ReadAllLines</span>(<span class="str">"swatches.txt"</span>));<span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- RECIPES -->
+<section class="section" id="recipes">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128221;</span> Recipes &amp; Automation</h2>
+  <p class="section-desc">Capture a sequence of edits and replay it on other textures.</p>
+  <p>In the History tab, click <strong>Capture Recent History as Recipe</strong> to bundle the last N operations into a <code>HueForgeRecipe</code> ScriptableObject. Drag another texture into the <strong>Replay target</strong> slot and click <strong>Replay Recipe</strong>.</p>
+  <p>Replay dispatches Solid Paint, Gradient, Posterize, Quantize, Snap-to-Palette, Channel Clamp, Remove-AA, Diffusion, Coagulate, Pixel Parenting, and AutoClean steps; steps that need extra context are skipped with a diagnostic rather than guessing.</p>
+  <p>Presets (paint / repair / batch / recipe) also export and import as deterministic UTF-8 JSON via <code>PresetJsonIO</code>, so they diff cleanly in version control.</p>
+</section>
+
+<!-- PIPELINES -->
+<section class="section" id="pipelines">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128250;</span> Render Pipelines</h2>
+  <p class="section-desc">One asset, three pipelines &mdash; detected automatically.</p>
+  <p><code>PipelineProbe</code> detects the active pipeline (Built-in, URP, or HDRP) and exposes the canonical shader property names so emission, metallic, and mask-map writes target the right channels. Preview blit shaders ship for all three.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Pipeline</th><th>Main</th><th>Emission</th><th>Metallic / Mask</th></tr></thead>
+    <tbody>
+      <tr><td>Built-in</td><td><code>_MainTex</code></td><td><code>_EmissionMap</code></td><td><code>_MetallicGlossMap</code></td></tr>
+      <tr><td>URP / HDRP</td><td>resolved via <code>PipelineProbe</code></td><td>resolved</td><td>resolved (incl. mask map)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>If a material uses a shader HueForge doesn't recognise, the property mapping falls back to sensible defaults; you can always paint the base map and wire companion maps manually.</div>
+  </div>
+</section>
+
+<!-- EXTENSIONS -->
+<section class="section" id="extensions">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#129513;</span> Extensions (Plugin Bus)</h2>
+  <p class="section-desc">Add your own tools without forking HueForge.</p>
+  <p>Implement <code>IHueForgeExtension</code> (id, display name, version). Add the optional <code>IHueForgeTabExtension</code> to contribute a custom tab that renders right alongside the built-in tabs. The <code>ExtensionRegistry</code> discovers implementations automatically via <code>[InitializeOnLoad]</code> &mdash; no manual registration.</p>
+  <pre><code><span class="kw">public sealed class</span> <span class="tp">MyTab</span> : <span class="tp">IHueForgeTabExtension</span>
+{
+    <span class="kw">public</span> <span class="tp">string</span> ExtensionId =&gt; <span class="str">"yourstudio.mytab"</span>;
+    <span class="kw">public</span> <span class="tp">string</span> DisplayName =&gt; <span class="str">"My Tab"</span>;
+    <span class="kw">public</span> <span class="tp">string</span> TabLabel =&gt; <span class="str">"My Tab"</span>;
+    <span class="kw">public</span> <span class="tp">System.Version</span> Version =&gt; <span class="kw">new</span>(<span class="num">1</span>, <span class="num">0</span>, <span class="num">0</span>);
+    <span class="kw">public</span> <span class="tp">System.Action</span>&lt;<span class="tp">EditorWindow</span>&gt; DrawTab =&gt; w =&gt; { <span class="cm">/* your IMGUI */</span> };
+}<span class="lang-tag">C#</span></code></pre>
+</section>
+
+<!-- CLI -->
+<section class="section" id="cli">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128187;</span> Headless CLI / CI</h2>
+  <p class="section-desc">Run HueForge from Unity batch mode for pipelines and automation.</p>
+
+  <h3>Palette-signature verify</h3>
+  <p>Fail a CI build when a texture's palette drifts from a known-good signature. A ready-to-use GitHub Action template ships at <code>Documentation/CI/github-action.yml</code>.</p>
+  <pre><code>Unity.exe -batchmode -nographics -quit \
+  -projectPath &lt;PROJECT&gt; \
+  -executeMethod HueForgeStudio.EditorCli.HueForgeVerifyCli.VerifySignature \
+  -hueforge-target Assets/.../Sword.png \
+  -hueforge-expected-signature &lt;hex&gt; \
+  -hueforge-report Library/HueForgeStudio/VerifyReport.csv<span class="lang-tag">Shell</span></code></pre>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Exit code</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>0</code></td><td>Signature matches the expected value.</td></tr>
+      <tr><td><code>2</code></td><td>Signature mismatch (the texture changed).</td></tr>
+      <tr><td><code>1</code></td><td>Usage error (missing arguments).</td></tr>
+      <tr><td><code>3</code></td><td>Target asset not found.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Batch apply / revert</h3>
+  <p><code>HueForgeBatchCli.RunBatch()</code> applies a <code>HueForgeBatchWorkPreset</code> to its targets and writes a CSV + JSON report; <code>HueForgeBatchCli.RevertBatch()</code> reverts the most recent (or a named) batch. <code>HueForgeRecipeCli</code> replays a recipe headlessly.</p>
+</section>
+
+<!-- ASSET TYPES -->
+<section class="section" id="asset-types">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128193;</span> Asset Types</h2>
+  <p class="section-desc">The ScriptableObjects HueForge creates and consumes.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Type</th><th>Stores</th></tr></thead>
+    <tbody>
+      <tr><td><code>PaletteAsset</code></td><td>An editable colour list plus grid columns/rows; used by snap-to-palette, harmony, accessibility, and import/export.</td></tr>
+      <tr><td><code>PatternAsset</code></td><td>A pattern texture plus tiling, rotation, offset, tileable, and opacity.</td></tr>
+      <tr><td><code>HueForgePaintPreset</code></td><td>Paint mode, region, brush size, solid colour, gradient stops, and pattern settings.</td></tr>
+      <tr><td><code>HueForgeRepairPreset</code></td><td>Repair operation settings (posterize / quantize / remove-AA / snap / channel clamp).</td></tr>
+      <tr><td><code>HueForgePreset</code></td><td>Injection-layer setup and target references for compositing.</td></tr>
+      <tr><td><code>HueForgeBatchWorkPreset</code></td><td>One batch mode (Paint / Inject / Repair) + one referenced preset.</td></tr>
+      <tr><td><code>HueForgeRecipe</code></td><td>A sequence of recorded operations for replay.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- API -->
+<section class="section" id="api">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128218;</span> Scripting API</h2>
+  <p class="section-desc">The supported public surface for the 1.x line.</p>
+  <p>Everything public is documented in <code>Documentation/PublicApi.md</code>. Highlights:</p>
+  <ul>
+    <li><strong>Runtime</strong> (<code>HueForgeStudio.Runtime</code>): <code>ColorHarmony</code>, <code>PaletteAccessibility</code>, <code>PaletteAsset</code>, <code>PatternAsset</code>, <code>PaletteSignature</code>, <code>PipelineProbe</code>, the preset/recipe types, <code>HueForgeVersion</code>.</li>
+    <li><strong>Operations</strong> (<code>HueForgeStudio.EditorOperations</code>): one <code>public static</code> class per edit (paint, gradient, pattern, repair, grouping, parenting, coagulate, auto-clean, diffusion, sort, harmony, extract), each returning a status struct and integrating with history.</li>
+    <li><strong>IO</strong> (<code>HueForgeStudio.EditorPersistence</code>): <code>PaletteIO</code> (parse/export GPL/ASE/PNG/hex/JSON) and <code>PresetJsonIO</code>; history is exposed via <code>HueForgeHistoryService</code> (<code>HueForgeStudio.EditorCore</code>).</li>
+    <li><strong>AI</strong> (<code>HueForgeStudio.EditorAi</code>): provider interfaces + Claude / OpenAI / HTTP / Replicate adapters + <code>PromptServiceConfig</code>.</li>
+    <li><strong>Extensions</strong>: <code>IHueForgeExtension</code>, <code>IHueForgeTabExtension</code>, <code>ExtensionRegistry</code>.</li>
+  </ul>
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div>Anything not listed in <code>PublicApi.md</code> is <code>internal</code> and may change without notice. Operation payload structs are nested and may grow; treat their JSON as opaque.</div>
+  </div>
+</section>
+
+<!-- TROUBLESHOOTING -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Common issues and how to resolve them.</p>
+
+  <details open>
+    <summary>The texture didn't change on disk</summary>
+    <div class="details-body">
+      <p>For imported PNG/JPG files, HueForge writes the selected region back to the source file and re-imports it. If nothing changed, confirm a region is selected (a zero-size click expands to the brush size) and that the file isn't read-only / under source-control lock. Native <code>.asset</code> textures use Unity's object undo instead.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>The preview is black</summary>
+    <div class="details-body">
+      <p>Almost always a render-pipeline interaction with the preview viewport. The edit itself is fine &mdash; check the result directly on a material/SceneView. If it persists, confirm the active pipeline matches your project (see <a href="#pipelines">Render Pipelines</a>).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>"Coagulate Regions" is unavailable or does nothing</summary>
+    <div class="details-body">
+      <p>Voronoi coagulation needs GPU compute-shader support. On platforms/editors without it, use Group Palette + Pixel Parenting + Auto-Clean instead &mdash; they run on the CPU.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>AI palette returns nothing / errors</summary>
+    <div class="details-body">
+      <p>Open Settings and confirm: (1) a provider is selected, (2) the matching API key is filled, (3) you have internet access. The key is yours and is stored locally in <code>EditorPrefs</code>. If the provider returns malformed JSON, the Claude adapter strips code fences and drops invalid hex entries &mdash; a totally empty response usually means an auth or quota issue on the provider side.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>The SceneView didn't update after painting</summary>
+    <div class="details-body">
+      <p>HueForge calls a scene repaint after every pixel write. If a custom material caches the texture, toggle the material or re-select the object. No asset re-import is required for the SceneView to refresh.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>My rig / model imports look wrong</summary>
+    <div class="details-body">
+      <p>HueForge edits textures and materials, not skeletons &mdash; it doesn't change rigs or meshes. If a material shows the wrong map, confirm the shader's property names are recognised for your pipeline (see <a href="#pipelines">Render Pipelines</a>).</p>
+    </div>
+  </details>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Quick answers.</p>
+
+  <details open>
+    <summary>Does HueForge need an internet connection?</summary>
+    <div class="details-body">
+      <p>No &mdash; every core feature works offline. Only the optional AI palette/texture generators make network calls, and only to your own provider with your own key.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Is it non-destructive?</summary>
+    <div class="details-body">
+      <p>Yes. Edits are tracked in HueForge's history with file-backed snapshots (original / before / after) so you can undo, redo, and reset &mdash; including for imported PNG/JPG writeback. Source assets are only touched when you apply.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Which render pipelines are supported?</summary>
+    <div class="details-body">
+      <p>Built-in, URP, and HDRP. The active pipeline is auto-detected and the correct shader properties are resolved for you.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Do AI features cost anything to HueForge?</summary>
+    <div class="details-body">
+      <p>No. There's no HueForge backend, account, or quota. You pay your AI provider directly for the calls you make with your own key, exactly as their pricing dictates.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I script it / run it in CI?</summary>
+    <div class="details-body">
+      <p>Yes. The operations are a public static API, and there are batch-mode CLI entry points for verify, batch apply/revert, and recipe replay. See <a href="#cli">Headless CLI / CI</a> and <a href="#api">Scripting API</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Will my edits show up in a build?</summary>
+    <div class="details-body">
+      <p>HueForge is an editor tool that edits assets. Once a texture/material is recolored, it's a normal Unity asset and works in any build target Unity supports.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I add my own tools to the window?</summary>
+    <div class="details-body">
+      <p>Yes &mdash; implement <code>IHueForgeTabExtension</code> and your tab appears next to the built-in tabs. See <a href="#extensions">Extensions</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>My team has several developers. Licensing?</summary>
+    <div class="details-body">
+      <p>Per Unity Asset Store policy, each seat that uses the asset needs its own license.</p>
+    </div>
+  </details>
+</section>
+
+<!-- SUPPORT -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128236;</span> Support</h2>
+  <p class="section-desc">Questions, bugs, ideas &mdash; we're glad to help.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">Bug reports, feature requests, and licensing questions &mdash; reach out and we'll get back to you.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--violet));color:#1a1409;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Check <a href="#troubleshooting">Troubleshooting</a> and the <a href="#faq">FAQ</a></li>
+        <li>Confirm your Unity version and render pipeline</li>
+        <li>For AI issues, verify the key in Settings</li>
+        <li>Capture any Console output prefixed <code>[HueForge]</code></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful info to include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Unity version (e.g. <code>6000.0.62f1</code>)</li>
+        <li>HueForge Studio version (<strong>v2.0.0</strong>)</li>
+        <li>Render pipeline (Built-in / URP / HDRP)</li>
+        <li>Steps to reproduce + Console output</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:20px;">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Enjoying HueForge Studio?</strong> A review on the Unity Asset Store helps other developers find it and helps us keep improving the asset. Thank you!</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>HueForge Studio v2.0.0 &middot; Built for Unity 2021.3+ &middot; Built-in / URP / HDRP</p>
+  <p style="margin-top:8px;">Non-destructive palette &amp; texture recoloring for Unity &middot; Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section, .hero').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const h1 = s.querySelector('h1');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const id = s.id || (s.parentElement && s.parentElement.id) || '';
+  if (!id) return;
+  sections.push({
+    id: id,
+    title: h2 ? h2.textContent.trim() : (h1 ? h1.textContent.trim() : ''),
+    desc: desc ? desc.textContent.trim() : '',
+    content: s.textContent.toLowerCase(),
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section[id], .hero[id]').forEach(s => observer.observe(s));
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
