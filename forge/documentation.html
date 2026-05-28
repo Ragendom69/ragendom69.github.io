@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge - Documentation</title>
+<style>
+:root {
+  --bg: #0C0E14;
+  --bg-card: #14161F;
+  --bg-card-hover: #1B1E29;
+  --bg-code: #11131B;
+  --bg-sidebar: #0A0C11;
+  --text: #e6e7ec;
+  --text-dim: #99a0b2;
+  --text-code: #c8ccd8;
+  --accent: #F97316;
+  --accent-light: #FB923C;
+  --accent-glow: rgba(249,115,22,0.15);
+  --green: #22D3A5;
+  --green-dim: rgba(34,211,165,0.12);
+  --yellow: #FBBF24;
+  --yellow-dim: rgba(251,191,36,0.12);
+  --pink: #F43F5E;
+  --pink-dim: rgba(244,63,94,0.12);
+  --orange: #F97316;
+  --orange-dim: rgba(249,115,22,0.12);
+  --blue: #60A5FA;
+  --blue-dim: rgba(96,165,250,0.12);
+  --border: #242936;
+  --border-light: #333a4a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(12,14,20,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #F97316, #F43F5E);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 980px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #FB923C 45%, #F43F5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 660px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-orange { background: var(--orange-dim); color: var(--accent-light); border: 1px solid rgba(249,115,22,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,211,165,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(244,63,94,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(96,165,250,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 4px; }
+
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+strong { color: var(--text); }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.mini-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  padding: 0;
+}
+
+.mini-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+pre .lang-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-family: var(--font);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.kw { color: #F0883E; }
+.str { color: #9ECE6A; }
+.cm { color: #5F6477; font-style: italic; }
+.fn { color: #7AA2F7; }
+.tp { color: #FFCB6B; }
+.num { color: #FF9E64; }
+.op { color: #FB923C; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(249,115,22,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:hover { color: var(--accent-light); }
+
+details .details-body { padding: 0 20px 18px; }
+details .details-body p:first-child { margin-top: 0; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout > div { flex: 1; }
+.callout p { margin-bottom: 6px; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(34,211,165,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(251,191,36,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(96,165,250,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(244,63,94,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+.tag-info { background: var(--blue-dim); color: var(--blue); }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); text-decoration: none; }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <a href="#overview" class="header-logo">
+    <div class="dot">F</div>
+    <span>Forge</span>
+  </a>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0.0 &middot; Unity 6000.0+ &middot; URP</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+    <a href="#hub"><span class="nav-icon">&#9881;</span> The Hub &amp; Canvas</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Rendering &amp; Effects</div>
+    <a href="#shapes"><span class="nav-icon">&#9733;</span> Shapes (SDF)</a>
+    <a href="#gradients"><span class="nav-icon">&#127912;</span> Gradients &amp; Patterns</a>
+    <a href="#shadows"><span class="nav-icon">&#9728;</span> Shadows &amp; Glow</a>
+    <a href="#glass"><span class="nav-icon">&#10052;</span> Glass &amp; Blur</a>
+    <a href="#filters"><span class="nav-icon">&#127902;</span> Filters &amp; Masks</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Building UI</div>
+    <a href="#components"><span class="nav-icon">&#129513;</span> Components</a>
+    <a href="#layout"><span class="nav-icon">&#9783;</span> Layout</a>
+    <a href="#lists"><span class="nav-icon">&#9776;</span> Lists &amp; Virtualization</a>
+    <a href="#data"><span class="nav-icon">&#128279;</span> Data Binding</a>
+    <a href="#text"><span class="nav-icon">&#9999;</span> Text Effects</a>
+    <a href="#animation"><span class="nav-icon">&#10227;</span> Animation &amp; Tweens</a>
+    <a href="#interactions"><span class="nav-icon">&#128070;</span> Interactions &amp; Nav</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Systems</div>
+    <a href="#theming"><span class="nav-icon">&#127912;</span> Theming &amp; Tokens</a>
+    <a href="#localization"><span class="nav-icon">&#127760;</span> Localization &amp; RTL</a>
+    <a href="#accessibility"><span class="nav-icon">&#9855;</span> Accessibility</a>
+    <a href="#mcp"><span class="nav-icon">&#129302;</span> AI / MCP Generation</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#demo"><span class="nav-icon">&#127916;</span> Demo &amp; Studio</a>
+    <a href="#architecture"><span class="nav-icon">&#127959;</span> Architecture</a>
+    <a href="#requirements"><span class="nav-icon">&#9989;</span> Requirements</a>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero" id="overview">
+  <h1>Forge</h1>
+  <p>One asset that replaces six. A code-first, token-driven UGUI toolkit for Unity 6 &amp; URP: GPU-drawn SDF <strong>shapes</strong>, soft <strong>shadows &amp; glow</strong>, <strong>glassmorphism</strong>, <strong>filters &amp; soft masks</strong>, a 60+ piece <strong>component library</strong>, flexbox <strong>layout</strong>, a zero-GC <strong>tween engine</strong>, MVVM <strong>data binding</strong>, design-token <strong>theming</strong>, plus a visual <strong>Design Canvas</strong> and an <strong>AI generation</strong> layer &mdash; all behind one coherent API.</p>
+  <div class="hero-badges">
+    <span class="badge badge-orange">Unity 6000.0+</span>
+    <span class="badge badge-green">URP</span>
+    <span class="badge badge-yellow">UGUI + TextMeshPro</span>
+    <span class="badge badge-pink">Sprite-free / Resolution-independent</span>
+    <span class="badge badge-blue">Editor + Runtime</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>One coherent model, three ways to use it.</strong> The exact same public API powers hand-authoring in code, the drag-and-drop <a href="#hub">Design Canvas</a>, and the <a href="#mcp">AI / MCP layer</a> that builds screens from a description. Whatever you build one way is fully editable the others.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#9733;</span>
+    <div><strong>Nothing is a sprite.</strong> Shapes, strokes, gradients, shadows and masks are rendered analytically on the GPU from signed-distance fields, so they stay crisp at any resolution and DPI &mdash; no atlases to bake, no 9-slice seams. A single shared material keeps draw calls batched.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#shapes"><h4>&#9733; SDF Shapes</h4><p>8 primitives, gradients, stroke, fill-amount, edge-collapse morph &mdash; all from one <code>FgShape</code>.</p></a>
+    <a class="mini-card" href="#components"><h4>&#129513; 60+ Components</h4><p>Buttons to calendars, all token-themed and assembled from Forge primitives. One factory call each.</p></a>
+    <a class="mini-card" href="#theming"><h4>&#127912; Design Tokens</h4><p>Typed tokens + modes. Call <code>FgTheme.SetMode("Dark")</code> and the whole UI restyles live.</p></a>
+    <a class="mini-card" href="#animation"><h4>&#10227; Zero-GC Tweens</h4><p>30 easing curves, sequences, spline paths, punch &amp; shake &mdash; a fluent DOTween-style API.</p></a>
+    <a class="mini-card" href="#data"><h4>&#128279; MVVM Binding</h4><p>Change an <code>FgObservable</code> once; every bound label, slider and list updates itself.</p></a>
+    <a class="mini-card" href="#mcp"><h4>&#129302; AI Generation</h4><p>Describe a screen; the MCP tool layer assembles it from the same components you'd use by hand.</p></a>
+  </div>
+
+  <p>This document is organized by capability. <a href="#shapes">Rendering &amp; Effects</a> covers the GPU drawing layer; <a href="#components">Building UI</a> covers components, layout, data and animation; <a href="#theming">Systems</a> covers theming, localization, accessibility and AI; and <a href="#demo">Reference</a> covers the demo, module map, requirements and support.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             INSTALLATION                     -->
+<!-- ============================================ -->
+<section class="section" id="installation">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Installation</h2>
+  <p class="section-desc">Import once. Every module lights up immediately &mdash; there is no mandatory setup step.</p>
+
+  <h3>From the Unity Asset Store</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open Package Manager</strong><br>In Unity <strong>6000.0</strong> or later, open <code>Window &rarr; Package Manager</code> and switch the dropdown to <strong>My Assets</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Download &amp; Import Forge</strong><br>Accept the import dialog with everything checked. The package lands at <code>Assets/Forge/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wait for compile</strong><br>Unity compiles the per-module editor and runtime assemblies. The first import takes ~30&nbsp;s.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the Hub</strong><br><code>Tools &rarr; Forge &rarr; Hub</code> to browse modules and manage the theme, or <code>Window &rarr; Forge Canvas</code> to start dragging shapes onto an artboard.</div></div>
+  </div>
+
+  <h3>Requirements</h3>
+  <ul>
+    <li><strong>Unity 6000.0.62f1</strong> or newer (Unity 6.x). <span class="tag tag-required">Required</span></li>
+    <li><strong>Universal Render Pipeline (URP)</strong> as the active pipeline. <span class="tag tag-required">Required</span></li>
+    <li><strong>TextMeshPro</strong> (ships with Unity 6; Forge uses it for all text). <span class="tag tag-auto">Auto</span></li>
+  </ul>
+  <p>See <a href="#requirements">Requirements &amp; Compatibility</a> for the full list, optional integrations and platform notes.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>URP must be active.</strong> Forge's shaders (<code>Forge/Shape</code>, <code>Forge/RtShadow</code>, <code>Forge/Glass</code>, &hellip;) target URP. If your project is on the Built-in or HDRP pipeline, switch to URP before importing. See <a href="#requirements">Requirements</a>.</div>
+  </div>
+
+  <h3>Optional: create a settings asset</h3>
+  <p>Forge works out of the box, but you can create a project-wide configuration asset to toggle module feature-flags:</p>
+  <div class="flow">
+    <span class="flow-node">Tools &rarr; Forge &rarr; Create Default Settings Asset</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">FgSettings asset in your project</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             QUICK START                      -->
+<!-- ============================================ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">From an empty Canvas to a themed, animated screen in a few lines.</p>
+
+  <h3>Draw a shape</h3>
+  <p>Every visual in Forge ultimately comes from <code>FgShape</code> &mdash; one component that renders any of eight primitives with gradients, stroke and fill. Add it like any UGUI graphic:</p>
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Shapes;
+
+<span class="kw">var</span> go = <span class="kw">new</span> <span class="tp">GameObject</span>(<span class="str">"Panel"</span>, <span class="kw">typeof</span>(<span class="tp">RectTransform</span>));
+go.transform.<span class="fn">SetParent</span>(canvas.transform, <span class="kw">false</span>);
+
+<span class="kw">var</span> shape = go.<span class="fn">AddComponent</span>&lt;<span class="tp">FgShape</span>&gt;();
+shape.ShapeType   = <span class="tp">FgShapeType</span>.RoundedRect;
+shape.CornerRadius = <span class="num">24f</span>;
+shape.color       = <span class="kw">new</span> <span class="tp">Color</span>(<span class="num">0.10f</span>, <span class="num">0.12f</span>, <span class="num">0.18f</span>);
+shape.StrokeWidth = <span class="num">2f</span>;
+shape.StrokeColor = <span class="tp">Color</span>.white;</pre>
+
+  <h3>Drop in a component</h3>
+  <p>Production controls are one-call factories on <code>FgComponents</code>. They return a fully-assembled, theme-bound <code>GameObject</code>:</p>
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Components;
+
+<span class="kw">var</span> btn   = <span class="tp">FgComponents</span>.<span class="fn">CreateButton</span>(panel.transform, <span class="str">"Save"</span>);
+<span class="kw">var</span> slider = <span class="tp">FgComponents</span>.<span class="fn">CreateSlider</span>(panel.transform, <span class="num">0.5f</span>);
+<span class="kw">var</span> picker = <span class="tp">FgComponents</span>.<span class="fn">CreateColorPicker</span>(panel.transform)
+                          .<span class="fn">GetComponent</span>&lt;<span class="tp">FgColorPicker</span>&gt;();
+picker.Changed += c =&gt; <span class="tp">Debug</span>.<span class="fn">Log</span>(picker.Color);</pre>
+
+  <h3>Theme it, bind it, animate it</h3>
+  <pre><span class="lang-tag">csharp</span><span class="cm">// Switch the whole UI to dark mode at runtime</span>
+<span class="tp">FgTheme</span>.<span class="fn">SetMode</span>(<span class="str">"Dark"</span>);
+
+<span class="cm">// MVVM: change the value once, the label follows</span>
+<span class="kw">var</span> score = <span class="kw">new</span> <span class="tp">FgObservable</span>&lt;<span class="kw">int</span>&gt;(<span class="num">0</span>);
+<span class="tp">FgBind</span>.<span class="fn">Text</span>(score, scoreLabel, v =&gt; <span class="str">$"Score: {v}"</span>);
+score.Value = <span class="num">100</span>;   <span class="cm">// label updates automatically</span>
+
+<span class="cm">// Tween: slide a panel up with an elastic ease</span>
+panel.<span class="fn">FgMoveAnchoredY</span>(<span class="num">0f</span>, <span class="num">0.4f</span>, <span class="tp">FgEase</span>.BackOut);</pre>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#9733;</span>
+    <div><strong>Prefer not to write code?</strong> Open <code>Window &rarr; Forge Canvas</code>, click items in the palette to spawn them onto the artboard, edit them in the properties panel, and flip theme modes live. See <a href="#hub">The Hub &amp; Canvas</a>.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             HUB & CANVAS                     -->
+<!-- ============================================ -->
+<section class="section" id="hub">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> The Hub &amp; Design Canvas</h2>
+  <p class="section-desc">Two editor windows: one to manage Forge, one to design with it directly.</p>
+
+  <h3>Forge Hub <span class="tag tag-info">Tools &rarr; Forge &rarr; Hub</span></h3>
+  <p>The Hub is your control center. From here you browse the modules, toggle feature flags, manage the active theme asset, and jump to the demo and sample scenes. Useful menu items grouped under <code>Tools &rarr; Forge</code>:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Menu item</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>Hub</code></td><td>Opens the Forge Hub window (modules, flags, theme).</td></tr>
+        <tr><td><code>Create Default Settings Asset</code></td><td>Creates an <code>FgSettings</code> asset for project-wide configuration.</td></tr>
+        <tr><td><code>Build Kitchen-Sink Demo</code></td><td>Generates <code>Assets/Forge/Samples/ForgeKitchenSink.unity</code>.</td></tr>
+        <tr><td><code>Build Demo Scene</code></td><td>Builds the guided WebGL demo scene (<a href="#demo">49 sections</a>).</td></tr>
+        <tr><td><code>Build Studio Scene</code></td><td>Builds <strong>Forge Studio</strong>, the in-play design playground.</td></tr>
+        <tr><td><code>Export Package</code></td><td>Exports <code>Assets/Forge</code> to a <code>.unitypackage</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Design Canvas <span class="tag tag-info">Window &rarr; Forge Canvas</span></h3>
+  <p>The Design Canvas is a dockable, Figma-style authoring surface inside the Editor:</p>
+  <ul>
+    <li><strong>Palette</strong> &mdash; one click spawns any shape or any of the 60+ components onto your scene.</li>
+    <li><strong>Properties panel</strong> &mdash; edit the selected <code>FgShape</code> live: shape type, fill, gradient, stroke, corner radius.</li>
+    <li><strong>Theme preview</strong> &mdash; flip between theme modes (e.g. Light / Dark) and watch everything restyle.</li>
+    <li><strong>Scene-view handles</strong> &mdash; drag a corner-radius handle directly in the Scene view on a RoundedRect.</li>
+  </ul>
+  <p>Components placed here also expose <strong>custom inspectors</strong> with live preview for stateful drivers (Gauge, Steps, Pagination, Timeline, RangeSlider, NavBar, StatCard).</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Everything calls the same API.</strong> The Canvas, the custom inspectors, and the AI layer all drive the public <code>FgShape</code> / <code>FgComponents</code> / <code>FgTheme</code> surface &mdash; so a screen built by dragging is identical to one built in code and can be edited either way.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             SHAPES                           -->
+<!-- ============================================ -->
+<section class="section" id="shapes">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9733;</span> Shapes (SDF)</h2>
+  <p class="section-desc">One component, eight primitives, infinite resolution. <code>Forge.Shapes.FgShape</code>.</p>
+
+  <p><code>FgShape</code> is a <code>MaskableGraphic</code> that draws its shape analytically in the <code>Forge/Shape</code> shader from a signed-distance field. That means perfectly anti-aliased edges at any size, no source textures, and SDF-accurate raycasting (clicks only register inside the actual shape, optionally only on its outline).</p>
+
+  <h3>Shape types</h3>
+  <p><code>FgShapeType</code>: <code>RoundedRect</code>, <code>Ellipse</code>, <code>Triangle</code>, <code>RegularPolygon</code>, <code>Star</code>, <code>ChamferBox</code>, <code>Parallelogram</code>, <code>Capsule</code>. Per-corner radii, polygon sides/rotation, star points/inner-ratio, chamfer and skew are all exposed as properties.</p>
+
+  <h3>Fills</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>FillKind</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Solid</code></td><td>Flat <code>color</code>. Batches with the shared material.</td></tr>
+        <tr><td><code>Gradient</code></td><td>Per-pixel gradient &mdash; see <a href="#gradients">Gradients &amp; Patterns</a>.</td></tr>
+        <tr><td><code>Sprite</code></td><td>Sample a texture, clipped to the SDF (used for baked multi-stop gradients too).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Stroke, fill-amount &amp; morph</h3>
+  <ul>
+    <li><strong>Stroke</strong> &mdash; <code>StrokeWidth</code>, <code>StrokeColor</code>, and <code>StrokeAlign</code> (<code>Inside</code> / <code>Center</code> / <code>Outside</code>).</li>
+    <li><strong>Fill amount</strong> &mdash; <code>FillMode</code> (<code>Horizontal</code>, <code>Vertical</code>, <code>Radial360</code>, <code>Radial90</code>) + <code>FillAmount</code> for progress rings, cooldowns and wipes.</li>
+    <li><strong>Edge-collapse morph</strong> &mdash; <code>TopWidthScale</code> smoothly collapses a rect &rarr; trapezoid &rarr; triangle.</li>
+    <li><strong>Patterns</strong> &mdash; procedural <code>FgPatternMode</code> (stripes / dots / checker / grid), see below.</li>
+  </ul>
+
+  <pre><span class="lang-tag">csharp</span>shape.ShapeType  = <span class="tp">FgShapeType</span>.Star;
+shape.StarPoints = <span class="num">5</span>;
+shape.FillKind   = <span class="tp">FgFillKind</span>.Gradient;
+shape.FillMode   = <span class="tp">FgFillMode</span>.Radial360;   <span class="cm">// radial progress</span>
+shape.FillAmount = <span class="num">0.75f</span>;</pre>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#9733;</span>
+    <div><strong>Batching by default.</strong> A plain solid/stroked shape uses the single shared <code>Forge/Shape</code> material, so dozens of shapes draw in one batch. A per-instance material is created only when you actually need a uniform (a gradient, a fill-amount, or a pattern).</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             GRADIENTS                         -->
+<!-- ============================================ -->
+<section class="section" id="gradients">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#127912;</span> Gradients &amp; Patterns</h2>
+  <p class="section-desc">Per-pixel gradients computed in-shader, plus unlimited-stop baked gradients and procedural patterns.</p>
+
+  <h3>Per-pixel gradients</h3>
+  <p>Set <code>FillKind = Gradient</code> and assign an <code>FgLinearGradient</code> (two colors, an angle, and a <code>FgGradientKind</code>). Kinds: <code>Linear</code>, <code>Radial</code>, <code>Angular</code> (conical), <code>Diamond</code>. Gradients can be screen-space, and are dithered to avoid banding on flat panels.</p>
+  <pre><span class="lang-tag">csharp</span>shape.FillKind = <span class="tp">FgFillKind</span>.Gradient;
+shape.Gradient = <span class="kw">new</span> <span class="tp">FgLinearGradient</span> {
+    colorA = <span class="tp">Color</span>.<span class="fn">HSVToRGB</span>(<span class="num">0.05f</span>, <span class="num">0.9f</span>, <span class="num">1f</span>),
+    colorB = <span class="tp">Color</span>.<span class="fn">HSVToRGB</span>(<span class="num">0.95f</span>, <span class="num">0.9f</span>, <span class="num">1f</span>),
+    angle  = <span class="num">45f</span>,
+    kind   = <span class="tp">FgGradientKind</span>.Radial
+};</pre>
+
+  <h3>Unlimited-stop gradients</h3>
+  <p>For rainbows and complex ramps, <code>FgGradientFill</code> bakes a native Unity <code>Gradient</code> (any number of stops) into a texture and routes it through the SDF sprite-fill path &mdash; so it's still clipped perfectly to the shape, with no change to the core shader.</p>
+
+  <h3>Procedural patterns</h3>
+  <p><code>FgPatternMode</code> overlays a tiling pattern computed in-shader: <code>Stripes</code>, <code>Dots</code>, <code>Checker</code>, <code>Grid</code>, with <code>PatternScale</code> and <code>PatternColor</code>. The pattern path is <strong>inert by default</strong> (<code>None</code>) so existing shapes render byte-identical until you opt in.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             SHADOWS                           -->
+<!-- ============================================ -->
+<section class="section" id="shadows">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9728;</span> Shadows &amp; Glow</h2>
+  <p class="section-desc">True soft, blurred shadows that follow the real shape of the caster. <code>Forge.Effects.FgRtShadow</code>.</p>
+
+  <p><code>FgRtShadow</code> snapshots the caster's mesh, renders it to a padded render-texture, blurs it with a Kawase pyramid, and composites it back behind (or in front of) the caster. Because it uses the caster's actual geometry, the shadow matches stars, rounded panels and text &mdash; not just a rectangle.</p>
+
+  <div class="card-grid">
+    <div class="mini-card"><h4>Drop shadow</h4><p>Soft offset shadow with adjustable <code>Size</code>, <code>Offset</code>, <code>Color</code> and <code>Intensity</code>.</p></div>
+    <div class="mini-card"><h4>Glow</h4><p>Set <code>UseCasterColor</code> for a colored glow that radiates the element's own color.</p></div>
+    <div class="mini-card"><h4>Inner shadow</h4><p>Flip <code>Inner</code> for an inset/pressed look.</p></div>
+    <div class="mini-card"><h4>Blend modes</h4><p><code>Normal</code>, <code>Additive</code>, <code>Screen</code>, <code>Multiply</code> for how the shadow composites.</p></div>
+  </div>
+
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Effects;
+
+<span class="kw">var</span> sh = panel.<span class="fn">AddComponent</span>&lt;<span class="tp">FgRtShadow</span>&gt;();
+sh.Size      = <span class="num">24f</span>;
+sh.Offset    = <span class="kw">new</span> <span class="tp">Vector2</span>(<span class="num">0</span>, <span class="num">-6</span>);
+sh.Color     = <span class="kw">new</span> <span class="tp">Color</span>(<span class="num">0.20f</span>, <span class="num">0.22f</span>, <span class="num">0.28f</span>, <span class="num">0.7f</span>);
+sh.Inner     = <span class="kw">false</span>;</pre>
+
+  <p>A lightweight CPU-only alternative, <code>FgSoftShadow</code> (mesh-duplication with ring sampling), is available for cases where you don't want a render-texture.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             GLASS                             -->
+<!-- ============================================ -->
+<section class="section" id="glass">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#10052;</span> Glass &amp; Blur</h2>
+  <p class="section-desc">Frosted-glass / glassmorphism panels that blur whatever is behind them.</p>
+
+  <p>The blur is produced by <code>FgGlassController</code>: it renders the scene to a render-texture, runs a Kawase blur pyramid (<code>FgKawaseBlur</code>), and publishes the result to a global shader texture. Any <code>FgGlass</code> panel then samples that blurred backdrop in the <code>Forge/Glass</code> shader and tints it.</p>
+
+  <ul>
+    <li><code>FgGlass</code> properties: <code>Vibrancy</code>, <code>Brightness</code>, <code>TintStrength</code>, and <code>color</code> (tint + opacity).</li>
+    <li><code>FgGlassController.ResolveQuality(strength)</code> &mdash; a single knob that derives downsample, iterations and spread; <code>RefreshInterval</code> throttles re-blurring for performance.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Controller-based by design.</strong> Glass currently uses a camera-driven controller rather than a URP Render Feature. A render-feature variant (grabbing the already-rendered frame, no second render) is on the roadmap; the controller approach works today on URP.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             FILTERS                           -->
+<!-- ============================================ -->
+<section class="section" id="filters">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#127902;</span> Filters &amp; Soft Masks</h2>
+  <p class="section-desc">Per-graphic image filters and anti-aliased masking.</p>
+
+  <h3>Filters <span class="tag tag-info">FgFilter</span></h3>
+  <p><code>FgFilter</code> swaps a graphic's material for <code>Forge/UIFilter</code> and applies one or more effects to any Image or TMP text: <code>Grayscale</code>, <code>Sepia</code>, <code>Negative</code>, <code>Posterize</code>, <code>Hue</code>, <code>Saturation</code>, <code>Contrast</code>, <code>Brightness</code>, <code>Pixelate</code>, <code>Blur</code>, <code>EdgeDetect</code>, <code>RgbShift</code>, <code>Dissolve</code>, <code>Shiny</code> and <code>Cutoff</code>.</p>
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><code>FgFilter</code> replaces the graphic's material, which means it <strong>replaces the <code>FgShape</code> SDF material</strong> if you put it on a shape. Use filters on a plain <code>Image</code> or <code>TMP_Text</code>, not on an <code>FgShape</code> you still want drawn as an SDF.</div>
+  </div>
+
+  <h3>Soft masks <span class="tag tag-info">FgSoftMask</span></h3>
+  <p><code>FgSoftMask</code> clips children to an analytic rounded-rect with a soft, anti-aliased edge &mdash; smoother than a stencil <code>Mask</code>. It can also mask to an arbitrary texture's alpha (a star, a logo), so you can clip content to any silhouette. Honored by both <code>Forge/Shape</code> and <code>Forge/UIFilter</code> via global shader parameters.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             COMPONENTS                        -->
+<!-- ============================================ -->
+<section class="section" id="components">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#129513;</span> Components</h2>
+  <p class="section-desc">60+ production controls, each a one-call factory on <code>Forge.Components.FgComponents</code>.</p>
+
+  <p>Every factory returns a fully-assembled <code>GameObject</code> built from Forge primitives (SDF shapes + TMP + theming + layout). All are <strong>token-themed</strong> (a Dark-mode switch restyles them live) and <strong>sprite-free</strong>. Stateful controls attach a small <code>Fg*</code> driver MonoBehaviour you grab with <code>GetComponent</code> to read state or subscribe to events.</p>
+
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Components;
+
+<span class="kw">var</span> picker = <span class="tp">FgComponents</span>.<span class="fn">CreateColorPicker</span>(panel.transform)
+                          .<span class="fn">GetComponent</span>&lt;<span class="tp">FgColorPicker</span>&gt;();
+picker.Changed += c =&gt; <span class="tp">Debug</span>.<span class="fn">Log</span>(picker.Color);</pre>
+
+  <h3>Forms &amp; input</h3>
+  <p><code>CreateButton</code>, <code>CreateToggle</code>, <code>CreateSwitch</code>, <code>CreateSlider</code>, <code>CreateRangeSlider</code>, <code>CreateStepper</code>, <code>CreateNumberField</code>, <code>CreateInputField</code>, <code>CreateTextArea</code>, <code>CreateInlineEdit</code>, <code>CreateDropdown</code>, <code>CreateCombobox</code> (autocomplete), <code>CreateTagInput</code>, <code>CreateRadioGroup</code>, <code>CreateChipGroup</code>, <code>CreateSegmentedControl</code>, <code>CreateColorSwatches</code>, <code>CreateColorPicker</code> (full HSV), <code>CreateCalendar</code>.</p>
+
+  <h3>Navigation</h3>
+  <p><code>CreateTabs</code>, <code>CreateTabView</code>, <code>CreateNavBar</code>, <code>CreateNavRail</code>, <code>CreateAppBar</code>, <code>CreateFab</code>, <code>CreateBreadcrumb</code>, <code>CreateSteps</code> (wizard), <code>CreatePagination</code>, <code>CreatePageDots</code>, <code>CreateContextMenu</code>, <code>CreateTreeView</code>, <code>CreateToolbar</code>.</p>
+
+  <h3>Feedback &amp; overlays</h3>
+  <p><code>FgToast.Show</code>, <code>FgSnackbar.Show</code> (with an UNDO action), <code>CreateAlert</code>, <code>CreateBanner</code>, <code>CreateModal</code>, <code>CreateBottomSheet</code>, <code>CreateEmptyState</code>, plus the <code>FgTooltip</code> and <code>FgRipple</code> components.</p>
+
+  <h3>Data display</h3>
+  <p><code>CreateProgressBar</code>, <code>CreateGauge</code> (circular meter), <code>CreateTimeline</code>, <code>CreateSparkline</code>, <code>CreateStatCard</code> (KPI + delta), <code>CreateKeyValueList</code>, <code>CreateAvatar</code>, <code>CreateAvatarGroup</code>, <code>CreateBadge</code>, <code>CreateChip</code>, <code>CreateAccordion</code>, <code>CreateDivider</code>, plus the <code>FgRating</code>, <code>FgCounter</code>, <code>FgSkeleton</code>, <code>FgSpinner</code> and <code>FgParticles</code> components and the virtualized <a href="#lists"><code>FgListView</code></a>.</p>
+
+  <details>
+    <summary>Why a factory instead of prefabs?</summary>
+    <div class="details-body">
+      <p>Code factories stay perfectly in sync with the theme system and have no broken prefab references after upgrades. The Canvas and AI layers go through <code>FgComponentLibrary</code>, which can use a prefab variant where one exists and otherwise falls back to the same code factory &mdash; so you get one consistent result everywhere.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--             LAYOUT                            -->
+<!-- ============================================ -->
+<section class="section" id="layout">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#9783;</span> Layout</h2>
+  <p class="section-desc">Flexbox for UGUI, plus masonry, radial and curve arrangements. <code>Forge.Layout</code>.</p>
+
+  <h3>FgFlexLayout</h3>
+  <p>A flexbox-style container that lays out its children without injecting spacer objects:</p>
+  <ul>
+    <li><strong>Direction</strong> &mdash; <code>Horizontal</code>, <code>Vertical</code>, <code>WrapHorizontal</code>, <code>Grid</code>.</li>
+    <li><strong>Alignment</strong> &mdash; main axis (<code>Start</code>/<code>Center</code>/<code>End</code>/<code>SpaceBetween</code>/<code>SpaceAround</code>/<code>SpaceEvenly</code>) and cross axis (<code>Start</code>/<code>Center</code>/<code>End</code>/<code>Stretch</code>).</li>
+    <li><strong>Spacing &amp; padding</strong> &mdash; <code>GapX</code>, <code>GapY</code>, <code>Padding</code>.</li>
+    <li><strong>Grid</strong> &mdash; uniform or weighted column tracks.</li>
+  </ul>
+  <p>Children can carry an optional <code>FgFlexItem</code> for per-child sizing: <code>Hug</code> / <code>Fill</code> / <code>Fixed</code> width &amp; height, grow weight, min/max clamps, aspect ratio, and percentage sizing.</p>
+
+  <h3>Other layouts</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td><code>FgMasonry</code></td><td>Pinterest-style shortest-column packing.</td></tr>
+        <tr><td><code>FgRadialLayout</code></td><td>Arrange around a circle, arc or spiral; animated reflow.</td></tr>
+        <tr><td><code>FgCurveLayout</code></td><td>Spread children along a Catmull-Rom spline.</td></tr>
+        <tr><td><code>FgScrollSnap</code></td><td>Paged carousel snapping with an <code>OnPageChanged</code> event.</td></tr>
+        <tr><td><code>FgSplitView</code></td><td>Two resizable panes + a draggable divider.</td></tr>
+        <tr><td><code>FgReorderableList</code></td><td>Drag rows to reorder; <code>Move(from,to)</code> + <code>Changed</code>.</td></tr>
+        <tr><td><code>FgSafeArea</code> / <code>FgResponsive</code></td><td>Notch-safe insets; width-breakpoint switching.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             LISTS                             -->
+<!-- ============================================ -->
+<section class="section" id="lists">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#9776;</span> Lists &amp; Virtualization</h2>
+  <p class="section-desc">Scroll 10,000+ rows with a handful of live cells. <code>FgListView</code>.</p>
+
+  <p><code>FgListView</code> pools cells and only instantiates the ones in (and just around) the viewport, so memory and CPU stay flat regardless of data size. It supports uniform lists, grids, variable-height rows (via prefix-sum + binary search), and an infinite loop mode.</p>
+
+  <pre><span class="lang-tag">csharp</span>listView.<span class="fn">SetData</span>(
+    count: <span class="num">10000</span>,
+    cellFactory: parent =&gt; <span class="tp">FgComponents</span>.<span class="fn">CreateCard</span>(parent),
+    binder: (cell, i) =&gt; cell.<span class="fn">GetComponentInChildren</span>&lt;<span class="tp">TMP_Text</span>&gt;().text = <span class="str">$"Row {i}"</span>);</pre>
+
+  <ul>
+    <li><code>SetData(count, cellFactory, binder)</code> &mdash; uniform list (set <code>Columns</code> for a grid).</li>
+    <li><code>SetVariableHeights(heightFunc)</code> &mdash; per-row heights.</li>
+    <li><code>SetDataLooping(count, &hellip;)</code> &mdash; seamless infinite scroll.</li>
+  </ul>
+  <p>It pairs directly with <a href="#data">data binding</a>: <code>FgBind.List(observableList, listView, &hellip;)</code> keeps a virtualized list synced to an observable collection.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             DATA BINDING                      -->
+<!-- ============================================ -->
+<section class="section" id="data">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#128279;</span> Data Binding</h2>
+  <p class="section-desc">MVVM observables &mdash; the piece no all-in-one rival bundles. <code>Forge.Data</code>.</p>
+
+  <p>Wrap state in an <code>FgObservable&lt;T&gt;</code> (or <code>FgObservableList&lt;T&gt;</code>) and connect it to the UI with the static <code>FgBind</code> helpers. Change the value once and every bound view updates itself &mdash; no manual refresh code.</p>
+
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Data;
+
+<span class="kw">var</span> volume = <span class="kw">new</span> <span class="tp">FgObservable</span>&lt;<span class="kw">float</span>&gt;(<span class="num">0.5f</span>);
+
+<span class="tp">FgBind</span>.<span class="fn">Text</span>(volume, label, v =&gt; <span class="str">$"{v:P0}"</span>);   <span class="cm">// one-way  -> label</span>
+<span class="tp">FgBind</span>.<span class="fn">TwoWay</span>(volume, slider);                 <span class="cm">// two-way  &lt;-> slider</span>
+
+volume.Value = <span class="num">0.8f</span>;   <span class="cm">// label AND slider both move</span></pre>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Binding</th><th>Direction</th></tr></thead>
+      <tbody>
+        <tr><td><code>FgBind.Text(obs, label, fmt)</code></td><td>one-way &rarr; TMP text</td></tr>
+        <tr><td><code>FgBind.Color(obs, graphic)</code></td><td>one-way &rarr; <code>Graphic.color</code></td></tr>
+        <tr><td><code>FgBind.Progress(obs, bar)</code></td><td>one-way &rarr; progress bar</td></tr>
+        <tr><td><code>FgBind.TwoWay(obs, slider)</code></td><td>two-way &harr; Slider</td></tr>
+        <tr><td><code>FgBind.TwoWay(obs, toggle)</code></td><td>two-way &harr; Toggle</td></tr>
+        <tr><td><code>FgBind.List(obsList, listView, &hellip;)</code></td><td>collection &rarr; virtualized list</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             TEXT                              -->
+<!-- ============================================ -->
+<section class="section" id="text">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#9999;</span> Text Effects</h2>
+  <p class="section-desc">Per-character effects and inline-tag animation on TextMeshPro. <code>Forge.Text</code>.</p>
+
+  <h3>FgTextEffects</h3>
+  <p>Applies composable per-character effects to a <code>TMP_Text</code> mesh: a vertical <strong>gradient</strong> (<code>TopColor</code> / <code>BottomColor</code>), a sine <strong>warp</strong> (<code>WarpAmplitude</code>, <code>WarpFrequency</code>), and a typewriter <strong>reveal</strong> (<code>Reveal</code> 0&ndash;1). All three can run at once.</p>
+
+  <h3>FgTextAnimator</h3>
+  <p>Drives animation from inline tags in the text itself &mdash; great for damage numbers, callouts and juicy menus. Supported tags (each takes optional <code>a=</code> amplitude and <code>f=</code> frequency):</p>
+  <pre><span class="lang-tag">text</span>Grab the &lt;wave&gt;treasure&lt;/wave&gt; and &lt;shake a=3&gt;RUN!&lt;/shake&gt;</pre>
+  <p><code>&lt;wave&gt;</code>, <code>&lt;bounce&gt;</code>, <code>&lt;wobble&gt;</code>, <code>&lt;shake&gt;</code>, <code>&lt;jitter&gt;</code>, <code>&lt;pulse&gt;</code>, <code>&lt;rainbow&gt;</code>. A typewriter mode reveals characters over time. <code>FgTextAnimator</code> caches the base mesh and offsets vertices per-frame, so there's no expensive re-layout.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             ANIMATION                         -->
+<!-- ============================================ -->
+<section class="section" id="animation">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#10227;</span> Animation &amp; Tweens</h2>
+  <p class="section-desc">A pooled, zero-GC tween engine with a fluent DOTween-style API. <code>Forge.Interactions</code>.</p>
+
+  <h3>Tweens</h3>
+  <p><code>FgTween</code> animates floats, vectors, colors and curves with 30 easing functions (<code>FgEase</code>: Quad/Cubic/Quart/Quint/Sine/Expo/Circ/Back/Elastic/Bounce, each In/Out/InOut). Tweens are chainable, can loop / ping-pong, run on unscaled time, and be killed by id.</p>
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Interactions;
+
+<span class="cm">// Extension methods on RectTransform / Graphic / CanvasGroup</span>
+panel.<span class="fn">FgMoveAnchoredY</span>(<span class="num">0f</span>, <span class="num">0.4f</span>, <span class="tp">FgEase</span>.BackOut);
+icon.<span class="fn">FgScale</span>(<span class="num">1.2f</span>, <span class="num">0.15f</span>, <span class="tp">FgEase</span>.QuadOut);
+group.<span class="fn">FgFade</span>(<span class="num">1f</span>, <span class="num">0.3f</span>);
+
+<span class="cm">// Direct tween with a callback</span>
+<span class="tp">FgTween</span>.<span class="fn">Float</span>(<span class="num">0f</span>, <span class="num">100f</span>, <span class="num">1f</span>, <span class="tp">FgEase</span>.CubicInOut, v =&gt; bar.fillAmount = v / <span class="num">100f</span>)
+       .<span class="fn">SetLoops</span>(<span class="num">2</span>, pingPong: <span class="kw">true</span>)
+       .<span class="fn">OnComplete</span>(() =&gt; <span class="tp">Debug</span>.<span class="fn">Log</span>(<span class="str">"done"</span>));</pre>
+
+  <h3>Sequences, punch, shake &amp; paths</h3>
+  <ul>
+    <li><code>FgSequence</code> &mdash; <code>Append</code> / <code>Join</code> (parallel) / <code>AppendInterval</code> / <code>AppendCallback</code>, DOTween-Sequence parity.</li>
+    <li><code>Punch</code> and <code>Shake</code> for snappy feedback.</li>
+    <li><code>FgPathAnchored(waypoints, &hellip;)</code> &mdash; move along a Catmull-Rom or linear spline.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--             INTERACTIONS                      -->
+<!-- ============================================ -->
+<section class="section" id="interactions">
+  <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#128070;</span> Interactions &amp; Navigation</h2>
+  <p class="section-desc">Wire behavior without scripting, capture states, and manage screens.</p>
+
+  <h3>Variants &amp; triggers</h3>
+  <p><code>FgVariant</code> captures named states (transform + color + visibility) and animates between them. <code>FgInteraction</code> maps a trigger to an action with no code:</p>
+  <ul>
+    <li><strong>Triggers</strong> &mdash; PointerEnter/Exit/Down/Up/Click, BeginDrag/Drag/EndDrag, Scroll, AfterDelay.</li>
+    <li><strong>Actions</strong> &mdash; set a variant state, navigate (push/pop/show), set a theme mode, or invoke a UnityEvent.</li>
+  </ul>
+  <p>A preset, <code>FgInteractionPresets.AddHoverPressScale(go)</code>, wires the common hover/press scale feedback in one call.</p>
+
+  <h3>Screen navigation</h3>
+  <p><code>FgScreenStack</code> manages a stack of screens with push / pop / show and transitions (<code>Fade</code>, <code>Slide</code>, <code>Scale</code>) &mdash; the backbone for menus, dialogs and flows.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             THEMING                           -->
+<!-- ============================================ -->
+<section class="section" id="theming">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#127912;</span> Theming &amp; Tokens</h2>
+  <p class="section-desc">Design tokens with modes that restyle the entire UI live. <code>Forge.Theming</code>.</p>
+
+  <p>An <code>FgThemeAsset</code> is a ScriptableObject of typed design tokens (colors, numbers, fonts) organized into <strong>modes</strong> (e.g. Light, Dark, Brand). Tokens can be <strong>aliases</strong> that resolve to core tokens, so you change <code>primary</code> in one place and everything that references it follows.</p>
+
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Theming;
+
+<span class="tp">FgTheme</span>.<span class="fn">SetTheme</span>(myThemeAsset, <span class="str">"Light"</span>);
+<span class="tp">FgTheme</span>.<span class="fn">SetMode</span>(<span class="str">"Dark"</span>);          <span class="cm">// every binder recolors instantly</span>
+<span class="tp">FgTheme</span>.ModeChanged += m =&gt; <span class="tp">Debug</span>.<span class="fn">Log</span>(<span class="str">$"now in {m}"</span>);</pre>
+
+  <p>Bind any property to a token with <code>FgThemeBinder</code> &mdash; targets include a graphic's color, an <code>FgShape</code> stroke color or corner radius, and a text's color or font size. Forge's own components are all token-bound, which is why a single <code>SetMode</code> call re-themes the entire screen.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             LOCALIZATION                      -->
+<!-- ============================================ -->
+<section class="section" id="localization">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#127760;</span> Localization &amp; RTL</h2>
+  <p class="section-desc">Provider-agnostic translation with automatic right-to-left mirroring. <code>Forge.Localization</code>.</p>
+
+  <p><code>FgLocalization</code> is a small controller backed by a pluggable <code>IFgLocalizationProvider</code>. The built-in <code>FgDictionaryProvider</code> works with <strong>zero external packages</strong>; bridges to Unity Localization and I2 are available behind version-defines.</p>
+  <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Localization;
+
+<span class="kw">var</span> provider = <span class="kw">new</span> <span class="tp">FgDictionaryProvider</span>();
+provider.<span class="fn">Add</span>(<span class="str">"en"</span>, <span class="str">"greeting"</span>, <span class="str">"Hello"</span>);
+provider.<span class="fn">Add</span>(<span class="str">"ar"</span>, <span class="str">"greeting"</span>, <span class="str">"&#1605;&#1585;&#1581;&#1576;&#1575;"</span>);
+provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
+
+<span class="tp">FgLocalization</span>.<span class="fn">SetProvider</span>(provider, <span class="str">"en"</span>);
+<span class="tp">FgLocalization</span>.<span class="fn">SetLanguage</span>(<span class="str">"ar"</span>);   <span class="cm">// fires LanguageChanged</span></pre>
+  <p>Put <code>FgLocalizedText</code> on a TMP label to bind it to a key (it also sets TMP's <code>isRightToLeftText</code>), and <code>FgRtlFlex</code> on an <code>FgFlexLayout</code> to mirror row alignment for RTL languages.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             ACCESSIBILITY                     -->
+<!-- ============================================ -->
+<section class="section" id="accessibility">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#9855;</span> Accessibility</h2>
+  <p class="section-desc">Keyboard &amp; gamepad focus navigation plus screen-reader semantics. <code>Forge.A11y</code>.</p>
+
+  <ul>
+    <li><strong><code>FgFocusNav</code></strong> &mdash; auto-wires directional focus between selectables in <code>Vertical</code>, <code>Horizontal</code>, <code>Grid</code> (by column count) or <code>Automatic</code> mode. Call <code>Build()</code> after adding selectables at runtime.</li>
+    <li><strong><code>FgAccessibleNode</code></strong> &mdash; attaches semantic <code>Label</code>, <code>Role</code> and <code>Hint</code>; <code>GetAnnouncement()</code> returns a "Label, Role. Hint" string ready for a screen-reader bridge.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--             MCP                               -->
+<!-- ============================================ -->
+<section class="section" id="mcp">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#129302;</span> AI / MCP Generation</h2>
+  <p class="section-desc">A structured tool layer that lets an AI agent build &amp; edit Forge UIs. <code>Forge.Mcp</code>.</p>
+
+  <p><code>FgMcpTools</code> exposes Forge's authoring surface as a set of discrete, structured operations &mdash; the same operations the Canvas uses &mdash; so an agent can compose a screen from a description and then read it back to self-correct:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>ListComponents()</code></td><td>The component kinds available to place.</td></tr>
+        <tr><td><code>ListTokenCollections()</code></td><td>Available theme modes.</td></tr>
+        <tr><td><code>SetThemeMode(mode)</code></td><td>Switch the active mode.</td></tr>
+        <tr><td><code>ApplyLayout(target, &hellip;)</code></td><td>Flex direction / gap / alignment on a container.</td></tr>
+        <tr><td><code>AddInteraction(target, &hellip;)</code></td><td>Wire a trigger &rarr; action.</td></tr>
+        <tr><td><code>GenerateUi(json)</code> / <code>CreateScreen(spec)</code></td><td>Compose a whole screen from a JSON spec.</td></tr>
+        <tr><td><code>ReadSceneUi()</code></td><td>Text summary of the open scene's Forge UI (for self-correction).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Status.</strong> The <code>FgMcpTools</code> tool layer and an <code>FgMcpServer</code> JSON-RPC dispatcher are complete and testable today. Wiring them to an external MCP client over a stdio transport is on the roadmap &mdash; the tool surface is ready for it.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             DEMO                              -->
+<!-- ============================================ -->
+<section class="section" id="demo">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#127916;</span> Demo &amp; Studio</h2>
+  <p class="section-desc">See &mdash; and tweak &mdash; every feature live.</p>
+
+  <h3>Guided demo</h3>
+  <p><code>Tools &rarr; Forge &rarr; Build Demo Scene</code> generates a guided, sidebar-navigated tour of <strong>49 interactive sections</strong> &mdash; shapes, gradients, shadows, filters, glass, soft masks, text effects, theming, localization, layout, every component, animation, lists of 10,000 rows, data binding and more. The content is generated at runtime, so it builds to a tiny, fast WebGL player; every page is hands-on (drag, type, tweak sliders).</p>
+
+  <h3>Forge Studio</h3>
+  <p><code>Tools &rarr; Forge &rarr; Build Studio Scene</code> builds <strong>Forge Studio</strong> &mdash; an in-play "Figma-clone" playground that ships <em>inside your build</em>: a tool palette, a center artboard, and a right-hand inspector. Add shapes and components, select and drag them, resize via corner handles, edit fill / corner-radius / stroke live, duplicate, delete, and toggle Dark mode. It's built from the same factories your game uses.</p>
+
+  <h3>Kitchen-sink sample</h3>
+  <p><code>Tools &rarr; Forge &rarr; Build Kitchen-Sink Demo</code> creates <code>Assets/Forge/Samples/ForgeKitchenSink.unity</code> &mdash; a dense single-scene showcase of shapes, gradients, morph, glass, shadows, tabs and dropdowns.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             ARCHITECTURE                      -->
+<!-- ============================================ -->
+<section class="section" id="architecture">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#127959;</span> Architecture</h2>
+  <p class="section-desc">One assembly per module under the <code>Forge.*</code> namespace; Runtime never references Editor.</p>
+
+  <p>Forge is split into independent modules, each with its own assembly definition. Runtime assemblies never depend on editor assemblies, so everything compiles into player builds cleanly. All public types use the <code>Fg</code> prefix.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Module</th><th>Assembly / namespace</th><th>Highlights</th></tr></thead>
+      <tbody>
+        <tr><td>Core</td><td><code>Forge.Core</code></td><td><code>FgSettings</code>, <code>FgMath</code> (easing), shared utilities.</td></tr>
+        <tr><td>B &middot; Shapes</td><td><code>Forge.Shapes</code></td><td><code>FgShape</code> + <code>Forge/Shape</code> shader, 8 SDF primitives.</td></tr>
+        <tr><td>C &middot; Effects</td><td><code>Forge.Effects</code></td><td><code>FgRtShadow</code>, <code>FgFilter</code>, <code>FgGlass</code>, <code>FgSoftMask</code>, <code>FgParticles</code>.</td></tr>
+        <tr><td>D &middot; Theming</td><td><code>Forge.Theming</code></td><td><code>FgThemeAsset</code>, <code>FgTheme</code>, <code>FgThemeBinder</code>.</td></tr>
+        <tr><td>E &middot; Interactions</td><td><code>Forge.Interactions</code></td><td><code>FgTween</code>, <code>FgSequence</code>, <code>FgVariant</code>, <code>FgInteraction</code>, <code>FgScreenStack</code>.</td></tr>
+        <tr><td>F &middot; Components</td><td><code>Forge.Components</code></td><td><code>FgComponents</code> factory, <code>FgListView</code>.</td></tr>
+        <tr><td>G &middot; Layout</td><td><code>Forge.Layout</code></td><td><code>FgFlexLayout</code>, masonry, radial/curve, scroll-snap.</td></tr>
+        <tr><td>H &middot; Text</td><td><code>Forge.Text</code></td><td><code>FgTextEffects</code>, <code>FgTextAnimator</code>.</td></tr>
+        <tr><td>I &middot; Canvas</td><td><code>Forge.Canvas.Editor</code></td><td><code>ForgeCanvasWindow</code> design surface.</td></tr>
+        <tr><td>J &middot; MCP</td><td><code>Forge.Mcp.Editor</code></td><td><code>FgMcpTools</code>, <code>FgMcpServer</code>.</td></tr>
+        <tr><td>K &middot; Localization</td><td><code>Forge.Localization</code></td><td><code>FgLocalization</code>, <code>FgLocalizedText</code>, <code>FgRtlFlex</code>.</td></tr>
+        <tr><td>A11y</td><td><code>Forge.A11y</code></td><td><code>FgFocusNav</code>, <code>FgAccessibleNode</code>.</td></tr>
+        <tr><td>Data</td><td><code>Forge.Data</code></td><td><code>FgObservable</code>, <code>FgObservableList</code>, <code>FgBind</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Shaders</h4>
+  <p><code>Forge/Shape</code>, <code>Forge/UIFilter</code>, <code>Forge/RtShadow</code>, <code>Forge/Glass</code>, <code>Forge/KawaseBlur</code>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             REQUIREMENTS                      -->
+<!-- ============================================ -->
+<section class="section" id="requirements">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9989;</span> Requirements &amp; Compatibility</h2>
+  <p class="section-desc">What Forge needs, what it integrates with, and what's honestly out of scope.</p>
+
+  <h3>Required</h3>
+  <ul>
+    <li><strong>Unity 6000.0.62f1+</strong> (Unity 6.x).</li>
+    <li><strong>Universal Render Pipeline</strong> active (<code>com.unity.render-pipelines.universal</code>).</li>
+    <li><strong>TextMeshPro</strong> (bundled with Unity 6).</li>
+  </ul>
+
+  <h3>Optional integrations</h3>
+  <ul>
+    <li><strong>Input System</strong> (<code>com.unity.inputsystem</code>) &mdash; for WebGL/gamepad input; the demo uses the legacy module by default and notes the swap.</li>
+    <li><strong>Unity Localization</strong> or <strong>I2 Localization</strong> &mdash; bridges behind version-defines if you already use a translation table.</li>
+  </ul>
+
+  <h3>Scope &amp; honest limits</h3>
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div>
+      <p><strong>URP only, today.</strong> The shaders are written in pipeline-agnostic CG and are likely close on Built-in/HDRP, but only URP is verified &mdash; treat other pipelines as unsupported for now.</p>
+      <p><strong>Glass</strong> uses a camera-driven controller, not a URP Render Feature (a feature-grab variant is planned). <strong>Soft mask</strong> ships a single global analytic/texture mask; deep 4-level hierarchical nesting is not implemented. The <strong>MCP stdio transport</strong> is not yet wired (the tool layer is).</p>
+    </div>
+  </div>
+  <p>Forge contains <strong>no third-party code</strong> &mdash; every technique (IQ-style 2D SDFs, Kawase blur) is reimplemented from public math. See <code>Assets/Forge/THIRD-PARTY-NOTICES.txt</code>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             TROUBLESHOOTING                   -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">The handful of things that trip people up.</p>
+
+  <details>
+    <summary>Shapes render as flat magenta / pink rectangles</summary>
+    <div class="details-body">
+      <p>That's the Unity "shader error / missing shader" color, and it almost always means the project isn't on URP, or shaders weren't included in a build. Switch the active pipeline to <strong>Universal Render Pipeline</strong>, and make sure the <code>Forge/*</code> shaders are in <strong>Project Settings &rarr; Graphics &rarr; Always Included Shaders</strong> for player builds.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>A shape with a fully transparent fill disappears</summary>
+    <div class="details-body">
+      <p>UGUI's <code>cullTransparentMesh</code> drops meshes whose vertex alpha is 0, so a shape that's "stroke only" with <code>color.a == 0</code> won't draw its stroke. Use a tiny non-zero alpha (Forge uses <code>0.0039</code>, i.e. 1/255) on transparent hit-areas and stroke-only shapes.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Putting FgFilter on an FgShape removes the shape</summary>
+    <div class="details-body">
+      <p><code>FgFilter</code> swaps the graphic's material to <code>Forge/UIFilter</code>, which replaces the <code>Forge/Shape</code> SDF material. Apply filters to a plain <code>Image</code> or <code>TMP_Text</code>. To filter a shape, render the shape and filter it on a separate graphic above it.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>A component looks wrong / colorless right after I create it</summary>
+    <div class="details-body">
+      <p>A driver's <code>OnEnable</code> runs at <code>AddComponent</code>, before the factory has wired its references. Forge's factories handle this by calling <code>Apply()</code> / <code>Rebuild()</code> / <code>Select(&hellip;)</code> at the end of construction. If you build custom components, do the same, and have setters snap immediately when <code>!Application.isPlaying</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Components don't switch to Dark mode</summary>
+    <div class="details-body">
+      <p>Make sure an <code>FgThemeAsset</code> is active (<code>FgTheme.SetTheme</code>) and that the mode name you pass to <code>FgTheme.SetMode</code> exists in the asset. Forge's own components are token-bound and recolor automatically; custom graphics need an <code>FgThemeBinder</code> (or to resolve colors via <code>FgTheme.TryColor</code> and subscribe to <code>FgTheme.ModeChanged</code>).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--             FAQ                               -->
+<!-- ============================================ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Quick answers.</p>
+
+  <details>
+    <summary>Is Forge a Figma importer?</summary>
+    <div class="details-body"><p>No. Forge is a UGUI design &amp; build toolkit &mdash; you create UI with code, the Design Canvas, or the AI layer. It doesn't import Figma files.</p></div>
+  </details>
+
+  <details>
+    <summary>Does it use sprites or atlases?</summary>
+    <div class="details-body"><p>No. Shapes, strokes, gradients, shadows and masks are rendered analytically on the GPU, so they're crisp at any resolution and there's nothing to bake. You can still use sprites as a fill if you want.</p></div>
+  </details>
+
+  <details>
+    <summary>Will dozens of shapes wreck my draw calls?</summary>
+    <div class="details-body"><p>No &mdash; plain shapes share one material and batch. A per-instance material is created only when a shape needs a unique uniform (a gradient, fill-amount, or pattern).</p></div>
+  </details>
+
+  <details>
+    <summary>Is it UGUI or UI Toolkit?</summary>
+    <div class="details-body"><p>UGUI (Canvas-based), with TextMeshPro for text.</p></div>
+  </details>
+
+  <details>
+    <summary>Can I use just one module?</summary>
+    <div class="details-body"><p>Yes. Modules are separate assemblies &mdash; reference only the ones you need (e.g. just <code>Forge.Shapes</code> + <code>Forge.Effects</code> for visuals). Many features sit behind <code>FgSettings</code> flags too.</p></div>
+  </details>
+
+  <details>
+    <summary>Does the AI generation need an internet connection or account?</summary>
+    <div class="details-body"><p>The <code>FgMcpTools</code> layer is local Unity-editor code with no backend. Connecting it to an AI agent is done through the MCP protocol; the stdio transport wiring is on the roadmap.</p></div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--             SUPPORT                           -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128236;</span> Support</h2>
+  <p class="section-desc">Questions, bugs and feature requests are welcome.</p>
+
+  <div class="card">
+    <div class="card-title">&#128231; Email</div>
+    <p>Reach out at <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>. Include your Unity version, render pipeline, and a short repro &mdash; it gets you a faster answer.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#128279; More from Ragendom</div>
+    <p>Browse other tools and templates on the <a href="https://assetstore.unity.com/publishers/39886" target="_blank">Unity Asset Store</a>, or see all projects at <a href="https://ragendom69.github.io/" target="_blank">ragendom69.github.io</a>.</p>
+  </div>
+
+  <p style="color:var(--text-dim);font-size:13px;margin-top:24px;">Forge &middot; an all-in-one UGUI design &amp; build toolkit for Unity 6 / URP. Namespace <code>Forge.*</code>, type prefix <code>Fg</code>.</p>
+</section>
+
+</main>
+
+<script>
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section, .hero').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const h1 = s.querySelector('h1');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const id = s.id || (s.parentElement && s.parentElement.id) || '';
+  if (!id) return;
+  sections.push({
+    id: id,
+    title: h2 ? h2.textContent.trim() : (h1 ? h1.textContent.trim() : ''),
+    desc: desc ? desc.textContent.trim() : '',
+    content: s.textContent.toLowerCase(),
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// Active sidebar link via IntersectionObserver
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section[id], .hero[id]').forEach(s => observer.observe(s));
+
+// Close mobile sidebar on nav click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
