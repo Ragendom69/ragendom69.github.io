@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forge - Documentation</title>
+<title>Forge UI - Documentation</title>
 <style>
 :root {
   --bg: #0C0E14;
@@ -670,7 +670,7 @@ details .details-body p:first-child { margin-top: 0; }
   <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
   <a href="#overview" class="header-logo">
     <div class="dot">F</div>
-    <span>Forge</span>
+    <span>Forge UI</span>
   </a>
   <div class="header-search">
     <span class="search-icon">&#128269;</span>
@@ -741,7 +741,7 @@ details .details-body p:first-child { margin-top: 0; }
 <!--                  HERO                        -->
 <!-- ============================================ -->
 <div class="hero" id="overview">
-  <h1>Forge</h1>
+  <h1>Forge UI</h1>
   <p>One asset that replaces six. A code-first, token-driven UGUI toolkit for Unity 6 &amp; URP: GPU-drawn SDF <strong>shapes</strong>, soft <strong>shadows &amp; glow</strong>, <strong>glassmorphism</strong>, <strong>filters &amp; soft masks</strong>, a 60+ piece <strong>component library</strong>, flexbox <strong>layout</strong>, a zero-GC <strong>tween engine</strong>, MVVM <strong>data binding</strong>, design-token <strong>theming</strong>, plus a visual <strong>Design Canvas</strong> and an <strong>AI generation</strong> layer &mdash; all behind one coherent API.</p>
   <div class="hero-badges">
     <span class="badge badge-orange">Unity 6000.0+</span>
@@ -765,7 +765,7 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="card-grid">
     <a class="mini-card" href="#shapes"><h4>&#9733; SDF Shapes</h4><p>8 primitives, gradients, stroke, fill-amount, edge-collapse morph &mdash; all from one <code>FgShape</code>.</p></a>
-    <a class="mini-card" href="#components"><h4>&#129513; 60+ Components</h4><p>Buttons to calendars, all token-themed and assembled from Forge primitives. One factory call each.</p></a>
+    <a class="mini-card" href="#components"><h4>&#129513; 60+ Components</h4><p>Buttons to calendars, all token-themed and assembled from Forge UI primitives. One factory call each.</p></a>
     <a class="mini-card" href="#theming"><h4>&#127912; Design Tokens</h4><p>Typed tokens + modes. Call <code>FgTheme.SetMode("Dark")</code> and the whole UI restyles live.</p></a>
     <a class="mini-card" href="#animation"><h4>&#10227; Zero-GC Tweens</h4><p>30 easing curves, sequences, spline paths, punch &amp; shake &mdash; a fluent, chainable API.</p></a>
     <a class="mini-card" href="#data"><h4>&#128279; MVVM Binding</h4><p>Change an <code>FgObservable</code> once; every bound label, slider and list updates itself.</p></a>
@@ -794,17 +794,17 @@ details .details-body p:first-child { margin-top: 0; }
   <ul>
     <li><strong>Unity 6000.0.62f1</strong> or newer (Unity 6.x). <span class="tag tag-required">Required</span></li>
     <li><strong>Universal Render Pipeline (URP)</strong> as the active pipeline. <span class="tag tag-required">Required</span></li>
-    <li><strong>TextMeshPro</strong> (ships with Unity 6; Forge uses it for all text). <span class="tag tag-auto">Auto</span></li>
+    <li><strong>TextMeshPro</strong> (ships with Unity 6; Forge UI uses it for all text). <span class="tag tag-auto">Auto</span></li>
   </ul>
   <p>See <a href="#requirements">Requirements &amp; Compatibility</a> for the full list, optional integrations and platform notes.</p>
 
   <div class="callout callout-warn">
     <span class="callout-icon">&#9888;</span>
-    <div><strong>URP must be active.</strong> Forge's shaders (<code>Forge/Shape</code>, <code>Forge/RtShadow</code>, <code>Forge/Glass</code>, &hellip;) target URP. If your project is on the Built-in or HDRP pipeline, switch to URP before importing. See <a href="#requirements">Requirements</a>.</div>
+    <div><strong>URP must be active.</strong> Forge UI's shaders (<code>Forge/Shape</code>, <code>Forge/RtShadow</code>, <code>Forge/Glass</code>, &hellip;) target URP. If your project is on the Built-in or HDRP pipeline, switch to URP before importing. See <a href="#requirements">Requirements</a>.</div>
   </div>
 
   <h3>Optional: create a settings asset</h3>
-  <p>Forge works out of the box, but you can create a project-wide configuration asset to toggle module feature-flags:</p>
+  <p>Forge UI works out of the box, but you can create a project-wide configuration asset to toggle module feature-flags:</p>
   <div class="flow">
     <span class="flow-node">Tools &rarr; Forge &rarr; Create Default Settings Asset</span>
     <span class="flow-arrow">&rarr;</span>
@@ -820,7 +820,7 @@ details .details-body p:first-child { margin-top: 0; }
   <p class="section-desc">From an empty Canvas to a themed, animated screen in a few lines.</p>
 
   <h3>Draw a shape</h3>
-  <p>Every visual in Forge ultimately comes from <code>FgShape</code> &mdash; one component that renders any of eight primitives with gradients, stroke and fill. Add it like any UGUI graphic:</p>
+  <p>Every visual in Forge UI ultimately comes from <code>FgShape</code> &mdash; one component that renders any of eight primitives with gradients, stroke and fill. Add it like any UGUI graphic:</p>
   <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Shapes;
 
 <span class="kw">var</span> go = <span class="kw">new</span> <span class="tp">GameObject</span>(<span class="str">"Panel"</span>, <span class="kw">typeof</span>(<span class="tp">RectTransform</span>));
@@ -866,7 +866,7 @@ panel.<span class="fn">FgMoveAnchoredY</span>(<span class="num">0f</span>, <span
 <!-- ============================================ -->
 <section class="section" id="hub">
   <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> The Hub &amp; Design Canvas</h2>
-  <p class="section-desc">Two editor windows: one to manage Forge, one to design with it directly.</p>
+  <p class="section-desc">Two editor windows: one to manage Forge UI, one to design with it directly.</p>
 
   <h3>Forge Hub <span class="tag tag-info">Tools &rarr; Forge &rarr; Hub</span></h3>
   <p>The Hub is your control center. From here you browse the modules, toggle feature flags, manage the active theme asset, and jump to the demo and sample scenes. Useful menu items grouped under <code>Tools &rarr; Forge</code>:</p>
@@ -1040,7 +1040,7 @@ sh.Inner     = <span class="kw">false</span>;</pre>
   <h2><span class="section-icon" style="background:var(--orange-dim);color:var(--accent-light)">&#129513;</span> Components</h2>
   <p class="section-desc">60+ production controls, each a one-call factory on <code>Forge.Components.FgComponents</code>.</p>
 
-  <p>Every factory returns a fully-assembled <code>GameObject</code> built from Forge primitives (SDF shapes + TMP + theming + layout). All are <strong>token-themed</strong> (a Dark-mode switch restyles them live) and <strong>sprite-free</strong>. Stateful controls attach a small <code>Fg*</code> driver MonoBehaviour you grab with <code>GetComponent</code> to read state or subscribe to events.</p>
+  <p>Every factory returns a fully-assembled <code>GameObject</code> built from Forge UI primitives (SDF shapes + TMP + theming + layout). All are <strong>token-themed</strong> (a Dark-mode switch restyles them live) and <strong>sprite-free</strong>. Stateful controls attach a small <code>Fg*</code> driver MonoBehaviour you grab with <code>GetComponent</code> to read state or subscribe to events.</p>
 
   <pre><span class="lang-tag">csharp</span><span class="kw">using</span> Forge.Components;
 
@@ -1236,7 +1236,7 @@ group.<span class="fn">FgFade</span>(<span class="num">1f</span>, <span class="n
 <span class="tp">FgTheme</span>.<span class="fn">SetMode</span>(<span class="str">"Dark"</span>);          <span class="cm">// every binder recolors instantly</span>
 <span class="tp">FgTheme</span>.ModeChanged += m =&gt; <span class="tp">Debug</span>.<span class="fn">Log</span>(<span class="str">$"now in {m}"</span>);</pre>
 
-  <p>Bind any property to a token with <code>FgThemeBinder</code> &mdash; targets include a graphic's color, an <code>FgShape</code> stroke color or corner radius, and a text's color or font size. Forge's own components are all token-bound, which is why a single <code>SetMode</code> call re-themes the entire screen.</p>
+  <p>Bind any property to a token with <code>FgThemeBinder</code> &mdash; targets include a graphic's color, an <code>FgShape</code> stroke color or corner radius, and a text's color or font size. Forge UI's own components are all token-bound, which is why a single <code>SetMode</code> call re-themes the entire screen.</p>
 </section>
 
 <!-- ============================================ -->
@@ -1277,9 +1277,9 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
 <!-- ============================================ -->
 <section class="section" id="mcp">
   <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#129302;</span> AI / MCP Generation</h2>
-  <p class="section-desc">A structured tool layer that lets an AI agent build &amp; edit Forge UIs. <code>Forge.Mcp</code>.</p>
+  <p class="section-desc">A structured tool layer that lets an AI agent build &amp; edit Forge UI screens. <code>Forge.Mcp</code>.</p>
 
-  <p><code>FgMcpTools</code> exposes Forge's authoring surface as a set of discrete, structured operations &mdash; the same operations the Canvas uses &mdash; so an agent can compose a screen from a description and then read it back to self-correct:</p>
+  <p><code>FgMcpTools</code> exposes Forge UI's authoring surface as a set of discrete, structured operations &mdash; the same operations the Canvas uses &mdash; so an agent can compose a screen from a description and then read it back to self-correct:</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
@@ -1325,7 +1325,7 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
   <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#127959;</span> Architecture</h2>
   <p class="section-desc">One assembly per module under the <code>Forge.*</code> namespace; Runtime never references Editor.</p>
 
-  <p>Forge is split into independent modules, each with its own assembly definition. Runtime assemblies never depend on editor assemblies, so everything compiles into player builds cleanly. All public types use the <code>Fg</code> prefix.</p>
+  <p>Forge UI is split into independent modules, each with its own assembly definition. Runtime assemblies never depend on editor assemblies, so everything compiles into player builds cleanly. All public types use the <code>Fg</code> prefix.</p>
 
   <div class="table-wrap">
     <table>
@@ -1357,7 +1357,7 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
 <!-- ============================================ -->
 <section class="section" id="requirements">
   <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9989;</span> Requirements &amp; Compatibility</h2>
-  <p class="section-desc">What Forge needs, what it integrates with, and what's honestly out of scope.</p>
+  <p class="section-desc">What Forge UI needs, what it integrates with, and what's honestly out of scope.</p>
 
   <h3>Required</h3>
   <ul>
@@ -1380,7 +1380,7 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
       <p><strong>Glass</strong> uses a camera-driven controller, not a URP Render Feature (a feature-grab variant is planned). <strong>Soft mask</strong> ships a single global analytic/texture mask; deep 4-level hierarchical nesting is not implemented. The <strong>MCP stdio transport</strong> is not yet wired (the tool layer is).</p>
     </div>
   </div>
-  <p>Forge contains <strong>no third-party code</strong> &mdash; every technique (IQ-style 2D SDFs, Kawase blur) is reimplemented from public math. See <code>Assets/Forge/THIRD-PARTY-NOTICES.txt</code>.</p>
+  <p>Forge UI contains <strong>no third-party code</strong> &mdash; every technique (IQ-style 2D SDFs, Kawase blur) is reimplemented from public math. See <code>Assets/Forge/THIRD-PARTY-NOTICES.txt</code>.</p>
 </section>
 
 <!-- ============================================ -->
@@ -1400,7 +1400,7 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
   <details>
     <summary>A shape with a fully transparent fill disappears</summary>
     <div class="details-body">
-      <p>UGUI's <code>cullTransparentMesh</code> drops meshes whose vertex alpha is 0, so a shape that's "stroke only" with <code>color.a == 0</code> won't draw its stroke. Use a tiny non-zero alpha (Forge uses <code>0.0039</code>, i.e. 1/255) on transparent hit-areas and stroke-only shapes.</p>
+      <p>UGUI's <code>cullTransparentMesh</code> drops meshes whose vertex alpha is 0, so a shape that's "stroke only" with <code>color.a == 0</code> won't draw its stroke. Use a tiny non-zero alpha (Forge UI uses <code>0.0039</code>, i.e. 1/255) on transparent hit-areas and stroke-only shapes.</p>
     </div>
   </details>
 
@@ -1414,14 +1414,14 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
   <details>
     <summary>A component looks wrong / colorless right after I create it</summary>
     <div class="details-body">
-      <p>A driver's <code>OnEnable</code> runs at <code>AddComponent</code>, before the factory has wired its references. Forge's factories handle this by calling <code>Apply()</code> / <code>Rebuild()</code> / <code>Select(&hellip;)</code> at the end of construction. If you build custom components, do the same, and have setters snap immediately when <code>!Application.isPlaying</code>.</p>
+      <p>A driver's <code>OnEnable</code> runs at <code>AddComponent</code>, before the factory has wired its references. Forge UI's factories handle this by calling <code>Apply()</code> / <code>Rebuild()</code> / <code>Select(&hellip;)</code> at the end of construction. If you build custom components, do the same, and have setters snap immediately when <code>!Application.isPlaying</code>.</p>
     </div>
   </details>
 
   <details>
     <summary>Components don't switch to Dark mode</summary>
     <div class="details-body">
-      <p>Make sure an <code>FgThemeAsset</code> is active (<code>FgTheme.SetTheme</code>) and that the mode name you pass to <code>FgTheme.SetMode</code> exists in the asset. Forge's own components are token-bound and recolor automatically; custom graphics need an <code>FgThemeBinder</code> (or to resolve colors via <code>FgTheme.TryColor</code> and subscribe to <code>FgTheme.ModeChanged</code>).</p>
+      <p>Make sure an <code>FgThemeAsset</code> is active (<code>FgTheme.SetTheme</code>) and that the mode name you pass to <code>FgTheme.SetMode</code> exists in the asset. Forge UI's own components are token-bound and recolor automatically; custom graphics need an <code>FgThemeBinder</code> (or to resolve colors via <code>FgTheme.TryColor</code> and subscribe to <code>FgTheme.ModeChanged</code>).</p>
     </div>
   </details>
 </section>
@@ -1434,8 +1434,8 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
   <p class="section-desc">Quick answers.</p>
 
   <details>
-    <summary>Is Forge a design-file importer?</summary>
-    <div class="details-body"><p>No. Forge is a UGUI design &amp; build toolkit &mdash; you create UI in code, on the Design Canvas, or through the AI layer. It doesn't import external design files.</p></div>
+    <summary>Is Forge UI a design-file importer?</summary>
+    <div class="details-body"><p>No. Forge UI is a UGUI design &amp; build toolkit &mdash; you create UI in code, on the Design Canvas, or through the AI layer. It doesn't import external design files.</p></div>
   </details>
 
   <details>
@@ -1481,7 +1481,7 @@ provider.<span class="fn">SetRightToLeft</span>(<span class="str">"ar"</span>);
     <p>Browse other tools and templates on the <a href="https://assetstore.unity.com/publishers/39886" target="_blank">Unity Asset Store</a>, or see all projects at <a href="https://ragendom69.github.io/" target="_blank">ragendom69.github.io</a>.</p>
   </div>
 
-  <p style="color:var(--text-dim);font-size:13px;margin-top:24px;">Forge &middot; an all-in-one UGUI design &amp; build toolkit for Unity 6 / URP. Namespace <code>Forge.*</code>, type prefix <code>Fg</code>.</p>
+  <p style="color:var(--text-dim);font-size:13px;margin-top:24px;">Forge UI &middot; an all-in-one UGUI design &amp; build toolkit for Unity 6 / URP. Namespace <code>Forge.*</code>, type prefix <code>Fg</code>.</p>
 </section>
 
 </main>
