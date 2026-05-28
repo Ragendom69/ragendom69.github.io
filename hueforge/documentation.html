@@ -6,17 +6,17 @@
 <title>HueForge Studio - Documentation</title>
 <style>
 :root {
-  --bg: #14110B;
-  --bg-card: #1F1A12;
-  --bg-card-hover: #2A2317;
-  --bg-code: #1B1610;
-  --bg-sidebar: #110E09;
-  --text: #ece7df;
-  --text-dim: #ad9f88;
-  --text-code: #d8d0c2;
-  --accent: #E08D2A;
-  --accent-light: #F0A54A;
-  --accent-glow: rgba(224,141,42,0.15);
+  --bg: #0B0F1A;
+  --bg-card: #131A2B;
+  --bg-card-hover: #1B2540;
+  --bg-code: #0F1626;
+  --bg-sidebar: #090D16;
+  --text: #e4e9f3;
+  --text-dim: #97a4bf;
+  --text-code: #c6d1e6;
+  --accent: #3B82F6;
+  --accent-light: #60A5FA;
+  --accent-glow: rgba(59,130,246,0.15);
   --green: #4FB477;
   --green-dim: rgba(79,180,119,0.12);
   --yellow: #E8B84B;
@@ -25,12 +25,12 @@
   --pink-dim: rgba(200,98,126,0.12);
   --orange: #e17055;
   --orange-dim: rgba(225,112,85,0.12);
-  --blue: #5E8CA8;
-  --blue-dim: rgba(94,140,168,0.14);
-  --violet: #9B6FD4;
-  --violet-dim: rgba(155,111,212,0.14);
-  --border: #352B1D;
-  --border-light: #483B28;
+  --blue: #5EA9E0;
+  --blue-dim: rgba(94,169,224,0.14);
+  --violet: #8E84E8;
+  --violet-dim: rgba(142,132,232,0.15);
+  --border: #1E2940;
+  --border-light: #2C3A57;
   --radius: 12px;
   --radius-sm: 8px;
   --sidebar-w: 280px;
@@ -43,7 +43,7 @@
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
 body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; overflow-x: hidden; }
 
-::selection { background: var(--accent); color: #1a1409; }
+::selection { background: var(--accent); color: #fff; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -52,12 +52,12 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 /* HEADER */
 .header {
   position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
-  background: rgba(20,17,11,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(11,15,26,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border); z-index: 100;
   display: flex; align-items: center; padding: 0 32px; gap: 16px;
 }
 .header-logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; letter-spacing: -0.3px; white-space: nowrap; color: var(--text); text-decoration: none; }
-.header-logo .dot { width: 28px; height: 28px; background: linear-gradient(135deg, #E08D2A, #9B6FD4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #1a1409; }
+.header-logo .dot { width: 28px; height: 28px; background: linear-gradient(135deg, #3B82F6, #8E84E8); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #fff; }
 .header-search { flex: 1; max-width: 420px; margin-left: auto; position: relative; }
 .header-search input { width: 100%; padding: 8px 16px 8px 40px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 14px; font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
 .header-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
@@ -80,11 +80,11 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); line
 
 /* HERO */
 .hero { padding: 48px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
-.hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #F0A54A 42%, #9B6FD4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #60A5FA 45%, #8E84E8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .hero p { font-size: 17px; color: var(--text-dim); max-width: 660px; line-height: 1.7; }
 .hero-badges { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
 .badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-.badge-amber { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(224,141,42,0.25); }
+.badge-amber { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(59,130,246,0.25); }
 .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(79,180,119,0.25); }
 .badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(232,184,75,0.25); }
 .badge-violet { background: var(--violet-dim); color: var(--violet); border: 1px solid rgba(155,111,212,0.25); }
@@ -118,13 +118,13 @@ pre { background: var(--bg-code); border: 1px solid var(--border); border-radius
 pre .lang-tag { position: absolute; top: 8px; right: 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); opacity: 0.6; font-family: var(--font); }
 code { font-family: var(--font-mono); font-size: 13px; background: var(--bg-code); padding: 2px 7px; border-radius: 4px; color: var(--accent-light); }
 pre code { background: none; padding: 0; color: inherit; }
-.kw { color: #E0A86A; }
-.str { color: #b7d98a; }
-.cm { color: #7d6f54; font-style: italic; }
-.fn { color: #6fa8c8; }
-.tp { color: #E8B84B; }
-.num { color: #e89a5a; }
-.op { color: #b89adf; }
+.kw { color: #7AA2F7; }
+.str { color: #9ECE6A; }
+.cm { color: #5b667e; font-style: italic; }
+.fn { color: #7DCFFF; }
+.tp { color: #2AC3DE; }
+.num { color: #BB9AF7; }
+.op { color: #89DDFF; }
 
 /* TABLES */
 .table-wrap { overflow-x: auto; margin-bottom: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
@@ -132,7 +132,7 @@ table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 thead th { background: var(--bg-code); font-weight: 700; text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text-dim); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
 td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(224,141,42,0.04); }
+tr:hover td { background: rgba(59,130,246,0.06); }
 
 /* COLLAPSIBLE */
 details { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; transition: border-color 0.2s; }
@@ -907,7 +907,7 @@ details .details-body p:first-child { margin-top: 0; }
     <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
     <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
     <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">Bug reports, feature requests, and licensing questions &mdash; reach out and we'll get back to you.</p>
-    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--violet));color:#1a1409;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--violet));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
       &#9993; ragendom@gmail.com
     </a>
     <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
