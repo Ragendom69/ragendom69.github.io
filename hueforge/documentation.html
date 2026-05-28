@@ -322,7 +322,7 @@ details .details-body p:first-child { margin-top: 0; }
     <a class="mini-card" href="#tab-palette"><h4>&#128269; Grab Palette</h4><p>Extract a palette from any Texture / Sprite / Material / multi-selection (unique-frequency or K-means, merge near-duplicates).</p></a>
     <a class="mini-card" href="#tab-palette"><h4>&#127912; HD Recolor</h4><p>Detail-preserving HSV recolor of full-detail / PBR textures &mdash; highlights &amp; shading survive. Saves a new texture.</p></a>
     <a class="mini-card" href="#tab-palette"><h4>&#127922; Sprite Palette Swap</h4><p>Crisp 1:1 pixel-art palette swap onto a target palette (alpha-safe). Instant recolour variants.</p></a>
-    <a class="mini-card" href="#tab-palette"><h4>&#129513; Palette Fusion</h4><p>Fuse low-poly models into ONE shared lossless palette texture + material + fused prefabs &mdash; batching, fewer draw calls, smaller builds. Non-destructive.</p></a>
+    <a class="mini-card" href="#tab-palette"><h4>&#129513; Palette Optimize</h4><p>Fuse low-poly models into ONE shared lossless palette texture + material + fused prefabs &mdash; batching, fewer draw calls, smaller builds. Non-destructive.</p></a>
     <a class="mini-card" href="#tab-palette"><h4>&#128396; Perceptual matching</h4><p>CIELAB &Delta;E colour distance picks the colour a human calls "nearest", not just the numerically closest.</p></a>
   </div>
   <div class="callout callout-info">
@@ -549,7 +549,7 @@ details .details-body p:first-child { margin-top: 0; }
     <div class="step"><div class="step-content"><strong>Gradient Map</strong> &mdash; remap a texture by brightness onto a 2&ndash;N colour ramp for an instant duotone / tritone / cinematic grade. Pick shadow, (optional) midtone and highlight stops; saves a new texture.</div></div>
     <div class="step"><div class="step-content"><strong>Batch Recolor (Perceptual)</strong> &mdash; select any number of textures, pick one target palette, and recolor them all at once (perceptual swap), each saved as a new texture. A folder-scale workflow for theming a whole sprite set or texture pack in one click.</div></div>
     <div class="step"><div class="step-content"><strong>Harmony Recolor (live)</strong> &mdash; generate a colour-wheel harmony palette from a single base colour and watch the texture recolor onto it in <em>real time</em> as you tweak the base hue, scheme and colour count. Save the copy when you like what you see.</div></div>
-    <div class="step"><div class="step-content"><strong>Palette Fusion (optimize)</strong> &mdash; fuse selected low-poly models onto ONE shared 1px-per-colour texture + ONE shared material with UV-remapped meshes and fused prefabs, so they batch together: fewer draw calls, smaller builds. Emits an optimization report. See the live calculator in the demo.</div></div>
+    <div class="step"><div class="step-content"><strong>Palette Optimize</strong> &mdash; fuse selected low-poly models onto ONE shared 1px-per-colour texture + ONE shared material with UV-remapped meshes and fused prefabs, so they batch together: fewer draw calls, smaller builds. Emits an optimization report. See the live calculator in the demo.</div></div>
   </div>
 
   <div class="callout callout-info">
