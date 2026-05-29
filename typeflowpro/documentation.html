@@ -709,6 +709,11 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <div class="sidebar-group">
+    <div class="sidebar-group-title">Game Effects</div>
+    <a href="#damage-numbers"><span class="nav-icon">&#128165;</span> Damage Numbers</a>
+  </div>
+
+  <div class="sidebar-group">
     <div class="sidebar-group-title">Concepts</div>
     <a href="#architecture"><span class="nav-icon">&#127959;</span> Two-Tier Architecture</a>
     <a href="#conformance"><span class="nav-icon">&#9989;</span> Unicode Conformance</a>
@@ -1196,6 +1201,68 @@ clickable.LinkHovered += id =&gt; { <span class="cm">/* hovered link id, or null
   <div class="callout callout-info">
     <span class="callout-icon">&#9432;</span>
     <div><strong>Roadmap.</strong> Per-span effect <em>mesh</em> rendering (mixing several gradient/outline/shadow spans within one string in the Tier-2 renderer) is being finished; the parsers and whole-object application ship today.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             DAMAGE NUMBERS                    -->
+<!-- ============================================ -->
+<section class="section" id="damage-numbers">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128165;</span> Damage Numbers</h2>
+  <p class="section-desc">Pooled, animated floating combat text &mdash; built on the same per-character engine as the rest of TypeFlow Pro, so it does things a generic popup system can't: per-digit entrances, live behaviors, and RTL Arabic-Indic / Persian numbers.</p>
+
+  <p>Spawn a number with one call. The first call lazily creates a persistent world-space manager; for full control, drop a <code>TfpDamageNumberManager</code> in your scene or assign your own to <code>TfpDamageNumbers.Default</code>.</p>
+
+  <pre><code><span class="kw">using</span> TypeFlowPro.CombatText;
+
+<span class="cm">// One-liner — a pooled popup floats up at a world point and fades out:</span>
+<span class="tp">TfpDamageNumbers</span>.Spawn(150, hitPoint);
+
+<span class="cm">// With a no-code style asset (Assets &#9656; Create &#9656; TypeFlow Pro &#9656; Combat Text Style):</span>
+<span class="tp">TfpDamageNumbers</span>.Spawn(critDamage, hitPoint, critStyle);
+
+<span class="cm">// Your own manager — world or canvas, follow a moving enemy, combine rapid hits:</span>
+manager.Spawn(heal, enemy.position, healStyle, follow: enemy.transform);<span class="lang-tag">C#</span></code></pre>
+
+  <h3>The popup style asset</h3>
+  <p>A <code>TfpPopupStyle</code> is a ScriptableObject that defines the whole look &mdash; no code. Hand it to <code>Spawn</code>. (Leave it out and the manager uses a sensible default.)</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field group</th><th>What it controls</th></tr></thead>
+    <tbody>
+      <tr><td><code>Font, FontSize, FontStyle, Color</code></td><td>Rendering. <code>ColorByValue</code> + a <code>ValueGradient</code> make bigger hits glow hotter.</td></tr>
+      <tr><td><code>Abbreviation, Decimals, ThousandsSeparator</code></td><td>Number formatting: metric abbreviation (<code>1234567 &rarr; 1.2M</code>), grouping, fixed decimals, plus a <code>Prefix</code>/<code>Suffix</code>.</td></tr>
+      <tr><td><code>Digits</code></td><td><code>Western</code>, <code>ArabicIndic</code> (&#1632;-&#1641;) or <code>Persian</code> (&#1776;-&#1785;) &mdash; combat text in the player's own numerals.</td></tr>
+      <tr><td><code>Lifetime, Rise, RiseDistance, ArcHeight, Direction</code></td><td>How it travels: straight <code>Up</code>, a <code>Directional</code> drift, or a parabolic <code>Arc</code> (loot/XP toss).</td></tr>
+      <tr><td><code>StartScale, ScaleEase, PopInFraction, EndScale</code></td><td>The pop-in (use an <code>OutBack</code> ease for overshoot) and an optional shrink as it dies.</td></tr>
+      <tr><td><code>FadeInFraction, FadeOutFraction</code></td><td>The transparency in/out windows.</td></tr>
+      <tr><td><code>ShakeAmplitude, ShakeFrequency, SpinDegrees</code></td><td>The classic crit shake and optional spin.</td></tr>
+      <tr><td><code>PerCharacter, EntranceStyle, ContinuousEffect</code></td><td>Animate each digit independently with the TypeFlow engine &mdash; a staggered entrance plus a continuous behavior (<code>Wave</code>, <code>Rainbow</code>&hellip;).</td></tr>
+      <tr><td><code>Combine, CombineRadius, CombineWindow</code></td><td>Merge rapid hits in the same spot into one rising total (DPS-meter feel) instead of overlapping popups.</td></tr>
+      <tr><td><code>FaceCamera</code></td><td>Billboard world-space popups toward the camera.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Components &amp; API</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>TfpDamageNumbers.Spawn(value, worldPos, style?, follow?)</code></td><td>Static one-liner; routes to <code>Default</code> (auto-created, persistent, world-space).</td></tr>
+      <tr><td><code>TfpDamageNumberManager</code></td><td>Pools and spawns popups. <code>WorldSpace</code> toggles 3D <code>TextMeshPro</code> (billboarded) vs canvas <code>TextMeshProUGUI</code> under a <code>Container</code>. <code>Prewarm</code> avoids first-hit hitches.</td></tr>
+      <tr><td><code>TfpDamageNumber</code></td><td>One pooled popup. Drives a <code>TMP_Text</code> through its life; exposes <code>Value</code>, <code>DisplayText</code>, <code>IsAlive</code>.</td></tr>
+      <tr><td><code>TfpPopupStyle</code></td><td>The no-code style asset (above). <code>BuildFormat()</code> / <code>BuildMotion()</code> compile its fields into the pure structs the runtime uses.</td></tr>
+      <tr><td><code>TfpNumberFormat.Format(value, fmt)</code></td><td>Pure, culture-invariant value&rarr;string (abbreviation, grouping, decimals, prefix/suffix, digit substitution). Reusable on its own.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>World <em>and</em> canvas, one API.</strong> Games usually want world-space text floating over enemies (3D <code>TextMeshPro</code>, billboarded). Set <code>WorldSpace = false</code> and a <code>Container</code> under a <code>Canvas</code> for HUD/screen-space popups instead &mdash; the same <code>Spawn</code> call drives both. It's all C#, AOT-safe, and pools every instance so steady combat allocates nothing.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>See it live.</strong> The bundled showcase scene's <em>Damage Numbers</em> page fires <strong>16</strong> ready-made presets &mdash; hit, crit (shake + per-digit pop), heal, a combining DPS burst, loot arc, metric-abbreviated big hit with colour-by-value, Arabic-Indic &amp; Persian numerals, per-character rainbow, poison-tick wobble, mana, 360&deg; spin, heartbeat pulse, directional knockback, thousands-grouped, and a slow-mo shrink &mdash; each just a <code>TfpPopupStyle</code> built in a few lines.</div>
   </div>
 </section>
 
