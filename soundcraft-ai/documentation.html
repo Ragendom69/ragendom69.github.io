@@ -661,6 +661,11 @@ details .details-body { padding: 0 20px 18px; }
     <a href="#history"><span class="nav-icon">&#128340;</span> History</a>
   </div>
   <div class="sidebar-group">
+    <div class="sidebar-group-title">Library</div>
+    <a href="#library"><span class="nav-icon">&#128218;</span> Sound Library</a>
+    <a href="#showcase"><span class="nav-icon">&#127918;</span> Runtime Showcase</a>
+  </div>
+  <div class="sidebar-group">
     <div class="sidebar-group-title">Technical</div>
     <a href="#architecture"><span class="nav-icon">&#128736;</span> Architecture</a>
     <a href="#files"><span class="nav-icon">&#128193;</span> File Structure</a>
@@ -1105,6 +1110,149 @@ details .details-body { padding: 0 20px 18px; }
 </section>
 
 <!-- ============================================ -->
+<!--           SOUND LIBRARY                      -->
+<!-- ============================================ -->
+<section class="section" id="library">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128218;</span> Sound Library</h2>
+  <p class="section-desc">A Mixamo-style browser for every sound you&rsquo;ve generated &mdash; search, tag, preview, and drop into your scene.</p>
+
+  <p>
+    While the <a href="#window">Generator</a> is where sounds are <em>made</em>, the <strong>Sound Library</strong> is where you
+    <em>live with them</em>. It scans <code>Assets/SoundCraftAI/Generated/</code> and presents every clip in a fast, searchable,
+    three-pane browser modelled on Mixamo &mdash; so a project with hundreds of generated effects stays navigable. Open it from
+    <code>Window &rarr; SoundCraft AI &rarr; Library</code>.
+  </p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Two windows, one workflow.</strong> Generate sounds in the <strong>Generator</strong> window; browse, organise, and reuse them in the <strong>Library</strong> window. The Library re-scans automatically whenever the project changes, so new generations appear the moment they&rsquo;re imported.</div>
+  </div>
+
+  <h3>The three-pane layout</h3>
+  <div class="flow">
+    <span class="flow-node">&#128193; Categories</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#127925; Sound grid</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128266; Preview &amp; details</span>
+  </div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Pane</th><th>What it shows</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Left &mdash; Categories</strong></td><td>&#9733; Favourites and <strong>All</strong> are pinned at the top, followed by one entry per <code>Generated/&lt;Category&gt;/</code> folder that contains clips. Each entry shows a live count. Selecting one filters the grid.</td></tr>
+      <tr><td><strong>Center &mdash; Sounds</strong></td><td>A virtualised card grid. Every card renders a <strong>waveform thumbnail</strong>, the clip name, its duration, a category badge, and an always-visible favourite star. A search field, a sort dropdown, and a card-size slider sit above it.</td></tr>
+      <tr><td><strong>Right &mdash; Preview &amp; Details</strong></td><td>A large waveform of the selected clip with a <strong>Play / Stop</strong> transport, plus the clip&rsquo;s name, category, duration and format, an editable tag list, and <strong>Reveal in Project</strong> / <strong>Add to Scene</strong> buttons.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Browsing &amp; filtering</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">&#128269; Search</div>
+      <p style="font-size:14px;color:var(--text-dim);margin:0;">A debounced, case-insensitive substring search across each clip&rsquo;s <strong>name</strong> and its <strong>tags</strong>. Type <em>wood</em> to surface every footstep on wood, regardless of category.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#8645; Sort</div>
+      <p style="font-size:14px;color:var(--text-dim);margin:0;">Order the grid by <strong>Name</strong> (A&ndash;Z / Z&ndash;A), <strong>Duration</strong> (short&hairsp;&rarr;&hairsp;long or long&hairsp;&rarr;&hairsp;short), or <strong>Recently modified</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#9733; Favourites</div>
+      <p style="font-size:14px;color:var(--text-dim);margin:0;">Click the star on any card to favourite it. The <strong>&#9733; Favourites</strong> category collects them for one-click access to the sounds you reach for most.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128207; Card size</div>
+      <p style="font-size:14px;color:var(--text-dim);margin:0;">Drag the size slider to scale the grid from dense thumbnails to large waveform tiles. Labels gracefully peel away as cards shrink.</p>
+    </div>
+  </div>
+
+  <h3>Tags</h3>
+  <p>
+    Add free-form <strong>tags</strong> to any clip from the details pane (<code>wood</code>, <code>heavy</code>, <code>boss-fight</code>&hellip;).
+    Tags are folded into the search index, so they become an extra, project-specific way to organise sounds on top of the fixed categories.
+    Tags and favourites are stored per-project in <code>ProjectSettings/</code> &mdash; they never touch your clips or your version-controlled assets.
+  </p>
+
+  <h3>Preview &amp; playback</h3>
+  <p>
+    Selecting a card renders its waveform in the preview pane and arms the transport. <strong>Play</strong> auditions the clip directly in the
+    Editor (no Play-mode required); <strong>Stop</strong> halts it. Waveform thumbnails are peak-rendered once and cached process-wide, so they
+    appear instantly as you scroll &mdash; clips whose PCM can&rsquo;t be read (streaming compression) fall back to a note glyph instead of stalling.
+  </p>
+
+  <h3>Putting a sound to work</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Action</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Add to Scene</strong></td><td>Drops a new GameObject carrying an <code>AudioSource</code> pre-tuned from the clip&rsquo;s category profile &mdash; spatial blend, loop, rolloff, min/max distance and volume are all set for you (see <a href="#prefabs">AudioSource Prefabs</a>). The object is selected and framed in the Scene view, and the action is undoable.</td></tr>
+      <tr><td><strong>Reveal in Project</strong></td><td>Selects and pings the source clip in the Project window.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Right-click context menu</h3>
+  <p>Right-click any card for the full set of per-clip operations:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Play / Stop</strong></td><td>Audition or stop the clip in the Editor.</td></tr>
+      <tr><td><strong>Add to Scene</strong></td><td>Instantiate a pre-tuned <code>AudioSource</code> for the clip.</td></tr>
+      <tr><td><strong>Reveal in Project</strong></td><td>Locate the source asset.</td></tr>
+      <tr><td><strong>Add to Favourites / Unfavourite</strong></td><td>Toggle the favourite star.</td></tr>
+      <tr><td><strong>Rename&hellip;</strong></td><td>Rename the underlying asset (with name-collision validation).</td></tr>
+      <tr><td><strong>Duplicate&hellip;</strong></td><td>Copy the clip within its folder under a new name.</td></tr>
+      <tr><td><strong>Set Category &rarr;</strong></td><td>Re-file the clip into another category. Because categories <em>are</em> folders, this is a real <code>AssetDatabase</code> move on disk.</td></tr>
+      <tr><td><strong>Delete</strong></td><td>Move the clip to the OS trash (after a confirmation prompt).</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Categories are folders.</strong> The Library never invents a separate category database &mdash; a clip&rsquo;s category is simply the <code>Generated/</code> subfolder it lives in. <strong>Set Category</strong> physically moves the file, which keeps the Library, the Project window, and your version control perfectly in sync.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#127918;</span>
+    <div><strong>Try it at runtime.</strong> A playable, build-ready version of this browser ships in <code>Assets/SoundCraftAI/Demo/</code>. See <a href="#showcase">Runtime Showcase</a> below.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           RUNTIME SHOWCASE                   -->
+<!-- ============================================ -->
+<section class="section" id="showcase">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#127918;</span> Runtime Showcase</h2>
+  <p class="section-desc">A playable, WebGL-ready demo scene that turns the Library into an interactive sound-browser you can build and share.</p>
+
+  <p>
+    The package includes a self-contained <strong>runtime showcase</strong> under <code>Assets/SoundCraftAI/Demo/</code>. It re-creates the
+    Library&rsquo;s three-pane browser as an in-game UI &mdash; built for <strong>1920&times;1080 landscape</strong> &mdash; and is pre-loaded with a set of
+    example generated sounds (footsteps, impacts, weapons and ambience). Press <strong>Play</strong> in the Editor, or build it to <strong>WebGL</strong>,
+    and anyone can click through the clips, hear them, and watch their waveforms.
+  </p>
+
+  <h3>What it demonstrates</h3>
+  <ul>
+    <li>The full three-pane layout &mdash; category sidebar, searchable sound grid, and preview pane &mdash; running as a normal runtime UI.</li>
+    <li><strong>Live waveform rendering</strong> of every clip, with a playhead that sweeps across the wave as it plays.</li>
+    <li>Click-to-audition playback, category filtering, name/tag search, sorting, and per-clip favourites.</li>
+    <li>The per-category <strong>AudioSource profile</strong> (2D/3D, looping, rolloff) surfaced in the details pane.</li>
+  </ul>
+
+  <h3>Opening &amp; building it</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open the scene</strong><br>Open <code>Assets/SoundCraftAI/Demo/Scenes/SoundCraftAI&nbsp;Showcase.unity</code> and press <strong>Play</strong> to try it in the Editor.</div></div>
+    <div class="step"><div class="step-content"><strong>Switch to WebGL</strong><br><code>File &rarr; Build Settings &rarr; WebGL &rarr; Switch Platform</code>, then add the showcase scene to <em>Scenes In Build</em>.</div></div>
+    <div class="step"><div class="step-content"><strong>Set a 1080p canvas</strong><br>For best results set the WebGL player resolution (or template canvas) to <strong>1920&times;1080</strong> &mdash; the UI is authored to scale to that reference size.</div></div>
+    <div class="step"><div class="step-content"><strong>Build &amp; share</strong><br>Build, and host the output anywhere &mdash; an ideal interactive preview for an Asset Store listing.</div></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Demo only &mdash; safe to delete.</strong> Everything under <code>Demo/</code> is self-contained example content. It is independent of the core (Editor-only) plugin, so you can delete the whole folder before shipping your game without affecting SoundCraft AI.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
 <!--           ARCHITECTURE                       -->
 <!-- ============================================ -->
 <section class="section" id="architecture">
@@ -1122,6 +1270,11 @@ details .details-body { padding: 0 20px 18px; }
       <tr><td><code>SoundCraftAISettings.cs</code></td><td><code>ScriptableObject</code></td><td>Per-project settings (backend URL, defaults).</td></tr>
       <tr><td><code>SoundCraftAIError.cs</code></td><td><code>struct</code></td><td>Structured error returned by the backend.</td></tr>
       <tr><td><code>SoundCraftAIWelcome.cs</code></td><td><code>EditorWindow</code></td><td>One-time welcome popup shown on first open after import.</td></tr>
+      <tr><td><code>Library/SoundLibraryWindow.cs</code></td><td><code>EditorWindow</code></td><td>The <a href="#library">Sound Library</a> &mdash; the three-pane browser. Owns the category sidebar, card grid, preview and details views, and the scan&hairsp;&rarr;&hairsp;filter pipeline.</td></tr>
+      <tr><td><code>Library/SoundLibraryScanner.cs</code></td><td><code>class</code></td><td>Builds the clip list by scanning <code>Generated/</code> for <code>AudioClip</code>s; the subfolder is the category.</td></tr>
+      <tr><td><code>Library/SoundWaveformCache.cs</code></td><td><code>class</code></td><td>Process-wide peak-rendered waveform-thumbnail cache, built one-per-tick off <code>EditorApplication.update</code>.</td></tr>
+      <tr><td><code>Library/SoundOperations.cs</code></td><td><code>static class</code></td><td>Per-clip file/scene ops: play, reveal, Add-to-Scene, rename, duplicate, set-category (folder move), delete.</td></tr>
+      <tr><td><code>Library/&hellip;</code></td><td><code>VisualElement</code></td><td>Card, grid, sidebar, preview, details, search, context-menu, tag/favourite metadata and window-state views.</td></tr>
     </tbody>
   </table></div>
 
@@ -1150,10 +1303,13 @@ details .details-body { padding: 0 20px 18px; }
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAISettings.cs</span> <span class="desc">&mdash; Per-project settings</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIError.cs</span> <span class="desc">&mdash; Structured error type</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SoundCraftAIWelcome.cs</span> <span class="desc">&mdash; First-open welcome popup</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Library/</span> <span class="desc">&mdash; The <a href="#library">Sound Library</a> browser (window, scanner, views, waveform cache)</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Runtime/</span> <span class="desc">&mdash; Version constant only (no runtime behaviour)</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Resources/</span> <span class="desc">&mdash; Settings asset</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Documentation/</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Documentation.html</span> <span class="desc">&mdash; This file</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Demo/</span> <span class="desc">&mdash; <a href="#showcase">Runtime showcase</a> scene + scripts (safe to delete before shipping)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Scenes/</span> &nbsp; <span class="folder">Scripts/</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Generated/</span> <span class="desc">&mdash; Output, sorted into category subfolders</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">UI/</span> &nbsp; <span class="folder">Weapons/</span> &nbsp; <span class="folder">Footsteps/</span> &nbsp; <span class="desc">...</span><br>
   </div>
