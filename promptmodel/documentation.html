@@ -518,6 +518,7 @@ details .details-body p:first-child { margin-top: 0; }
     <a href="#about-lighting"><span class="nav-icon">&#128161;</span> PBR &amp; Lighting</a>
     <a href="#auto-spawn"><span class="nav-icon">&#10148;</span> Auto-Spawn</a>
     <a href="#variations"><span class="nav-icon">&#9881;</span> Variations</a>
+    <a href="#library"><span class="nav-icon">&#128218;</span> Model Library</a>
   </div>
 
   <div class="sidebar-group">
@@ -1001,6 +1002,98 @@ details .details-body p:first-child { margin-top: 0; }
 
   <h3>Variations of variations</h3>
   <p>Imported variations are themselves PromptModel-generated prefabs &mdash; so they get their own metadata sidecar and are valid sources for another <em>Generate similar</em> round. The modal carries forward the original prompt, not the variation's seed, so you keep generating off the same intent rather than drifting through transformed-of-transformed.</p>
+</section>
+
+<!-- ============ MODEL LIBRARY ============ -->
+<section class="section" id="library">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128218;</span> Model Library</h2>
+  <p class="section-desc">A Mixamo-style three-pane browser for every model you've generated &mdash; search it, categorise it, spin it around in 3D, and drop it into your scene without ever leaving the window.</p>
+
+  <p>Once you've generated a handful of models, the Project view stops being a great way to find the one you want. The <strong>Model Library</strong> indexes everything in <code>Assets/PromptModel/Generated/</code>, reads each prefab's <code>.metadata.json</code> sidecar, and presents the lot as a searchable, sortable card grid with a live 3D preview. It's purely a browser over assets you already own &mdash; opening it costs nothing and uses none of your <a href="#quota">monthly allowance</a>.</p>
+
+  <h3>Opening the Library</h3>
+  <p>Menu: <code>Window &rarr; PromptModel &rarr; Model Library</code>. It opens as its own dockable Editor window, separate from the main generation window, so you can keep both open side by side. The library scans on open and re-scans automatically whenever the project changes (a new generation, a delete, a rename), so the grid always reflects what's on disk &mdash; hit the <strong>&#8635; Refresh</strong> button in the header if you ever want to force it.</p>
+
+  <h3>The three panes</h3>
+  <div class="card-grid">
+    <div class="mini-card"><h4>&#9776; Left &mdash; Categories</h4><p>Favourites, "All", auto-assigned built-in categories, and your own custom categories. Each shows a live model count; click to filter the grid.</p></div>
+    <div class="mini-card"><h4>&#9783; Center &mdash; Card grid</h4><p>One card per model with a thumbnail and a favourite star. Search box, sort dropdown, and a card-size slider sit above it.</p></div>
+    <div class="mini-card"><h4>&#128269; Right &mdash; Preview &amp; details</h4><p>A rotatable, zoomable 3D viewport plus the selected model's name, category, triangle/vertex stats, prompt, and source path.</p></div>
+  </div>
+
+  <h3>Categories</h3>
+  <p>Every model is auto-sorted into a category by a keyword heuristic that reads its prompt and name. The seven built-in categories are:</p>
+  <div class="card-grid">
+    <div class="mini-card"><h4>&#129485; Characters</h4><p>knight, hero, soldier, robot, mage, npc&hellip;</p></div>
+    <div class="mini-card"><h4>&#128009; Creatures</h4><p>dragon, monster, beast, wolf, goblin, slime&hellip;</p></div>
+    <div class="mini-card"><h4>&#9876; Weapons</h4><p>sword, axe, bow, shield, hammer, staff&hellip;</p></div>
+    <div class="mini-card"><h4>&#128230; Props</h4><p>chest, crate, chair, lamp, key, gem, tool&hellip;</p></div>
+    <div class="mini-card"><h4>&#127968; Environment</h4><p>tree, rock, building, wall, bridge, castle&hellip;</p></div>
+    <div class="mini-card"><h4>&#128663; Vehicles</h4><p>car, ship, plane, tank, rocket, drone&hellip;</p></div>
+    <div class="mini-card"><h4>&#127829; Food</h4><p>fruit, bread, potion, barrel, mushroom&hellip;</p></div>
+  </div>
+  <p>Anything the heuristic can't place lands in <strong>Uncategorized</strong>. The categorisation is only a starting point &mdash; right-click any card and choose <strong>Set Category</strong> to move it. Your override is remembered and always wins over the heuristic; choose <strong>Clear Override</strong> to hand the model back to automatic sorting.</p>
+
+  <h4>Favourites</h4>
+  <p>Click the star on any card (or right-click &rarr; <strong>Add to Favourites</strong>) to tag a model. The pinned <strong>&#9733; Favourites</strong> entry at the top of the sidebar collects them all in one place.</p>
+
+  <h4>Custom categories</h4>
+  <p>Use <strong>+ New Category&hellip;</strong> at the bottom of the sidebar (or <strong>Set Category &rarr; New Category&hellip;</strong> on a card) to make your own. Right-click a custom category to <strong>rename</strong> or <strong>delete</strong> it &mdash; deleting a category doesn't touch the prefabs; the models in it simply revert to their heuristic category.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Favourites, category overrides, and custom categories are Editor metadata</strong> &mdash; they're stored separately from your prefabs (in the Library's own state) and never modify the generated assets. They persist across Editor restarts and survive package updates.</div>
+  </div>
+
+  <h3>Search &amp; sort</h3>
+  <p>The search box does a case-insensitive substring match across each model's <strong>display name</strong>, <strong>file name</strong>, <strong>prompt</strong>, and <strong>tags</strong> &mdash; so typing <em>"iron"</em> finds <code>wooden_barrel</code> if "iron" appears anywhere in its original prompt. Search combines with the selected category (it narrows within the current filter). The count line above the grid reads <code>12 models</code> or <code>3 of 12 models</code> so you always know how much the filter is hiding.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Sort option</th><th>Orders by</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Name (A&ndash;Z)</strong> (default)</td><td>Display name, ascending.</td></tr>
+      <tr><td><strong>Name (Z&ndash;A)</strong></td><td>Display name, descending.</td></tr>
+      <tr><td><strong>Recently created</strong></td><td>Generation timestamp from the metadata sidecar, newest first.</td></tr>
+      <tr><td><strong>Recently modified</strong></td><td>Prefab file's last-write time on disk, newest first.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Drag the <strong>card-size slider</strong> next to the sort dropdown to scale the grid cards between thumbnail-dense and large-preview. Your category, search text, sort order, card size, and last selection are all remembered the next time you open the window.</p>
+
+  <h3>3D preview</h3>
+  <p>Selecting a card loads the model into the right-pane viewport. It's a real 3D render, not a flat thumbnail:</p>
+  <div class="flow">
+    <span class="flow-node">Drag &mdash; orbit</span>
+    <span class="flow-arrow">&middot;</span>
+    <span class="flow-node">Scroll &mdash; zoom</span>
+    <span class="flow-arrow">&middot;</span>
+    <span class="flow-node">Middle-drag &mdash; pan</span>
+    <span class="flow-arrow">&middot;</span>
+    <span class="flow-node">&#8962; &mdash; reset view</span>
+  </div>
+
+  <h3>Right-click actions</h3>
+  <p>Every card has a context menu (and the most common actions are mirrored as buttons under the details panel). All file operations keep the model's <code>.metadata.json</code> sidecar in lock-step with the prefab.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Action</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Add to Scene</strong></td><td>Instantiates the prefab in the active scene, selects it, and frames it in the Scene view. Registered as an Undo step.</td></tr>
+      <tr><td><strong>Reveal in Project</strong></td><td>Selects and pings the prefab asset in the Project window.</td></tr>
+      <tr><td><strong>Add to / Remove from Favourites</strong></td><td>Toggles the favourite star.</td></tr>
+      <tr><td><strong>Rename&hellip;</strong></td><td>Renames the prefab and its sidecar together, with a clash check.</td></tr>
+      <tr><td><strong>Duplicate&hellip;</strong></td><td>Copies the prefab and sidecar into the same folder under a new name.</td></tr>
+      <tr><td><strong>Set Category</strong></td><td>Override the model's category (built-in, custom, new, or clear).</td></tr>
+      <tr><td><strong>Delete</strong></td><td>Moves the prefab <em>and</em> its sidecar to the OS trash after a confirmation dialog &mdash; recoverable from your system Recycle Bin / Trash.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Details panel</h3>
+  <p>Below the preview, the details pane shows the selected model's name, its current category, geometry stats (<code>1,240 tris &middot; 720 verts</code>) and quality preset, the original prompt in quotes, and the asset's source path &mdash; plus <strong>Reveal in Project</strong> and <strong>Add to Scene</strong> buttons for one-click access.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>The Library is read-through, not a separate store.</strong> It only ever shows what's in <code>Assets/PromptModel/Generated/</code>. Delete a folder there and it disappears from the Library on the next scan; drop in a generation and it shows up. Models generated before the metadata sidecar existed still appear &mdash; they just show an empty prompt and fall back to name-based categorisation.</div>
+  </div>
 </section>
 
 <!-- ============ FIND INVOICE ============ -->
