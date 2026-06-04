@@ -586,20 +586,26 @@ details .details-body p:first-child { margin-top: 0; }
   <div class="steps">
     <div class="step"><div class="step-content"><strong>Open Package Manager</strong><br>In Unity 6000.0 LTS or later, open <code>Window &rarr; Package Manager</code> and switch the dropdown to <strong>My Assets</strong>.</div></div>
     <div class="step"><div class="step-content"><strong>Find PromptModel, click Download then Import</strong><br>Accept the import dialog with everything checked. The package lands at <code>Assets/PromptModel/</code>.</div></div>
-    <div class="step"><div class="step-content"><strong>Wait for compile and dependency resolution</strong><br>Unity recompiles editor scripts and pulls three UPM dependencies on first import (~30&ndash;60&nbsp;s). See <a href="#dependencies">Dependencies</a>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wait for compile and dependency resolution</strong><br>Unity recompiles editor scripts and resolves two Unity-registry dependencies on first import (~30&ndash;60&nbsp;s). No Git and no manual steps are required &mdash; see <a href="#dependencies">Dependencies</a>.</div></div>
     <div class="step"><div class="step-content"><strong>Open the window</strong><br><code>Window &rarr; PromptModel</code>. The activation banner appears first; everything below it is gated until you bind.</div></div>
   </div>
 
   <h3 id="dependencies">Dependencies</h3>
-  <p>PromptModel pins three Unity Package Manager dependencies. They are added automatically on first import and visible in <code>Window &rarr; Package Manager &rarr; In Project</code>:</p>
+  <p>PromptModel needs two packages from <strong>Unity's own package registry</strong>. Both resolve automatically &mdash; there is <strong>no Git requirement and no manual editing of <code>manifest.json</code></strong>. They appear in <code>Window &rarr; Package Manager &rarr; In Project</code> after import:</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Package</th><th>Version</th><th>Why</th></tr></thead>
     <tbody>
-      <tr><td><code>com.unity.cloud.gltfast</code></td><td>6.13.0</td><td>Imports the downloaded <code>.glb</code> as a Unity model. Unity-official maintained package.</td></tr>
-      <tr><td><code>com.unity.nuget.newtonsoft-json</code></td><td>3.2.1</td><td>JSON serialisation for backend requests/responses (Unity's <code>JsonUtility</code> can't handle nullable / dict / optional fields).</td></tr>
-      <tr><td><code>com.whinarn.unitymeshsimplifier</code></td><td>v3.1.0 (UPM git URL)</td><td>Generates LOD1/2/3 meshes from the original at 50% / 25% / 10% triangle count. MIT-licensed, battle-tested.</td></tr>
+      <tr><td><code>com.unity.cloud.gltfast</code></td><td>6.13.0+</td><td>Imports the downloaded <code>.glb</code> as a Unity model. Unity-official maintained package.</td></tr>
+      <tr><td><code>com.unity.nuget.newtonsoft-json</code></td><td>3.2.1+</td><td>JSON serialisation for backend requests/responses (Unity's <code>JsonUtility</code> can't handle nullable / dict / optional fields).</td></tr>
     </tbody>
   </table></div>
+
+  <p>These two are declared as <strong>Asset Store package dependencies</strong>, so Unity fetches them from the registry as part of the import. If for any reason they aren't present, PromptModel offers a one-click install on first load &mdash; or you can trigger it any time from <code>Window &rarr; PromptModel &rarr; Install Dependencies</code>. Neither package requires Git.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Mesh simplification is bundled, not a dependency.</strong> LOD generation uses <a href="https://github.com/Whinarn/UnityMeshSimplifier" target="_blank">UnityMeshSimplifier</a> (MIT License), whose source ships <em>inside</em> the package at <code>Assets/PromptModel/ThirdParty/UnityMeshSimplifier/</code>. There is nothing to install for it &mdash; no Git, no package registry. If your project already includes UnityMeshSimplifier from elsewhere, just delete that bundled folder to avoid a duplicate-assembly clash.</div>
+  </div>
 
   <h3>What gets installed</h3>
   <pre><code><span class="kw">Assets/PromptModel/</span>
@@ -608,7 +614,11 @@ details .details-body p:first-child { margin-top: 0; }
     Services/             <span class="cm">// HTTP client, auth store, generation coordinator</span>
     Importers/            <span class="cm">// GLB → Prefab pipeline orchestrator</span>
     Helpers/              <span class="cm">// MaterialApplier, LodGenerator, PrefabWrapper</span>
+    Library/              <span class="cm">// Model Library window</span>
+    Bootstrap/            <span class="cm">// Dependency installer (gltFast + Newtonsoft)</span>
     DTOs/                 <span class="cm">// Request/response types</span>
+  ThirdParty/             <span class="cm">// Bundled MIT deps — no install needed</span>
+    UnityMeshSimplifier/  <span class="cm">// LOD mesh simplification (v3.1.0, MIT)</span>
   Documentation/          <span class="cm">// You are here</span>
   Samples/                <span class="cm">// Showcase scene + sample prefabs</span>
   Generated/              <span class="cm">// Output folder; created on first generation</span>
@@ -706,7 +716,7 @@ details .details-body p:first-child { margin-top: 0; }
   <p>Both models are hosted by <a href="https://fal.ai" target="_blank">fal.ai</a>, a serverless AI inference provider. PromptModel's backend is a thin wrapper around fal's API plus our own auth, quota, and caching layers. fal's <a href="https://fal.ai/legal/terms-of-service" target="_blank">Terms of Service</a> apply to your use of PromptModel; the relevant pass-through clauses are summarised in <a href="../EULA.md">EULA &sect; 3</a>.</p>
 
   <h3>Whinarn UnityMeshSimplifier</h3>
-  <p>LOD0/1/2/3 generation uses <a href="https://github.com/Whinarn/UnityMeshSimplifier" target="_blank">UnityMeshSimplifier</a> (MIT License) at 100% / 50% / 25% / 10% triangle counts respectively.</p>
+  <p>LOD0/1/2/3 generation uses <a href="https://github.com/Whinarn/UnityMeshSimplifier" target="_blank">UnityMeshSimplifier</a> v3.1.0 (MIT License) at 100% / 50% / 25% / 10% triangle counts respectively. Its source is redistributed unmodified inside the package at <code>Assets/PromptModel/ThirdParty/UnityMeshSimplifier/</code>, with the original LICENSE and copyright notice retained.</p>
 
   <h3>Unity gltFast</h3>
   <p>The downloaded <code>.glb</code> is imported by Unity's official <a href="https://docs.unity3d.com/Packages/com.unity.cloud.gltfast@latest" target="_blank">gltFast</a> package. From there our import pipeline takes over for material extraction, LOD generation, and prefab wrapping.</p>
@@ -1343,7 +1353,7 @@ details .details-body p:first-child { margin-top: 0; }
 
   <div class="callout callout-tip">
     <span class="callout-icon">&#128161;</span>
-    <div><strong>Pinned UPM dependency mismatch?</strong> If you've manually upgraded gltFast / Newtonsoft / UnityMeshSimplifier and the PromptModel update bumps the pinned version lower, Unity keeps the higher version (this is normal). PromptModel works against any version &ge; the pin.</div>
+    <div><strong>Already have a newer gltFast or Newtonsoft?</strong> If you've manually upgraded either registry dependency above the version PromptModel asks for, Unity keeps your higher version (this is normal) &mdash; PromptModel works against any version &ge; the minimum. UnityMeshSimplifier is bundled in <code>ThirdParty/</code>, so it never conflicts with the package registry; delete that folder only if you supply your own copy.</div>
   </div>
 </section>
 
