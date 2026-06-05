@@ -731,7 +731,7 @@ details .details-body { padding: 0 20px 18px; }
     </div>
     <div class="card">
       <div class="card-title">&#127912; Conditional formatting</div>
-      <p style="color:var(--text-dim);font-size:14px;margin:0;">Colour cells by value so outliers and balance problems jump out at a glance.</p>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Colour rows by value so outliers and balance problems jump out at a glance.</p>
     </div>
     <div class="card">
       <div class="card-title">&#128193; Sheets &amp; files</div>
@@ -870,6 +870,7 @@ details .details-body { padding: 0 20px 18px; }
       <tr><td><strong>+ Create</strong></td><td>Opens the <a href="#batch">Batch Create</a> dialog to generate many new assets at once.</td></tr>
       <tr><td><strong>Export</strong></td><td>Drop-down: export the current table to <strong>CSV</strong>, <strong>TSV</strong>, or <strong>JSON</strong>.</td></tr>
       <tr><td><strong>Import</strong></td><td>Import values into the table from a CSV/TSV/JSON file.</td></tr>
+      <tr><td><strong>Format</strong></td><td>Opens the <a href="#formatting">Conditional Formatting</a> editor for the current type. Also available by right-clicking a column header.</td></tr>
       <tr><td><strong>Push</strong> / <strong>Pull</strong></td><td>Send the table to, or pull it from, the bound Google Sheet. See <a href="#sheets">Google Sheets Sync</a>.</td></tr>
       <tr><td><strong>Google status / Bind</strong></td><td>Shows the connection and bound-spreadsheet state; <strong>Bind</strong> picks the project spreadsheet via Google Picker.</td></tr>
       <tr><td><strong>Validate View</strong></td><td>Validates all loaded rows now. (Hidden as a manual action when <em>Auto Validate</em> is on.)</td></tr>
@@ -1067,23 +1068,46 @@ details .details-body { padding: 0 20px 18px; }
   <p class="section-desc">Let the data colour itself.</p>
 
   <p>
-    Conditional formatting paints a cell's background or text based on its value, so patterns and outliers are
-    obvious without reading every number. Rules are defined per type and persist with your DataForge settings.
+    Conditional formatting colours a row's background when one of its cells matches a condition, so patterns and
+    outliers are obvious without reading every number. Rules are defined per ScriptableObject type and persist with
+    your DataForge settings.
   </p>
+
+  <h3>Adding a rule</h3>
+  <ul>
+    <li>Click <strong>Format</strong> in the toolbar &mdash; or right-click a column header and choose <strong>Conditional Formatting&hellip;</strong> &mdash; to open the editor.</li>
+    <li>Click <strong>Add Rule</strong>, then pick the <strong>column</strong> to test, a <strong>condition</strong>, a <strong>value</strong>, and the <strong>row colour</strong>.</li>
+    <li>Switch a rule off with its checkbox, or <strong>Remove</strong> it. The grid updates instantly as you edit.</li>
+  </ul>
+
+  <h3>Conditions</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Condition</th><th>Matches when the cell&hellip;</th></tr></thead>
+    <tbody>
+      <tr><td><strong>=</strong> , <strong>&ne;</strong></td><td>Equals / does not equal the value (text comparison of the displayed value).</td></tr>
+      <tr><td><strong>&gt;</strong> , <strong>&lt;</strong> , <strong>&ge;</strong> , <strong>&le;</strong></td><td>Compares numerically &mdash; both the cell and the value must parse as numbers.</td></tr>
+      <tr><td><strong>contains</strong></td><td>The displayed text contains the value as a substring.</td></tr>
+    </tbody>
+  </table></div>
 
   <h3>Typical uses</h3>
   <ul>
-    <li>Highlight a <code>damage</code> value that is far above the rest of the table.</li>
-    <li>Tint a whole rarity column by tier &mdash; common, rare, legendary.</li>
-    <li>Flag a <code>price</code> of <code>0</code> red so unfinished economy data stands out.</li>
-    <li>Mark booleans &mdash; e.g. <code>isEnabled</code> &mdash; green when true.</li>
+    <li>Colour rows whose <code>damage</code> is <code>&gt;</code> a threshold so spikes jump out.</li>
+    <li>Tint rows by rarity tier &mdash; one rule per tier (common, rare, legendary).</li>
+    <li>Flag rows with a <code>price</code> of <code>0</code> red so unfinished economy data stands out.</li>
+    <li>Mark rows where <code>isEnabled</code> is <code>true</code>.</li>
   </ul>
 
-  <p>Each rule pairs a <strong>condition</strong> on a column with a <strong>format style</strong> (background colour, text colour, emphasis). Rules are evaluated as the grid draws, so formatting updates the instant a value changes.</p>
+  <p>When several rules match the same row, the <strong>first enabled rule wins</strong>. Rules are evaluated as the grid draws, so formatting updates the instant a value changes.</p>
 
   <div class="callout callout-tip">
     <span class="callout-icon">&#128161;</span>
-    <div><strong>Formatting is cosmetic.</strong> Conditional formatting only changes how cells <em>look</em> in DataForge &mdash; it never modifies the asset or affects your build.</div>
+    <div><strong>Formatting is cosmetic.</strong> Conditional formatting only changes how rows <em>look</em> in DataForge &mdash; it never modifies the asset or affects your build.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Row background colour.</strong> In the editor grid, formatting sets the matched row's <em>background</em> colour. Per-cell text colour and bold aren't applied because grid cells use Unity's native inline field editors.</div>
   </div>
 </section>
 
