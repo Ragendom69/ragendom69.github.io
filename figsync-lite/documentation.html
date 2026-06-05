@@ -773,7 +773,7 @@ details .details-body p:first-child { margin-top: 0; }
 <section class="section">
   <div class="callout callout-info">
     <span class="callout-icon">&#9432;</span>
-    <div><strong>You're reading the LITE (free) edition docs.</strong> FigSync LITE imports via the Figma REST API (Personal Access Token), converting <strong>one top-level frame per run</strong> into a static UGUI Canvas &mdash; layout, images, text (default font), gradients and rounded corners. Sections below tagged <span class="badge badge-yellow">FULL</span> describe paid-edition features.</div>
+    <div><strong>You're reading the LITE (free) edition docs.</strong> FigSync LITE imports via the Figma REST API (Personal Access Token), converting <strong>one top-level frame per run</strong> (up to <strong>100 GameObjects</strong>) into a static UGUI Canvas &mdash; layout, images, text (default font), gradients and rounded corners. Sections below tagged <span class="badge badge-yellow">FULL</span> describe paid-edition features.</div>
   </div>
 
   <div class="callout callout-tip">
@@ -794,6 +794,7 @@ details .details-body p:first-child { margin-top: 0; }
       <tr><td>Gradients &amp; rounded corners</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td></tr>
       <tr><td>Online import (Figma URL + token)</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td></tr>
       <tr><td>Frames per import</td><td style="text-align:center;font-weight:700;">1</td><td style="text-align:center;color:#34d399;font-weight:700;">Unlimited</td></tr>
+      <tr><td>GameObjects per import</td><td style="text-align:center;font-weight:700;">100 max</td><td style="text-align:center;color:#34d399;font-weight:700;">Unlimited</td></tr>
       <tr><td>Font matching, Google Fonts download &amp; TMP atlases <span style="color:var(--text-dim);font-size:12px;">(LITE uses default font)</span></td><td style="text-align:center;color:#e0556a;font-weight:700;font-size:15px;">&#10008;</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td></tr>
       <tr><td>Incremental Sync &amp; Diff (re-import &amp; merge)</td><td style="text-align:center;color:#e0556a;font-weight:700;font-size:15px;">&#10008;</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td></tr>
       <tr><td>Live Figma Bridge (plugin push)</td><td style="text-align:center;color:#e0556a;font-weight:700;font-size:15px;">&#10008;</td><td style="text-align:center;color:#34d399;font-weight:700;font-size:15px;">&#10004;</td></tr>
@@ -810,6 +811,8 @@ details .details-body p:first-child { margin-top: 0; }
     </tbody>
   </table></div>
   <p style="text-align:center;margin:-4px 0 24px;"><a href="https://assetstore.unity.com/packages/slug/134744" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 26px;background:linear-gradient(135deg,#34d399,var(--accent));color:#06241a;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:14px;">&#9733; Upgrade to FigSync Full</a></p>
+
+  <div class="callout callout-info"><span class="callout-icon">&#9432;</span><div><strong>Free-tier import cap.</strong> FigSync LITE imports <strong>one frame</strong> and up to <strong>100 GameObjects</strong> per run. If a frame needs more, drawing stops at 100 and a notice appears — try a smaller frame, or upgrade to <a href="https://assetstore.unity.com/packages/slug/134744">FigSync Full</a> for designs of any size.</div></div>
 
   <div class="card-grid">
     <a class="mini-card" href="#quickstart"><h4>&#9889; Quick Start</h4><p>Open Hub, paste URL, click Sync. First sync usually under 60&nbsp;s for a typical screen.</p></a>
