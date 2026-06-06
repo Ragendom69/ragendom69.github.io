@@ -860,8 +860,8 @@ details .details-body p:first-child { margin-top: 0; }
   <div class="steps">
     <div class="step"><div class="step-content"><strong>In Figma, open the Plugins menu</strong><br><code>Menu &rarr; Plugins &rarr; Development &rarr; Import plugin from manifest...</code></div></div>
     <div class="step"><div class="step-content"><strong>Point at the bundled manifest</strong><br>In Unity, run <code>Tools &rarr; FigSync &rarr; Open Figma Plugin Folder</code> (or browse to <code>Assets/FigSync/FigmaPlugin/</code>), then select <code>manifest.json</code>. Tip: <code>Tools &rarr; FigSync &rarr; Set Up Figma Bridge…</code> walks you through this with live connection status.</div></div>
-    <div class="step"><div class="step-content"><strong>Verify the bridge is running</strong><br>In Unity, open <code>Tools &rarr; FigSync &rarr; Settings &rarr; Auth</code>. The status pill should read <strong>Bridge: listening</strong> on <code>127.0.0.1:8473</code>.</div></div>
-    <div class="step"><div class="step-content"><strong>Push from Figma</strong><br>Open the FigSyncExporter plugin from your Plugins menu, choose scope (Current page / All pages), click <strong>Export</strong>. Unity receives the bundle and starts a sync.</div></div>
+    <div class="step"><div class="step-content"><strong>Verify the bridge is running</strong><br>In Unity, open <code>Tools &rarr; FigSync &rarr; Bridge</code>. The status should read <strong>Bridge: listening</strong> on <code>127.0.0.1</code> (ports <code>8473&ndash;8475</code>) &mdash; the <strong>Bridge</strong> badge at the top of the Hub mirrors it.</div></div>
+    <div class="step"><div class="step-content"><strong>Push from Figma</strong><br>Open the FigSyncExporter plugin from your Plugins menu, choose scope (Current page / All pages), click <strong>Send to Unity</strong>. Unity receives the bundle and starts a sync automatically.</div></div>
   </div>
 
   <div class="callout callout-warn">
@@ -878,9 +878,9 @@ details .details-body p:first-child { margin-top: 0; }
   <p class="section-desc">Zero to a synced Canvas in about a minute.</p>
 
   <div class="steps">
-    <div class="step"><div class="step-content"><strong>Open the Hub</strong><br>Menu: <code>Tools &rarr; FigSync</code>. The window has tabs for <strong>Source</strong>, <strong>Settings</strong>, and <strong>Status</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the Hub</strong><br>Menu: <code>Tools &rarr; FigSync</code>. The window has tabs for <strong>Sync</strong>, <strong>Settings</strong>, <strong>Bridge</strong>, <strong>Tools</strong>, and <strong>Help</strong>.</div></div>
     <div class="step"><div class="step-content"><strong>Pick an authentication method</strong><br>Either paste a <a href="#authentication">Personal Access Token</a> in <strong>Settings &rarr; Auth</strong>, or install the <a href="#plugin">Figma plugin</a> for one-click push. (You can do both; the plugin path wins when both are configured.)</div></div>
-    <div class="step"><div class="step-content"><strong>Paste a Figma URL</strong><br>Copy any frame URL from Figma (right-click frame &rarr; Copy link). Paste into the <strong>Source URL</strong> field in the Hub.</div></div>
+    <div class="step"><div class="step-content"><strong>Paste a Figma URL</strong><br>Copy any frame URL from Figma (right-click frame &rarr; Copy link). Paste into the <strong>URL</strong> field in the Hub's <strong>Sync</strong> tab.</div></div>
     <div class="step"><div class="step-content"><strong>Click Sync</strong><br>The pipeline runs 27 deterministic steps. Status updates per step. First sync takes ~10-90&nbsp;s depending on sprite count.</div></div>
     <div class="step"><div class="step-content"><strong>Inspect the scene</strong><br>A <strong>FigSync Canvas</strong> GameObject appears in the active scene. Frames live under <strong>FigSync Canvas / FigSync Import / Page 1 / &lt;Frame&gt;</strong>. Game view shows the design rendered.</div></div>
     <div class="step"><div class="step-content"><strong>Edit, re-sync, repeat</strong><br>Tweak Figma, click Sync again. FigSync diffs against the previous run; only changed nodes redraw. Your wired references and added components are preserved.</div></div>
@@ -1004,8 +1004,16 @@ details .details-body p:first-child { margin-top: 0; }
   <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127760;</span> The Hub Window</h2>
   <p class="section-desc">One window, every control. <code>Tools &rarr; FigSync</code>.</p>
 
-  <h3>Source tab</h3>
-  <p>The everyday surface. Paste a Figma URL, choose the source mode (Live URL, Offline ZIP, Bridge push), and click <strong>Sync</strong>. A status strip across the top of the window mirrors what's happening behind the scenes &mdash; current step, elapsed time, last warning. A right-side panel shows the last sync's diagnostic summary (node count, sprite count, fonts bound, missing fonts, anything that went sideways).</p>
+  <h3>Sync tab</h3>
+  <p>The everyday surface. Paste a Figma URL, choose the import mode (Live URL, Offline ZIP, Bridge push), and click <strong>Sync</strong>. A status strip across the top of the window mirrors what's happening behind the scenes &mdash; current step, elapsed time, last warning. A right-side panel shows the last sync's diagnostic summary (node count, sprite count, fonts bound, missing fonts, anything that went sideways).</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Which import mode?</strong> Choose in the <strong>Sync</strong> tab's mode dropdown:<br>
+    &bull; <strong>Live URL</strong> &mdash; paste a Figma URL + token; best for quick one-off pulls.<br>
+    &bull; <strong>Bridge</strong> &mdash; push live from the Figma plugin (<strong>Send to Unity</strong>); best for daily iteration, and the only path that imports FigJam.<br>
+    &bull; <strong>Offline ZIP</strong> &mdash; import a saved <code>.figsync.zip</code>; best when Figma and Unity are on different machines, or with no internet.</div>
+  </div>
 
   <h3>Settings tabs</h3>
   <p>Each tab edits one slice of the <code>FigSyncProjectSettings</code> ScriptableObject (lives at <code>Assets/FigSync/FigSyncProjectSettings.asset</code>; commit it). Changes apply on next sync.</p>
