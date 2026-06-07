@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel Lite v1.0.0 — Documentation</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #0f3460;
+    --accent: #e94560;
+    --accent2: #533483;
+    --text: #e0e0e0;
+    --text-muted: #8a8a9a;
+    --green: #4ecca3;
+    --yellow: #f0c040;
+    --red: #e94560;
+    --blue: #4a9ff5;
+    --gold: #f5c518;
+    --border: #2a2a4a;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* ---- HEADER ---- */
+  .hero {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent2) 50%, var(--accent) 100%);
+    padding: 60px 40px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent);
+  }
+  .hero h1 {
+    font-size: 3em;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .hero .version {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero .free-badge {
+    display: inline-block;
+    background: var(--green);
+    color: #07251c;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 700;
+    margin: 0 0 12px 8px;
+  }
+  .hero p {
+    font-size: 1.2em;
+    color: rgba(255,255,255,0.85);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero .cta {
+    display: inline-block;
+    margin-top: 22px;
+    background: var(--gold);
+    color: #1a1a2e;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 1.05em;
+    box-shadow: 0 4px 18px rgba(245, 197, 24, 0.35);
+    transition: transform 0.15s;
+  }
+  .hero .cta:hover { transform: translateY(-2px); }
+
+  /* ---- NAV ---- */
+  .nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .nav a {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 14px 18px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  .nav a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .nav a.upgrade { color: var(--gold); font-weight: 700; }
+
+  /* ---- CONTENT ---- */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  h2 {
+    font-size: 1.8em;
+    margin: 50px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    color: #fff;
+  }
+  h2:first-of-type { margin-top: 10px; }
+
+  h3 {
+    font-size: 1.3em;
+    margin: 30px 0 12px 0;
+    color: var(--blue);
+  }
+
+  h4 {
+    font-size: 1.05em;
+    margin: 20px 0 8px 0;
+    color: var(--green);
+  }
+
+  p { margin: 10px 0; }
+
+  a { color: var(--blue); }
+
+  ul, ol {
+    margin: 10px 0 10px 24px;
+  }
+  li { margin: 4px 0; }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9em;
+    color: var(--green);
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .card h4 { margin-top: 0; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .badge-error { background: var(--red); color: #fff; }
+  .badge-warning { background: var(--yellow); color: #1a1a2e; }
+  .badge-info { background: var(--blue); color: #fff; }
+  .badge-lite { background: var(--green); color: #07251c; }
+  .badge-full { background: var(--gold); color: #1a1a2e; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 0.92em;
+  }
+  th {
+    background: var(--surface2);
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent);
+  }
+  td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:hover td {
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* ---- COMPARISON GRID ---- */
+  .cmp { font-size: 0.95em; }
+  .cmp th { text-align: center; }
+  .cmp th.feat { text-align: left; width: 56%; }
+  .cmp th.lite { background: #143b30; border-bottom-color: var(--green); width: 22%; }
+  .cmp th.full { background: #3a3010; border-bottom-color: var(--gold); width: 22%; }
+  .cmp td { vertical-align: top; }
+  .cmp td.center { text-align: center; font-weight: 700; }
+  .cmp .yes { color: var(--green); }
+  .cmp .no  { color: #6a6a7a; }
+  .cmp .partial { color: var(--yellow); font-weight: 600; font-size: 0.85em; }
+  .cmp tr:hover td { background: rgba(255,255,255,0.03); }
+
+  /* ---- UPGRADE BOX ---- */
+  .upgrade-box {
+    background: linear-gradient(135deg, rgba(245,197,24,0.10), rgba(233,69,96,0.10));
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .upgrade-box .txt { flex: 1 1 320px; }
+  .upgrade-box strong { color: var(--gold); }
+  .upgrade-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: #1a1a2e;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .upgrade-btn:hover { filter: brightness(1.08); }
+
+  .locked-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: #1a1a2e;
+    font-size: 0.7em;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    vertical-align: middle;
+    margin-left: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .shortcut {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 0.85em;
+    color: var(--yellow);
+  }
+
+  .warning-box {
+    background: rgba(233, 69, 96, 0.1);
+    border-left: 4px solid var(--red);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+  }
+
+  .tip-box {
+    background: rgba(78, 204, 163, 0.1);
+    border-left: 4px solid var(--green);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+    font-size: 0.9em;
+  }
+  .footer a { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 30px 16px; }
+    .hero h1 { font-size: 2em; }
+    .container { padding: 20px 14px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<div class="hero">
+  <h1>Sentinel <span style="opacity:.85;font-weight:400;">Lite</span></h1>
+  <div class="version">v1.0.0</div><span class="free-badge">FREE EDITION</span>
+  <p>Project Health &amp; Integrity for Unity &mdash; scan your project for the most critical, build-breaking issues and preview unused assets, for free.</p>
+  <a class="cta" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">★ Unlock the full version →</a>
+</div>
+
+<!-- ================================================================ -->
+<div class="nav">
+  <a href="#comparison">Lite vs Full</a>
+  <a href="#getting-started">Getting Started</a>
+  <a href="#issues-finder">Issues Finder</a>
+  <a href="#project-cleaner">Garbage Finder</a>
+  <a href="#full-features">Full-Version Features</a>
+  <a href="#settings">Settings</a>
+  <a href="#support">Support</a>
+  <a class="upgrade" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">★ Upgrade</a>
+</div>
+
+<!-- ================================================================ -->
+<div class="container">
+
+<!-- ============================ COMPARISON ======================== -->
+<h2 id="comparison">What's in Lite vs the Full Version</h2>
+
+<p>Sentinel <strong>Lite</strong> is a free, focused slice of the full
+<a href="https://assetstore.unity.com/packages/slug/154263" target="_blank"><strong>Sentinel</strong></a> asset.
+It gives you genuinely useful project scanning out of the box; the full version unlocks the complete toolkit.</p>
+
+<table class="cmp">
+  <tr>
+    <th class="feat">Feature</th>
+    <th class="lite">Lite <span class="badge badge-lite">FREE</span></th>
+    <th class="full">Full <span class="badge badge-full">★</span></th>
+  </tr>
+  <tr><td>Whole-project scan, including <em>closed</em> scenes (YAML)</td><td class="center"><span class="yes">✓</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Critical detectors: Missing Script, Missing Reference, Missing Material</td><td class="center"><span class="yes">✓</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>7 extra detectors: Shader Error, Empty UnityEvent, Invalid Layer, Invalid Tag, Unused Component, Empty GameObject, Duplicate Name</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Filter, sort, and navigate issues (ping / open / copy path)</td><td class="center"><span class="yes">✓</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>One-click &amp; batch auto-fix (remove missing scripts, clear broken refs)</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Issue suppression (<code>[SentinelIgnore]</code>, right-click, asset-level)</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Per-type severity configuration</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Garbage finder &mdash; detect &amp; <strong>preview</strong> unused assets + empty folders</td><td class="center"><span class="yes">✓</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Actually <strong>delete</strong> unused assets (reversible trash + backup ZIP)</td><td class="center"><span class="partial">PREVIEW ONLY</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Full deletion preview window + CSV export</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>References finder &mdash; "where is this asset used?"</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Trends, 0–100 health score &amp; history chart</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Baseline lock (tolerate known issues, block <em>new</em> ones)</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Build pre-check (fail the build on errors) &amp; auto-scan on compile</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Slack / Discord scan notifications</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Headless CLI + JSON / JUnit reports + GitHub Actions template</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+  <tr><td>Custom detector extension API</td><td class="center"><span class="no">—</span></td><td class="center"><span class="yes">✓</span></td></tr>
+</table>
+
+<div class="upgrade-box">
+  <div class="txt">
+    <strong>Ready for the whole toolkit?</strong> Unlock auto-fix, the references finder, trends &amp; health,
+    one-click cleanup, CI/CD reporting and custom detectors with the full version of Sentinel.
+  </div>
+  <a class="upgrade-btn" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">Get the full version →</a>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="getting-started">Getting Started</h2>
+
+<h3>Requirements</h3>
+<ul>
+  <li><strong>Unity 2021.3 LTS</strong> or newer (including Unity 6)</li>
+  <li>No external dependencies &mdash; works out of the box</li>
+  <li>Editor-only &mdash; nothing is included in your player builds</li>
+</ul>
+
+<h3>Installation</h3>
+<p>After importing from the Asset Store, Sentinel Lite lives at <code>Assets/Sentinel Lite/</code>. Unity will compile the <code>YourStudio.Sentinel.Editor</code> assembly automatically. No setup required.</p>
+
+<h3>Opening Sentinel Lite</h3>
+<p>Go to <strong>Window &gt; Sentinel Lite &gt; Open Window</strong> or press <span class="shortcut">Ctrl+Shift+Alt+S</span>.</p>
+<p>The main window has a toolbar and four tabs: <strong>Issues</strong>, <strong>Cleaner</strong>, and two preview tabs &mdash; <strong>References</strong> and <strong>Trends</strong> &mdash; that showcase full-version features.</p>
+
+<h3>Your First Scan</h3>
+<ol>
+  <li>Open the Sentinel Lite window</li>
+  <li>Click <strong>"▶ Scan Project"</strong> in the toolbar</li>
+  <li>Wait for the progress bar to finish</li>
+  <li>Review the results in the Issues tab</li>
+</ol>
+
+<div class="tip-box">
+  <strong>Tip:</strong> Lite scans the entire project &mdash; even scenes that aren't open &mdash; for the three most critical, build-breaking issue types. Need the other seven detectors and one-click fixes? See <a href="#full-features">Full-Version Features</a>.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="issues-finder">Issues Finder</h2>
+
+<p>The Issues tab scans your entire project &mdash; including closed scenes (via YAML parsing, without opening them) &mdash; and reports problems organized by severity.</p>
+
+<h3>Detectors Included in Lite</h3>
+
+<table>
+  <tr><th>Detector</th><th>Severity</th><th>What It Finds</th></tr>
+  <tr><td>Missing Script</td><td><span class="badge badge-error">Error</span></td><td>GameObjects with deleted/renamed MonoBehaviour scripts</td></tr>
+  <tr><td>Missing Reference</td><td><span class="badge badge-error">Error</span></td><td>Serialized fields pointing to destroyed/missing assets</td></tr>
+  <tr><td>Missing Material</td><td><span class="badge badge-error">Error</span></td><td>Renderers with null material slots</td></tr>
+</table>
+
+<div class="upgrade-box">
+  <div class="txt">
+    <strong>7 more detectors in the full version:</strong> Shader Error, Empty UnityEvent, Invalid Layer,
+    Invalid Tag, Unused Component, Empty GameObject and Duplicate Name &mdash; plus per-type severity overrides.
+  </div>
+  <a class="upgrade-btn" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">Unlock all detectors →</a>
+</div>
+
+<h3>Columns</h3>
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td><strong>Type</strong></td><td>The issue detector name (e.g., MissingScript, MissingRef)</td></tr>
+  <tr><td><strong>Asset Path</strong></td><td>Full project path to the asset (e.g., <code>Assets/Scenes/Level1.unity</code>)</td></tr>
+  <tr><td><strong>Object Type</strong></td><td>The Unity asset type (e.g., SceneAsset, GameObject, MonoScript)</td></tr>
+  <tr><td><strong>Message</strong></td><td>Human-readable description of the issue</td></tr>
+</table>
+
+<p>Click any column header to sort by that column. Click again to reverse the sort order.</p>
+
+<h3>Filtering</h3>
+<p>The left panel provides filters:</p>
+<ul>
+  <li><strong>Severity Filter</strong> &mdash; toggle visibility of Errors, Warnings, and Infos</li>
+  <li><strong>Issue Type Filter</strong> &mdash; enable/disable specific detector types</li>
+  <li><strong>Sort By</strong> &mdash; dropdown to sort by Severity, Asset, or Type</li>
+</ul>
+
+<h3>Navigating Issues</h3>
+<p>Click any row to ping the asset in the Project window. Right-click a row for:</p>
+<ul>
+  <li><strong>Open Asset</strong> &mdash; opens the asset in its default editor</li>
+  <li><strong>Copy Path</strong> &mdash; copies the asset path to the clipboard</li>
+</ul>
+
+<h4>Auto-Fix &amp; Suppression <span class="locked-tag">FULL VERSION</span></h4>
+<p>In the full version, fixable issues offer a right-click <strong>"Fix: …"</strong> action (e.g. <em>Remove Missing Script</em>, <em>Clear Reference</em>) with full Undo support, a <strong>"Fix All Auto-Fixable"</strong> button, and per-issue / per-asset <strong>suppression</strong> (including the <code>[SentinelIgnore]</code> attribute). These are not available in Lite.</p>
+
+<!-- ================================================================ -->
+<h2 id="project-cleaner">Garbage Finder (Cleaner)</h2>
+
+<p>The Cleaner tab finds <strong>unreferenced assets</strong> &mdash; files that are not reachable from any build scene, Resources folder, or other root &mdash; and shows you exactly how much space they take up. In Lite this is a <strong>read-only preview</strong>.</p>
+
+<h3>How It Works</h3>
+<p>Sentinel uses a <strong>root-tracing algorithm</strong>:</p>
+<ol>
+  <li>Identifies all <strong>root assets</strong> that must be kept (build scenes, Resources, StreamingAssets, scripts, Editor folders, Plugins, asset bundles, Addressables)</li>
+  <li><strong>Recursively traces</strong> every dependency from each root using <code>AssetDatabase.GetDependencies</code></li>
+  <li>Any asset in your project <strong>NOT reached</strong> by this trace is flagged as garbage</li>
+</ol>
+
+<h3>Using the Garbage Finder</h3>
+<ol>
+  <li>Switch to the <strong>Cleaner</strong> tab</li>
+  <li>Click <strong>"Find Deletable Assets"</strong></li>
+  <li>Review the results grouped by folder, with file sizes and total reclaimable space</li>
+  <li>Click any asset to ping it in the Project window</li>
+</ol>
+
+<div class="upgrade-box">
+  <div class="txt">
+    <strong>Lite shows you what's safe to delete. The full version deletes it for you</strong> &mdash; with a
+    reversible <code>SentinelTrash/</code> folder, automatic pre-deletion backup ZIPs, a full preview window,
+    Select-All, empty-folder cleanup and CSV export.
+  </div>
+  <a class="upgrade-btn" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">Unlock cleanup →</a>
+</div>
+
+<div class="tip-box">
+  <strong>Tip:</strong> Make sure scenes/prefabs are saved before scanning &mdash; the dependency tracer reads files on disk, not unsaved in-memory state. Also check that the using scene is in your Build Settings.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="full-features">Full-Version Features</h2>
+
+<p>These capabilities live in the full version of Sentinel. In Lite, the <strong>References</strong> and
+<strong>Trends</strong> tabs are present as previews so you can see what they do.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>References Finder</h4>
+    <p>Answers "<strong>where is this asset used?</strong>" Drop in any asset and get every scene, prefab and asset that references it &mdash; with precise component/property locations, and detection inside <em>unopened</em> scenes via YAML.</p>
+  </div>
+  <div class="card">
+    <h4>Trends &amp; Health Score</h4>
+    <p>A 0–100 project health score after each scan, a delta indicator, and a multi-scan history chart of errors, warnings and totals over time.</p>
+  </div>
+  <div class="card">
+    <h4>Baseline</h4>
+    <p>Lock a baseline of "known issues," then report only what's <strong>new</strong> since then &mdash; ideal for CI: tolerate existing tech debt, block new regressions.</p>
+  </div>
+  <div class="card">
+    <h4>Auto-Fix</h4>
+    <p>One-click fixes for missing scripts and broken references, a "Fix All Auto-Fixable" button, and full Undo support.</p>
+  </div>
+  <div class="card">
+    <h4>CI/CD &amp; CLI</h4>
+    <p>Run headless via <code>-executeMethod</code>, emit JSON + JUnit reports, set exit codes by severity, and drop in the ready-to-use GitHub Actions template that ships with the full version. Optional Slack/Discord notifications.</p>
+  </div>
+  <div class="card">
+    <h4>Custom Detectors</h4>
+    <p>Write your own detectors against the <code>SentinelExtensionBase</code> API to enforce project-specific rules &mdash; auto-discovered via <code>TypeCache</code>.</p>
+  </div>
+</div>
+
+<div class="upgrade-box">
+  <div class="txt"><strong>Everything above is included in the full version of Sentinel.</strong></div>
+  <a class="upgrade-btn" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">★ Get Sentinel (Full) →</a>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="settings">Settings</h2>
+
+<p>Go to <strong>Edit &gt; Project Settings &gt; Sentinel Lite</strong> to configure.</p>
+
+<h3>Scan Scope</h3>
+<ul>
+  <li><strong>Included Folders</strong> &mdash; which folders to scan (default: <code>Assets</code>)</li>
+  <li><strong>Excluded Folders</strong> &mdash; folders to skip (e.g., <code>Assets/ThirdParty</code>)</li>
+</ul>
+<p>You can also right-click a folder in the Project window and choose <strong>Sentinel Lite &gt; Exclude Folder from Scans</strong>.</p>
+
+<h3>Scan Options</h3>
+<table>
+  <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+  <tr><td>Scan Open Scenes</td><td>On</td><td>Include currently open scenes in the scan</td></tr>
+  <tr><td>Scan Closed Scenes</td><td>On</td><td>Scan .unity files via YAML (without opening them)</td></tr>
+</table>
+
+<h3>Configured in the Full Version <span class="locked-tag">FULL VERSION</span></h3>
+<p>The settings screen also lists options that are unlocked in the full version: per-type <strong>severity configuration</strong>, <strong>Auto Scan on Compile</strong>, <strong>Fail Build on Errors</strong>, <strong>baseline</strong> locking, <strong>Slack/Discord</strong> notifications, and the <strong>CI/CD</strong> command line.</p>
+
+<!-- ================================================================ -->
+<h2 id="faq">FAQ</h2>
+
+<div class="card">
+  <h4>What's the difference between Lite and the full version?</h4>
+  <p>Lite includes whole-project issue scanning for the three most critical issue types, plus a read-only unused-asset (garbage) preview. The full version adds seven more detectors, one-click auto-fix, suppression, the references finder, trends &amp; health score, baseline, build gating, notifications, CI/CD, custom detectors, and actual asset deletion with backups. See the <a href="#comparison">comparison grid</a>.</p>
+</div>
+
+<div class="card">
+  <h4>Does Sentinel Lite affect my build size?</h4>
+  <p>No. Sentinel Lite is entirely editor-only. The assembly definition restricts it to the Editor platform. Nothing is included in player builds.</p>
+</div>
+
+<div class="card">
+  <h4>Does Sentinel Lite modify my assets?</h4>
+  <p>No. Lite is read-only: it scans and reports issues, and previews unused assets. It never edits or deletes anything. Asset fixes and deletion are full-version features.</p>
+</div>
+
+<div class="card">
+  <h4>How does the closed scene scanner work?</h4>
+  <p>Sentinel reads <code>.unity</code> files as raw YAML text and uses regex patterns to find missing-script GUIDs and broken references. It never calls <code>EditorSceneManager.OpenScene()</code>, so it's fast and doesn't disrupt your current scene.</p>
+</div>
+
+<div class="card">
+  <h4>Why does the cleaner show an asset I know is used?</h4>
+  <p>Make sure the scene or prefab using that asset is saved, and that the using scene is in your Build Settings. The dependency tracer reads files on disk, not unsaved in-memory state.</p>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="support">Support</h2>
+
+<div class="card" style="text-align: center;">
+  <h3 style="margin-top: 0;">Need Help?</h3>
+  <p style="font-size: 1.1em;">Contact us at <a href="mailto:ragendom@gmail.com"><strong>ragendom@gmail.com</strong></a></p>
+  <p>Please include:</p>
+  <ul style="text-align: left; display: inline-block;">
+    <li>Your Unity version</li>
+    <li>Sentinel Lite version (shown in <strong>Edit &gt; Project Settings &gt; Sentinel Lite</strong>)</li>
+    <li>Steps to reproduce the issue</li>
+    <li>Console error logs if applicable</li>
+  </ul>
+</div>
+
+<div class="upgrade-box" style="margin-top:28px;">
+  <div class="txt"><strong>Like Sentinel Lite?</strong> The full version pays for itself the first time it saves a broken build or reclaims gigabytes of unused assets.</div>
+  <a class="upgrade-btn" href="https://assetstore.unity.com/packages/slug/154263" target="_blank">★ Upgrade to the full version →</a>
+</div>
+
+</div><!-- /container -->
+
+<!-- ================================================================ -->
+<div class="footer">
+  <p><strong>Sentinel Lite v1.0.0</strong> &mdash; Project Health &amp; Integrity for Unity</p>
+  <p>Upgrade to the full version: <a href="https://assetstore.unity.com/packages/slug/154263" target="_blank">assetstore.unity.com/packages/slug/154263</a></p>
+  <p>Support: <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a></p>
+</div>
+
+</body>
+</html>
