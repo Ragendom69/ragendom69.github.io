@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataForge Pro — Documentation</title>
+<style>
+:root {
+  --bg: #0e0e12;
+  --bg-card: #16161d;
+  --bg-card-hover: #1c1c26;
+  --bg-code: #1a1a24;
+  --bg-sidebar: #111117;
+  --text: #e2e2ea;
+  --text-dim: #8888a0;
+  --text-code: #c8c8d8;
+  --accent: #4a9ff5;
+  --accent-light: #74b9ff;
+  --accent-glow: rgba(74,159,245,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #fd79a8;
+  --pink-dim: rgba(253,121,168,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #74b9ff;
+  --blue-dim: rgba(116,185,255,0.12);
+  --border: #2a2a38;
+  --border-light: #33334a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 260px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(14,14,18,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), #00cec9);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(116,185,255,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(253,121,168,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 10px 0 16px 24px; }
+li { margin: 4px 0; }
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.cm { color: #546e7a; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(74,159,245,0.04); }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+summary:hover { color: var(--accent-light); }
+details .details-body { padding: 0 20px 18px; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(116,185,255,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(253,121,168,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-default { background: var(--green-dim); color: var(--green); }
+
+/* ---- FILE TREE ---- */
+.file-tree {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: var(--text-dim);
+}
+
+.file-tree .folder { color: var(--accent-light); font-weight: 600; }
+.file-tree .file { color: var(--text); }
+.file-tree .desc { color: var(--text-dim); }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <div class="header-logo">
+    <div class="dot">&#128202;</div>
+    <span>DataForge</span>
+  </div>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0 &middot; Unity 2021.3+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#pro2"><span class="nav-icon">&#11088;</span> New in Pro 2.0</a>
+    <a href="#basevspro"><span class="nav-icon">&#9878;</span> Base vs Pro</a>
+    <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
+    <a href="#install"><span class="nav-icon">&#128230;</span> Installation</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">The Editor</div>
+    <a href="#window"><span class="nav-icon">&#128444;</span> The DataForge Window</a>
+    <a href="#toolbar"><span class="nav-icon">&#129520;</span> Toolbar Reference</a>
+    <a href="#editing"><span class="nav-icon">&#9999;</span> Editing Cells</a>
+    <a href="#types"><span class="nav-icon">&#128209;</span> Supported Field Types</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Power Features</div>
+    <a href="#multiedit"><span class="nav-icon">&#128257;</span> Bulk / Multi-Edit</a>
+    <a href="#formulas"><span class="nav-icon">&#931;</span> Formulas</a>
+    <a href="#validation"><span class="nav-icon">&#9989;</span> Validation</a>
+    <a href="#formatting"><span class="nav-icon">&#127912;</span> Conditional Formatting</a>
+    <a href="#batch"><span class="nav-icon">&#10133;</span> Batch Create</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Data In &amp; Out</div>
+    <a href="#importexport"><span class="nav-icon">&#128190;</span> Import &amp; Export</a>
+    <a href="#scratchpad"><span class="nav-icon">&#128203;</span> Scratch Pad</a>
+    <a href="#sheets"><span class="nav-icon">&#128193;</span> Google Sheets Sync</a>
+    <a href="#history"><span class="nav-icon">&#128340;</span> Change History</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#settings"><span class="nav-icon">&#9881;</span> Settings</a>
+    <a href="#files"><span class="nav-icon">&#128193;</span> File Structure</a>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Help</div>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero">
+  <h1>DataForge Pro</h1>
+  <p>The professional data workbench for Unity. Edit every ScriptableObject like a spreadsheet &mdash; including nested objects, lists, dictionaries and <code>[SerializeReference]</code> polymorphism &mdash; with relational navigation, bulk-edit pipelines with diff preview, balance snapshots, Data&nbsp;Health validation, headless CI, and a validation-gated AI copilot. All inside the Unity Editor.</p>
+  <div class="hero-badges">
+    <span class="badge badge-blue">Unity 2021.3+</span>
+    <span class="badge badge-green">Deep Serialization Editing</span>
+    <span class="badge badge-yellow">Diff &middot; Pipelines &middot; CI</span>
+    <span class="badge badge-pink">Editor-Only &middot; No Lock-In</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!--                OVERVIEW                      -->
+<!-- ============================================ -->
+<section class="section" id="overview">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#127968;</span> Overview</h2>
+  <p class="section-desc">All your game data assets, in one editable grid.</p>
+
+  <p>
+    <strong>DataForge Pro</strong> is a Unity Editor extension that turns your <code>ScriptableObject</code> assets into
+    an editable spreadsheet. Pick a type &mdash; <code>WeaponData</code>, <code>EnemyData</code>, <code>ItemData</code>,
+    anything &mdash; and every asset of that type becomes a row, every serialized field a column. Edit values inline
+    (including nested objects, lists, dictionaries and <code>[SerializeReference]</code> data &mdash; see
+    <a href="#pro2">New in Pro 2.0</a>), fill cells with formulas, catch bad data with validation rules,
+    colour-code with conditional formatting, and round-trip the whole table through CSV, JSON, XLSX, or Google Sheets.
+  </p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>No more clicking asset-by-asset.</strong> Balancing 80 weapons or 200 items in the Inspector means 80&ndash;200 selections. DataForge shows them all at once &mdash; sort, compare, multi-select, and edit a whole column in a single action.</div>
+  </div>
+
+  <h3>What you can do</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">&#128202; Spreadsheet editing</div>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Every asset of a type as a row, every field as a column. Edit inline with the real Unity property drawers.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128257; Bulk edit</div>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Select many cells and set them all at once &mdash; one value, or an incrementing series.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#931; Formulas</div>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Compute numeric cells from other fields in the same row, with a spreadsheet-style <code>=</code> syntax.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#9989; Validation</div>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Per-field rules &mdash; Range, Required, Unique, Regex, Not-Null &mdash; surfaced live in the grid.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#127912; Conditional formatting</div>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Colour rows by value so outliers and balance problems jump out at a glance.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128193; Sheets &amp; files</div>
+      <p style="color:var(--text-dim);font-size:14px;margin:0;">Import/export CSV, TSV and JSON, or two-way sync a type with Google Sheets.</p>
+    </div>
+  </div>
+
+  <h3>Typical Workflow</h3>
+  <div class="flow">
+    <span class="flow-node">&#128209; Pick a type</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#9999;&#65039; Edit in the grid</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128257; Bulk-edit &amp; formulas</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#9989; Validate</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128190; Export / Sync</span>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Editor-only.</strong> DataForge is a Unity Editor tool. Its scripts live in an <code>Editor/</code> folder and are <strong>never compiled into your game build</strong> &mdash; zero runtime footprint. It edits the same <code>.asset</code> files you already ship.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              NEW IN PRO 2.0                  -->
+<!-- ============================================ -->
+<section class="section" id="pro2">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#11088;</span> New in Pro 2.0</h2>
+  <p class="section-desc">Everything below ships in the new UI Toolkit workbench: <strong>Window &rarr; DataForge Pro &rarr; Open DataForge Pro</strong> (Ctrl+Alt+Shift+D). The classic grid remains available as <em>Classic Grid (Legacy)</em>.</p>
+
+  <h3>&#129517; Deep serialization editing &mdash; the headline</h3>
+  <p>
+    Pro edits the <strong>entire Unity-serializable surface</strong>, not just flat top-level fields:
+  </p>
+  <ul>
+    <li><strong>Nested <code>[Serializable]</code> classes/structs</strong> flatten into dot-notation columns (<code>stats.strength</code>) and stay editable inline.</li>
+    <li><strong>Lists &amp; arrays</strong> appear as expandable cells (&ldquo;List (3) &#9654;&rdquo;) that open the <strong>master-detail pane</strong> with Unity&rsquo;s native add/remove/reorder editing.</li>
+    <li><strong>Serialized dictionaries</strong> (the common SerializableDictionary pattern) are detected and edited as first-class data.</li>
+    <li><strong><code>[SerializeReference]</code> polymorphism</strong>: each managed-reference field gets a <strong>type picker</strong> listing every concrete candidate. Type swaps are an explicit, confirmed, single-Undo migration &mdash; never a silent write.</li>
+  </ul>
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Custom drawers render correctly.</strong> The detail pane hosts the real Inspector, so custom PropertyDrawers and Odin-decorated types display exactly as they do everywhere else.</div>
+  </div>
+
+  <h3>&#128279; Relational navigation &mdash; native assets, zero lock-in</h3>
+  <ul>
+    <li>Every object-reference cell has a <strong>&rarr; follow button</strong> that opens the referenced asset&rsquo;s own table and selects its row.</li>
+    <li>The detail pane&rsquo;s <strong>References</strong> panel answers <em>&ldquo;who points here?&rdquo;</em> via a project-wide reference graph, plus all outgoing references &mdash; one click jumps to either end.</li>
+    <li><strong>Referential-integrity scanning</strong> flags broken/dangling references in Data Health and fails CI.</li>
+  </ul>
+
+  <h3>&#128202; Multi-table workspace</h3>
+  <ul>
+    <li><strong>Tabs</strong>: every type you open becomes a tab; the layout persists to <code>ProjectSettings/DataForgeProWorkspace.json</code> so teams can commit and share it.</li>
+    <li><strong>Saved Views</strong>: name a filter+sort combination and re-apply it from the Views menu.</li>
+    <li><strong>Global Search (Ctrl+Shift+F)</strong>: search every type&rsquo;s full nested leaf surface at once; double-click a hit to jump to it.</li>
+    <li><strong>Command Palette (Ctrl+K)</strong>: fuzzy-find any action or table.</li>
+    <li><strong>Universal Scanner</strong>: the type menu also lists MonoBehaviours &mdash; edit prefab components in the same grid.</li>
+  </ul>
+
+  <h3>&#128257; Bulk-edit pipelines, smart fill &amp; computed columns</h3>
+  <ul>
+    <li><strong>Pipelines</strong>: chain Set / Add / Multiply / Clamp / Sequence / Random / Find-Replace / Regex over a column (all visible rows or just the selection), <strong>preview the exact red&rarr;green diff</strong>, then apply as <strong>one Undo</strong> with an automatic backup.</li>
+    <li><strong>Smart Fill &#8595;</strong>: select seed rows and Pro detects the series &mdash; linear (10, 20, 30&hellip;), geometric (2, 4, 8&hellip;), or numbered names (<code>Goblin_01 &rarr; Goblin_02</code>, padding preserved) &mdash; and fills downward, previewed first.</li>
+    <li><strong>Computed columns (formula v2)</strong>: the <em>&fnof;x Computed</em> workbench evaluates expressions with <code>{field}</code> references, arithmetic, <code>ABS/MIN/MAX/CLAMP/ROUND/FLOOR/CEIL/IF</code> and <strong>aggregates</strong> <code>SUM/AVG/MEDIAN/COUNT/MINOF/MAXOF({field})</code> across every row &mdash; read-only by default, with an explicit <strong>bake-to-field</strong> that routes through the previewed pipeline.</li>
+    <li><strong>Deep Clone</strong>: duplicate rows with <code>[SerializeReference]</code> instances <em>copied</em> (never shared) and cross-references between cloned assets remapped to the clones.</li>
+  </ul>
+
+  <h3>&#128248; Snapshots, diff &amp; patch notes</h3>
+  <p>
+    Capture a named snapshot before a balance pass, then <strong>Snapshots &rarr; Diff vs</strong> shows the cell-level red/green delta of everything that changed since &mdash; and exports ready-to-paste <strong>Markdown or CSV patch notes</strong>.
+  </p>
+
+  <h3>&#9989; Data Health &amp; headless CI</h3>
+  <ul>
+    <li>Project-wide rule engine (Required, Range with clamp-autofix, Unique, Reference Integrity, Aggregate Sum, custom C#) with a Data&nbsp;Health score and one-click bulk autofix.</li>
+    <li>A real CLI for CI gates:</li>
+  </ul>
+  <pre><code># Validate as a PR gate (exit 1 on violations; JUnit/SARIF for annotations)
+Unity -batchmode -nographics -quit -projectPath . ^
+  -executeMethod DataForge.Editor.Pro.DataForgeCli.Run ^
+  --df-validate --df-report Logs/df.json --df-junit Logs/df.xml --df-sarif Logs/df.sarif
+
+# Export / import (CSV, JSON, native XLSX) &mdash; imports match rows by the Asset key column
+... --df-export --df-type WeaponData --df-format xlsx --df-out Build/weapons.xlsx
+... --df-import --df-type WeaponData --df-in Build/weapons.xlsx --df-dry-run
+
+# Run a saved pipeline spec headlessly
+... --df-run-pipeline specs/buff-legendaries.json --df-dry-run</code></pre>
+  <p>
+    <strong>Native .xlsx</strong> read/write needs no Excel and no extra packages, and the new
+    <strong>cross-platform encrypted secret store</strong> brings Google-sync credential storage to Linux.
+  </p>
+
+  <h3>&#129302; AI copilot, anomaly detection &amp; MCP &mdash; gated by design</h3>
+  <ul>
+    <li><strong>Copilot (AI &rarr; Copilot)</strong>: bring your own key (Anthropic, OpenAI, or any OpenAI-compatible endpoint &mdash; point it at Ollama/LM&nbsp;Studio for fully offline use). Your instruction (&ldquo;buff every Legendary&rsquo;s damage 15%, cap 999&rdquo;) is compiled by the model into a <em>pipeline spec</em>, which is <strong>schema-validated, diff-previewed, and applied by you as one Undo</strong>. There is no code path for the AI to write data directly. Keys live in the OS secret store.</li>
+    <li><strong>Anomaly Scan (AI &rarr; Anomaly Scan)</strong>: pure statistics (median + MAD robust z-scores), no key required &mdash; flags outliers like &ldquo;this sword costs 10&times; its tier peers&rdquo; and proposes Range rules from the healthy distribution.</li>
+    <li><strong>MCP server (AI &rarr; Start MCP Server)</strong>: exposes safe, transactional tools (<code>df_query</code>, <code>df_preview_pipeline</code> &mdash; always dry, <code>df_apply_pipeline</code> &mdash; requires <code>confirm=true</code>, <code>df_validate</code>&hellip;) to agents like Claude Code over loopback HTTP:</li>
+  </ul>
+  <pre><code>// .mcp.json
+{ "mcpServers": { "dataforge-pro": { "type": "http", "url": "http://127.0.0.1:47821/mcp" } } }</code></pre>
+
+  <h3>&#128737;&#65039; The trust layer (always on)</h3>
+  <ul>
+    <li><strong>Every</strong> mutation &mdash; manual cell edit, pipeline, smart fill, bake, import, CLI, AI, MCP &mdash; funnels through <strong>one transaction layer</strong>: automatic file backup before the write, a single native Undo group, and a change-history batch.</li>
+    <li><strong>Restore Last Backup</strong> is one click (Ctrl+K &rarr; &ldquo;Restore Last Backup&rdquo;).</li>
+    <li>The live <strong>perf chip</strong> shows rows &middot; columns &middot; cells &middot; load time &middot; last-edit time on every session.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Extensible.</strong> Custom cell renderers, value operations, validation rules and palette commands are small public C# seams &mdash; see <code>Documentation/ExtensibilityAPI.md</code>.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              BASE vs PRO                     -->
+<!-- ============================================ -->
+<section class="section" id="basevspro">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9878;</span> Base vs Pro — at a glance</h2>
+  <p class="section-desc">Everything DataForge 1.x (Base) already did — and what Pro 2.0 adds on top.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:46%">Feature</th>
+        <th style="width:27%">DataForge <span style="color:var(--text-dim)">(Base 1.x)</span></th>
+        <th style="width:27%;background:var(--accent-glow);color:var(--accent-light)">DataForge <strong>Pro 2.0</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--text-dim);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Core spreadsheet — in both</td></tr>
+      <tr><td>Spreadsheet grid (every asset a row, every field a column)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>All flat field types (int &middot; float &middot; string &middot; bool &middot; enum &middot; vectors &middot; Color &middot; Gradient &middot; Curve &middot; refs)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Bulk / multi-edit (set-all + series fill)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Formulas (<code>=</code> cells, <code>{field}</code> refs)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004; <span style="color:var(--text-dim)">+ v2 below</span></td></tr>
+      <tr><td>Validation rules (Required &middot; Range &middot; Unique &middot; Regex &middot; Ref-not-null)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004; <span style="color:var(--text-dim)">+ Health below</span></td></tr>
+      <tr><td>Conditional formatting</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Batch create &middot; Scratch pad &middot; Change history + Undo</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>CSV / TSV / JSON import &amp; export</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Google Sheets sync (push / pull)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Deep serialization &amp; relations — Pro only</td></tr>
+      <tr><td>Nested <code>[Serializable]</code> objects as editable dot-notation columns</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Lists / arrays &amp; serialized dictionaries (master-detail editing)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td><code>[SerializeReference]</code> polymorphism — per-element type picker + undo-safe migration</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Custom PropertyDrawers / Odin render correctly (detail pane)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>FK click-to-follow &middot; reverse references (&ldquo;who points here?&rdquo;) &middot; integrity scan</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Universal Scanner — edit prefab components in the same grid</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Workbench &amp; authoring power — Pro only</td></tr>
+      <tr><td>UI Toolkit virtualized grid + live perf chip</td><td style="color:var(--pink)">&#10008; <span style="color:var(--text-dim)">IMGUI</span></td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Multi-table tabs + saved Views (committable workspace)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Filter query language (<code>damage&gt;50 rarity=Legendary name~sword</code>)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Global search across every type (Ctrl+Shift+F) &middot; Command palette (Ctrl+K)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Bulk-edit <strong>pipelines</strong> with red/green diff preview (one Undo)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Smart Fill (detects linear / geometric / name-pattern series)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Computed columns v2 — aggregates (SUM/AVG/MEDIAN&hellip;) + bake-to-field</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Deep Clone (duplicates <code>[SerializeReference]</code>, remaps internal refs)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Balance snapshots &middot; cell-level diff &middot; Markdown/CSV patch notes</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Data Health dashboard — relational rules, score, one-click autofix</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Platform, trust &amp; AI — Pro only</td></tr>
+      <tr><td>Headless CLI for CI — validate (JUnit/SARIF), import/export, run pipelines</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Native <code>.xlsx</code> read/write (no Excel, no extra packages)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Transactional writes — auto-backup before every bulk op + restore-last-good</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Linux support for Sheets credentials (encrypted secret store)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>AI copilot — compiles English to a validated, diff-previewed pipeline (BYO key / offline)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Anomaly detection (offline statistics) + proposed validation rules</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>MCP server — safe, transactional tools for AI agents (dry-run by default)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Extensibility API — custom cell renderers, ops, rules, commands</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+    </tbody>
+  </table>
+
+  <p style="color:var(--text-dim);font-size:12.5px;margin-top:10px">
+    &#10004; included &middot; &#10008; Pro only. Base projects upgrade in place &mdash; Pro edits the same native
+    <code>.asset</code> files with zero migration, and the classic grid stays available as
+    <em>Window &rarr; DataForge Pro &rarr; Classic Grid (Legacy)</em>.
+  </p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Why upgrade in one sentence:</strong> Pro edits the data Base (and every competitor) can&rsquo;t touch
+    &mdash; nested objects, lists, dictionaries, <code>[SerializeReference]</code> &mdash; and wraps every write in a
+    previewed, backed-up, one-Undo transaction.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              QUICK START                     -->
+<!-- ============================================ -->
+<section class="section" id="quickstart">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9889;</span> Quick Start</h2>
+  <p class="section-desc">From import to your first bulk edit in under two minutes.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import the package</strong><br>Import DataForge from the Asset Store. All files live under <code>Assets/DataForge Pro/</code>. If prompted, install the Newtonsoft.Json dependency &mdash; see <a href="#install">Installation</a>.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the window</strong><br>Go to <code>Window &rarr; DataForge &rarr; Open DataForge</code> (shortcut <code>Ctrl+Alt+Shift+D</code>). A welcome popup greets you on first open.</div></div>
+    <div class="step"><div class="step-content"><strong>Pick a type</strong><br>Click the <strong>type dropdown</strong> at the top-left of the toolbar and choose any of your <code>ScriptableObject</code> types. Every asset of that type loads as a row.</div></div>
+    <div class="step"><div class="step-content"><strong>Edit a cell</strong><br>Click a cell and type. The change is written straight to the asset &mdash; just like editing in the Inspector, with full Undo support.</div></div>
+    <div class="step"><div class="step-content"><strong>Try a bulk edit</strong><br>Drag-select a column of cells, then enter one value to set them all &mdash; or an incrementing range. See <a href="#multiedit">Bulk / Multi-Edit</a>.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>No assets showing?</strong> DataForge lists every concrete <code>ScriptableObject</code> type that has at least one asset in the project. If the dropdown is empty, create a ScriptableObject asset first, or use <strong>+ Create</strong> to batch-create some.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              INSTALLATION                    -->
+<!-- ============================================ -->
+<section class="section" id="install">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128230;</span> Installation</h2>
+  <p class="section-desc">One dependency &mdash; DataForge installs it for you.</p>
+
+  <p>
+    DataForge depends on <strong>Newtonsoft.Json</strong> (<code>com.unity.nuget.newtonsoft-json</code>), an official Unity
+    package. It is used for JSON import/export, the change-history store, and Google Sheets sync.
+  </p>
+
+  <h3>Automatic setup</h3>
+  <p>
+    When DataForge loads in a project that doesn't have Newtonsoft.Json yet, it opens a <strong>Setup Required</strong>
+    popup. Click <strong>Install Newtonsoft.Json</strong> and DataForge adds the package through the Unity Package
+    Manager &mdash; no manifest editing required. Unity recompiles, and DataForge is ready.
+  </p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Import DataForge</strong> from the Asset Store.</div></div>
+    <div class="step"><div class="step-content">If Newtonsoft.Json is missing, the <strong>Setup Required</strong> window appears automatically.</div></div>
+    <div class="step"><div class="step-content">Click <strong>Install Newtonsoft.Json</strong> and confirm. Unity downloads the package and recompiles.</div></div>
+    <div class="step"><div class="step-content">Done &mdash; open <code>Window &rarr; DataForge &rarr; Open DataForge</code>.</div></div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Already have it?</strong> Many projects ship Newtonsoft.Json already (it is a dependency of several Unity packages). If so, the setup popup never appears. You can re-check any time via <code>Window &rarr; DataForge &rarr; Check Newtonsoft.Json Dependency</code>.</div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;&#65039;</span>
+    <div><strong>Prefer to install it manually?</strong> Open <code>Window &rarr; Package Manager</code>, switch to <em>Unity Registry</em>, search for <em>Newtonsoft Json</em>, and click Install. DataForge picks it up on the next recompile.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           THE DATAFORGE WINDOW               -->
+<!-- ============================================ -->
+<section class="section" id="window">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128444;</span> The DataForge Window</h2>
+  <p class="section-desc">A toolbar on top, your data grid below.</p>
+
+  <p>Open it via <code>Window &rarr; DataForge &rarr; Open DataForge</code>. The window is dockable and resizable, and has two areas:</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Area</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Toolbar</strong></td><td>Type selector, search, column visibility, create/import/export, Google Sheets controls, validation, history and settings. See <a href="#toolbar">Toolbar Reference</a>.</td></tr>
+      <tr><td><strong>Data grid</strong></td><td>The spreadsheet itself &mdash; one row per asset, one column per serialized field, with a frozen header and pagination.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The data grid</h3>
+  <ul>
+    <li><strong>Rows</strong> are the assets of the selected type. <strong>Columns</strong> are their serialized fields.</li>
+    <li><strong>Click</strong> a cell to select it; <strong>click + drag</strong> or <strong>Shift+click</strong> to select a range; <strong>Ctrl+click</strong> rows to multi-select.</li>
+    <li>Arrow keys, <code>Tab</code> and <code>Enter</code> move the active cell, just like a spreadsheet.</li>
+    <li>The header row stays frozen while you scroll. Column headers can be shown in <strong>Friendly</strong> or raw form (see <a href="#settings">Settings</a>).</li>
+    <li>Large tables are <strong>paginated</strong> &mdash; the page size is configurable in Settings.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>State is remembered.</strong> DataForge restores your last selected type, search filter, page, scroll position and active cell when you reopen the window.</div>
+  </div>
+
+  <h3>Search &amp; filter</h3>
+  <p>The search box in the toolbar filters rows live as you type &mdash; matching against the asset name and cell values. Clear it to show every row again.</p>
+
+  <h3>Column visibility</h3>
+  <p>Click <strong>Columns</strong> in the toolbar to toggle individual columns on or off, or choose <strong>Show All Columns</strong>. Hiding columns you aren't editing keeps wide tables readable.</p>
+</section>
+
+<!-- ============================================ -->
+<!--              TOOLBAR REFERENCE               -->
+<!-- ============================================ -->
+<section class="section" id="toolbar">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#129520;</span> Toolbar Reference</h2>
+  <p class="section-desc">Every control across the top of the window.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Type dropdown</strong></td><td>Selects which <code>ScriptableObject</code> type to edit. Types are grouped by namespace, with a <strong>Recent</strong> section for your last five.</td></tr>
+      <tr><td><strong>Search</strong></td><td>Live row filter by asset name or cell content.</td></tr>
+      <tr><td><strong>Columns</strong></td><td>Show/hide individual columns, or show them all.</td></tr>
+      <tr><td><strong>+ Create</strong></td><td>Opens the <a href="#batch">Batch Create</a> dialog to generate many new assets at once.</td></tr>
+      <tr><td><strong>Export</strong></td><td>Drop-down: export the current table to <strong>CSV</strong>, <strong>TSV</strong>, or <strong>JSON</strong>.</td></tr>
+      <tr><td><strong>Import</strong></td><td>Import values into the table from a CSV/TSV/JSON file.</td></tr>
+      <tr><td><strong>Format</strong></td><td>Opens the <a href="#formatting">Conditional Formatting</a> editor for the current type. Also available by right-clicking a column header.</td></tr>
+      <tr><td><strong>Push</strong> / <strong>Pull</strong></td><td>Send the table to, or pull it from, the bound Google Sheet. See <a href="#sheets">Google Sheets Sync</a>.</td></tr>
+      <tr><td><strong>Google status / Bind</strong></td><td>Shows the connection and bound-spreadsheet state; <strong>Bind</strong> picks the project spreadsheet via Google Picker.</td></tr>
+      <tr><td><strong>Validate View</strong></td><td>Validates all loaded rows now. (Hidden as a manual action when <em>Auto Validate</em> is on.)</td></tr>
+      <tr><td><strong>Issue count</strong></td><td>Appears when validation finds problems &mdash; click to filter the grid to only the rows with issues.</td></tr>
+      <tr><td><strong>History</strong></td><td>Opens the <a href="#history">Change History</a> window.</td></tr>
+      <tr><td><strong>Settings</strong> <span class="tag" style="background:var(--blue-dim);color:var(--blue)">gear</span></td><td>Opens DataForge <a href="#settings">Settings</a> and Google Sheets configuration.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Responsive layout.</strong> On a narrow window the toolbar automatically splits into two rows so no control is clipped.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              EDITING CELLS                   -->
+<!-- ============================================ -->
+<section class="section" id="editing">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9999;</span> Editing Cells</h2>
+  <p class="section-desc">It writes to the real asset &mdash; with full Undo.</p>
+
+  <p>
+    Editing a cell in DataForge is editing the asset. Every change goes through Unity's serialization and is
+    registered with the editor <strong>Undo</strong> system, so <code>Ctrl+Z</code> works exactly as it does in the
+    Inspector. Object-reference, colour, enum, curve and gradient cells open the same property drawers Unity uses.
+  </p>
+
+  <h3>Keyboard &amp; mouse</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Action</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Click a cell</td><td>Selects it and makes it the active cell.</td></tr>
+      <tr><td>Arrow keys / <code>Tab</code> / <code>Enter</code></td><td>Moves the active cell around the grid.</td></tr>
+      <tr><td>Click + drag, or <code>Shift</code>+click</td><td>Selects a rectangular range of cells.</td></tr>
+      <tr><td><code>Ctrl</code>+click rows</td><td>Adds rows to a multi-row selection.</td></tr>
+      <tr><td><code>Ctrl+C</code> / <code>Ctrl+V</code></td><td>Copy and paste cell values &mdash; within DataForge or to/from a real spreadsheet.</td></tr>
+      <tr><td>Type into a selected range</td><td>Triggers a <a href="#multiedit">bulk edit</a> across the whole selection.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Smart paste.</strong> Paste a block of tab-separated values copied straight from Excel or Google Sheets and DataForge maps it onto the grid starting at the active cell.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           SUPPORTED FIELD TYPES              -->
+<!-- ============================================ -->
+<section class="section" id="types">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128209;</span> Supported Field Types</h2>
+  <p class="section-desc">DataForge renders an appropriate editor for each serialized field.</p>
+
+  <p>Each column is rendered with a type-aware cell editor. The following field types are supported as first-class columns:</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Category</th><th>Field types</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Numbers</strong></td><td><code>int</code>, <code>float</code> &mdash; also valid as <a href="#formulas">formula</a> targets</td></tr>
+      <tr><td><strong>Text &amp; flags</strong></td><td><code>string</code>, <code>bool</code>, <code>enum</code>, <code>LayerMask</code></td></tr>
+      <tr><td><strong>Vectors</strong></td><td><code>Vector2</code>, <code>Vector3</code>, <code>Vector4</code></td></tr>
+      <tr><td><strong>Visual</strong></td><td><code>Color</code>, <code>Gradient</code>, <code>AnimationCurve</code></td></tr>
+      <tr><td><strong>References</strong></td><td>Any <code>UnityEngine.Object</code> reference (assets, prefabs, sprites&hellip;)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Unsupported fields.</strong> Fields that don't map cleanly to a grid cell (deeply nested custom structs, some generic collections) are shown as read-only placeholder cells so the column still lines up &mdash; edit those in the Inspector. DataForge never alters data it can't represent.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           BULK / MULTI-EDIT                  -->
+<!-- ============================================ -->
+<section class="section" id="multiedit">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128257;</span> Bulk / Multi-Edit</h2>
+  <p class="section-desc">Change dozens of assets in a single action.</p>
+
+  <p>
+    Select a range of cells &mdash; a column, a block, or a multi-row selection &mdash; and edit them all at once.
+    This is the core reason DataForge exists: balancing data means changing many values together.
+  </p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Select the cells</strong><br>Drag across a column, <code>Shift</code>+click a range, or <code>Ctrl</code>+click rows.</div></div>
+    <div class="step"><div class="step-content"><strong>Enter a value</strong><br>Type the value you want. It is applied to every selected cell of a compatible type.</div></div>
+    <div class="step"><div class="step-content"><strong>Confirm</strong><br>The change is applied as one batch &mdash; and can be reverted as one batch from <a href="#history">History</a>.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Series fills.</strong> For numeric columns you can fill an incrementing series instead of a single repeated value &mdash; great for IDs, sort orders and tier numbers.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>One undo step.</strong> A bulk edit is grouped &mdash; a single <code>Ctrl+Z</code> (or one <em>Revert Batch</em> in History) undoes the entire operation.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              FORMULAS                        -->
+<!-- ============================================ -->
+<section class="section" id="formulas">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#931;</span> Formulas</h2>
+  <p class="section-desc">Compute numeric cells from other fields in the same row.</p>
+
+  <p>
+    Any cell value that begins with <code>=</code> is treated as a <strong>formula</strong>. Formulas reference other
+    fields of the <em>same row</em> by wrapping the field name in braces &mdash; <code>{fieldName}</code> &mdash; and
+    are evaluated to a number that is written into the cell.
+  </p>
+
+  <h3>Examples</h3>
+  <pre><code><span class="cm">// double the base damage</span>
+={damage} * 2
+
+<span class="cm">// derive DPS from damage and attack speed</span>
+={damage} * {attackSpeed}
+
+<span class="cm">// clamp a computed price into a sensible band</span>
+=CLAMP({basePrice} * 1.15, 10, 999)
+
+<span class="cm">// round a value to a whole number</span>
+=ROUND({weight} * 0.45)</code></pre>
+
+  <h3>Operators</h3>
+  <p>Standard arithmetic is supported: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and parentheses for grouping.</p>
+
+  <h3>Built-in functions</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Function</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>ABS(x)</code></td><td>Absolute value.</td></tr>
+      <tr><td><code>MIN(a, b, &hellip;)</code> / <code>MAX(a, b, &hellip;)</code></td><td>Smallest / largest of the arguments.</td></tr>
+      <tr><td><code>CLAMP(x, lo, hi)</code></td><td>Constrains <code>x</code> to the range <code>[lo, hi]</code>.</td></tr>
+      <tr><td><code>ROUND(x)</code> / <code>FLOOR(x)</code> / <code>CEIL(x)</code></td><td>Rounding to nearest / down / up.</td></tr>
+      <tr><td><code>LERP(a, b, t)</code></td><td>Linear interpolation between <code>a</code> and <code>b</code>.</td></tr>
+      <tr><td><code>IF(cond, a, b)</code></td><td>Returns <code>a</code> when the condition holds, otherwise <code>b</code>.</td></tr>
+      <tr><td><code>LEN(s)</code></td><td>Length of a text value.</td></tr>
+      <tr><td><code>UPPER(s)</code> / <code>LOWER(s)</code> / <code>CONCAT(&hellip;)</code></td><td>Text transforms.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;&#65039;</span>
+    <div><strong>Formula columns are numeric.</strong> A formula can only be committed to an <code>int</code> or <code>float</code> column. If a referenced field is missing or a formula can't be parsed, DataForge reports the error instead of writing a bad value.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              VALIDATION                      -->
+<!-- ============================================ -->
+<section class="section" id="validation">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#9989;</span> Validation</h2>
+  <p class="section-desc">Catch bad data before it ships.</p>
+
+  <p>
+    DataForge can check each field against rules and surface failures right in the grid. Rules are attached
+    per field and stored in a per-type <strong>validation profile</strong> asset.
+  </p>
+
+  <h3>Rule types</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Rule</th><th>Checks that&hellip;</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Required</strong></td><td>The field has a value &mdash; not empty, not zero-default.</td></tr>
+      <tr><td><strong>Range</strong></td><td>A numeric value falls between a minimum and maximum.</td></tr>
+      <tr><td><strong>Unique</strong></td><td>No two assets share the same value in this column (great for IDs and names).</td></tr>
+      <tr><td><strong>Regex</strong></td><td>A text value matches a regular-expression pattern.</td></tr>
+      <tr><td><strong>Not Null Ref</strong></td><td>An object-reference field is assigned &mdash; no missing references.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>How it runs</h3>
+  <ul>
+    <li>With <strong>Auto Validate on Edit</strong> enabled (the default), DataForge revalidates after every edit and when the window regains focus.</li>
+    <li>Otherwise, click <strong>Validate View</strong> in the toolbar to run validation on demand.</li>
+    <li>When issues are found, an <strong>issue count</strong> appears in the toolbar &mdash; red for errors, amber for warnings. Click it to filter the grid down to just the offending rows.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Where profiles live.</strong> Validation profiles are saved as assets under <code>Assets/Editor/DataForge/ValidationProfiles/</code>, one per ScriptableObject type. Because they sit in an <code>Editor/</code> folder they never enter your build.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           CONDITIONAL FORMATTING             -->
+<!-- ============================================ -->
+<section class="section" id="formatting">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#127912;</span> Conditional Formatting</h2>
+  <p class="section-desc">Let the data colour itself.</p>
+
+  <p>
+    Conditional formatting colours a row's background when one of its cells matches a condition, so patterns and
+    outliers are obvious without reading every number. Rules are defined per ScriptableObject type and persist with
+    your DataForge settings.
+  </p>
+
+  <h3>Adding a rule</h3>
+  <ul>
+    <li>Click <strong>Format</strong> in the toolbar &mdash; or right-click a column header and choose <strong>Conditional Formatting&hellip;</strong> &mdash; to open the editor.</li>
+    <li>Click <strong>Add Rule</strong>, then pick the <strong>column</strong> to test, a <strong>condition</strong>, a <strong>value</strong>, and the <strong>row colour</strong>.</li>
+    <li>Switch a rule off with its checkbox, or <strong>Remove</strong> it. The grid updates instantly as you edit.</li>
+  </ul>
+
+  <h3>Conditions</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Condition</th><th>Matches when the cell&hellip;</th></tr></thead>
+    <tbody>
+      <tr><td><strong>=</strong> , <strong>&ne;</strong></td><td>Equals / does not equal the value (text comparison of the displayed value).</td></tr>
+      <tr><td><strong>&gt;</strong> , <strong>&lt;</strong> , <strong>&ge;</strong> , <strong>&le;</strong></td><td>Compares numerically &mdash; both the cell and the value must parse as numbers.</td></tr>
+      <tr><td><strong>contains</strong></td><td>The displayed text contains the value as a substring.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Typical uses</h3>
+  <ul>
+    <li>Colour rows whose <code>damage</code> is <code>&gt;</code> a threshold so spikes jump out.</li>
+    <li>Tint rows by rarity tier &mdash; one rule per tier (common, rare, legendary).</li>
+    <li>Flag rows with a <code>price</code> of <code>0</code> red so unfinished economy data stands out.</li>
+    <li>Mark rows where <code>isEnabled</code> is <code>true</code>.</li>
+  </ul>
+
+  <p>When several rules match the same row, the <strong>first enabled rule wins</strong>. Rules are evaluated as the grid draws, so formatting updates the instant a value changes.</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Formatting is cosmetic.</strong> Conditional formatting only changes how rows <em>look</em> in DataForge &mdash; it never modifies the asset or affects your build.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Row background colour.</strong> In the editor grid, formatting sets the matched row's <em>background</em> colour. Per-cell text colour and bold aren't applied because grid cells use Unity's native inline field editors.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              BATCH CREATE                    -->
+<!-- ============================================ -->
+<section class="section" id="batch">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10133;</span> Batch Create</h2>
+  <p class="section-desc">Generate many new assets in one dialog.</p>
+
+  <p>Click <strong>+ Create</strong> in the toolbar to open the Batch Create window and stamp out a run of new assets of the selected type.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Option</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Count</strong></td><td>How many assets to create.</td></tr>
+      <tr><td><strong>Prefix / Suffix</strong></td><td>Text wrapped around the generated number, e.g. <code>Weapon_</code> &hellip; <code>_v2</code>.</td></tr>
+      <tr><td><strong>Start Index</strong></td><td>The lowest number to use. Existing files numbered below this are ignored.</td></tr>
+      <tr><td><strong>Padding</strong></td><td>Zero-pads the number &mdash; padding <code>3</code> gives <code>001</code>, <code>002</code>, &hellip;</td></tr>
+      <tr><td><strong>Numbering</strong></td><td><em>Append After Max</em> continues past the highest existing number; <em>Fill First Gap</em> reuses the first missing number.</td></tr>
+      <tr><td><strong>Folder</strong></td><td>The destination folder under <code>Assets/</code>. Use the <code>...</code> button to browse.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>A live <strong>Preview</strong> shows the name of the first asset before you commit. Click <strong>Create</strong> and the new rows appear in the grid, ready to edit.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           IMPORT & EXPORT                    -->
+<!-- ============================================ -->
+<section class="section" id="importexport">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128190;</span> Import &amp; Export</h2>
+  <p class="section-desc">Round-trip your data through standard file formats.</p>
+
+  <h3>Export</h3>
+  <p>The <strong>Export</strong> toolbar drop-down writes the current table to a file:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Format</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CSV</strong></td><td>Spreadsheets, version control, sharing with non-Unity tooling.</td></tr>
+      <tr><td><strong>TSV</strong></td><td>Tab-separated &mdash; pastes cleanly into Excel and Google Sheets.</td></tr>
+      <tr><td><strong>JSON</strong></td><td>Structured export for build pipelines and external scripts.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Import</h3>
+  <p>
+    The <strong>Import</strong> button reads a CSV, TSV or JSON file back into the current table, matching columns by
+    header and updating the corresponding asset fields. After an import the grid refreshes so you can review and
+    validate the new values.
+  </p>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;&#65039;</span>
+    <div><strong>Import writes to your assets.</strong> Importing updates real <code>.asset</code> files. The changes are undoable, but it's wise to have your project under version control before a large import.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Headers matter.</strong> Import maps columns by their header names. Export first to get a file with the exact headers DataForge expects, edit it, then import it back.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              SCRATCH PAD                     -->
+<!-- ============================================ -->
+<section class="section" id="scratchpad">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128203;</span> Scratch Pad</h2>
+  <p class="section-desc">A scratch area for moving tabular data into a table.</p>
+
+  <p>
+    Open the Scratch Pad from <code>Window &rarr; DataForge &rarr; Scratch Pad</code>. It is a simple text area: paste a
+    block of rows and columns copied from Excel, Google Sheets or a CSV, then send it straight into the active
+    DataForge table with <strong>Paste to Table</strong>.
+  </p>
+
+  <p>It's handy when you want to stage and eyeball external data before it lands in your assets &mdash; especially large blocks that you'd rather not paste cell-by-cell.</p>
+</section>
+
+<!-- ============================================ -->
+<!--           GOOGLE SHEETS SYNC                 -->
+<!-- ============================================ -->
+<section class="section" id="sheets">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128193;</span> Google Sheets Sync</h2>
+  <p class="section-desc">Two-way sync between a ScriptableObject type and a Google Sheet.</p>
+
+  <p>
+    DataForge can connect to Google Sheets so designers can balance data in a shared spreadsheet while the project
+    stays the source of truth. Each type syncs with its own tab in a bound project spreadsheet.
+  </p>
+
+  <div class="flow">
+    <span class="flow-node">&#128273; Connect Google</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#128193; Bind a spreadsheet</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">&#11014;&#65039; Push</span>
+    <span class="flow-arrow">&harr;</span>
+    <span class="flow-node">&#11015;&#65039; Pull</span>
+  </div>
+
+  <h3>Controls</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Control</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Bind</strong> / <strong>Rebind</strong></td><td>Choose the project spreadsheet through the Google Picker in your browser.</td></tr>
+      <tr><td><strong>Push</strong></td><td>Writes the current DataForge table up to the bound sheet.</td></tr>
+      <tr><td><strong>Pull</strong></td><td>Reads the bound sheet back down into the table (and refreshes the grid).</td></tr>
+      <tr><td><strong>Google status</strong></td><td>Shows whether you're connected and which spreadsheet is bound. Click it to open settings.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;&#65039;</span>
+    <div><strong>One-time OAuth setup.</strong> Google Sheets sync needs Google OAuth credentials. Follow the step-by-step guide in <code>Assets/DataForge Pro/Documentation/GoogleSheetsOAuthSetup.md</code> before your first connection.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Optional feature.</strong> Google Sheets sync is entirely optional. DataForge's spreadsheet editing, formulas, validation and file import/export all work without ever connecting a Google account.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              CHANGE HISTORY                  -->
+<!-- ============================================ -->
+<section class="section" id="history">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128340;</span> Change History</h2>
+  <p class="section-desc">Every edit recorded &mdash; and revertible.</p>
+
+  <p>
+    Click <strong>History</strong> in the toolbar to open the Change History window. It logs each value change with
+    its asset, field, old&nbsp;&rarr;&nbsp;new value, timestamp and author.
+  </p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Element</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Single entry</strong></td><td>One field change. <strong>Revert</strong> restores the old value.</td></tr>
+      <tr><td><strong>Batch group</strong></td><td>A bulk edit or import, grouped and collapsible. <strong>Revert Batch</strong> rolls back every change in the batch in one click.</td></tr>
+      <tr><td><strong>Clear History</strong></td><td>Empties the current history list.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>History persists.</strong> With <em>Auto Sync History</em> enabled, the change log is written to disk so it survives Unity restarts. Entries whose assets no longer exist are pruned automatically.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              SETTINGS                        -->
+<!-- ============================================ -->
+<section class="section" id="settings">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> Settings</h2>
+  <p class="section-desc">Tune DataForge to your project.</p>
+
+  <p>Open settings from the gear icon in the toolbar. Settings are stored per-project in <code>UserSettings/DataForgeSettings.asset</code>.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Default Page Size</strong></td><td><code>50</code></td><td>Rows shown per page in the grid.</td></tr>
+      <tr><td><strong>Default Row Height</strong></td><td><code>20</code></td><td>Height of each grid row, in pixels.</td></tr>
+      <tr><td><strong>Show Asset Preview</strong></td><td>On</td><td>Shows a thumbnail preview for asset-reference cells.</td></tr>
+      <tr><td><strong>Preview Size</strong></td><td><code>64</code></td><td>Thumbnail size in pixels (16&ndash;128).</td></tr>
+      <tr><td><strong>Default Header Format</strong></td><td>Friendly</td><td>How column headers are labelled &mdash; <em>Friendly</em> turns <code>maxHitPoints</code> into <code>Max Hit Points</code>.</td></tr>
+      <tr><td><strong>Max Visible Columns</strong></td><td><code>30</code></td><td>Upper limit on columns drawn for very wide types.</td></tr>
+      <tr><td><strong>Auto Validate on Edit</strong></td><td>On</td><td>Revalidate automatically after edits and on window focus.</td></tr>
+      <tr><td><strong>Auto Sync History</strong></td><td>On</td><td>Persist the change history to disk between sessions.</td></tr>
+      <tr><td><strong>Lock Floating Window Min Size</strong></td><td>On</td><td>Keeps an undocked window from shrinking below a usable size.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================ -->
+<!--              FILE STRUCTURE                  -->
+<!-- ============================================ -->
+<section class="section" id="files">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#128193;</span> File Structure</h2>
+  <p class="section-desc">Everything DataForge ships lives under Assets/DataForge Pro/.</p>
+
+  <div class="file-tree">
+    <span class="folder">Assets/</span><br>
+    &nbsp;&nbsp;<span class="folder">DataForge/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Editor/</span> <span class="desc">&mdash; all editor code (excluded from builds)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Core/</span> <span class="desc">&mdash; the DataForge window &amp; toolbar</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Features/</span> <span class="desc">&mdash; formulas, validation, formatting, history, sync</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">ImportExport/</span> <span class="desc">&mdash; CSV / TSV / JSON handlers</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Rendering/</span> &nbsp; <span class="folder">Table/</span> &nbsp; <span class="folder">Properties/</span> <span class="desc">&mdash; grid internals</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Setup/</span> <span class="desc">&mdash; Newtonsoft.Json dependency check</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Documentation/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Documentation.html</span> <span class="desc">&mdash; this file</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">GoogleSheetsOAuthSetup.md</span> <span class="desc">&mdash; Google Sheets setup guide</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Samples/</span> <span class="desc">&mdash; example ScriptableObject data &amp; scripts</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">package.json</span><br>
+    &nbsp;&nbsp;<span class="folder">Editor/DataForge/</span> <span class="desc">&mdash; created on demand: sync configs &amp; validation profiles</span><br>
+    <span class="folder">UserSettings/</span><br>
+    &nbsp;&nbsp;<span class="file">DataForgeSettings.asset</span> <span class="desc">&mdash; your per-project settings</span><br>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Editor-only by design.</strong> All DataForge code sits in <code>Editor/</code> folders, so it is stripped from player builds automatically. Validation profiles and sync configs are stored under <code>Assets/Editor/DataForge/</code> for the same reason.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--              TROUBLESHOOTING                 -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Common issues and how to fix them.</p>
+
+  <details>
+    <summary>&#128230; A "Setup Required" window keeps appearing</summary>
+    <div class="details-body">
+      <p>That popup means <strong>Newtonsoft.Json</strong> isn't installed. Click <strong>Install Newtonsoft.Json</strong> and let Unity finish recompiling. If you installed it manually, use the <strong>re-check</strong> button. You can dismiss it for the project, or reopen it from <code>Window &rarr; DataForge &rarr; Check Newtonsoft.Json Dependency</code>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#128209; The type dropdown is empty or missing a type</summary>
+    <div class="details-body">
+      <ul>
+        <li>DataForge lists concrete <code>ScriptableObject</code> types that have at least one asset in the project. Create an asset of the type first.</li>
+        <li>Abstract base types and types with no assets are not listed.</li>
+        <li>After adding new script types, wait for Unity to finish compiling, then reopen the dropdown.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#9888; A formula won't commit</summary>
+    <div class="details-body">
+      <ul>
+        <li>Formula cells must target an <code>int</code> or <code>float</code> column.</li>
+        <li>Check field references &mdash; the name inside <code>{ }</code> must match a field on the same type.</li>
+        <li>DataForge shows the parse or evaluation error; fix the expression and re-enter it.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#128193; Google Sheets Push / Pull fails</summary>
+    <div class="details-body">
+      <ul>
+        <li>Confirm you completed the OAuth setup in <code>GoogleSheetsOAuthSetup.md</code>.</li>
+        <li>Make sure a spreadsheet is bound &mdash; the toolbar should show its name, not "Sheet: Not bound".</li>
+        <li>Check your internet connection and that the Google account has access to the spreadsheet.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#9851; Imported data looks wrong</summary>
+    <div class="details-body">
+      <ul>
+        <li>Import matches columns by header name &mdash; export the table first to get a file with the exact headers.</li>
+        <li>Use <code>Ctrl+Z</code> to undo an import, or revert the batch from the History window.</li>
+        <li>Check that numeric columns in the file don't contain stray text.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>&#128444; The window is too small or controls are clipped</summary>
+    <div class="details-body">
+      <p>The toolbar switches to a two-row layout on narrow windows. If a floating window is awkwardly small, the <em>Lock Floating Window Min Size</em> setting keeps it usable &mdash; or just dock the window.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--              FAQ                             -->
+<!-- ============================================ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Frequently asked questions.</p>
+
+  <details>
+    <summary>Does DataForge affect my game's build size or runtime performance?</summary>
+    <div class="details-body"><p><strong>No.</strong> All DataForge scripts live in <code>Editor/</code> folders and are excluded from player builds automatically. It has zero runtime footprint &mdash; it only edits the <code>.asset</code> files you were already shipping.</p></div>
+  </details>
+
+  <details>
+    <summary>Will it change my assets in a way I can't undo?</summary>
+    <div class="details-body"><p>Every edit goes through Unity's Undo system, so <code>Ctrl+Z</code> works as normal. Bulk edits and imports are grouped and can be rolled back as a batch from the History window. As always, version control is recommended for large changes.</p></div>
+  </details>
+
+  <details>
+    <summary>Which types can I edit?</summary>
+    <div class="details-body"><p>Any concrete <code>ScriptableObject</code> type that has at least one asset in your project &mdash; your own data types and ScriptableObjects from other packages alike.</p></div>
+  </details>
+
+  <details>
+    <summary>Do I need Newtonsoft.Json?</summary>
+    <div class="details-body"><p>Yes &mdash; it powers JSON import/export, the history store and Google Sheets sync. DataForge installs it for you through a one-click setup popup if it isn't already present. See <a href="#install">Installation</a>.</p></div>
+  </details>
+
+  <details>
+    <summary>Is Google Sheets sync required?</summary>
+    <div class="details-body"><p>No. It is an optional feature. Spreadsheet editing, bulk edit, formulas, validation, formatting and file import/export all work without connecting any Google account.</p></div>
+  </details>
+
+  <details>
+    <summary>Can I use it on multiple machines?</summary>
+    <div class="details-body"><p>Yes. DataForge has no machine-specific binding. Settings and validation profiles live in your project, so they travel with it through version control.</p></div>
+  </details>
+
+  <details>
+    <summary>What Unity version do I need?</summary>
+    <div class="details-body"><p>Unity <strong>2021.3 LTS</strong> or newer.</p></div>
+  </details>
+
+  <details>
+    <summary>Does editing here behave the same as the Inspector?</summary>
+    <div class="details-body"><p>Yes &mdash; DataForge edits assets through the same serialization path as the Inspector and uses Unity's own property drawers for complex fields, so values, validation and Undo all behave identically.</p></div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--              SUPPORT                         -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--green-dim);color:var(--green)">&#128236;</span> Support</h2>
+  <p class="section-desc">Need help? We're here for you.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">If you run into any issues, have feature requests, or need help integrating DataForge into your project, don't hesitate to reach out.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),#00cec9);color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before Contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Check the <a href="#troubleshooting">Troubleshooting</a> section</li>
+        <li>Check the <a href="#faq">FAQ</a> section</li>
+        <li>Confirm you are on Unity 2021.3 LTS or newer</li>
+        <li>Confirm Newtonsoft.Json is installed</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful Info to Include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:2;">
+        <li>Unity version</li>
+        <li>DataForge version (currently v1.0)</li>
+        <li>Console messages (lines starting with <code>[DataForge]</code>)</li>
+        <li>Steps to reproduce the issue</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:20px;">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Enjoying DataForge?</strong> A review on the <a href="https://u3d.as/3Y0P">Unity Asset Store</a> helps other developers discover the tool and helps us keep improving it. Thank you!</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>DataForge v1.0 &middot; ScriptableObject Spreadsheet Editor for Unity</p>
+  <p style="margin-top:8px;">Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+  <p style="margin-top:4px;">&copy; 2026 DataForge &mdash; All rights reserved.</p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const content = s.textContent.toLowerCase();
+  sections.push({
+    id: s.id,
+    title: h2 ? h2.textContent.trim() : '',
+    desc: desc ? desc.textContent.trim() : '',
+    content: content,
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
