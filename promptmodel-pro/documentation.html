@@ -504,6 +504,7 @@ details .details-body p:first-child { margin-top: 0; }
   <div class="sidebar-group">
     <div class="sidebar-group-title">Getting Started</div>
     <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#basevspro"><span class="nav-icon">&#9878;</span> Base vs Pro</a>
     <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
     <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
   </div>
@@ -586,6 +587,61 @@ details .details-body p:first-child { margin-top: 0; }
   </div>
 
   <p>This document covers everything from first-run activation through the troubleshooting table. If you only have five minutes, read <a href="#quickstart">Quick Start</a> and <a href="#prompts">Writing Prompts</a>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--              BASE vs PRO                     -->
+<!-- ============================================ -->
+<section class="section" id="basevspro">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9878;</span> Base vs Pro &mdash; at a glance</h2>
+  <p class="section-desc">Everything the original PromptModel already does &mdash; and what Pro adds on top.</p>
+
+  <div class="table-wrap"><table>
+    <thead>
+      <tr>
+        <th style="width:46%">Feature</th>
+        <th style="width:27%">PromptModel <span style="color:var(--text-dim)">(Base)</span></th>
+        <th style="width:27%;background:var(--accent-glow);color:var(--accent-light)">PromptModel <strong>Pro</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--text-dim);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">AI generation &mdash; in both</td></tr>
+      <tr><td>Text &rarr; 3D prefab (PBR materials &middot; LOD0&ndash;3 &middot; centred pivot, ~60&nbsp;s)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Image &rarr; 3D (PNG / JPEG / WebP, up to 10&nbsp;MB)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Generate Similar &mdash; 4 seed variations in parallel, import the keepers</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Model Library window (search &middot; categories &middot; favourites &middot; 3D previews)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004; <span style="color:var(--text-dim)">+ grade badges</span></td></tr>
+      <tr><td>Repeat-prompt caching (cache hits don't use your allowance)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>One-time purchase &mdash; no subscription, no accounts, no API keys</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td><strong>Monthly generation allowance</strong></td><td><strong>50</strong> / month</td><td style="background:rgba(168,85,247,0.05)"><strong style="color:var(--accent-light)">150</strong> / month</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Pro generation options &mdash; Pro only</td></tr>
+      <tr><td>Art style steering (Cartoon &middot; Low Poly &middot; Voxel &middot; Sculpture)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Target mesh density bands (mobile prop &rarr; high detail)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004; <span style="color:var(--text-dim)">best-effort band</span></td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Pro Toolkit &mdash; Pro only &middot; local, offline, unlimited &middot; works on ANY model in your project</td></tr>
+      <tr><td>Game-Ready Check &mdash; 12-rule audit vs Mobile/PC/VR budgets, A&ndash;F grade, one-click <em>Fix All</em></td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Polycount optimizer &mdash; decimation with UV-seam/border preservation + per-mesh control</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Configurable LOD chains (2&ndash;5 levels, presets, skinned-mesh support)</td><td style="color:var(--pink)">&#10008; <span style="color:var(--text-dim)">fixed 4-level only</span></td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Mesh cleaning &mdash; weld duplicates, remove degenerate triangles</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Atlas baker &mdash; merge all materials into one (fewer draw calls) + channel packing</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Texture tools &mdash; size clamps, normal-map fixes, DirectX&harr;OpenGL flip, HSV recolor</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Lightmap UV2 generation + UV overlap viewer</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Auto colliders &mdash; fitted box/capsule, decimated convex hull, per-part compound</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Pivot &middot; real-world scale &middot; orientation fixes (the import paper cuts)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Stylization &mdash; low-poly faceting, limited palettes, pixel-art textures</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>URP &harr; Built-in material converter (fixes pink materials)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Batch pipelines &mdash; clean &rarr; decimate &rarr; LODs &rarr; colliders &rarr; audit over whole folders</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+      <tr><td>Non-destructive workflow &mdash; variants saved alongside, originals untouched</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(168,85,247,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--text-dim);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Coming to Pro &mdash; rolls out automatically, not live yet</td></tr>
+      <tr><td>AI Retexture &middot; AI Retopology &middot; Auto-Rig + Animations (server passes)</td><td style="color:var(--pink)">&#10008;</td><td style="background:rgba(168,85,247,0.05);color:var(--text-dim)">appears automatically when the service enables it &mdash; see <a href="#pro-server">Server passes</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>The honest one-liner:</strong> Base generates the model; Pro generates it with more control, gives you 3&times; the allowance, and then makes it <em>game-ready</em> &mdash; audit, optimize, atlas, stylize &mdash; all locally and without limits, on generated and non-generated models alike.</div>
+  </div>
 </section>
 
 <!-- ============ INSTALLATION ============ -->
