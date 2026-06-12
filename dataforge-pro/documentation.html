@@ -636,8 +636,8 @@ details .details-body { padding: 0 20px 18px; }
   <div class="sidebar-group">
     <div class="sidebar-group-title">Getting Started</div>
     <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
-    <a href="#pro2"><span class="nav-icon">&#11088;</span> New in Pro 2.0</a>
     <a href="#basevspro"><span class="nav-icon">&#9878;</span> Base vs Pro</a>
+    <a href="#pro2"><span class="nav-icon">&#11088;</span> New in Pro 2.0</a>
     <a href="#quickstart"><span class="nav-icon">&#9889;</span> Quick Start</a>
     <a href="#install"><span class="nav-icon">&#128230;</span> Installation</a>
   </div>
@@ -762,6 +762,79 @@ details .details-body { padding: 0 20px 18px; }
 </section>
 
 <!-- ============================================ -->
+<!--              BASE vs PRO                     -->
+<!-- ============================================ -->
+<section class="section" id="basevspro">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9878;</span> Base vs Pro — at a glance</h2>
+  <p class="section-desc">Everything DataForge 1.x (Base) already did — and what Pro 2.0 adds on top.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:46%">Feature</th>
+        <th style="width:27%">DataForge <span style="color:var(--text-dim)">(Base 1.x)</span></th>
+        <th style="width:27%;background:var(--accent-glow);color:var(--accent-light)">DataForge <strong>Pro 2.0</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--text-dim);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Core spreadsheet — in both</td></tr>
+      <tr><td>Spreadsheet grid (every asset a row, every field a column)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>All flat field types (int &middot; float &middot; string &middot; bool &middot; enum &middot; vectors &middot; Color &middot; Gradient &middot; Curve &middot; refs)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Bulk / multi-edit (set-all + series fill)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Formulas (<code>=</code> cells, <code>{field}</code> refs)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004; <span style="color:var(--text-dim)">+ v2 below</span></td></tr>
+      <tr><td>Validation rules (Required &middot; Range &middot; Unique &middot; Regex &middot; Ref-not-null)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004; <span style="color:var(--text-dim)">+ Health below</span></td></tr>
+      <tr><td>Conditional formatting</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Batch create &middot; Scratch pad &middot; Change history + Undo</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>CSV / TSV / JSON import &amp; export</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Google Sheets sync (push / pull)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Deep serialization &amp; relations — Pro only</td></tr>
+      <tr><td>Nested <code>[Serializable]</code> objects as editable dot-notation columns</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Lists / arrays &amp; serialized dictionaries (master-detail editing)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td><code>[SerializeReference]</code> polymorphism — per-element type picker + undo-safe migration</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Custom PropertyDrawers / Odin render correctly (detail pane)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>FK click-to-follow &middot; reverse references (&ldquo;who points here?&rdquo;) &middot; integrity scan</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Universal Scanner — edit prefab components in the same grid</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Workbench &amp; authoring power — Pro only</td></tr>
+      <tr><td>UI Toolkit virtualized grid + live perf chip</td><td style="color:var(--pink)">&#10008; <span style="color:var(--text-dim)">IMGUI</span></td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Multi-table tabs + saved Views (committable workspace)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Filter query language (<code>damage&gt;50 rarity=Legendary name~sword</code>)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Global search across every type (Ctrl+Shift+F) &middot; Command palette (Ctrl+K)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Bulk-edit <strong>pipelines</strong> with red/green diff preview (one Undo)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Smart Fill (detects linear / geometric / name-pattern series)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Computed columns v2 — aggregates (SUM/AVG/MEDIAN&hellip;) + bake-to-field</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Deep Clone (duplicates <code>[SerializeReference]</code>, remaps internal refs)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Balance snapshots &middot; cell-level diff &middot; Markdown/CSV patch notes</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Data Health dashboard — relational rules, score, one-click autofix</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+
+      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Platform, trust &amp; AI — Pro only</td></tr>
+      <tr><td>Headless CLI for CI — validate (JUnit/SARIF), import/export, run pipelines</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Native <code>.xlsx</code> read/write (no Excel, no extra packages)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Transactional writes — auto-backup before every bulk op + restore-last-good</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Linux support for Sheets credentials (encrypted secret store)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>AI copilot — compiles English to a validated, diff-previewed pipeline (BYO key / offline)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Anomaly detection (offline statistics) + proposed validation rules</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>MCP server — safe, transactional tools for AI agents (dry-run by default)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+      <tr><td>Extensibility API — custom cell renderers, ops, rules, commands</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
+    </tbody>
+  </table>
+
+  <p style="color:var(--text-dim);font-size:12.5px;margin-top:10px">
+    &#10004; included &middot; &#10008; Pro only. Base projects upgrade in place &mdash; Pro edits the same native
+    <code>.asset</code> files with zero migration, and the classic grid stays available as
+    <em>Window &rarr; DataForge Pro &rarr; Classic Grid (Legacy)</em>.
+  </p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Why upgrade in one sentence:</strong> Pro edits the data Base (and every competitor) can&rsquo;t touch
+    &mdash; nested objects, lists, dictionaries, <code>[SerializeReference]</code> &mdash; and wraps every write in a
+    previewed, backed-up, one-Undo transaction.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
 <!--              NEW IN PRO 2.0                  -->
 <!-- ============================================ -->
 <section class="section" id="pro2">
@@ -852,79 +925,6 @@ Unity -batchmode -nographics -quit -projectPath . ^
   <div class="callout callout-info">
     <span class="callout-icon">&#9432;</span>
     <div><strong>Extensible.</strong> Custom cell renderers, value operations, validation rules and palette commands are small public C# seams &mdash; see <code>Documentation/ExtensibilityAPI.md</code>.</div>
-  </div>
-</section>
-
-<!-- ============================================ -->
-<!--              BASE vs PRO                     -->
-<!-- ============================================ -->
-<section class="section" id="basevspro">
-  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9878;</span> Base vs Pro — at a glance</h2>
-  <p class="section-desc">Everything DataForge 1.x (Base) already did — and what Pro 2.0 adds on top.</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th style="width:46%">Feature</th>
-        <th style="width:27%">DataForge <span style="color:var(--text-dim)">(Base 1.x)</span></th>
-        <th style="width:27%;background:var(--accent-glow);color:var(--accent-light)">DataForge <strong>Pro 2.0</strong></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--text-dim);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Core spreadsheet — in both</td></tr>
-      <tr><td>Spreadsheet grid (every asset a row, every field a column)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>All flat field types (int &middot; float &middot; string &middot; bool &middot; enum &middot; vectors &middot; Color &middot; Gradient &middot; Curve &middot; refs)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Bulk / multi-edit (set-all + series fill)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Formulas (<code>=</code> cells, <code>{field}</code> refs)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004; <span style="color:var(--text-dim)">+ v2 below</span></td></tr>
-      <tr><td>Validation rules (Required &middot; Range &middot; Unique &middot; Regex &middot; Ref-not-null)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004; <span style="color:var(--text-dim)">+ Health below</span></td></tr>
-      <tr><td>Conditional formatting</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Batch create &middot; Scratch pad &middot; Change history + Undo</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>CSV / TSV / JSON import &amp; export</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Google Sheets sync (push / pull)</td><td style="color:var(--green)">&#10004;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-
-      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Deep serialization &amp; relations — Pro only</td></tr>
-      <tr><td>Nested <code>[Serializable]</code> objects as editable dot-notation columns</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Lists / arrays &amp; serialized dictionaries (master-detail editing)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td><code>[SerializeReference]</code> polymorphism — per-element type picker + undo-safe migration</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Custom PropertyDrawers / Odin render correctly (detail pane)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>FK click-to-follow &middot; reverse references (&ldquo;who points here?&rdquo;) &middot; integrity scan</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Universal Scanner — edit prefab components in the same grid</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-
-      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Workbench &amp; authoring power — Pro only</td></tr>
-      <tr><td>UI Toolkit virtualized grid + live perf chip</td><td style="color:var(--pink)">&#10008; <span style="color:var(--text-dim)">IMGUI</span></td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Multi-table tabs + saved Views (committable workspace)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Filter query language (<code>damage&gt;50 rarity=Legendary name~sword</code>)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Global search across every type (Ctrl+Shift+F) &middot; Command palette (Ctrl+K)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Bulk-edit <strong>pipelines</strong> with red/green diff preview (one Undo)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Smart Fill (detects linear / geometric / name-pattern series)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Computed columns v2 — aggregates (SUM/AVG/MEDIAN&hellip;) + bake-to-field</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Deep Clone (duplicates <code>[SerializeReference]</code>, remaps internal refs)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Balance snapshots &middot; cell-level diff &middot; Markdown/CSV patch notes</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Data Health dashboard — relational rules, score, one-click autofix</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-
-      <tr><td colspan="3" style="background:var(--bg-code);font-weight:700;color:var(--accent-light);font-size:11.5px;text-transform:uppercase;letter-spacing:0.8px">Platform, trust &amp; AI — Pro only</td></tr>
-      <tr><td>Headless CLI for CI — validate (JUnit/SARIF), import/export, run pipelines</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Native <code>.xlsx</code> read/write (no Excel, no extra packages)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Transactional writes — auto-backup before every bulk op + restore-last-good</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Linux support for Sheets credentials (encrypted secret store)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>AI copilot — compiles English to a validated, diff-previewed pipeline (BYO key / offline)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Anomaly detection (offline statistics) + proposed validation rules</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>MCP server — safe, transactional tools for AI agents (dry-run by default)</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-      <tr><td>Extensibility API — custom cell renderers, ops, rules, commands</td><td style="color:var(--pink)">&#10008;</td><td style="color:var(--green);background:rgba(74,159,245,0.05)">&#10004;</td></tr>
-    </tbody>
-  </table>
-
-  <p style="color:var(--text-dim);font-size:12.5px;margin-top:10px">
-    &#10004; included &middot; &#10008; Pro only. Base projects upgrade in place &mdash; Pro edits the same native
-    <code>.asset</code> files with zero migration, and the classic grid stays available as
-    <em>Window &rarr; DataForge Pro &rarr; Classic Grid (Legacy)</em>.
-  </p>
-
-  <div class="callout callout-tip">
-    <span class="callout-icon">&#11088;</span>
-    <div><strong>Why upgrade in one sentence:</strong> Pro edits the data Base (and every competitor) can&rsquo;t touch
-    &mdash; nested objects, lists, dictionaries, <code>[SerializeReference]</code> &mdash; and wraps every write in a
-    previewed, backed-up, one-Undo transaction.</div>
   </div>
 </section>
 
