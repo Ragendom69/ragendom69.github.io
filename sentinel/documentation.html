@@ -257,6 +257,7 @@
   <a href="#references-finder">References Finder</a>
   <a href="#trends">Trends &amp; Health</a>
   <a href="#settings">Settings</a>
+  <a href="#custom-extensions">Extensions</a>
   <a href="#ci-cd">CI/CD</a>
   <a href="#support">Support</a>
 </div>
@@ -278,7 +279,7 @@
 
 <h3>Opening Sentinel</h3>
 <p>Go to <strong>Window &gt; Sentinel &gt; Open Window</strong> or press <span class="shortcut">Ctrl+Shift+Alt+S</span>.</p>
-<p>The main window has a toolbar and four tabs: <strong>Issues</strong>, <strong>Cleaner</strong>, <strong>References</strong>, and <strong>Trends</strong>.</p>
+<p>The main window has a toolbar and four tabs: <strong>Health</strong>, <strong>Issues</strong>, <strong>Unused Assets</strong>, and <strong>Dependencies</strong>.</p>
 
 <h3>Your First Scan</h3>
 <ol>
@@ -343,7 +344,7 @@
 <p>The <strong>"Fix All Auto-Fixable"</strong> button in the left panel applies the first available fix for every fixable issue at once.</p>
 
 <h3>Suppression</h3>
-<p>Right-click any issue and select <strong>"Suppress Issue"</strong> to hide it from future scans. Suppressions are saved to <code>Assets/SentinelData/SentinelSuppressions.json</code> (version-controlled, shared with your team).</p>
+<p>Right-click any issue and select <strong>"Suppress Issue"</strong> to hide it from future scans. Suppressions are saved to <code>Assets/SentinelData/suppressions.json</code> (version-controlled, shared with your team).</p>
 <p>To remove a suppression, enable the "Suppressed" filter, find the issue, right-click, and select "Remove Suppression."</p>
 
 <h3>Context Menu</h3>
@@ -359,7 +360,7 @@
 <!-- ================================================================ -->
 <h2 id="project-cleaner">Project Cleaner</h2>
 
-<p>The Cleaner tab finds <strong>unreferenced assets</strong> &mdash; files that are not reachable from any build scene, Resources folder, or other root &mdash; and are safe to delete.</p>
+<p>The Unused Assets tab finds <strong>unreferenced assets</strong> &mdash; files that are not reachable from any build scene, Resources folder, or other root &mdash; and are safe to delete.</p>
 
 <h3>How It Works</h3>
 <p>Sentinel uses a <strong>root-tracing algorithm</strong>:</p>
@@ -383,7 +384,7 @@
 
 <h3>Using the Cleaner</h3>
 <ol>
-  <li>Switch to the <strong>Cleaner</strong> tab</li>
+  <li>Switch to the <strong>Unused Assets</strong> tab</li>
   <li>Click <strong>"Find Deletable Assets"</strong></li>
   <li>Review the results grouped by folder</li>
   <li>Use checkboxes to select/deselect individual assets</li>
@@ -418,11 +419,11 @@
 <!-- ================================================================ -->
 <h2 id="references-finder">References Finder</h2>
 
-<p>The References tab answers: <strong>"Where is this asset used?"</strong></p>
+<p>The Dependencies tab answers: <strong>"Where is this asset used?"</strong></p>
 
 <h3>How to Use</h3>
 <ol>
-  <li>Switch to the <strong>References</strong> tab</li>
+  <li>Switch to the <strong>Dependencies</strong> tab</li>
   <li>Drag an asset into the <strong>Target Asset</strong> field (or use the object picker)</li>
   <li>Click <strong>"Find References"</strong></li>
   <li>The tree view shows every asset that references your target</li>
@@ -444,7 +445,7 @@
 <!-- ================================================================ -->
 <h2 id="trends">Trends &amp; Health Score</h2>
 
-<p>The Trends tab tracks your project's health over time.</p>
+<p>The Health tab tracks your project's health over time.</p>
 
 <h3>Health Score</h3>
 <p>A score from <strong>0 to 100</strong> calculated after each scan:</p>
@@ -474,8 +475,8 @@
 <h3>Baseline</h3>
 <p>Lock a <strong>baseline</strong> to establish "known issues." Future scans will report how many <strong>new</strong> issues appeared since the baseline was locked. This is especially useful for CI pipelines: allow existing tech debt but block new regressions.</p>
 <ul>
-  <li>Click <strong>"Lock New Baseline"</strong> in the Trends tab</li>
-  <li>The baseline is saved to <code>Assets/SentinelData/sentinel.baseline.json</code> (version-controlled)</li>
+  <li>Click <strong>"Lock New Baseline"</strong> in the Health tab</li>
+  <li>The baseline is saved to <code>Assets/SentinelData/baseline.json</code> (version-controlled)</li>
   <li>The Issues tab status bar shows "X new since baseline"</li>
 </ul>
 
@@ -487,7 +488,7 @@
 <h3>Scan Scope</h3>
 <ul>
   <li><strong>Included Folders</strong> &mdash; which folders to scan (default: <code>Assets</code>)</li>
-  <li><strong>Excluded Folders</strong> &mdash; folders to skip (e.g., <code>Assets/ThirdParty</code>)</li>
+  <li><strong>Excluded Folders</strong> &mdash; folders to skip (e.g., <code>Assets/Sandbox</code>)</li>
 </ul>
 
 <h3>Severity Configuration</h3>
@@ -535,7 +536,6 @@ public GameObject optionalReference;</pre>
   <tr><th>Argument</th><th>Default</th><th>Description</th></tr>
   <tr><td><code>-sentinelOutput</code></td><td><code>sentinel-report.json</code></td><td>Output path for the JSON report</td></tr>
   <tr><td><code>-sentinelFailOn</code></td><td><code>Error</code></td><td>Minimum severity to fail (<code>Error</code>, <code>Warning</code>, <code>Info</code>)</td></tr>
-  <tr><td><code>-sentinelProfile</code></td><td>(none)</td><td>Named scan profile from Project Settings</td></tr>
 </table>
 
 <h3>Exit Codes</h3>
@@ -561,7 +561,7 @@ public GameObject optionalReference;</pre>
 </div>
 
 <h3>GitHub Actions Template</h3>
-<p>A ready-to-use workflow is included at <code>Assets/Sentinel/GitHubActions/sentinel.yml</code>. Copy it to <code>.github/workflows/sentinel.yml</code> in your repository. It uses <a href="https://game.ci">Game CI</a> (<code>game-ci/unity-builder@v4</code>).</p>
+<p>A ready-to-use workflow is included at <code>Assets/Sentinel/CI/sentinel-ci.yml</code>. Copy it to <code>.github/workflows/sentinel-ci.yml</code> in your repository. It uses <a href="https://game.ci">Game CI</a> (<code>game-ci/unity-builder@v4</code>).</p>
 
 <h3>Lock Baseline from CLI</h3>
 <pre>Unity.exe -batchmode -quit -projectPath /path/to/project \
@@ -569,6 +569,145 @@ public GameObject optionalReference;</pre>
 
 <h3>Git Post-Merge Hook</h3>
 <p>Sentinel can install a git hook that automatically runs a health scan after every <code>git pull</code> / <code>git merge</code>. Call <code>SentinelGitHook.InstallPostMergeHook()</code> from code or a menu item.</p>
+
+<!-- ================================================================ -->
+<h2 id="custom-extensions">Custom Extensions</h2>
+
+<p>Sentinel's detector system is fully extensible. Create your own detectors to enforce project-specific rules &mdash; naming conventions, component limits, folder structure, and more. Custom extensions are <strong>auto-discovered</strong> via <code>TypeCache</code> &mdash; no registration, no config files.</p>
+
+<h3>Creating a Custom Detector</h3>
+
+<ol>
+  <li>Create a new C# script in an <strong>Editor</strong> folder</li>
+  <li>Add an assembly definition (<code>.asmdef</code>) that references <code>YourStudio.Sentinel.Editor</code> and targets the <strong>Editor</strong> platform only</li>
+  <li>Create a class that extends <code>SentinelExtensionBase</code></li>
+  <li>Override <code>DetectorName</code> and whichever lifecycle hooks you need</li>
+  <li>Call <code>AddIssue()</code> to report problems</li>
+</ol>
+
+<h3>SentinelExtensionBase API</h3>
+
+<table>
+  <tr><th>Member</th><th>Description</th></tr>
+  <tr><td><code>DetectorName</code> <span class="badge badge-error">required</span></td><td>Unique string identifying your detector (e.g., <code>"NamingConvention"</code>)</td></tr>
+  <tr><td><code>OnScanStart(ctx)</code></td><td>Called once when a scan begins. Use it to load settings or initialize state.</td></tr>
+  <tr><td><code>OnAssetScanned(assetPath, so)</code></td><td>Called for every asset in the project. <code>so</code> is the <code>SerializedObject</code> (may be null for non-serializable assets).</td></tr>
+  <tr><td><code>OnPrefabScanned(prefabPath, root)</code></td><td>Called for each prefab with its root <code>GameObject</code>.</td></tr>
+  <tr><td><code>OnSceneScanned(scenePath, rootObjects)</code></td><td>Called for each open scene with its root <code>GameObject[]</code> array.</td></tr>
+  <tr><td><code>OnSceneTextScanned(scenePath, sceneText)</code></td><td>Called for each closed scene with its raw scene-file text (YAML) as a string.</td></tr>
+  <tr><td><code>OnScanEnd(ctx)</code></td><td>Called once after all assets have been scanned. Use for project-wide checks.</td></tr>
+  <tr><td><code>AddIssue(record)</code></td><td>Reports an issue. Sentinel assigns a unique ID automatically.</td></tr>
+</table>
+
+<h3>Minimal Example</h3>
+
+<pre>using System.IO;
+using UnityEditor;
+
+namespace YourStudio.Sentinel.Editor
+{
+    public class NamingConventionDetector : SentinelExtensionBase
+    {
+        public override string DetectorName =&gt; "NamingConvention";
+
+        private SentinelSeverityConfig _severityConfig;
+
+        public override void OnScanStart(SentinelScanContext ctx)
+        {
+            _severityConfig = SentinelProjectSettings.GetOrCreate().SeverityConfig;
+        }
+
+        public override void OnAssetScanned(string assetPath, SerializedObject so)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(assetPath);
+
+            // Prefabs should use PascalCase and have no spaces
+            if (assetPath.EndsWith(".prefab") &amp;&amp; fileName.Contains(" "))
+            {
+                AddIssue(new SentinelIssueRecord
+                {
+                    Severity = _severityConfig.GetSeverity("NamingConvention"),
+                    IssueType = "NamingConvention",
+                    AssetPath = assetPath,
+                    Message = $"Prefab '{fileName}' contains spaces"
+                });
+            }
+        }
+    }
+}</pre>
+
+<h3>Assembly Definition Setup</h3>
+<p>Your custom extension needs its own <code>.asmdef</code> file to reference the Sentinel assembly:</p>
+
+<pre>{
+    "name": "MyProject.SentinelExtensions",
+    "rootNamespace": "",
+    "references": [ "YourStudio.Sentinel.Editor" ],
+    "includePlatforms": [ "Editor" ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}</pre>
+
+<div class="tip-box">
+  <strong>Tip:</strong> Place your extension in its own folder with its own <code>.asmdef</code>. This keeps it separate from Sentinel internals and makes upgrades easier.
+</div>
+
+<h3>SentinelIssueRecord Fields</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>Severity</code></td><td><code>SentinelIssueSeverity</code></td><td><code>Error</code>, <code>Warning</code>, or <code>Info</code>. Use <code>SeverityConfig.GetSeverity()</code> to let users override.</td></tr>
+  <tr><td><code>IssueType</code></td><td><code>string</code></td><td>Must match your <code>DetectorName</code>.</td></tr>
+  <tr><td><code>AssetPath</code></td><td><code>string</code></td><td>Full asset path (e.g., <code>Assets/Prefabs/Player.prefab</code>).</td></tr>
+  <tr><td><code>ObjectPath</code></td><td><code>string</code></td><td>(Optional) Path within the asset (e.g., GameObject name).</td></tr>
+  <tr><td><code>Message</code></td><td><code>string</code></td><td>Human-readable description shown in the Issues tab.</td></tr>
+</table>
+
+<h3>Included Examples (SentinelExtensionDemo)</h3>
+<p>Sentinel ships with three example detectors in <code>Assets/Sentinel/SentinelExtensionDemo/</code>. These serve as both documentation and real, functional detectors you can modify or use as templates:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>NamingConventionDetector</h4>
+    <p>Uses <code>OnAssetScanned</code> to enforce naming rules: no spaces in prefab names, <code>M_</code>/<code>Mat_</code> prefix for materials, <code>T_</code> prefix for textures. Demonstrates how to use <code>SeverityConfig.GetSeverity()</code> so users can override severity per-project.</p>
+  </div>
+  <div class="card">
+    <h4>LargeComponentCountDetector</h4>
+    <p>Uses <code>OnPrefabScanned</code> to flag prefabs exceeding a component threshold (default: 10). Demonstrates the prefab lifecycle hook and <code>GetComponentsInChildren</code> traversal.</p>
+  </div>
+  <div class="card">
+    <h4>EmptyFolderDetector</h4>
+    <p>Uses <code>OnScanEnd</code> to recursively scan for empty folders project-wide. Demonstrates the end-of-scan hook for checks that don't map to individual assets.</p>
+  </div>
+</div>
+
+<h3>SentinelIgnore Attribute</h3>
+<p>The <code>[SentinelIgnore]</code> attribute can be applied to fields, properties, or entire classes to suppress issue detection for specific references:</p>
+
+<pre>using UnityEngine;
+#if UNITY_EDITOR
+using YourStudio.Sentinel.Editor;
+#endif
+
+public class MyComponent : MonoBehaviour
+{
+    [Tooltip("This reference is intentionally null at edit time")]
+#if UNITY_EDITOR
+    [SentinelIgnore("Assigned at runtime via Addressables")]
+#endif
+    public GameObject DynamicPrefab;
+}</pre>
+
+<div class="tip-box">
+  <strong>Tip:</strong> Wrap <code>[SentinelIgnore]</code> in <code>#if UNITY_EDITOR</code> to avoid including the attribute in player builds, since it lives in an editor-only assembly.
+</div>
+
+<p>A complete working example is included at <code>Assets/Sentinel/SentinelExtensionDemo/SentinelIgnoreDemo.cs</code>.</p>
 
 <!-- ================================================================ -->
 <h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
@@ -584,8 +723,9 @@ public GameObject optionalReference;</pre>
 <table>
   <tr><th>Menu Path</th><th>Action</th></tr>
   <tr><td>Window &gt; Sentinel &gt; Open Window</td><td>Opens the main Sentinel window</td></tr>
-  <tr><td>Window &gt; Sentinel &gt; Run Scan (CLI)</td><td>Runs a scan and writes reports (same as CLI)</td></tr>
-  <tr><td>Window &gt; Sentinel &gt; Lock Baseline (CLI)</td><td>Locks the current issue state as baseline</td></tr>
+  <tr><td>Window &gt; Sentinel &gt; Install Git Post-Merge Hook</td><td>Installs a git hook that runs a scan after every pull / merge</td></tr>
+  <tr><td>Tools &gt; Sentinel &gt; CI &gt; Run Scan (Headless)</td><td>Runs a scan and writes reports (same as the CLI entry point)</td></tr>
+  <tr><td>Tools &gt; Sentinel &gt; CI &gt; Lock Baseline (Headless)</td><td>Locks the current issue state as baseline</td></tr>
   <tr><td>Edit &gt; Project Settings &gt; Sentinel</td><td>Opens Sentinel settings</td></tr>
   <tr><td>Assets &gt; Sentinel &gt; Exclude Folder from Scans</td><td>Right-click context menu on folders</td></tr>
   <tr><td>Assets &gt; Sentinel &gt; Suppress All Issues in This Asset</td><td>Right-click context menu on assets</td></tr>
@@ -596,10 +736,10 @@ public GameObject optionalReference;</pre>
 
 <table>
   <tr><th>File</th><th>Location</th><th>Version Controlled?</th><th>Purpose</th></tr>
-  <tr><td><code>SentinelMap.dat</code></td><td>Library/</td><td>No</td><td>Binary dependency graph cache</td></tr>
-  <tr><td><code>SentinelProjectSettings.asset</code></td><td>ProjectSettings/</td><td>Yes</td><td>Shared scan configuration</td></tr>
-  <tr><td><code>SentinelSuppressions.json</code></td><td>Assets/SentinelData/</td><td>Yes</td><td>Shared issue suppressions</td></tr>
-  <tr><td><code>sentinel.baseline.json</code></td><td>Assets/SentinelData/</td><td>Yes</td><td>Shared issue baseline</td></tr>
+  <tr><td><code>SentinelDependencyCache.json</code></td><td>Library/</td><td>No</td><td>Dependency graph cache (JSON)</td></tr>
+  <tr><td><code>SentinelSettings.json</code></td><td>ProjectSettings/</td><td>Yes</td><td>Shared scan configuration</td></tr>
+  <tr><td><code>suppressions.json</code></td><td>Assets/SentinelData/</td><td>Yes</td><td>Shared issue suppressions</td></tr>
+  <tr><td><code>baseline.json</code></td><td>Assets/SentinelData/</td><td>Yes</td><td>Shared issue baseline</td></tr>
   <tr><td><code>SentinelTrends.asset</code></td><td>UserSettings/</td><td>No</td><td>Per-developer scan history</td></tr>
   <tr><td><code>SentinelUserSettings.asset</code></td><td>UserSettings/</td><td>No</td><td>Per-developer UI preferences</td></tr>
   <tr><td><code>SentinelBackups/*.zip</code></td><td>Library/</td><td>No</td><td>Pre-deletion backup archives</td></tr>
