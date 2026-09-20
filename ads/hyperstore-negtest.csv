@@ -1,0 +1,7 @@
+Campaign,Keyword,Criterion Type,Status
+HyperStore - Games & Packs,torrent,Negative phrase,Enabled
+HyperStore - Games & Packs,crack,Negative broad,Enabled
+HyperStore - Games & Packs,nulled,Negative Phrase,Enabled
+HyperStore - Games & Packs,udemy,negative broad,Enabled
+HyperStore - Games & Packs,wiki,Negative,Enabled
+HyperStore - Games & Packs,tutorial,Negative Exact,Enabled
